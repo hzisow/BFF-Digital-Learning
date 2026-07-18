@@ -363,19 +363,31 @@ export default function VideoCheckpoint({
           </div>
         )}
         {active != null && (
-          <div className="absolute inset-0 z-10 flex items-center justify-center overflow-y-auto bg-slate-950/80 p-3 backdrop-blur-sm sm:p-6">
-            <div className="my-auto w-full max-w-md animate-pop-in rounded-2xl bg-white p-4 shadow-2xl sm:p-5">
-              <QuestionCard
-                key={active}
-                q={sorted[active]}
-                index={active}
-                total={sorted.length}
-                compact
-                onAnswered={() =>
-                  setAnswered((prev) => prev.map((a, i) => (i === active ? true : a)))
-                }
-                onContinue={continueWatching}
-              />
+          <div className="absolute inset-0 z-10 flex items-stretch justify-end">
+            {/* Light scrim: the paused frame stays visible, panel edge reads cleanly */}
+            <div
+              className="absolute inset-0 bg-gradient-to-l from-slate-950/60 via-slate-950/25 to-transparent"
+              aria-hidden
+            />
+            {/* "Paused" pill sits over the still-visible video */}
+            <div className="absolute left-3 top-3 flex items-center gap-1.5 rounded-full bg-slate-950/70 px-3 py-1 text-xs font-bold text-white backdrop-blur">
+              <span className="text-sm">⏸️</span> Paused for a question
+            </div>
+            {/* Question slides in from the right (bottom on small screens) */}
+            <div className="relative flex h-full w-full animate-slide-in-up flex-col overflow-y-auto bg-white/95 p-4 shadow-2xl backdrop-blur sm:w-[62%] sm:max-w-sm sm:animate-slide-in-right sm:p-5">
+              <div className="my-auto">
+                <QuestionCard
+                  key={active}
+                  q={sorted[active]}
+                  index={active}
+                  total={sorted.length}
+                  compact
+                  onAnswered={() =>
+                    setAnswered((prev) => prev.map((a, i) => (i === active ? true : a)))
+                  }
+                  onContinue={continueWatching}
+                />
+              </div>
             </div>
           </div>
         )}
