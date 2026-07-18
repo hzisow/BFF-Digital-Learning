@@ -86,7 +86,7 @@ interface PathNode {
 
 const PATH_W = 340
 const CENTER_X = PATH_W / 2
-const ROW_H = 150
+const ROW_H = 160
 const X_PATTERN = [0, 62, 88, 62, 0, -62, -88, -62]
 
 function nodeXY(i: number, flip: boolean): { x: number; y: number } {
@@ -372,7 +372,8 @@ export default function LessonsIndex() {
                           🔒
                         </span>
                       )}
-                      <div className="absolute left-1/2 top-[82px] w-36 -translate-x-1/2 text-center">
+                      {/* bg matches the page so the dotted connector never bleeds through the text */}
+                      <div className="absolute left-1/2 top-[82px] w-36 -translate-x-1/2 bg-slate-50 text-center">
                         <p
                           className={`text-xs font-bold leading-tight ${
                             node.state === 'locked' ? 'text-slate-400' : 'text-slate-700'
