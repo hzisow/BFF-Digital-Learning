@@ -227,7 +227,9 @@ export default function BensInsurance() {
     const tallyDelay = results.events.length * EVENT_DELAY + 0.3
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
-        <h1 className="font-display text-2xl font-bold text-slate-900">🛡️ Ben's Insurance Challenge</h1>
+        <h1 className="font-display text-2xl font-bold text-slate-900">
+        <span aria-hidden="true">🛡️</span> Ben's Insurance Challenge
+      </h1>
         <p className="mt-1 text-sm text-slate-500">Coverage locked. Let's see how the month goes…</p>
 
         <div className="mt-4 space-y-3">
@@ -237,7 +239,7 @@ export default function BensInsurance() {
               className="card animate-slide-up flex items-start gap-3 p-4"
               style={{ animationDelay: `${i * EVENT_DELAY}s` }}
             >
-              <span className="text-2xl">{e.emoji}</span>
+              <span className="text-2xl" aria-hidden="true">{e.emoji}</span>
               <div>
                 <p className="text-sm font-semibold text-slate-800">{e.title}</p>
                 <p className={`mt-1 text-sm font-bold ${outcomeClasses(e.tone)}`}>{e.outcome}</p>
@@ -249,8 +251,9 @@ export default function BensInsurance() {
         <div
           className="card animate-slide-up mt-4 space-y-4 text-center"
           style={{ animationDelay: `${tallyDelay}s` }}
+          role="status"
         >
-          <p className="text-5xl">{results.gradeEmoji}</p>
+          <p className="text-5xl" aria-hidden="true">{results.gradeEmoji}</p>
           <h2 className="font-display text-3xl font-bold text-slate-900">{results.grade}</h2>
           <p className="font-display text-lg font-bold text-bff-700">{results.score} / 100</p>
           <div className="mx-auto max-w-sm rounded-xl bg-slate-50 p-4 text-sm text-slate-700">
@@ -275,7 +278,9 @@ export default function BensInsurance() {
           className="card animate-slide-up mt-4 border-amber-200 bg-amber-50 text-sm text-slate-700"
           style={{ animationDelay: `${tallyDelay + EVENT_DELAY}s` }}
         >
-          <p className="font-display font-bold text-slate-900">⚠️ One important note</p>
+          <p className="font-display font-bold text-slate-900">
+            <span aria-hidden="true">⚠️</span> One important note
+          </p>
           <p className="mt-1">
             Don't take these fictional results as advice to skip life or home insurance — in real
             life those are essential, especially for a family like Ben's. This month just happened
@@ -301,7 +306,9 @@ export default function BensInsurance() {
   // ---------- Picker view ----------
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="font-display text-2xl font-bold text-slate-900">🛡️ Ben's Insurance Challenge</h1>
+      <h1 className="font-display text-2xl font-bold text-slate-900">
+        <span aria-hidden="true">🛡️</span> Ben's Insurance Challenge
+      </h1>
       <p className="mt-1 text-sm text-slate-500">Part 2 of Ben's money adventure</p>
 
       <div className="card mt-4 border-bff-200 bg-bff-50 text-sm text-slate-700">
@@ -316,15 +323,22 @@ export default function BensInsurance() {
 
       {/* Running total */}
       <section className="card mt-6 p-4">
-        <div className="flex items-center justify-between text-sm">
+        <div className="flex items-center justify-between text-sm" aria-live="polite">
           <p className="font-display font-bold text-slate-900">
-            {usd(premiums)} <span className="font-normal text-slate-400">of {usd(BUDGET)}</span>
+            {usd(premiums)} <span className="font-normal text-slate-500">of {usd(BUDGET)}</span>
           </p>
           <p className={`font-display font-bold ${overBudget ? 'text-red-600' : 'text-green-600'}`}>
             {overBudget ? `${usd(-remaining)} over budget!` : `${usd(remaining)} left`}
           </p>
         </div>
-        <div className="mt-2 h-3 w-full overflow-hidden rounded-full bg-slate-200">
+        <div
+          className="mt-2 h-3 w-full overflow-hidden rounded-full bg-slate-200"
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={BUDGET}
+          aria-valuenow={Math.min(premiums, BUDGET)}
+          aria-label={`Premiums used: ${usd(premiums)} of ${usd(BUDGET)}`}
+        >
           <div
             className={`h-full rounded-full transition-all duration-300 ${overBudget ? 'bg-red-500' : 'bg-bff-600'}`}
             style={{ width: `${Math.min(100, (premiums / BUDGET) * 100)}%` }}
@@ -334,7 +348,9 @@ export default function BensInsurance() {
 
       {/* Car insurance (radio) */}
       <section className="mt-6">
-        <h2 className="font-display text-lg font-bold text-slate-900">🚗 Car insurance</h2>
+        <h2 className="font-display text-lg font-bold text-slate-900">
+          <span aria-hidden="true">🚗</span> Car insurance
+        </h2>
         <p className="text-xs text-slate-500">The family has two cars — Ben's and his wife's.</p>
         <div className="mt-2 space-y-2" role="radiogroup" aria-label="Car insurance">
           {(
@@ -429,7 +445,7 @@ export default function BensInsurance() {
               >
                 <div>
                   <p className="text-sm font-semibold text-slate-800">
-                    <span className="mr-1">{p.emoji}</span>
+                    <span className="mr-1" aria-hidden="true">{p.emoji}</span>
                     {p.label}
                   </p>
                   <p className="mt-0.5 text-xs text-slate-500">{p.note}</p>
@@ -438,8 +454,14 @@ export default function BensInsurance() {
                   <p className={`font-display text-sm font-bold ${on ? 'text-bff-700' : 'text-slate-500'}`}>
                     {usd(p.cost)}
                   </p>
-                  <p className={`text-xs font-semibold ${on ? 'text-bff-600' : 'text-slate-400'}`}>
-                    {on ? 'Insured ✓' : 'Not covered'}
+                  <p className={`text-xs font-semibold ${on ? 'text-bff-700' : 'text-slate-500'}`}>
+                    {on ? (
+                      <>
+                        Insured <span aria-hidden="true">✓</span>
+                      </>
+                    ) : (
+                      'Not covered'
+                    )}
                   </p>
                 </div>
               </button>
@@ -454,7 +476,7 @@ export default function BensInsurance() {
           Lock in coverage
         </button>
         {overBudget && (
-          <p className="mt-2 text-sm font-semibold text-red-600">
+          <p className="mt-2 text-sm font-semibold text-red-600" role="alert">
             Ben is {usd(-remaining)} over his {usd(BUDGET)} insurance budget — drop something first.
           </p>
         )}

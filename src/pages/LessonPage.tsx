@@ -165,7 +165,7 @@ function SectionView({
             <ul className="mt-5 space-y-3">
               {section.bullets.map((b, i) => (
                 <li key={i} className="flex gap-3 rounded-xl bg-white p-4 shadow-sm">
-                  <span aria-hidden>✅</span>
+                  <span aria-hidden="true">✅</span>
                   <span className="text-sm leading-relaxed text-slate-700">{b}</span>
                 </li>
               ))}

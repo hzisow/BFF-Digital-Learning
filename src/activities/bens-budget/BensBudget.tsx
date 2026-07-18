@@ -313,8 +313,8 @@ export default function BensBudget() {
     const leftover = INCOME - results.spent
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
-        <div className="card animate-pop-in space-y-4 text-center">
-          <p className="text-5xl">{results.gradeEmoji}</p>
+        <div className="card animate-pop-in space-y-4 text-center" role="status">
+          <p className="text-5xl" aria-hidden="true">{results.gradeEmoji}</p>
           <h1 className="font-display text-3xl font-bold text-slate-900">{results.grade}</h1>
           <p className="font-display text-lg font-bold text-bff-700">{results.score} / 100</p>
           <div className="mx-auto flex max-w-md flex-wrap justify-center gap-2 text-sm">
@@ -341,7 +341,9 @@ export default function BensBudget() {
         </div>
 
         <div className="card mt-4 border-bff-200 bg-bff-50">
-          <h2 className="font-display text-lg font-bold text-slate-900">🗣️ Reflection</h2>
+          <h2 className="font-display text-lg font-bold text-slate-900">
+            <span aria-hidden="true">🗣️</span> Reflection
+          </h2>
           <p className="mt-1 text-sm font-semibold text-slate-700">
             Be ready to explain what you kept, what you cut, and why.
           </p>
@@ -369,7 +371,9 @@ export default function BensBudget() {
   // ---------- Builder view ----------
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="font-display text-2xl font-bold text-slate-900">💸 Ben's Budget Challenge</h1>
+      <h1 className="font-display text-2xl font-bold text-slate-900">
+        <span aria-hidden="true">💸</span> Ben's Budget Challenge
+      </h1>
       <p className="mt-1 text-sm text-slate-500">Part 1 of Ben's money adventure</p>
 
       <div className="card mt-4 border-bff-200 bg-bff-50 text-sm text-slate-700">
@@ -380,8 +384,8 @@ export default function BensBudget() {
           <strong>$900 total — $300 this month</strong>. Your job: decide where every dollar goes.
         </p>
         <p className="mt-2 text-xs text-slate-500">
-          ℹ️ Health insurance ($300/month) is already deducted from Ben's paycheck — it's handled
-          and doesn't count against the {usd(INCOME)}.
+          <span aria-hidden="true">ℹ️</span> Health insurance ($300/month) is already deducted from
+          Ben's paycheck — it's handled and doesn't count against the {usd(INCOME)}.
         </p>
       </div>
 
@@ -405,7 +409,7 @@ export default function BensBudget() {
                 </span>
                 <div>
                   <p className="text-sm font-semibold text-slate-600">{n.label}</p>
-                  {n.note && <p className="text-xs text-slate-400">{n.note}</p>}
+                  {n.note && <p className="text-xs text-slate-500">{n.note}</p>}
                 </div>
               </div>
               <p className="font-display text-sm font-bold text-slate-500">{usd(n.cost)}</p>
@@ -419,15 +423,22 @@ export default function BensBudget() {
 
       {/* Running budget bar */}
       <section className="card mt-6 p-4">
-        <div className="flex items-center justify-between text-sm">
+        <div className="flex items-center justify-between text-sm" aria-live="polite">
           <p className="font-display font-bold text-slate-900">
-            {usd(spent)} <span className="font-normal text-slate-400">of {usd(INCOME)}</span>
+            {usd(spent)} <span className="font-normal text-slate-500">of {usd(INCOME)}</span>
           </p>
           <p className={`font-display font-bold ${overBudget ? 'text-red-600' : 'text-green-600'}`}>
             {overBudget ? `${usd(-remaining)} over budget!` : `${usd(remaining)} left`}
           </p>
         </div>
-        <div className="mt-2 h-3 w-full overflow-hidden rounded-full bg-slate-200">
+        <div
+          className="mt-2 h-3 w-full overflow-hidden rounded-full bg-slate-200"
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={INCOME}
+          aria-valuenow={Math.min(spent, INCOME)}
+          aria-label={`Budget used: ${usd(spent)} of ${usd(INCOME)}`}
+        >
           <div
             className={`h-full rounded-full transition-all duration-300 ${overBudget ? 'bg-red-500' : 'bg-bff-600'}`}
             style={{ width: `${Math.min(100, (spent / INCOME) * 100)}%` }}
@@ -457,7 +468,7 @@ export default function BensBudget() {
               >
                 <div>
                   <p className="text-sm font-semibold text-slate-800">
-                    <span className="mr-1">{c.emoji}</span>
+                    <span className="mr-1" aria-hidden="true">{c.emoji}</span>
                     {c.label}
                   </p>
                   <p className="mt-0.5 text-xs text-slate-500">{c.note}</p>
@@ -466,8 +477,14 @@ export default function BensBudget() {
                   <p className={`font-display text-sm font-bold ${on ? 'text-bff-700' : 'text-slate-500'}`}>
                     {usd(c.cost)}
                   </p>
-                  <p className={`text-xs font-semibold ${on ? 'text-bff-600' : 'text-slate-400'}`}>
-                    {on ? 'Buying ✓' : 'Skipped'}
+                  <p className={`text-xs font-semibold ${on ? 'text-bff-700' : 'text-slate-500'}`}>
+                    {on ? (
+                      <>
+                        Buying <span aria-hidden="true">✓</span>
+                      </>
+                    ) : (
+                      'Skipped'
+                    )}
                   </p>
                 </div>
               </button>
@@ -478,7 +495,9 @@ export default function BensBudget() {
 
       {/* Savings */}
       <section className="mt-6">
-        <h2 className="font-display text-lg font-bold text-slate-900">🏖️ The beach fund</h2>
+        <h2 className="font-display text-lg font-bold text-slate-900">
+          <span aria-hidden="true">🏖️</span> The beach fund
+        </h2>
         <div className="mt-2 space-y-2" role="radiogroup" aria-label="Savings choice">
           {SAVINGS_OPTIONS.map((opt) => {
             const on = saved === opt.value
@@ -522,7 +541,7 @@ export default function BensBudget() {
           Lock in Ben's budget
         </button>
         {overBudget && (
-          <p className="mt-2 text-sm font-semibold text-red-600">
+          <p className="mt-2 text-sm font-semibold text-red-600" role="alert">
             Ben is {usd(-remaining)} over budget — cut something before locking in.
           </p>
         )}
