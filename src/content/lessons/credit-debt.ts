@@ -98,6 +98,42 @@ const lesson: Lesson = {
       },
     },
     {
+      type: 'video',
+      heading: 'Watch: What Goes Into Your Credit Score?',
+      body:
+        'You just learned the five factors — now watch Two Cents break down how they play out in real life. The video pauses to check what you caught, so eyes up!',
+      videoId: 'ozbGWLtZdoY',
+      source: 'Two Cents · PBS Digital Studios',
+      questions: [
+        {
+          at: 110,
+          question: 'Which factor counts the MOST in your FICO credit score?',
+          options: [
+            'How many credit cards you own',
+            'Your payment history — paying your bills on time',
+            'Your salary',
+            'How often you check your score',
+          ],
+          answerIndex: 1,
+          explanation:
+            'Payment history is the heavyweight at 35% of your score. One single missed payment can haunt your score for years — which is why autopay is your best friend.',
+        },
+        {
+          at: 240,
+          question: 'Based on the video, what is one of the WORST things you can do to your credit score?',
+          options: [
+            'Keeping an old credit card open',
+            'Using less than 30% of your credit limit',
+            'Missing a payment',
+            'Checking your own credit report',
+          ],
+          answerIndex: 2,
+          explanation:
+            'Missing a payment slams the biggest factor (35%!) and stays on your report for up to seven years. Old accounts and low utilization actually HELP you, and checking your own report never hurts your score.',
+        },
+      ],
+    },
+    {
       type: 'content',
       heading: 'Good Debt vs. Bad Debt',
       body:

@@ -113,6 +113,43 @@ const lesson: Lesson = {
       },
     },
     {
+      type: 'video',
+      heading: 'Watch: Budgeting Basics',
+      body:
+        "Before we talk tracking, watch this quick video from Two Cents. Heads up — it pauses to quiz you along the way, so pay attention! (Fun fact: it starts with George Washington. Yes, really.)",
+      videoId: 'sVKQn2I4HDM',
+      source: 'Two Cents · PBS Digital Studios',
+      questions: [
+        {
+          at: 95,
+          question:
+            'The hosts compare budgeting to George Washington leading the Continental Army. What is the point of the comparison?',
+          options: [
+            'Washington invented the first budget spreadsheet',
+            'Like Washington, you have to make a smart plan with limited resources',
+            'Budgets only matter during wars',
+            'You should spend money as fast as an army spends supplies',
+          ],
+          answerIndex: 1,
+          explanation:
+            "Washington almost never had enough soldiers or supplies — so he had to strategize with what he had. A budget is exactly that: a battle plan for limited money.",
+        },
+        {
+          at: 250,
+          question: 'According to the video, what is the FIRST step of building a budget?',
+          options: [
+            'Open a credit card',
+            'Guess your expenses in your head',
+            'Write it down — on paper, a spreadsheet, or an app',
+            'Wait until you earn more money',
+          ],
+          answerIndex: 2,
+          explanation:
+            'Step one is writing your plan down — pencil and paper, spreadsheet, or app all work. Then you update it every month, because a budget is a living plan, not a one-time wish.',
+        },
+      ],
+    },
+    {
       type: 'content',
       heading: 'Tracking Your Spending',
       body:

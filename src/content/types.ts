@@ -14,12 +14,35 @@ export interface Checkpoint {
   explanation: string
 }
 
+/** A question that pops up mid-video (Edpuzzle-style). */
+export interface VideoQuestion {
+  /** Seconds into the video when playback pauses and the question appears. */
+  at: number
+  question: string
+  options: string[]
+  answerIndex: number
+  explanation: string
+}
+
+export interface VideoSection {
+  type: 'video'
+  heading: string
+  /** Short setup line shown above the player. */
+  body: string
+  /** YouTube video ID (the part after watch?v=). */
+  videoId: string
+  /** Attribution shown under the player, e.g. "Two Cents · PBS Digital Studios". */
+  source: string
+  questions: VideoQuestion[]
+}
+
 export type LessonSection =
   | { type: 'intro'; heading: string; body: string }
   | { type: 'content'; heading: string; body: string; bullets?: string[] }
   | { type: 'terms'; heading: string; terms: KeyTerm[] }
   | { type: 'example'; heading: string; body: string }
   | { type: 'checkpoint'; checkpoint: Checkpoint }
+  | VideoSection
 
 export interface QuizQuestion {
   question: string

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { getLesson } from '../content/lessons'
 import type { Lesson, LessonSection } from '../content/types'
+import VideoCheckpoint from '../components/VideoCheckpoint'
 import { ACTIVITIES } from '../lib/activities'
 import { saveProgress } from '../lib/progress'
 import { useStudent } from '../lib/session'
@@ -100,11 +101,13 @@ function SectionView({
   section,
   answer,
   onSelect,
+  onVideoDone,
 }: {
   lesson: Lesson
   section: LessonSection
   answer: AnswerState
   onSelect: (i: number) => void
+  onVideoDone: () => void
 }) {
   switch (section.type) {
     case 'intro':
@@ -175,6 +178,25 @@ function SectionView({
           onSelect={onSelect}
         />
       )
+    case 'video':
+      return (
+        <div className="animate-slide-up">
+          <p className="chip bg-red-100 text-red-700">🎬 Watch & answer</p>
+          <h2 className="mt-4 font-display text-2xl font-bold text-slate-900">
+            {section.heading}
+          </h2>
+          <p className="mt-3 leading-relaxed text-slate-600">{section.body}</p>
+          <div className="mt-5">
+            <VideoCheckpoint
+              key={section.videoId}
+              videoId={section.videoId}
+              questions={section.questions}
+              onDone={onVideoDone}
+            />
+          </div>
+          <p className="mt-3 text-xs text-slate-400">Video: {section.source}</p>
+        </div>
+      )
   }
 }
 
@@ -189,6 +211,7 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
   const [quizIndex, setQuizIndex] = useState(0)
   const [checkpointAnswers, setCheckpointAnswers] = useState<Record<number, AnswerState>>({})
   const [quizAnswers, setQuizAnswers] = useState<Record<number, AnswerState>>({})
+  const [videoDone, setVideoDone] = useState<Record<number, boolean>>({})
 
   const studentRef = useRef(student)
   studentRef.current = student
@@ -217,7 +240,11 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
 
   const canContinue =
     phase === 'lesson'
-      ? section.type !== 'checkpoint' || checkpointAnswers[sectionIndex]?.revealed === true
+      ? section.type === 'checkpoint'
+        ? checkpointAnswers[sectionIndex]?.revealed === true
+        : section.type === 'video'
+          ? videoDone[sectionIndex] === true
+          : true
       : phase === 'quiz'
         ? quizAnswers[quizIndex]?.revealed === true
         : false
@@ -443,6 +470,7 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
             section={section}
             answer={checkpointAnswers[sectionIndex] ?? EMPTY_ANSWER}
             onSelect={answerCheckpoint}
+            onVideoDone={() => setVideoDone((prev) => ({ ...prev, [sectionIndex]: true }))}
           />
         ) : (
           quizQuestion && (

@@ -5,6 +5,8 @@ BFF Classroom is the digital activity hub for **BFF of America** (Building Finan
 ## What's inside
 
 - **8 BFF Academy lessons** with interactive quizzes: Earning Income, Spending & Budgeting, Saving & Investing, Credit & Debt, Risk Management & Insurance, Financial Decision-Making, Financial Planning, and Consumer Protection.
+- **A Duolingo-style course path**: the Academy page is a winding trail of lesson nodes with week banners, stars for quiz scores, bonus game stops, and a trophy at the end. Finish a lesson to light up the next stop (jumping ahead is allowed — mentors assign out of order all the time).
+- **Edpuzzle-style video checks**: several lessons embed a short video (Two Cents, Khan Academy) that pauses at key moments and quizzes the student before it continues — no skipping ahead. If YouTube is blocked on the school network, the questions appear as regular cards so nobody gets stuck.
 - **3 activities**:
   - **Wolf of Wall Street** — invest $1,000 across 12 companies, react to breaking news, and survive the market (solo or live with a whole class).
   - **Ben's Situation** — help Ben, a middle school teacher with 3 kids, survive the month on a tight budget.

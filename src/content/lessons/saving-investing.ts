@@ -101,6 +101,38 @@ const lesson: Lesson = {
       },
     },
     {
+      type: 'video',
+      heading: 'Watch: Compound Interest in Action',
+      body:
+        'Want to see the math behind the magic? Watch Khan Academy walk through exactly how compounding snowballs. The video will pause and quiz you — no skipping ahead!',
+      videoId: 'Rm6UdfRs3gw',
+      source: 'Khan Academy',
+      questions: [
+        {
+          at: 95,
+          question:
+            'You deposit $100 at 10% interest, compounded yearly. After year 1 you have $110. About how much after year 2?',
+          options: ['$120', '$121', '$130', '$110 — it stays the same'],
+          answerIndex: 1,
+          explanation:
+            "Year 2's 10% applies to the whole $110 — not just your original $100 — so you earn $11 and land on $121. That extra dollar is interest earning interest, and it grows every single year.",
+        },
+        {
+          at: 240,
+          question: 'What makes compound interest different from simple interest?',
+          options: [
+            'Compound interest only works at big banks',
+            'With compounding, you earn interest on your interest — not just on what you deposited',
+            'Simple interest grows faster over time',
+            'There is no difference, just different names',
+          ],
+          answerIndex: 1,
+          explanation:
+            'Simple interest pays on your original deposit only, forever. Compounding pays on your deposit PLUS everything it has already earned — which is why it starts slow and then explodes over the years.',
+        },
+      ],
+    },
+    {
       type: 'content',
       heading: 'Where Should You Put Your Money?',
       body:

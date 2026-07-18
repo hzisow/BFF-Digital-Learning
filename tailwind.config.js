@@ -43,12 +43,17 @@ export default {
           '0%': { backgroundColor: 'rgba(239,68,68,0.35)' },
           '100%': { backgroundColor: 'transparent' },
         },
+        float: {
+          '0%, 100%': { transform: 'translate(-50%, 0)' },
+          '50%': { transform: 'translate(-50%, -7px)' },
+        },
       },
       animation: {
         'pop-in': 'pop-in 0.35s ease-out both',
         'slide-up': 'slide-up 0.4s ease-out both',
         'flash-up': 'ticker-flash-up 1.2s ease-out',
         'flash-down': 'ticker-flash-down 1.2s ease-out',
+        float: 'float 2.2s ease-in-out infinite',
       },
     },
   },

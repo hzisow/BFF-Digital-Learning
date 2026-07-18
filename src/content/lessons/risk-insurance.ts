@@ -136,6 +136,42 @@ const lesson: Lesson = {
       ],
     },
     {
+      type: 'video',
+      heading: "Watch: I'm Young & Healthy — Can I Skip Health Insurance?",
+      body:
+        "Lots of young people figure they don't need health insurance. Two Cents runs the numbers on that gamble. The video pauses to quiz you, so stay sharp!",
+      videoId: 'WTtjmdyTCRM',
+      source: 'Two Cents · PBS Digital Studios',
+      questions: [
+        {
+          at: 100,
+          question: 'Why do even young, healthy people need health insurance?',
+          options: [
+            'It is a fashion statement',
+            'Accidents and sudden illnesses can hit anyone — and the bills can be enormous',
+            'Doctors refuse to see uninsured people',
+            'They do not — young people never get sick',
+          ],
+          answerIndex: 1,
+          explanation:
+            'A single broken leg or emergency surgery can cost tens of thousands of dollars. You cannot schedule your accidents — that is exactly the kind of huge, unpredictable risk insurance exists to cover.',
+        },
+        {
+          at: 240,
+          question: 'At its core, what does insurance protect you from?',
+          options: [
+            'Ever having to pay a premium',
+            'A giant surprise bill wiping out your finances',
+            'Small everyday costs, like snacks',
+            'Paying taxes',
+          ],
+          answerIndex: 1,
+          explanation:
+            "Insurance transfers the BIG risks — the catastrophic, budget-destroying bills — to the insurance company in exchange for a predictable premium. You handle the small stuff; it catches the disasters.",
+        },
+      ],
+    },
+    {
       type: 'content',
       heading: 'Types of Insurance: Home, Renters, and Life',
       body:
