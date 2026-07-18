@@ -28,14 +28,17 @@ function optionClasses(state: AnswerState, answerIndex: number, i: number): stri
   if (state.revealed) {
     if (i === answerIndex) return `${base}border-green-500 bg-green-50 text-green-800`
     if (i === state.chosen) return `${base}border-red-400 bg-red-50 text-red-700`
-    return `${base}border-slate-200 bg-white text-slate-400`
+    return `${base}border-slate-200 bg-white text-slate-500`
   }
   if (state.wrongPicks.includes(i)) return `${base}border-red-400 bg-red-50 text-red-700`
   return `${base}border-slate-200 bg-white text-slate-700 hover:border-bff-400 hover:bg-bff-50`
 }
 
+let mcCounter = 0
+
 function MultipleChoice({
   kicker,
+  kickerEmoji,
   question,
   options,
   answerIndex,
@@ -44,6 +47,7 @@ function MultipleChoice({
   onSelect,
 }: {
   kicker: string
+  kickerEmoji?: string
   question: string
   options: string[]
   answerIndex: number
@@ -52,16 +56,36 @@ function MultipleChoice({
   onSelect: (i: number) => void
 }) {
   const gotIt = state.chosen === answerIndex
+  const questionId = useMemo(() => `mc-question-${(mcCounter += 1)}`, [])
+
+  function optionStateLabel(i: number): string | undefined {
+    if (!state.revealed) return undefined
+    if (i === answerIndex) return `${options[i]}, correct answer`
+    if (i === state.chosen) return `${options[i]}, your answer, incorrect`
+    return undefined
+  }
+
   return (
     <div className="animate-slide-up">
-      <p className="chip bg-bff-100 text-bff-800">{kicker}</p>
-      <h2 className="mt-4 font-display text-2xl font-bold text-slate-900">{question}</h2>
-      <div className="mt-6 space-y-3">
+      <p className="chip bg-bff-100 text-bff-800">
+        {kicker}
+        {kickerEmoji && (
+          <>
+            {' '}
+            <span aria-hidden="true">{kickerEmoji}</span>
+          </>
+        )}
+      </p>
+      <h2 id={questionId} className="mt-4 font-display text-2xl font-bold text-slate-900">
+        {question}
+      </h2>
+      <div role="group" aria-labelledby={questionId} className="mt-6 space-y-3">
         {options.map((opt, i) => (
           <button
             key={i}
             type="button"
             disabled={state.revealed}
+            aria-label={optionStateLabel(i)}
             onClick={() => onSelect(i)}
             className={optionClasses(state, answerIndex, i)}
           >
@@ -70,12 +94,16 @@ function MultipleChoice({
         ))}
       </div>
       {!state.revealed && state.wrongPicks.length === 1 && (
-        <p className="mt-4 rounded-xl bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-700">
-          Not quite — take one more shot! 🎯
+        <p
+          role="status"
+          className="mt-4 rounded-xl bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-700"
+        >
+          Not quite — take one more shot! <span aria-hidden="true">🎯</span>
         </p>
       )}
       {state.revealed && (
         <div
+          role="status"
           className={`mt-5 rounded-2xl border p-5 ${
             gotIt ? 'border-green-200 bg-green-50' : 'border-amber-200 bg-amber-50'
           }`}
@@ -83,7 +111,13 @@ function MultipleChoice({
           <p
             className={`font-display font-bold ${gotIt ? 'text-green-800' : 'text-amber-800'}`}
           >
-            {gotIt ? 'Nailed it! ✅' : `Good try! The answer is “${options[answerIndex]}”`}
+            {gotIt ? (
+              <>
+                Nailed it! <span aria-hidden="true">✅</span>
+              </>
+            ) : (
+              `Good try! The answer is “${options[answerIndex]}”`
+            )}
           </p>
           <p className={`mt-2 text-sm leading-relaxed ${gotIt ? 'text-green-800' : 'text-amber-800'}`}>
             {explanation}
@@ -113,7 +147,7 @@ function SectionView({
     case 'intro':
       return (
         <div className="animate-slide-up text-center">
-          <p className="text-7xl">{lesson.emoji}</p>
+          <p className="text-7xl" aria-hidden="true">{lesson.emoji}</p>
           <h2 className="mt-6 font-display text-3xl font-extrabold text-slate-900">
             {section.heading}
           </h2>
@@ -143,8 +177,8 @@ function SectionView({
       return (
         <div className="animate-slide-up">
           <h2 className="font-display text-2xl font-bold text-slate-900">{section.heading}</h2>
-          <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-bff-600">
-            Key terms 🔑
+          <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-bff-700">
+            Key terms <span aria-hidden="true">🔑</span>
           </p>
           <div className="mt-5 grid gap-4 sm:grid-cols-2">
             {section.terms.map((t) => (
@@ -159,7 +193,7 @@ function SectionView({
     case 'example':
       return (
         <div className="animate-slide-up rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-bff-50 p-6 sm:p-8">
-          <p className="text-3xl">💡</p>
+          <p className="text-3xl" aria-hidden="true">💡</p>
           <h2 className="mt-3 font-display text-2xl font-bold text-slate-900">
             {section.heading}
           </h2>
@@ -169,7 +203,8 @@ function SectionView({
     case 'checkpoint':
       return (
         <MultipleChoice
-          kicker="Checkpoint 🧠"
+          kicker="Checkpoint"
+          kickerEmoji="🧠"
           question={section.checkpoint.question}
           options={section.checkpoint.options}
           answerIndex={section.checkpoint.answerIndex}
@@ -181,7 +216,9 @@ function SectionView({
     case 'video':
       return (
         <div className="animate-slide-up">
-          <p className="chip bg-red-100 text-red-700">🎬 Watch & answer</p>
+          <p className="chip bg-red-100 text-red-700">
+            <span aria-hidden="true">🎬</span> Watch & answer
+          </p>
           <h2 className="mt-4 font-display text-2xl font-bold text-slate-900">
             {section.heading}
           </h2>
@@ -194,7 +231,7 @@ function SectionView({
               onDone={onVideoDone}
             />
           </div>
-          <p className="mt-3 text-xs text-slate-400">Video: {section.source}</p>
+          <p className="mt-3 text-xs text-slate-500">Video: {section.source}</p>
         </div>
       )
   }
@@ -372,14 +409,16 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-12">
         <div className="animate-pop-in rounded-3xl bg-gradient-to-br from-bff-600 to-bff-800 p-8 text-center text-white shadow-lg">
-          <p className="text-5xl">{pct >= 80 ? '🎉' : pct >= 60 ? '👏' : '💪'}</p>
+          <p className="text-5xl" aria-hidden="true">{pct >= 80 ? '🎉' : pct >= 60 ? '👏' : '💪'}</p>
           <h1 className="mt-4 font-display text-3xl font-extrabold">
             {lesson.title}: {pct}%
           </h1>
-          <p className="mt-2 text-bff-100">
-            You got {correct} of {total} questions right on the first try.
-          </p>
-          <p className="mt-4 font-display text-lg font-semibold">{tier}</p>
+          <div role="status">
+            <p className="mt-2 text-bff-100">
+              You got {correct} of {total} questions right on the first try.
+            </p>
+            <p className="mt-4 font-display text-lg font-semibold">{tier}</p>
+          </div>
         </div>
 
         <h2 className="mt-10 font-display text-xl font-bold text-slate-900">Review your answers</h2>
@@ -401,7 +440,8 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
                       right ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
                     }`}
                   >
-                    {right ? '✓ Correct' : '✗ Missed'}
+                    <span aria-hidden="true">{right ? '✓' : '✗'}</span>{' '}
+                    {right ? 'Correct' : 'Missed'}
                   </span>
                 </div>
                 <p className="mt-3 text-sm text-slate-600">
@@ -424,14 +464,15 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
 
         <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:justify-center">
           <button type="button" onClick={retakeQuiz} className="btn-secondary">
-            Retake quiz 🔄
+            Retake quiz <span aria-hidden="true">🔄</span>
           </button>
           <Link to="/lessons" className="btn-ghost">
             Back to lessons
           </Link>
           {nextLesson && (
             <Link to={nextLesson.path} className="btn-primary">
-              Next lesson: {nextLesson.emoji} {nextLesson.title} →
+              Next lesson: <span aria-hidden="true">{nextLesson.emoji}</span> {nextLesson.title}{' '}
+              <span aria-hidden="true">→</span>
             </Link>
           )}
         </div>
@@ -448,13 +489,20 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
         <div className="mx-auto max-w-2xl px-4 py-3">
           <div className="flex items-center justify-between gap-3 text-xs font-semibold text-slate-500">
             <span className="truncate">
-              {lesson.emoji} {lesson.title}
+              <span aria-hidden="true">{lesson.emoji}</span> {lesson.title}
             </span>
             <span className="shrink-0">
               {stepLabel} · {percent}%
             </span>
           </div>
-          <div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-200">
+          <div
+            role="progressbar"
+            aria-label={`Lesson progress: ${stepLabel}`}
+            aria-valuenow={percent}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            className="mt-2 h-2 overflow-hidden rounded-full bg-slate-200"
+          >
             <div
               className="h-full rounded-full bg-bff-600 transition-all duration-300"
               style={{ width: `${percent}%` }}
@@ -475,7 +523,8 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
         ) : (
           quizQuestion && (
             <MultipleChoice
-              kicker={`Quiz · Question ${quizIndex + 1} of ${lesson.quiz.length} 📝`}
+              kicker={`Quiz · Question ${quizIndex + 1} of ${lesson.quiz.length}`}
+              kickerEmoji="📝"
               question={quizQuestion.question}
               options={quizQuestion.options}
               answerIndex={quizQuestion.answerIndex}
@@ -490,17 +539,17 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
         <div className="mt-10 flex items-center justify-between gap-3">
           {phase === 'lesson' && sectionIndex > 0 ? (
             <button type="button" onClick={goBack} className="btn-ghost">
-              ← Back
+              <span aria-hidden="true">←</span> Back
             </button>
           ) : (
             <span />
           )}
           <button type="button" onClick={goNext} disabled={!canContinue} className="btn-primary">
-            {continueLabel} →
+            {continueLabel} <span aria-hidden="true">→</span>
           </button>
         </div>
         {canContinue && (
-          <p className="mt-4 text-center text-xs text-slate-400">
+          <p className="mt-4 text-center text-xs text-slate-500">
             Tip: press <kbd className="rounded border border-slate-300 bg-slate-100 px-1">Enter ↵</kbd>{' '}
             to continue
           </p>
@@ -519,7 +568,7 @@ export default function LessonPage() {
   if (!lesson) {
     return (
       <div className="mx-auto max-w-xl px-4 py-24 text-center">
-        <p className="text-6xl">🔎</p>
+        <p className="text-6xl" aria-hidden="true">🔎</p>
         <h1 className="mt-6 font-display text-3xl font-bold text-slate-900">
           Lesson not found
         </h1>

@@ -3,7 +3,7 @@
 // on the Activities page. Progress comes from local storage (and the
 // classroom DB when connected).
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ACTIVITIES } from '../lib/activities'
 import type { ActivityMeta } from '../lib/activities'
@@ -106,9 +106,13 @@ function Stars({ score }: { score: number | null }) {
   if (score == null) return null
   const n = score >= 90 ? 3 : score >= 70 ? 2 : 1
   return (
-    <span className="mt-0.5 flex justify-center gap-0.5 text-sm leading-none" title={`${Math.round(score)}%`}>
+    <span
+      role="img"
+      aria-label={`Score ${Math.round(score)}% — ${n} of 3 stars`}
+      className="mt-0.5 flex justify-center gap-0.5 text-sm leading-none"
+    >
       {[0, 1, 2].map((i) => (
-        <span key={i} className={i < n ? 'text-yellow-400' : 'text-slate-300'}>
+        <span key={i} aria-hidden="true" className={i < n ? 'text-yellow-400' : 'text-slate-300'}>
           ★
         </span>
       ))}
@@ -121,9 +125,14 @@ function NodeCircle({ node, theme }: { node: PathNode; theme: WeekTheme }) {
     'flex h-[76px] w-[76px] items-center justify-center rounded-full border-b-0 text-4xl transition active:translate-y-1 active:shadow-none'
   if (node.kind === 'trophy') {
     return node.state === 'done' ? (
-      <div className={`${base} bg-yellow-400 shadow-[0_5px_0_#b45309]`}>🏆</div>
+      <div className={`${base} bg-yellow-400 shadow-[0_5px_0_#b45309]`} aria-hidden="true">🏆</div>
     ) : (
-      <div className={`${base} bg-slate-200 opacity-80 shadow-[0_5px_0_#cbd5e1] grayscale`}>🏆</div>
+      <div
+        className={`${base} bg-slate-200 opacity-80 shadow-[0_5px_0_#cbd5e1] grayscale`}
+        aria-hidden="true"
+      >
+        🏆
+      </div>
     )
   }
   switch (node.state) {
@@ -159,6 +168,28 @@ function NodeCircle({ node, theme }: { node: PathNode; theme: WeekTheme }) {
 export default function LessonsIndex() {
   const progress = useMemo(() => loadLocalProgress(), [])
   const [jumpTarget, setJumpTarget] = useState<ActivityMeta | null>(null)
+  const jumpDialogRef = useRef<HTMLDivElement>(null)
+  const jumpTriggerRef = useRef<HTMLElement | null>(null)
+
+  // Modal focus management: move focus into the dialog on open, close on Escape,
+  // and restore focus to the node that opened it.
+  useEffect(() => {
+    if (!jumpTarget) return
+    const previouslyFocused = jumpTriggerRef.current
+    jumpDialogRef.current?.focus()
+
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        setJumpTarget(null)
+      }
+    }
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      previouslyFocused?.focus()
+    }
+  }, [jumpTarget])
 
   const lessons = useMemo(
     () =>
@@ -212,14 +243,23 @@ export default function LessonsIndex() {
     <div className="mx-auto max-w-3xl px-4 py-10">
       {/* Header */}
       <div className="text-center">
-        <p className="chip mx-auto bg-bff-50 text-bff-700">📚 The curriculum</p>
+        <p className="chip mx-auto bg-bff-50 text-bff-700">
+          <span aria-hidden="true">📚</span> The curriculum
+        </p>
         <h1 className="mt-3 font-display text-4xl font-extrabold text-slate-900">BFF Academy</h1>
         <p className="mx-auto mt-3 max-w-xl leading-relaxed text-slate-600">
           4 weeks, 8 lessons, ~20 minutes each. Follow the path — finish a lesson to unlock
           the next stop and claim the trophy at the end.
         </p>
         <div className="mx-auto mt-5 flex max-w-md items-center gap-3">
-          <div className="h-3 flex-1 overflow-hidden rounded-full bg-slate-200">
+          <div
+            role="progressbar"
+            aria-label="Course progress"
+            aria-valuenow={Math.round((doneCount / lessons.length) * 100)}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            className="h-3 flex-1 overflow-hidden rounded-full bg-slate-200"
+          >
             <div
               className="h-full rounded-full bg-gradient-to-r from-bff-400 to-bff-600 transition-all"
               style={{ width: `${(doneCount / lessons.length) * 100}%` }}
@@ -231,12 +271,14 @@ export default function LessonsIndex() {
         </div>
         {allDone ? (
           <p className="mt-4 font-display text-lg font-bold text-bff-700">
-            Course complete — you legend! 🏆
+            Course complete — you legend! <span aria-hidden="true">🏆</span>
           </p>
         ) : (
           current && (
             <Link to={current.path} className="btn-primary mt-5 inline-flex">
-              {doneCount === 0 ? 'Start Day 1' : 'Continue'}: {current.emoji} {current.title} →
+              {doneCount === 0 ? 'Start Day 1' : 'Continue'}:{' '}
+              <span aria-hidden="true">{current.emoji}</span> {current.title}{' '}
+              <span aria-hidden="true">→</span>
             </Link>
           )
         )}
@@ -259,11 +301,11 @@ export default function LessonsIndex() {
               >
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-widest text-white/80">
+                    <p className="text-xs font-bold uppercase tracking-widest text-white/90">
                       Week {week}
                     </p>
                     <h2 className="font-display text-xl font-extrabold">{theme.name}</h2>
-                    <p className="mt-1 text-sm text-white/85">{theme.blurb}</p>
+                    <p className="mt-1 text-sm text-white/90">{theme.blurb}</p>
                   </div>
                   <span className="shrink-0 rounded-full bg-white/20 px-3 py-1 text-sm font-bold">
                     {weekDone}/{weekLessons.length}
@@ -321,7 +363,14 @@ export default function LessonsIndex() {
                         </span>
                       )}
                       {clickable ? (
-                        <Link to={node.meta!.path} aria-label={label}>
+                        <Link
+                          to={node.meta!.path}
+                          aria-label={
+                            node.state === 'done'
+                              ? `${label}, completed`
+                              : `${label}, current lesson`
+                          }
+                        >
                           {circle}
                         </Link>
                       ) : node.kind === 'trophy' ? (
@@ -329,19 +378,28 @@ export default function LessonsIndex() {
                       ) : (
                         <button
                           type="button"
-                          aria-label={`${label} (locked)`}
-                          onClick={() => setJumpTarget(node.meta!)}
+                          aria-label={`${label}, locked — opens a confirmation`}
+                          onClick={(e) => {
+                            jumpTriggerRef.current = e.currentTarget
+                            setJumpTarget(node.meta!)
+                          }}
                         >
                           {circle}
                         </button>
                       )}
                       {node.state === 'done' && node.kind !== 'trophy' && (
-                        <span className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full bg-green-500 text-xs font-bold text-white shadow">
+                        <span
+                          aria-hidden="true"
+                          className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full bg-green-500 text-xs font-bold text-white shadow"
+                        >
                           ✓
                         </span>
                       )}
                       {node.state === 'locked' && node.kind === 'lesson' && (
-                        <span className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full bg-slate-400 text-xs text-white shadow">
+                        <span
+                          aria-hidden="true"
+                          className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full bg-slate-400 text-xs text-white shadow"
+                        >
                           🔒
                         </span>
                       )}
@@ -349,12 +407,12 @@ export default function LessonsIndex() {
                       <div className="absolute left-1/2 top-[82px] w-36 -translate-x-1/2 bg-slate-50 text-center">
                         <p
                           className={`text-xs font-bold leading-tight ${
-                            node.state === 'locked' ? 'text-slate-400' : 'text-slate-700'
+                            node.state === 'locked' ? 'text-slate-500' : 'text-slate-700'
                           }`}
                         >
                           {label}
                         </p>
-                        {sub && <p className="mt-0.5 text-[10px] font-semibold text-slate-400">{sub}</p>}
+                        {sub && <p className="mt-0.5 text-[10px] font-semibold text-slate-500">{sub}</p>}
                         {node.kind === 'lesson' && node.state === 'done' && (
                           <Stars score={node.score} />
                         )}
@@ -372,7 +430,7 @@ export default function LessonsIndex() {
       <div className="card mt-14 flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-between sm:text-left">
         <div>
           <p className="font-display font-bold text-slate-900">
-            🐺🏠☂️ Looking for the games?
+            <span aria-hidden="true">🐺🏠☂️</span> Looking for the games?
           </p>
           <p className="mt-1 text-sm text-slate-600">
             Wolf of Wall Street and Ben's challenges are their own thing — play them anytime,
@@ -391,11 +449,16 @@ export default function LessonsIndex() {
           onClick={() => setJumpTarget(null)}
         >
           <div
+            ref={jumpDialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="jump-dialog-title"
+            tabIndex={-1}
             className="w-full max-w-sm animate-pop-in rounded-3xl bg-white p-6 text-center shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <p className="text-5xl">{jumpTarget.emoji}</p>
-            <h3 className="mt-3 font-display text-xl font-bold text-slate-900">
+            <p className="text-5xl" aria-hidden="true">{jumpTarget.emoji}</p>
+            <h3 id="jump-dialog-title" className="mt-3 font-display text-xl font-bold text-slate-900">
               Jumping ahead to {jumpTarget.title}?
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-slate-600">
@@ -404,11 +467,12 @@ export default function LessonsIndex() {
             </p>
             <div className="mt-5 flex flex-col gap-2">
               <Link to={jumpTarget.path} className="btn-primary w-full">
-                Start it anyway →
+                Start it anyway <span aria-hidden="true">→</span>
               </Link>
               {current && (
                 <Link to={current.path} className="btn-secondary w-full">
-                  Take me to my next lesson ({current.emoji} {current.title})
+                  Take me to my next lesson (<span aria-hidden="true">{current.emoji}</span>{' '}
+                  {current.title})
                 </Link>
               )}
               <button type="button" className="btn-ghost" onClick={() => setJumpTarget(null)}>

@@ -63,7 +63,7 @@ export default function Landing() {
               to="/join"
               className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-7 py-3 font-display font-bold text-bff-700 shadow-lg transition hover:bg-bff-50 sm:w-auto"
             >
-              Join your class 🚀
+              Join your class <span aria-hidden="true">🚀</span>
             </Link>
             <Link
               to="/lessons"
@@ -103,7 +103,7 @@ export default function Landing() {
               <span className="absolute -top-5 left-6 flex h-10 w-10 items-center justify-center rounded-full bg-bff-600 font-display text-lg font-bold text-white shadow-md">
                 {step.num}
               </span>
-              <div className="text-3xl">{step.emoji}</div>
+              <div className="text-3xl" aria-hidden="true">{step.emoji}</div>
               <h3 className="mt-3 font-display text-lg font-bold text-slate-900">{step.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-slate-600">{step.body}</p>
             </div>
@@ -135,7 +135,7 @@ export default function Landing() {
                 className="card group flex flex-col transition hover:-translate-y-1 hover:border-bff-300 hover:shadow-md"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-4xl">{a.emoji}</span>
+                  <span className="text-4xl" aria-hidden="true">{a.emoji}</span>
                   <span className="chip bg-bff-50 text-bff-700">{KIND_LABEL[a.kind]}</span>
                 </div>
                 <h3 className="mt-4 font-display text-lg font-bold text-slate-900 group-hover:text-bff-700">
@@ -144,8 +144,8 @@ export default function Landing() {
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
                   {a.description}
                 </p>
-                <p className="mt-4 text-xs font-semibold text-slate-400">
-                  ⏱️ ~{a.durationMin} min
+                <p className="mt-4 text-xs font-semibold text-slate-500">
+                  <span aria-hidden="true">⏱️</span> ~{a.durationMin} min
                 </p>
               </Link>
             ))}
@@ -156,7 +156,7 @@ export default function Landing() {
       {/* Schools & partners */}
       <section className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
         <div className="rounded-3xl bg-gradient-to-br from-bff-50 to-bff-100 px-6 py-12 text-center sm:px-12">
-          <p className="text-3xl">🏫</p>
+          <p className="text-3xl" aria-hidden="true">🏫</p>
           <h2 className="mt-4 font-display text-2xl font-bold text-bff-900 sm:text-3xl">
             Bringing BFF Academy to your school?
           </h2>

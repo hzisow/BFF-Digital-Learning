@@ -18,10 +18,10 @@ import { saveProgress } from '../../lib/progress'
 
 const NICK_KEY = 'bff_wolf_nick'
 
-const STAGE_TITLES: Record<number, string> = {
-  1: '🔔 Opening Bell — pick your stocks',
-  2: '📰 Breaking News — round 1',
-  3: '📰 Breaking News — round 2',
+const STAGE_TITLES: Record<number, { emoji: string; title: string }> = {
+  1: { emoji: '🔔', title: 'Opening Bell — pick your stocks' },
+  2: { emoji: '📰', title: 'Breaking News — round 1' },
+  3: { emoji: '📰', title: 'Breaking News — round 2' },
 }
 
 function errorMessage(err: unknown): string {
@@ -169,7 +169,7 @@ export default function WolfPlayer() {
     return (
       <Shell code={code}>
         <div className="card mx-auto mt-10 max-w-md space-y-3 text-center">
-          <p className="text-4xl">🔌</p>
+          <p className="text-4xl" aria-hidden="true">🔌</p>
           <h1 className="font-display text-xl font-bold text-slate-900">
             Live games are not connected yet
           </h1>
@@ -188,7 +188,7 @@ export default function WolfPlayer() {
     return (
       <Shell code={code}>
         <div className="card mx-auto mt-10 max-w-md space-y-3 text-center">
-          <p className="text-4xl">🤔</p>
+          <p className="text-4xl" aria-hidden="true">🤔</p>
           <h1 className="font-display text-xl font-bold text-slate-900">Hmm, that did not work</h1>
           <p className="text-sm text-slate-600">{loadError}</p>
           <Link to="/wolf" className="btn-primary">
@@ -214,7 +214,7 @@ export default function WolfPlayer() {
       <Shell code={session.code}>
         <div className="card mx-auto mt-10 max-w-md space-y-4">
           <div className="text-center">
-            <p className="text-4xl">🐺</p>
+            <p className="text-4xl" aria-hidden="true">🐺</p>
             <h1 className="mt-2 font-display text-xl font-bold text-slate-900">
               You found the game!
             </h1>
@@ -223,17 +223,22 @@ export default function WolfPlayer() {
             </p>
           </div>
           <form className="space-y-3" onSubmit={handleJoin}>
+            <label htmlFor="wolf-nickname" className="sr-only">
+              Your nickname
+            </label>
             <input
+              id="wolf-nickname"
               className="input text-center font-display text-lg"
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
               placeholder="Your nickname"
               maxLength={24}
               autoFocus
-              aria-label="Nickname"
             />
             {joinError && (
-              <p className="text-center text-sm font-semibold text-red-600">{joinError}</p>
+              <p className="text-center text-sm font-semibold text-red-600" role="alert">
+                {joinError}
+              </p>
             )}
             <button type="submit" className="btn-primary w-full" disabled={joining || !nickname.trim()}>
               {joining ? 'Joining…' : "Let's trade!"}
@@ -254,7 +259,7 @@ export default function WolfPlayer() {
     <Shell code={session.code}>
       {stage === 0 && (
         <div className="card animate-pop-in mt-6 space-y-4 text-center">
-          <p className="text-5xl">🎉</p>
+          <p className="text-5xl" aria-hidden="true">🎉</p>
           <h1 className="font-display text-2xl font-bold text-slate-900">
             You&apos;re in, {player.nickname}!
           </h1>
@@ -282,7 +287,9 @@ export default function WolfPlayer() {
         <div className="space-y-4">
           <div>
             <h1 className="font-display text-xl font-bold text-slate-900">Wolf of Wall Street</h1>
-            <p className="text-sm text-slate-500">{STAGE_TITLES[stage]}</p>
+            <p className="text-sm text-slate-500">
+              <span aria-hidden="true">{STAGE_TITLES[stage].emoji}</span> {STAGE_TITLES[stage].title}
+            </p>
           </div>
           <TradingBoard stage={stage} cash={cash} holdings={holdings} onTrade={trade} />
         </div>
@@ -291,40 +298,48 @@ export default function WolfPlayer() {
       {stage === 4 && (
         <div className="space-y-3">
           <div className="card border-bff-200 bg-bff-50 p-4 text-center text-sm text-slate-700">
-            🔒 The market has closed! Eyes on the big screen as the results are revealed…
+            <span aria-hidden="true">🔒</span> The market has closed! Eyes on the big screen as the
+            results are revealed…
           </div>
-          {COMPANIES.slice(0, session.reveal_index).map((c) => {
-            const change = c.prices[3] - c.prices[0]
-            const shares = holdings[c.ticker] ?? 0
-            return (
-              <div
-                key={c.ticker}
-                className="card animate-pop-in flex items-start justify-between gap-3 p-4"
-              >
-                <div>
-                  <p className="font-display font-bold text-slate-900">
-                    {c.name} <span className="text-xs text-slate-400">{c.ticker}</span>
-                    {shares > 0 && (
-                      <span className="chip ml-2 bg-bff-50 text-bff-700">you own {shares}</span>
-                    )}
-                  </p>
-                  <p className="text-sm text-slate-600">{c.summary}</p>
-                </div>
-                <p
-                  className={`whitespace-nowrap font-display text-lg font-bold ${change >= 0 ? 'text-green-600' : 'text-red-600'}`}
+          <div className="space-y-3" aria-live="polite">
+            {COMPANIES.slice(0, session.reveal_index).map((c) => {
+              const change = c.prices[3] - c.prices[0]
+              const shares = holdings[c.ticker] ?? 0
+              return (
+                <div
+                  key={c.ticker}
+                  className="card animate-pop-in flex items-start justify-between gap-3 p-4"
                 >
-                  ${c.prices[3]}{' '}
-                  <span className="text-sm">({change >= 0 ? '+' : ''}{change})</span>
-                </p>
-              </div>
-            )
-          })}
+                  <div>
+                    <p className="font-display font-bold text-slate-900">
+                      {c.name} <span className="text-xs text-slate-500">{c.ticker}</span>
+                      {shares > 0 && (
+                        <span className="chip ml-2 bg-bff-50 text-bff-700">you own {shares}</span>
+                      )}
+                    </p>
+                    <p className="text-sm text-slate-600">{c.summary}</p>
+                  </div>
+                  <p
+                    className={`whitespace-nowrap font-display text-lg font-bold ${change >= 0 ? 'text-green-600' : 'text-red-600'}`}
+                  >
+                    ${c.prices[3]}{' '}
+                    <span className="text-sm">
+                      <span aria-hidden="true">({change >= 0 ? '+' : ''}{change})</span>
+                      <span className="sr-only">
+                        {change >= 0 ? `up $${change}` : `down $${Math.abs(change)}`} from the open
+                      </span>
+                    </span>
+                  </p>
+                </div>
+              )
+            })}
+          </div>
         </div>
       )}
 
       {stage === 5 && (
-        <div className="card animate-pop-in mt-6 space-y-5 text-center">
-          <p className="text-5xl">{finalValue >= STARTING_CASH ? '🎊' : '📉'}</p>
+        <div className="card animate-pop-in mt-6 space-y-5 text-center" role="status">
+          <p className="text-5xl" aria-hidden="true">{finalValue >= STARTING_CASH ? '🎊' : '📉'}</p>
           <div>
             <h1 className="font-display text-2xl font-bold text-slate-900">
               Final portfolio: {money(finalValue)}
@@ -339,7 +354,7 @@ export default function WolfPlayer() {
           </div>
           {myRank > 0 && (
             <p className="font-display text-lg font-bold text-bff-700">
-              🎉 You finished #{myRank} of {standings.length} traders
+              <span aria-hidden="true">🎉</span> You finished #{myRank} of {standings.length} traders
             </p>
           )}
           {standings.length > 0 && (
@@ -358,7 +373,11 @@ export default function WolfPlayer() {
                     }`}
                   >
                     <span>
-                      {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`} {p.nickname}
+                      <span aria-hidden="true">
+                        {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`}
+                      </span>
+                      <span className="sr-only">{`${i + 1}${['st', 'nd', 'rd'][i] ?? 'th'} place, `}</span>{' '}
+                      {p.nickname}
                     </span>
                     <span className="font-display font-bold">{money(p.value)}</span>
                   </li>

@@ -26,21 +26,25 @@ import {
 function ProgressChip({ row }: { row: ProgressRow | undefined }) {
   if (!row) {
     return (
-      <span className="chip bg-slate-100 text-slate-400" title="Not started">
-        —
+      <span className="chip bg-slate-100 text-slate-500">
+        <span aria-hidden="true">—</span>
+        <span className="sr-only">Not started</span>
       </span>
     )
   }
   if (row.status === 'completed') {
     return (
-      <span className="chip bg-green-100 text-green-700" title="Completed">
-        ✓{row.score != null ? ` ${row.score}` : ''}
+      <span className="chip bg-green-100 text-green-700">
+        <span aria-hidden="true">✓{row.score != null ? ` ${row.score}` : ''}</span>
+        <span className="sr-only">
+          Completed{row.score != null ? `, score ${row.score}` : ''}
+        </span>
       </span>
     )
   }
   return (
-    <span className="chip bg-amber-100 text-amber-700" title="Started">
-      ● started
+    <span className="chip bg-amber-100 text-amber-700">
+      <span aria-hidden="true">●</span> started
     </span>
   )
 }
@@ -100,7 +104,11 @@ export default function ClassroomDetail() {
 
   if (!BACKEND_ENABLED) return <BackendOffCard />
   if (!adminReady) {
-    return <div className="px-4 py-16 text-center text-slate-500">Loading…</div>
+    return (
+      <div role="status" className="px-4 py-16 text-center text-slate-500">
+        Loading…
+      </div>
+    )
   }
   if (!adminUser) return <Navigate to="/team" replace />
 
@@ -128,14 +136,19 @@ export default function ClassroomDetail() {
 
   if (loading && !classroom) {
     return (
-      <div className="px-4 py-16 text-center text-slate-500">Loading class…</div>
+      <div role="status" className="px-4 py-16 text-center text-slate-500">
+        Loading class…
+      </div>
     )
   }
 
   if (!classroom) {
     return (
       <div className="mx-auto max-w-lg px-4 py-16">
-        <p className="rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+        <p
+          role="alert"
+          className="rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
+        >
           Could not load this class{error ? `: ${error}` : '.'}
         </p>
         <div className="mt-4 flex gap-3">
@@ -258,8 +271,8 @@ export default function ClassroomDetail() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
       {/* ---------- Header ---------- */}
-      <Link to="/admin" className="text-sm font-semibold text-bff-600 hover:text-bff-700">
-        ← All classrooms
+      <Link to="/admin" className="text-sm font-semibold text-bff-700 hover:text-bff-800">
+        <span aria-hidden="true">←</span> All classrooms
       </Link>
       <div className="mt-3 flex flex-wrap items-start justify-between gap-4">
         <div>
@@ -281,10 +294,17 @@ export default function ClassroomDetail() {
               type="button"
               className="btn-ghost text-sm"
               onClick={() => copy(classroom.code)}
-              title="Copy class code"
+              aria-label={
+                copied
+                  ? `Class code ${classroom.code} copied`
+                  : `Copy class code ${classroom.code}`
+              }
             >
-              {copied ? '✓ Copied' : 'Copy'}
+              <span aria-hidden="true">{copied ? '✓ Copied' : 'Copy'}</span>
             </button>
+            <span role="status" className="sr-only">
+              {copied ? `Class code ${classroom.code} copied` : ''}
+            </span>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -294,7 +314,7 @@ export default function ClassroomDetail() {
             onClick={() => void load()}
             disabled={loading}
           >
-            ↻ {loading ? 'Refreshing…' : 'Refresh'}
+            <span aria-hidden="true">↻</span> {loading ? 'Refreshing…' : 'Refresh'}
           </button>
           <button
             type="button"
@@ -308,7 +328,10 @@ export default function ClassroomDetail() {
       </div>
 
       {error && (
-        <p className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+        <p
+          role="alert"
+          className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
+        >
           {error}
         </p>
       )}
@@ -340,18 +363,18 @@ export default function ClassroomDetail() {
                       </p>
                       {a.note && <p className="text-sm text-slate-600">{a.note}</p>}
                       {a.due_at && (
-                        <p className="mt-0.5 text-xs font-semibold text-bff-600">
+                        <p className="mt-0.5 text-xs font-semibold text-bff-700">
                           Due {formatDate(a.due_at)}
                         </p>
                       )}
                     </div>
                     <button
                       type="button"
-                      className="btn-ghost px-2 py-1 text-sm text-slate-400 hover:text-red-600"
+                      className="btn-ghost px-2 py-1 text-sm text-slate-500 hover:text-red-600"
                       onClick={() => void handleUnassign(a)}
-                      title="Remove assignment"
+                      aria-label={`Remove assignment ${meta?.title ?? a.activity_slug}`}
                     >
-                      ✕
+                      <span aria-hidden="true">✕</span>
                     </button>
                   </li>
                 )
@@ -373,16 +396,19 @@ export default function ClassroomDetail() {
               </p>
             ) : (
               <>
-                <select
-                  className="input"
-                  value={slug}
-                  onChange={(e) => setSlug(e.target.value)}
-                  required
-                  aria-label="Activity"
-                >
-                  <option value="" disabled>
-                    Choose an activity…
-                  </option>
+                <label className="block">
+                  <span className="mb-1 block text-sm font-semibold text-slate-700">
+                    Activity<span className="text-red-500"> *</span>
+                  </span>
+                  <select
+                    className="input"
+                    value={slug}
+                    onChange={(e) => setSlug(e.target.value)}
+                    required
+                  >
+                    <option value="" disabled>
+                      Choose an activity…
+                    </option>
                   {unassignedLessons.length > 0 && (
                     <optgroup label="Lessons">
                       {unassignedLessons.map((a) => (
@@ -401,17 +427,24 @@ export default function ClassroomDetail() {
                       ))}
                     </optgroup>
                   )}
-                </select>
-                <input
-                  className="input"
-                  type="text"
-                  value={note}
-                  onChange={(e) => setNote(e.target.value)}
-                  placeholder="Note for students (optional)"
-                />
+                  </select>
+                </label>
                 <label className="block">
                   <span className="mb-1 block text-sm font-semibold text-slate-700">
-                    Due date <span className="font-normal text-slate-400">(optional)</span>
+                    Note for students{' '}
+                    <span className="font-normal text-slate-500">(optional)</span>
+                  </span>
+                  <input
+                    className="input"
+                    type="text"
+                    value={note}
+                    onChange={(e) => setNote(e.target.value)}
+                    placeholder="e.g. Finish before Friday's class"
+                  />
+                </label>
+                <label className="block">
+                  <span className="mb-1 block text-sm font-semibold text-slate-700">
+                    Due date <span className="font-normal text-slate-500">(optional)</span>
                   </span>
                   <input
                     className="input"
@@ -421,7 +454,10 @@ export default function ClassroomDetail() {
                   />
                 </label>
                 {assignError && (
-                  <p className="rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+                  <p
+                    role="alert"
+                    className="rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
+                  >
                     {assignError}
                   </p>
                 )}
@@ -457,7 +493,10 @@ export default function ClassroomDetail() {
               </div>
             </div>
             {hostError && (
-              <p className="mt-3 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+              <p
+                role="alert"
+                className="mt-3 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
+              >
                 {hostError}
               </p>
             )}
@@ -500,17 +539,25 @@ export default function ClassroomDetail() {
           <>
             <div className="card mt-4 overflow-x-auto p-0">
               <table className="w-full min-w-max text-left text-sm">
+                <caption className="sr-only">
+                  Students in {classroom.name} and their progress on each assigned
+                  activity
+                </caption>
                 <thead>
                   <tr className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
-                    <th className="px-4 py-3 font-semibold">Student</th>
-                    <th className="px-4 py-3 font-semibold">Joined</th>
+                    <th scope="col" className="px-4 py-3 font-semibold">
+                      Student
+                    </th>
+                    <th scope="col" className="px-4 py-3 font-semibold">
+                      Joined
+                    </th>
                     {assignments.map((a) => {
                       const meta = getActivity(a.activity_slug)
                       return (
                         <th
                           key={a.id}
+                          scope="col"
                           className="whitespace-nowrap px-4 py-3 font-semibold"
-                          title={meta?.title ?? a.activity_slug}
                         >
                           <span aria-hidden>{meta?.emoji ?? '📄'}</span>{' '}
                           {meta?.title ?? a.activity_slug}
@@ -524,9 +571,12 @@ export default function ClassroomDetail() {
                     const byActivity = progressByStudent.get(s.id)
                     return (
                       <tr key={s.id} className="border-b border-slate-100 last:border-0">
-                        <td className="whitespace-nowrap px-4 py-3 font-semibold text-slate-800">
+                        <th
+                          scope="row"
+                          className="whitespace-nowrap px-4 py-3 text-left font-semibold text-slate-800"
+                        >
                           {s.nickname}
-                        </td>
+                        </th>
                         <td className="whitespace-nowrap px-4 py-3 text-slate-500">
                           {formatDate(s.created_at)}
                         </td>

@@ -8,7 +8,8 @@ function ProgressChip({ progress }: { progress: ActivityProgress | undefined }) 
   if (progress?.status === 'completed') {
     return (
       <span className="chip bg-green-100 text-green-700">
-        ✓ Completed{progress.score != null ? ` · ${Math.round(progress.score)}%` : ''}
+        <span aria-hidden="true">✓</span> Completed
+        {progress.score != null ? ` · ${Math.round(progress.score)}%` : ''}
       </span>
     )
   }
@@ -28,7 +29,9 @@ export default function ActivitiesIndex() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="max-w-2xl">
-        <p className="chip bg-bff-50 text-bff-700">🎮 Learning, but fun</p>
+        <p className="chip bg-bff-50 text-bff-700">
+          <span aria-hidden="true">🎮</span> Learning, but fun
+        </p>
         <h1 className="mt-4 font-display text-4xl font-extrabold text-slate-900">
           Games & Challenges
         </h1>
@@ -50,7 +53,7 @@ export default function ActivitiesIndex() {
               className="card group flex flex-col transition hover:-translate-y-1 hover:border-bff-300 hover:shadow-md"
             >
               <div className="flex items-start justify-between gap-3">
-                <span className="text-4xl">{a.emoji}</span>
+                <span className="text-4xl" aria-hidden="true">{a.emoji}</span>
                 <span className="chip bg-bff-50 text-bff-700">{KIND_LABEL[a.kind]}</span>
               </div>
               <h2 className="mt-4 font-display text-lg font-bold text-slate-900 group-hover:text-bff-700">
@@ -60,8 +63,8 @@ export default function ActivitiesIndex() {
                 {a.description}
               </p>
               <div className="mt-4 flex items-center justify-between gap-2">
-                <span className="text-xs font-semibold text-slate-400">
-                  ⏱️ ~{a.durationMin} min
+                <span className="text-xs font-semibold text-slate-500">
+                  <span aria-hidden="true">⏱️</span> ~{a.durationMin} min
                 </span>
                 <ProgressChip progress={p} />
               </div>

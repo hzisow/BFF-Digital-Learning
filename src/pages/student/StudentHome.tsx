@@ -16,7 +16,8 @@ function ProgressChip({ progress }: { progress: ActivityProgress | undefined }) 
   if (progress?.status === 'completed') {
     return (
       <span className="chip bg-green-100 text-green-700">
-        ✓ Completed{progress.score != null ? ` · ${Math.round(progress.score)}%` : ''}
+        <span aria-hidden="true">✓</span> Completed
+        {progress.score != null ? ` · ${Math.round(progress.score)}%` : ''}
       </span>
     )
   }
@@ -96,11 +97,13 @@ export default function StudentHome() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl font-extrabold text-slate-900 sm:text-4xl">
-            Hey {student.nickname}! 👋
+            Hey {student.nickname}! <span aria-hidden="true">👋</span>
           </h1>
           <div className="mt-2 flex flex-wrap items-center gap-2">
-            <span className="chip bg-bff-100 text-bff-800">🏫 {student.classroomName}</span>
-            <span className="chip bg-slate-100 text-slate-500">Code: {student.classCode}</span>
+            <span className="chip bg-bff-100 text-bff-800">
+              <span aria-hidden="true">🏫</span> {student.classroomName}
+            </span>
+            <span className="chip bg-slate-100 text-slate-600">Code: {student.classCode}</span>
           </div>
         </div>
         <button type="button" onClick={handleLeave} className="btn-ghost text-sm">
@@ -121,16 +124,21 @@ export default function StudentHome() {
       <section className="mt-10">
         <h2 className="font-display text-xl font-bold text-slate-900">Your assigned work</h2>
         {loadError && (
-          <p className="mt-3 rounded-xl bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-700">
+          <p
+            role="alert"
+            className="mt-3 rounded-xl bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-700"
+          >
             {loadError}
           </p>
         )}
         {assignments === null ? (
-          <p className="mt-4 text-sm text-slate-500">Loading your assignments…</p>
+          <p role="status" className="mt-4 text-sm text-slate-500">
+            Loading your assignments…
+          </p>
         ) : assignments.length === 0 ? (
           !loadError && (
             <div className="card mt-4 text-center">
-              <p className="text-3xl">🏖️</p>
+              <p className="text-3xl" aria-hidden="true">🏖️</p>
               <p className="mt-2 font-display font-semibold text-slate-700">
                 Nothing assigned yet — explore below!
               </p>
@@ -150,10 +158,10 @@ export default function StudentHome() {
                 <div key={asg.activity_slug} className="card flex flex-col">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3">
-                      <span className="text-3xl">{activity.emoji}</span>
+                      <span className="text-3xl" aria-hidden="true">{activity.emoji}</span>
                       <div>
                         <p className="font-display font-bold text-slate-900">{activity.title}</p>
-                        <p className="text-xs font-semibold text-slate-400">
+                        <p className="text-xs font-semibold text-slate-500">
                           {KIND_LABEL[activity.kind]} · ~{activity.durationMin} min
                         </p>
                       </div>
@@ -162,12 +170,19 @@ export default function StudentHome() {
                   </div>
                   {asg.note && (
                     <p className="mt-3 rounded-xl bg-bff-50 px-4 py-3 text-sm text-bff-900">
-                      💬 <span className="font-semibold">From your mentor:</span> {asg.note}
+                      <span aria-hidden="true">💬</span>{' '}
+                      <span className="font-semibold">From your mentor:</span> {asg.note}
                     </p>
                   )}
                   <div className="mt-4 flex items-center justify-between gap-2">
                     <span className="text-xs font-semibold text-slate-500">
-                      {asg.due_at ? `📅 Due ${formatDue(asg.due_at)}` : 'No due date'}
+                      {asg.due_at ? (
+                        <>
+                          <span aria-hidden="true">📅</span> Due {formatDue(asg.due_at)}
+                        </>
+                      ) : (
+                        'No due date'
+                      )}
                     </span>
                     <Link to={activity.path} className="btn-primary px-4 py-2 text-sm">
                       {p?.status === 'completed'
@@ -175,7 +190,7 @@ export default function StudentHome() {
                         : p?.status === 'started'
                           ? 'Continue'
                           : 'Start'}{' '}
-                      →
+                      <span aria-hidden="true">→</span>
                     </Link>
                   </div>
                 </div>
@@ -201,15 +216,15 @@ export default function StudentHome() {
                 className="card group flex flex-col p-5 transition hover:-translate-y-0.5 hover:border-bff-300 hover:shadow-md"
               >
                 <div className="flex items-start justify-between gap-2">
-                  <span className="text-3xl">{a.emoji}</span>
+                  <span className="text-3xl" aria-hidden="true">{a.emoji}</span>
                   <span className="chip bg-bff-50 text-bff-700">{KIND_LABEL[a.kind]}</span>
                 </div>
                 <p className="mt-3 font-display font-bold text-slate-900 group-hover:text-bff-700">
                   {a.title}
                 </p>
                 <div className="mt-3 flex items-center justify-between gap-2">
-                  <span className="text-xs font-semibold text-slate-400">
-                    ⏱️ ~{a.durationMin} min
+                  <span className="text-xs font-semibold text-slate-500">
+                    <span aria-hidden="true">⏱️</span> ~{a.durationMin} min
                   </span>
                   <ProgressChip progress={p} />
                 </div>

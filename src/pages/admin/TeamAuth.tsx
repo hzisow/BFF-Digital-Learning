@@ -53,7 +53,9 @@ export default function TeamAuth() {
   if (!BACKEND_ENABLED) return <BackendOffCard />
   if (!adminReady) {
     return (
-      <div className="px-4 py-16 text-center text-slate-500">Loading…</div>
+      <div role="status" className="px-4 py-16 text-center text-slate-500">
+        Loading…
+      </div>
     )
   }
   if (adminUser) return <Navigate to="/admin" replace />
@@ -122,11 +124,17 @@ export default function TeamAuth() {
       </div>
 
       <div className="card animate-pop-in">
-        <div className="mb-5 flex gap-1 rounded-xl bg-slate-100 p-1" role="tablist">
+        <div
+          className="mb-5 flex gap-1 rounded-xl bg-slate-100 p-1"
+          role="tablist"
+          aria-label="Sign in or create account"
+        >
           <button
             type="button"
             role="tab"
+            id="tab-signin"
             aria-selected={mode === 'signin'}
+            aria-controls="team-auth-panel"
             className={tabClass(mode === 'signin')}
             onClick={() => switchMode('signin')}
           >
@@ -135,7 +143,9 @@ export default function TeamAuth() {
           <button
             type="button"
             role="tab"
+            id="tab-signup"
             aria-selected={mode === 'signup'}
+            aria-controls="team-auth-panel"
             className={tabClass(mode === 'signup')}
             onClick={() => switchMode('signup')}
           >
@@ -143,7 +153,13 @@ export default function TeamAuth() {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4"
+          id="team-auth-panel"
+          role="tabpanel"
+          aria-labelledby={mode === 'signin' ? 'tab-signin' : 'tab-signup'}
+        >
           {mode === 'signup' && (
             <label className="block">
               <span className="mb-1 block text-sm font-semibold text-slate-700">
@@ -191,17 +207,23 @@ export default function TeamAuth() {
           </label>
 
           {error && (
-            <p className="rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+            <p
+              role="alert"
+              className="rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
+            >
               {error}
             </p>
           )}
           {notice && (
-            <p className="rounded-xl bg-bff-50 px-4 py-3 text-sm font-medium text-bff-800">
+            <p
+              role="status"
+              className="rounded-xl bg-bff-50 px-4 py-3 text-sm font-medium text-bff-800"
+            >
               {notice}
             </p>
           )}
 
-          <button type="submit" className="btn-primary" disabled={busy}>
+          <button type="submit" className="btn-primary" disabled={busy} aria-busy={busy}>
             {busy
               ? 'One sec…'
               : mode === 'signin'
@@ -211,7 +233,7 @@ export default function TeamAuth() {
         </form>
       </div>
 
-      <p className="mt-6 text-center text-xs text-slate-400">
+      <p className="mt-6 text-center text-xs text-slate-500">
         Students never need an account — they join with a class code and a
         nickname. This login is only for the BFF team.
       </p>

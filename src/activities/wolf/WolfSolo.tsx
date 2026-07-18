@@ -5,11 +5,11 @@ import TradingBoard, { money } from './TradingBoard'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
 
-const STAGE_TITLES: Record<number, string> = {
-  1: '🔔 Opening Bell — pick your stocks',
-  2: '📰 Breaking News — round 1',
-  3: '📰 Breaking News — round 2',
-  4: '🔒 Closing Bell — the results are in',
+const STAGE_TITLES: Record<number, { emoji: string; title: string }> = {
+  1: { emoji: '🔔', title: 'Opening Bell — pick your stocks' },
+  2: { emoji: '📰', title: 'Breaking News — round 1' },
+  3: { emoji: '📰', title: 'Breaking News — round 2' },
+  4: { emoji: '🔒', title: 'Closing Bell — the results are in' },
 }
 
 export default function WolfSolo() {
@@ -56,8 +56,13 @@ export default function WolfSolo() {
     <div className="mx-auto max-w-4xl px-4 py-8">
       <div className="mb-6 flex items-center justify-between gap-3">
         <div>
-          <h1 className="font-display text-2xl font-bold text-slate-900">🐺 Wolf of Wall Street</h1>
-          <p className="text-sm text-slate-500">{STAGE_TITLES[Math.min(stage, 4)]}</p>
+          <h1 className="font-display text-2xl font-bold text-slate-900">
+            <span aria-hidden="true">🐺</span> Wolf of Wall Street
+          </h1>
+          <p className="text-sm text-slate-500">
+            <span aria-hidden="true">{STAGE_TITLES[Math.min(stage, 4)].emoji}</span>{' '}
+            {STAGE_TITLES[Math.min(stage, 4)].title}
+          </p>
         </div>
         {stage <= 3 && (
           <button className="btn-primary" onClick={advance}>
@@ -83,27 +88,34 @@ export default function WolfSolo() {
           <p className="text-sm text-slate-600">
             The market has closed. Tap to reveal how each company performed…
           </p>
-          {COMPANIES.slice(0, revealIndex).map((c) => {
-            const change = c.prices[3] - c.prices[0]
-            const shares = holdings[c.ticker] ?? 0
-            return (
-              <div key={c.ticker} className="card animate-pop-in flex items-start justify-between gap-3 p-4">
-                <div>
-                  <p className="font-display font-bold text-slate-900">
-                    {c.name} <span className="text-xs text-slate-400">{c.ticker}</span>
-                    {shares > 0 && (
-                      <span className="chip ml-2 bg-bff-50 text-bff-700">you own {shares}</span>
-                    )}
+          <div className="space-y-3" aria-live="polite">
+            {COMPANIES.slice(0, revealIndex).map((c) => {
+              const change = c.prices[3] - c.prices[0]
+              const shares = holdings[c.ticker] ?? 0
+              return (
+                <div key={c.ticker} className="card animate-pop-in flex items-start justify-between gap-3 p-4">
+                  <div>
+                    <p className="font-display font-bold text-slate-900">
+                      {c.name} <span className="text-xs text-slate-500">{c.ticker}</span>
+                      {shares > 0 && (
+                        <span className="chip ml-2 bg-bff-50 text-bff-700">you own {shares}</span>
+                      )}
+                    </p>
+                    <p className="text-sm text-slate-600">{c.summary}</p>
+                  </div>
+                  <p className={`whitespace-nowrap font-display text-lg font-bold ${change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    ${c.prices[3]}{' '}
+                    <span className="text-sm">
+                      <span aria-hidden="true">({change >= 0 ? '+' : ''}{change})</span>
+                      <span className="sr-only">
+                        {change >= 0 ? `up $${change}` : `down $${Math.abs(change)}`} from the open
+                      </span>
+                    </span>
                   </p>
-                  <p className="text-sm text-slate-600">{c.summary}</p>
                 </div>
-                <p className={`whitespace-nowrap font-display text-lg font-bold ${change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                  ${c.prices[3]}{' '}
-                  <span className="text-sm">({change >= 0 ? '+' : ''}{change})</span>
-                </p>
-              </div>
-            )
-          })}
+              )
+            })}
+          </div>
           <button className="btn-primary w-full" onClick={revealNext}>
             {revealIndex < COMPANIES.length - 1
               ? `Reveal ${COMPANIES[revealIndex].name} →`
@@ -115,8 +127,8 @@ export default function WolfSolo() {
       )}
 
       {stage === 5 && (
-        <div className="card animate-pop-in space-y-4 text-center">
-          <p className="text-5xl">{finalValue >= STARTING_CASH ? '🎉' : '📉'}</p>
+        <div className="card animate-pop-in space-y-4 text-center" role="status">
+          <p className="text-5xl" aria-hidden="true">{finalValue >= STARTING_CASH ? '🎉' : '📉'}</p>
           <h2 className="font-display text-2xl font-bold text-slate-900">
             Final portfolio: {money(finalValue)}
           </h2>

@@ -4,7 +4,7 @@
 // YouTube can't load (school filters, offline), the questions render as plain
 // cards so the lesson is never blocked.
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import type { VideoQuestion } from '../content/types'
 
 // ---------- Minimal YouTube IFrame API typings ----------
@@ -91,6 +91,7 @@ function QuestionCard({
   const [chosen, setChosen] = useState<number | null>(null)
   const revealed = chosen != null
   const gotIt = chosen === q.answerIndex
+  const questionId = useId()
 
   function pick(i: number) {
     if (revealed) return
@@ -98,13 +99,22 @@ function QuestionCard({
     onAnswered()
   }
 
+  function optionStateLabel(i: number): string | undefined {
+    if (!revealed) return undefined
+    if (i === q.answerIndex) return `${q.options[i]}, correct answer`
+    if (i === chosen) return `${q.options[i]}, your answer, incorrect`
+    return undefined
+  }
+
   return (
     <div className={`w-full ${compact ? '' : 'card'} text-left`}>
-      <p className="text-xs font-bold uppercase tracking-wide text-bff-600">
-        ⏸️ Video check · {index + 1} of {total}
+      <p className="text-xs font-bold uppercase tracking-wide text-bff-700">
+        <span aria-hidden="true">⏸️</span> Video check · {index + 1} of {total}
       </p>
-      <p className="mt-2 font-display font-bold leading-snug text-slate-900">{q.question}</p>
-      <div className="mt-3 space-y-2">
+      <p id={questionId} className="mt-2 font-display font-bold leading-snug text-slate-900">
+        {q.question}
+      </p>
+      <div role="group" aria-labelledby={questionId} className="mt-3 space-y-2">
         {q.options.map((opt, i) => {
           let cls = 'border-slate-200 bg-white text-slate-700 hover:border-bff-400 hover:bg-bff-50'
           if (revealed) {
@@ -113,13 +123,14 @@ function QuestionCard({
                 ? 'border-green-500 bg-green-50 text-green-800'
                 : i === chosen
                   ? 'border-red-400 bg-red-50 text-red-700'
-                  : 'border-slate-200 bg-white text-slate-400'
+                  : 'border-slate-200 bg-white text-slate-500'
           }
           return (
             <button
               key={i}
               type="button"
               disabled={revealed}
+              aria-label={optionStateLabel(i)}
               onClick={() => pick(i)}
               className={`w-full rounded-xl border-2 px-3 py-2 text-left text-sm font-medium transition disabled:cursor-default ${cls}`}
             >
@@ -130,19 +141,28 @@ function QuestionCard({
       </div>
       {revealed && (
         <div
+          role="status"
           className={`mt-3 rounded-xl border p-3 text-sm leading-relaxed ${
             gotIt
               ? 'border-green-200 bg-green-50 text-green-800'
               : 'border-amber-200 bg-amber-50 text-amber-800'
           }`}
         >
-          <span className="font-bold">{gotIt ? 'Nailed it! ✅ ' : 'Good try! '}</span>
+          <span className="font-bold">
+            {gotIt ? (
+              <>
+                Nailed it! <span aria-hidden="true">✅</span>{' '}
+              </>
+            ) : (
+              'Good try! '
+            )}
+          </span>
           {q.explanation}
         </div>
       )}
       {revealed && (
         <button type="button" onClick={onContinue} className="btn-primary mt-4 w-full">
-          {index + 1 < total ? 'Keep watching ▶' : 'Continue ▶'}
+          {index + 1 < total ? 'Keep watching' : 'Continue'} <span aria-hidden="true">▶</span>
         </button>
       )}
     </div>
@@ -170,7 +190,7 @@ function FallbackQuestions({
   return (
     <div className="space-y-4">
       <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
-        <p className="font-bold">📺 Video not loading?</p>
+        <p className="font-bold"><span aria-hidden="true">📺</span> Video not loading?</p>
         <p className="mt-1">
           Some school networks block YouTube. You can{' '}
           <a
@@ -185,8 +205,11 @@ function FallbackQuestions({
         </p>
       </div>
       {done ? (
-        <p className="rounded-2xl bg-green-50 p-4 text-center text-sm font-bold text-green-700">
-          All video checks done — keep going! 🎉
+        <p
+          role="status"
+          className="rounded-2xl bg-green-50 p-4 text-center text-sm font-bold text-green-700"
+        >
+          All video checks done — keep going! <span aria-hidden="true">🎉</span>
         </p>
       ) : (
         <QuestionCard
@@ -214,6 +237,7 @@ export default function VideoCheckpoint({
   onDone: () => void
 }) {
   const hostRef = useRef<HTMLDivElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
   const playerRef = useRef<YTPlayer | null>(null)
   const [failed, setFailed] = useState(false)
   const [ready, setReady] = useState(false)
@@ -243,6 +267,14 @@ export default function VideoCheckpoint({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchDone, ended])
+
+  // When a question overlay opens, move keyboard focus to its first option so
+  // screen-reader / keyboard users land inside the required dialog.
+  useEffect(() => {
+    if (active == null) return
+    const firstOption = panelRef.current?.querySelector('button')
+    firstOption?.focus()
+  }, [active])
 
   useEffect(() => {
     let cancelled = false
@@ -363,7 +395,12 @@ export default function VideoCheckpoint({
           </div>
         )}
         {active != null && (
-          <div className="absolute inset-0 z-10 flex items-stretch justify-end">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Video question — answer to keep watching"
+            className="absolute inset-0 z-10 flex items-stretch justify-end"
+          >
             {/* Light scrim: the paused frame stays visible, panel edge reads cleanly */}
             <div
               className="absolute inset-0 bg-gradient-to-l from-slate-950/60 via-slate-950/25 to-transparent"
@@ -371,10 +408,14 @@ export default function VideoCheckpoint({
             />
             {/* "Paused" pill sits over the still-visible video */}
             <div className="absolute left-3 top-3 flex items-center gap-1.5 rounded-full bg-slate-950/70 px-3 py-1 text-xs font-bold text-white backdrop-blur">
-              <span className="text-sm">⏸️</span> Paused for a question
+              <span className="text-sm" aria-hidden="true">⏸️</span> Paused for a question
             </div>
             {/* Question slides in from the right (bottom on small screens) */}
-            <div className="relative flex h-full w-full animate-slide-in-up flex-col overflow-y-auto bg-white/95 p-4 shadow-2xl backdrop-blur sm:w-[62%] sm:max-w-sm sm:animate-slide-in-right sm:p-5">
+            <div
+              ref={panelRef}
+              tabIndex={-1}
+              className="relative flex h-full w-full animate-slide-in-up flex-col overflow-y-auto bg-white/95 p-4 shadow-2xl backdrop-blur sm:w-[62%] sm:max-w-sm sm:animate-slide-in-right sm:p-5"
+            >
               <div className="my-auto">
                 <QuestionCard
                   key={active}
@@ -395,7 +436,14 @@ export default function VideoCheckpoint({
 
       {/* Watch progress + question markers */}
       <div className="mt-3">
-        <div className="relative h-2.5 overflow-visible rounded-full bg-slate-200">
+        <div
+          role="progressbar"
+          aria-label="Video watch progress"
+          aria-valuenow={Math.round(watchedPct)}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          className="relative h-2.5 overflow-visible rounded-full bg-slate-200"
+        >
           <div
             className="h-full rounded-full bg-bff-500 transition-all duration-300"
             style={{ width: `${watchedPct}%` }}
@@ -405,7 +453,7 @@ export default function VideoCheckpoint({
             return (
               <span
                 key={i}
-                title={`Question ${i + 1}`}
+                aria-hidden="true"
                 className={`absolute top-1/2 h-4 w-4 -translate-y-1/2 rounded-full border-2 border-white shadow ${
                   answered[i] ? 'bg-green-500' : 'bg-amber-400'
                 }`}
@@ -414,14 +462,21 @@ export default function VideoCheckpoint({
             )
           })}
         </div>
-        <div className="mt-2 flex items-center justify-between text-xs font-semibold text-slate-500">
+        <div
+          role="status"
+          className="mt-2 flex items-center justify-between text-xs font-semibold text-slate-500"
+        >
           <span>
             {sorted.filter((_, i) => answered[i]).length}/{sorted.length} questions answered
           </span>
           {watchDone ? (
-            <span className="text-green-600">All checks done — continue below! ✅</span>
+            <span className="text-green-700">
+              All checks done — continue below! <span aria-hidden="true">✅</span>
+            </span>
           ) : (
-            <span>⚡ The video pauses to quiz you — no skipping ahead!</span>
+            <span>
+              <span aria-hidden="true">⚡</span> The video pauses to quiz you — no skipping ahead!
+            </span>
           )}
         </div>
       </div>

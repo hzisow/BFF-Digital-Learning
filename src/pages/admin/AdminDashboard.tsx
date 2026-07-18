@@ -45,10 +45,17 @@ function ClassroomCard({ classroom, count }: { classroom: Classroom; count: numb
           type="button"
           className="btn-ghost text-sm"
           onClick={() => copy(classroom.code)}
-          title="Copy class code"
+          aria-label={
+            copied
+              ? `Class code ${classroom.code} copied`
+              : `Copy class code ${classroom.code}`
+          }
         >
-          {copied ? '✓ Copied' : 'Copy'}
+          <span aria-hidden="true">{copied ? '✓ Copied' : 'Copy'}</span>
         </button>
+        <span role="status" className="sr-only">
+          {copied ? `Class code ${classroom.code} copied` : ''}
+        </span>
       </div>
       <p className="text-sm text-slate-600">
         {count} student{count === 1 ? '' : 's'} joined
@@ -101,7 +108,11 @@ export default function AdminDashboard() {
 
   if (!BACKEND_ENABLED) return <BackendOffCard />
   if (!adminReady) {
-    return <div className="px-4 py-16 text-center text-slate-500">Loading…</div>
+    return (
+      <div role="status" className="px-4 py-16 text-center text-slate-500">
+        Loading…
+      </div>
+    )
   }
   if (!adminUser) return <Navigate to="/team" replace />
 
@@ -144,7 +155,7 @@ export default function AdminDashboard() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl font-bold text-slate-900">
-            Hey, {displayName(adminUser)} 👋
+            Hey, {displayName(adminUser)} <span aria-hidden="true">👋</span>
           </h1>
           <p className="mt-1 text-slate-600">
             Your mentor dashboard — classrooms, assignments, and live games.
@@ -167,18 +178,23 @@ export default function AdminDashboard() {
             onClick={() => void load()}
             disabled={loading}
           >
-            ↻ Refresh
+            <span aria-hidden="true">↻</span> Refresh
           </button>
         </div>
 
         {error && (
-          <p className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+          <p
+            role="alert"
+            className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
+          >
             Could not load classrooms: {error}
           </p>
         )}
 
         {loading ? (
-          <p className="mt-4 text-slate-500">Loading your classrooms…</p>
+          <p role="status" className="mt-4 text-slate-500">
+            Loading your classrooms…
+          </p>
         ) : (
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {classrooms.map((c) => (
@@ -206,7 +222,7 @@ export default function AdminDashboard() {
               className="card flex flex-col gap-3 border-2 border-dashed border-bff-200 bg-bff-50/40"
             >
               <h3 className="font-display text-lg font-bold text-slate-900">
-                ＋ New classroom
+                <span aria-hidden="true">＋</span> New classroom
               </h3>
               <label className="block">
                 <span className="mb-1 block text-sm font-semibold text-slate-700">
@@ -223,7 +239,7 @@ export default function AdminDashboard() {
               </label>
               <label className="block">
                 <span className="mb-1 block text-sm font-semibold text-slate-700">
-                  School <span className="font-normal text-slate-400">(optional)</span>
+                  School <span className="font-normal text-slate-500">(optional)</span>
                 </span>
                 <input
                   className="input"
@@ -234,7 +250,10 @@ export default function AdminDashboard() {
                 />
               </label>
               {createError && (
-                <p className="rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+                <p
+                  role="alert"
+                  className="rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
+                >
                   {createError}
                 </p>
               )}
@@ -267,7 +286,10 @@ export default function AdminDashboard() {
                 with the game code on the big screen.
               </p>
               {hostError && (
-                <p className="mt-2 rounded-xl bg-red-50 px-4 py-2 text-sm font-medium text-red-700">
+                <p
+                  role="alert"
+                  className="mt-2 rounded-xl bg-red-50 px-4 py-2 text-sm font-medium text-red-700"
+                >
                   {hostError}
                 </p>
               )}

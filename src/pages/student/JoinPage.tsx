@@ -6,7 +6,7 @@ import { useStudent } from '../../lib/session'
 function SoloModeCard() {
   return (
     <div className="card animate-pop-in mx-auto max-w-md text-center">
-      <p className="text-5xl">🎟️</p>
+      <p className="text-5xl" aria-hidden="true">🎟️</p>
       <h1 className="mt-4 font-display text-2xl font-bold text-slate-900">
         Class codes are coming online soon!
       </h1>
@@ -17,10 +17,10 @@ function SoloModeCard() {
       </p>
       <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
         <Link to="/lessons" className="btn-primary">
-          Explore lessons 📚
+          Explore lessons <span aria-hidden="true">📚</span>
         </Link>
         <Link to="/activities" className="btn-secondary">
-          Games & challenges 🎮
+          Games & challenges <span aria-hidden="true">🎮</span>
         </Link>
       </div>
     </div>
@@ -53,7 +53,7 @@ function JoinForm() {
   return (
     <div className="card animate-pop-in mx-auto max-w-md">
       <div className="text-center">
-        <p className="text-5xl">👋</p>
+        <p className="text-5xl" aria-hidden="true">👋</p>
         <h1 className="mt-4 font-display text-2xl font-bold text-slate-900">
           Join your class
         </h1>
@@ -94,14 +94,19 @@ function JoinForm() {
             onChange={(e) => setNickname(e.target.value)}
             maxLength={24}
             autoComplete="off"
+            aria-describedby="nickname-hint"
           />
-          <p className="mt-1.5 text-xs text-slate-500">
-            Your mentor sees this nickname — keep it recognizable (and school-appropriate 😄).
+          <p id="nickname-hint" className="mt-1.5 text-xs text-slate-500">
+            Your mentor sees this nickname — keep it recognizable (and school-appropriate{' '}
+            <span aria-hidden="true">😄</span>).
           </p>
         </div>
 
         {error && (
-          <p className="rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+          <p
+            role="alert"
+            className="rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700"
+          >
             {error}
           </p>
         )}
@@ -110,14 +115,15 @@ function JoinForm() {
           type="submit"
           className="btn-primary w-full"
           disabled={busy || code.length !== 6 || nickname.trim().length === 0}
+          aria-busy={busy}
         >
-          {busy ? 'Joining…' : 'Join class 🚀'}
+          {busy ? 'Joining…' : <>Join class <span aria-hidden="true">🚀</span></>}
         </button>
       </form>
 
       <p className="mt-6 text-center text-xs text-slate-500">
         No class code? You can still{' '}
-        <Link to="/lessons" className="font-semibold text-bff-600 hover:text-bff-700">
+        <Link to="/lessons" className="font-semibold text-bff-700 hover:text-bff-800">
           explore everything solo
         </Link>{' '}
         — progress saves on this device.

@@ -40,7 +40,7 @@ export default function WolfHome() {
     <div className="mx-auto max-w-5xl px-4 py-10">
       {/* Hero */}
       <section className="mb-10 text-center">
-        <p className="text-6xl">🐺</p>
+        <p className="text-6xl" aria-hidden="true">🐺</p>
         <h1 className="mt-3 font-display text-3xl font-bold text-slate-900 sm:text-4xl">
           Wolf of Wall Street
         </h1>
@@ -56,7 +56,7 @@ export default function WolfHome() {
       <section className="mb-12 grid gap-4 md:grid-cols-3">
         {/* Solo */}
         <div className="card flex flex-col gap-3 text-center">
-          <p className="text-4xl">🎯</p>
+          <p className="text-4xl" aria-hidden="true">🎯</p>
           <h2 className="font-display text-lg font-bold text-slate-900">Play solo</h2>
           <p className="flex-1 text-sm text-slate-600">
             Practice at your own pace — trade through every round and see how your instincts stack
@@ -69,20 +69,23 @@ export default function WolfHome() {
 
         {/* Join */}
         <div className="card flex flex-col gap-3 text-center">
-          <p className="text-4xl">📱</p>
+          <p className="text-4xl" aria-hidden="true">📱</p>
           <h2 className="font-display text-lg font-bold text-slate-900">Join a live game</h2>
           <p className="flex-1 text-sm text-slate-600">
             Got a 6-character game code from your host? Jump in and trade against the whole room.
           </p>
           <form className="space-y-2" onSubmit={joinGame}>
+            <label htmlFor="wolf-join-code" className="sr-only">
+              6-character game code
+            </label>
             <input
+              id="wolf-join-code"
               className="input text-center font-display text-lg uppercase tracking-widest"
               value={code}
               onChange={(e) => setCode(e.target.value.toUpperCase())}
               placeholder="ABC123"
               maxLength={6}
               disabled={!BACKEND_ENABLED}
-              aria-label="Game code"
             />
             <button
               type="submit"
@@ -97,7 +100,7 @@ export default function WolfHome() {
 
         {/* Host */}
         <div className="card flex flex-col gap-3 text-center">
-          <p className="text-4xl">🖥️</p>
+          <p className="text-4xl" aria-hidden="true">🖥️</p>
           <h2 className="font-display text-lg font-bold text-slate-900">Host a live game</h2>
           {!BACKEND_ENABLED ? (
             <>
@@ -117,7 +120,11 @@ export default function WolfHome() {
               <button className="btn-primary w-full" onClick={hostGame} disabled={hosting}>
                 {hosting ? 'Setting up your game…' : 'Host a game'}
               </button>
-              {hostError && <p className="text-xs font-semibold text-red-600">{hostError}</p>}
+              {hostError && (
+                <p className="text-xs font-semibold text-red-600" role="alert">
+                  {hostError}
+                </p>
+              )}
             </>
           ) : (
             <>
@@ -143,7 +150,7 @@ export default function WolfHome() {
           {COMPANIES.map((c) => (
             <div key={c.ticker} className="card p-4">
               <p className="font-display text-sm font-bold text-slate-900">{c.name}</p>
-              <p className="text-xs font-semibold text-bff-600">{c.ticker}</p>
+              <p className="text-xs font-semibold text-bff-700">{c.ticker}</p>
               <p className="mt-1 text-xs text-slate-500">{c.industry}</p>
             </div>
           ))}
