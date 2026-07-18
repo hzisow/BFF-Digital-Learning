@@ -1,6 +1,7 @@
-// BFF Academy as a Duolingo-style course path: a winding trail of lesson
-// nodes grouped by week, with the games woven in as bonus stops. Progress
-// comes from local storage (and the classroom DB when connected).
+// BFF Academy as a Duolingo-style course path: a winding trail of the 8
+// curriculum lessons grouped by week. Games and challenges live separately
+// on the Activities page. Progress comes from local storage (and the
+// classroom DB when connected).
 
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -10,13 +11,6 @@ import { loadLocalProgress } from '../lib/progress'
 import type { ActivityProgress } from '../lib/progress'
 
 // ---------- Path data ----------
-
-/** Games/challenges appear as bonus nodes right after these lessons. */
-const BONUS_AFTER: Record<string, string> = {
-  'spending-budgeting': 'bens-budget',
-  'saving-investing': 'wolf-of-wall-street',
-  'risk-insurance': 'bens-insurance',
-}
 
 interface WeekTheme {
   name: string
@@ -72,10 +66,10 @@ const WEEK_THEMES: Record<number, WeekTheme> = {
   },
 }
 
-type NodeState = 'done' | 'current' | 'locked' | 'open'
+type NodeState = 'done' | 'current' | 'locked'
 
 interface PathNode {
-  kind: 'lesson' | 'bonus' | 'trophy'
+  kind: 'lesson' | 'trophy'
   meta?: ActivityMeta
   state: NodeState
   score: number | null
@@ -132,17 +126,6 @@ function NodeCircle({ node, theme }: { node: PathNode; theme: WeekTheme }) {
       <div className={`${base} bg-slate-200 opacity-80 shadow-[0_5px_0_#cbd5e1] grayscale`}>🏆</div>
     )
   }
-  if (node.kind === 'bonus') {
-    return (
-      <div
-        className={`${base} ${
-          node.state === 'done' ? 'bg-fuchsia-500' : 'bg-fuchsia-500'
-        } shadow-[0_5px_0_#a21caf] hover:brightness-110`}
-      >
-        {node.meta!.emoji}
-      </div>
-    )
-  }
   switch (node.state) {
     case 'done':
       return (
@@ -194,30 +177,22 @@ export default function LessonsIndex() {
       byWeek.set(week, [...(byWeek.get(week) ?? []), lesson])
     }
 
-    const toNode = (meta: ActivityMeta, kind: 'lesson' | 'bonus'): PathNode => {
+    const toNode = (meta: ActivityMeta): PathNode => {
       const p: ActivityProgress | undefined = progress[meta.slug]
       const state: NodeState =
         p?.status === 'completed'
           ? 'done'
-          : kind === 'bonus'
-            ? 'open'
-            : meta.slug === current?.slug
-              ? 'current'
-              : 'locked'
-      return { kind, meta, state, score: p?.score ?? null, started: p?.status === 'started' }
+          : meta.slug === current?.slug
+            ? 'current'
+            : 'locked'
+      return { kind: 'lesson', meta, state, score: p?.score ?? null, started: p?.status === 'started' }
     }
 
     const result = [...byWeek.entries()]
       .sort(([a], [b]) => a - b)
       .map(([week, list]) => ({
         week,
-        nodes: list.flatMap((lesson) => {
-          const nodes: PathNode[] = [toNode(lesson, 'lesson')]
-          const bonusSlug = BONUS_AFTER[lesson.slug]
-          const bonusMeta = bonusSlug ? ACTIVITIES.find((a) => a.slug === bonusSlug) : undefined
-          if (bonusMeta) nodes.push(toNode(bonusMeta, 'bonus'))
-          return nodes
-        }),
+        nodes: list.map(toNode),
       }))
 
     // The trophy caps off the final week's segment.
@@ -241,7 +216,7 @@ export default function LessonsIndex() {
         <h1 className="mt-3 font-display text-4xl font-extrabold text-slate-900">BFF Academy</h1>
         <p className="mx-auto mt-3 max-w-xl leading-relaxed text-slate-600">
           4 weeks, 8 lessons, ~20 minutes each. Follow the path — finish a lesson to unlock
-          the next stop, grab the bonus games along the way, and claim the trophy at the end.
+          the next stop and claim the trophy at the end.
         </p>
         <div className="mx-auto mt-5 flex max-w-md items-center gap-3">
           <div className="h-3 flex-1 overflow-hidden rounded-full bg-slate-200">
@@ -325,14 +300,12 @@ export default function LessonsIndex() {
                   const sub =
                     node.kind === 'lesson'
                       ? `Day ${node.meta!.sortKey % 10} · ${node.meta!.durationMin} min`
-                      : node.kind === 'bonus'
-                        ? 'Bonus 🎮'
-                        : ''
+                      : ''
 
                   const circle = <NodeCircle node={node} theme={theme} />
                   const clickable =
                     node.kind !== 'trophy' &&
-                    (node.state === 'done' || node.state === 'current' || node.state === 'open')
+                    (node.state === 'done' || node.state === 'current')
 
                   return (
                     <div
@@ -395,12 +368,21 @@ export default function LessonsIndex() {
         })}
       </div>
 
-      <p className="mt-12 text-center text-sm text-slate-500">
-        Want to replay a game without the path?{' '}
-        <Link to="/activities" className="font-semibold text-bff-600 hover:underline">
-          Browse all games & challenges →
+      {/* Games live outside the curriculum path */}
+      <div className="card mt-14 flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-between sm:text-left">
+        <div>
+          <p className="font-display font-bold text-slate-900">
+            🐺🏠☂️ Looking for the games?
+          </p>
+          <p className="mt-1 text-sm text-slate-600">
+            Wolf of Wall Street and Ben's challenges are their own thing — play them anytime,
+            no path required.
+          </p>
+        </div>
+        <Link to="/activities" className="btn-secondary shrink-0">
+          Games & Challenges →
         </Link>
-      </p>
+      </div>
 
       {/* Jump-ahead confirm */}
       {jumpTarget && (
