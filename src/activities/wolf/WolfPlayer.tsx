@@ -320,7 +320,7 @@ export default function WolfPlayer() {
                     <p className="text-sm text-slate-600">{c.summary}</p>
                   </div>
                   <p
-                    className={`whitespace-nowrap font-display text-lg font-bold ${change >= 0 ? 'text-green-600' : 'text-red-600'}`}
+                    className={`whitespace-nowrap font-display text-lg font-bold ${change >= 0 ? 'text-green-700' : 'text-red-600'}`}
                   >
                     ${c.prices[3]}{' '}
                     <span className="text-sm">
@@ -345,7 +345,7 @@ export default function WolfPlayer() {
               Final portfolio: {money(finalValue)}
             </h1>
             <p
-              className={`mt-1 font-display text-lg font-bold ${finalValue >= STARTING_CASH ? 'text-green-600' : 'text-red-600'}`}
+              className={`mt-1 font-display text-lg font-bold ${finalValue >= STARTING_CASH ? 'text-green-700' : 'text-red-600'}`}
             >
               {finalValue >= STARTING_CASH ? '+' : '−'}
               {money(Math.abs(finalValue - STARTING_CASH))}{' '}

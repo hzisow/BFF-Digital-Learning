@@ -51,6 +51,15 @@ export interface QuizQuestion {
   explanation: string
 }
 
+/** Spanish variant of a lesson's translatable content. Any field left out
+ *  falls back to English (the app shows a small "English only" note then). */
+export interface LessonTranslation {
+  title?: string
+  description?: string
+  sections?: LessonSection[]
+  quiz?: QuizQuestion[]
+}
+
 export interface Lesson {
   slug: string
   week: number
@@ -61,4 +70,7 @@ export interface Lesson {
   durationMin: number
   sections: LessonSection[]
   quiz: QuizQuestion[]
+  /** Spanish translation (es). Video sections keep the same videoId/timestamps
+   *  with translated question text. */
+  es?: LessonTranslation
 }

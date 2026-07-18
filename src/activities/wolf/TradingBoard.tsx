@@ -80,14 +80,14 @@ export default function TradingBoard({ stage, cash, holdings, onTrade, locked }:
               <div className="flex items-start justify-between gap-2">
                 <div>
                   <p className="font-display font-bold text-slate-900">
-                    {c.name} <span className="text-xs font-semibold text-slate-500">{c.ticker}</span>
+                    {c.name} <span className="text-xs font-semibold text-slate-600">{c.ticker}</span>
                   </p>
-                  <p className="text-xs text-slate-500">{c.industry} · {c.product}</p>
+                  <p className="text-xs text-slate-600">{c.industry} · {c.product}</p>
                 </div>
                 <div className="text-right">
                   <p className="font-display text-lg font-bold text-slate-900">${price}</p>
                   {stage >= 2 && (
-                    <p className={`text-xs font-bold ${change > 0 ? 'text-green-600' : change < 0 ? 'text-red-600' : 'text-slate-500'}`}>
+                    <p className={`text-xs font-bold ${change > 0 ? 'text-green-700' : change < 0 ? 'text-red-600' : 'text-slate-600'}`}>
                       {change > 0 ? (
                         <>
                           <span aria-hidden="true">▲ +${change}</span>
@@ -111,7 +111,7 @@ export default function TradingBoard({ stage, cash, holdings, onTrade, locked }:
               <div className="flex items-center justify-between gap-2">
                 <span className="text-sm text-slate-600">
                   You own <strong className="text-slate-900">{shares}</strong>
-                  {shares > 0 && <span className="text-slate-500"> (${(shares * price).toLocaleString()})</span>}
+                  {shares > 0 && <span className="text-slate-600"> (${(shares * price).toLocaleString()})</span>}
                 </span>
                 <div className="flex gap-1.5">
                   <button

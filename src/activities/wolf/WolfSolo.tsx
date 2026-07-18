@@ -103,7 +103,7 @@ export default function WolfSolo() {
                     </p>
                     <p className="text-sm text-slate-600">{c.summary}</p>
                   </div>
-                  <p className={`whitespace-nowrap font-display text-lg font-bold ${change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  <p className={`whitespace-nowrap font-display text-lg font-bold ${change >= 0 ? 'text-green-700' : 'text-red-600'}`}>
                     ${c.prices[3]}{' '}
                     <span className="text-sm">
                       <span aria-hidden="true">({change >= 0 ? '+' : ''}{change})</span>
@@ -132,7 +132,7 @@ export default function WolfSolo() {
           <h2 className="font-display text-2xl font-bold text-slate-900">
             Final portfolio: {money(finalValue)}
           </h2>
-          <p className={`font-display text-lg font-bold ${finalValue >= STARTING_CASH ? 'text-green-600' : 'text-red-600'}`}>
+          <p className={`font-display text-lg font-bold ${finalValue >= STARTING_CASH ? 'text-green-700' : 'text-red-600'}`}>
             {finalValue >= STARTING_CASH ? '+' : '−'}{money(Math.abs(finalValue - STARTING_CASH))}{' '}
             {finalValue >= STARTING_CASH ? 'profit' : 'loss'} on your {money(STARTING_CASH)} start
           </p>

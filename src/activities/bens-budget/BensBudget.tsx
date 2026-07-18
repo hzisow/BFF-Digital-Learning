@@ -383,7 +383,7 @@ export default function BensBudget() {
           The family dream: a <strong>beach trip in 3 months</strong>, which means saving{' '}
           <strong>$900 total — $300 this month</strong>. Your job: decide where every dollar goes.
         </p>
-        <p className="mt-2 text-xs text-slate-500">
+        <p className="mt-2 text-xs text-slate-600">
           <span aria-hidden="true">ℹ️</span> Health insurance ($300/month) is already deducted from
           Ben's paycheck — it's handled and doesn't count against the {usd(INCOME)}.
         </p>
@@ -409,10 +409,10 @@ export default function BensBudget() {
                 </span>
                 <div>
                   <p className="text-sm font-semibold text-slate-600">{n.label}</p>
-                  {n.note && <p className="text-xs text-slate-500">{n.note}</p>}
+                  {n.note && <p className="text-xs text-slate-600">{n.note}</p>}
                 </div>
               </div>
-              <p className="font-display text-sm font-bold text-slate-500">{usd(n.cost)}</p>
+              <p className="font-display text-sm font-bold text-slate-600">{usd(n.cost)}</p>
             </div>
           ))}
           <p className="text-right text-xs font-semibold text-slate-500">
@@ -427,7 +427,7 @@ export default function BensBudget() {
           <p className="font-display font-bold text-slate-900">
             {usd(spent)} <span className="font-normal text-slate-500">of {usd(INCOME)}</span>
           </p>
-          <p className={`font-display font-bold ${overBudget ? 'text-red-600' : 'text-green-600'}`}>
+          <p className={`font-display font-bold ${overBudget ? 'text-red-600' : 'text-green-700'}`}>
             {overBudget ? `${usd(-remaining)} over budget!` : `${usd(remaining)} left`}
           </p>
         </div>
@@ -471,7 +471,7 @@ export default function BensBudget() {
                     <span className="mr-1" aria-hidden="true">{c.emoji}</span>
                     {c.label}
                   </p>
-                  <p className="mt-0.5 text-xs text-slate-500">{c.note}</p>
+                  <p className="mt-0.5 text-xs text-slate-600">{c.note}</p>
                 </div>
                 <div className="text-right">
                   <p className={`font-display text-sm font-bold ${on ? 'text-bff-700' : 'text-slate-500'}`}>
@@ -523,7 +523,7 @@ export default function BensBudget() {
                   />
                   <div>
                     <p className="text-sm font-semibold text-slate-800">{opt.label}</p>
-                    <p className="text-xs text-slate-500">{opt.note}</p>
+                    <p className="text-xs text-slate-600">{opt.note}</p>
                   </div>
                 </div>
                 <p className={`font-display text-sm font-bold ${on ? 'text-bff-700' : 'text-slate-500'}`}>

@@ -16,7 +16,7 @@ function ProgressChip({ progress }: { progress: ActivityProgress | undefined }) 
   if (progress?.status === 'started') {
     return <span className="chip bg-amber-100 text-amber-700">In progress</span>
   }
-  return <span className="chip bg-slate-100 text-slate-500">Not started</span>
+  return <span className="chip bg-slate-100 text-slate-600">Not started</span>
 }
 
 export default function ActivitiesIndex() {

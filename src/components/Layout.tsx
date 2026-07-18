@@ -1,15 +1,48 @@
 import { Link, NavLink, Outlet } from 'react-router-dom'
 import { Logo } from './Logo'
 import { useAdmin, useStudent } from '../lib/session'
+import { useLang } from '../lib/i18n'
+import type { Lang } from '../lib/i18n'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `rounded-lg px-3 py-1.5 font-display text-sm font-semibold transition ${
     isActive ? 'bg-bff-50 text-bff-700' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
   }`
 
+function LangSwitcher() {
+  const { lang, setLang } = useLang()
+  const opt = (l: Lang, label: string) => (
+    <button
+      type="button"
+      onClick={() => setLang(l)}
+      aria-pressed={lang === l}
+      aria-label={l === 'en' ? 'Switch to English' : 'Cambiar a español'}
+      className={`rounded-md px-2 py-0.5 font-display text-xs font-bold transition ${
+        lang === l ? 'bg-white text-bff-700 shadow-sm' : 'text-slate-500 hover:text-slate-800'
+      }`}
+    >
+      {label}
+    </button>
+  )
+  return (
+    <div
+      className="ml-1 flex items-center gap-0.5 rounded-lg bg-slate-100 p-0.5"
+      role="group"
+      aria-label="Language / Idioma"
+    >
+      <span aria-hidden="true" className="pl-1 text-sm">
+        🌐
+      </span>
+      {opt('en', 'EN')}
+      {opt('es', 'ES')}
+    </div>
+  )
+}
+
 export default function Layout() {
   const { student } = useStudent()
   const { adminUser } = useAdmin()
+  const { t } = useLang()
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -29,30 +62,34 @@ export default function Layout() {
           </Link>
           <nav className="flex items-center gap-1" aria-label="Primary">
             <NavLink to="/lessons" className={navLinkClass}>
-              Lessons
+              {t('nav.lessons')}
             </NavLink>
             <NavLink to="/activities" className={navLinkClass}>
-              Activities
+              {t('nav.activities')}
+            </NavLink>
+            <NavLink to="/glossary" className={`${navLinkClass({ isActive: false })} hidden md:inline-flex`}>
+              {t('nav.glossary')}
             </NavLink>
             {student ? (
               <NavLink to="/student" className={navLinkClass}>
-                <span className="hidden sm:inline">My Class · </span>
+                <span className="hidden sm:inline">{t('nav.myClass')} · </span>
                 {student.nickname}
               </NavLink>
             ) : (
               <NavLink to="/join" className={navLinkClass}>
-                Join Class
+                {t('nav.join')}
               </NavLink>
             )}
             {adminUser ? (
               <NavLink to="/admin" className={navLinkClass}>
-                Dashboard
+                {t('nav.dashboard')}
               </NavLink>
             ) : (
               <NavLink to="/team" className={navLinkClass}>
-                Team
+                {t('nav.team')}
               </NavLink>
             )}
+            <LangSwitcher />
           </nav>
         </div>
       </header>

@@ -550,7 +550,10 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
         </div>
         {canContinue && (
           <p className="mt-4 text-center text-xs text-slate-500">
-            Tip: press <kbd className="rounded border border-slate-300 bg-slate-100 px-1">Enter ↵</kbd>{' '}
+            Tip: press{' '}
+            <kbd className="rounded border border-slate-300 bg-slate-100 px-1 text-slate-700">
+              Enter ↵
+            </kbd>{' '}
             to continue
           </p>
         )}

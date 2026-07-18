@@ -1,5 +1,6 @@
 import { supabase } from './supabase'
 import type { StudentSession } from './session'
+import { recordActivity } from './streak'
 
 export type ProgressStatus = 'started' | 'completed'
 
@@ -51,6 +52,7 @@ export async function saveProgress(
   }
   all[activitySlug] = entry
   localStorage.setItem(LOCAL_KEY, JSON.stringify(all))
+  recordActivity() // any saved progress keeps the daily streak alive
 
   if (supabase && student) {
     try {

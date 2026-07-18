@@ -26,7 +26,7 @@ import {
 function ProgressChip({ row }: { row: ProgressRow | undefined }) {
   if (!row) {
     return (
-      <span className="chip bg-slate-100 text-slate-500">
+      <span className="chip bg-slate-100 text-slate-600">
         <span aria-hidden="true">—</span>
         <span className="sr-only">Not started</span>
       </span>

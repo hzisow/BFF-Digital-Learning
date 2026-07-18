@@ -108,7 +108,7 @@ export default function TeamAuth() {
     `flex-1 rounded-lg px-3 py-2 font-display text-sm font-semibold transition ${
       active
         ? 'bg-white text-bff-700 shadow-sm'
-        : 'text-slate-500 hover:text-slate-800'
+        : 'text-slate-600 hover:text-slate-900'
     }`
 
   return (

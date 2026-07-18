@@ -327,7 +327,7 @@ export default function BensInsurance() {
           <p className="font-display font-bold text-slate-900">
             {usd(premiums)} <span className="font-normal text-slate-500">of {usd(BUDGET)}</span>
           </p>
-          <p className={`font-display font-bold ${overBudget ? 'text-red-600' : 'text-green-600'}`}>
+          <p className={`font-display font-bold ${overBudget ? 'text-red-600' : 'text-green-700'}`}>
             {overBudget ? `${usd(-remaining)} over budget!` : `${usd(remaining)} left`}
           </p>
         </div>
@@ -381,7 +381,7 @@ export default function BensInsurance() {
                   />
                   <div>
                     <p className="text-sm font-semibold text-slate-800">{opt.label}</p>
-                    <p className="text-xs text-slate-500">{opt.note}</p>
+                    <p className="text-xs text-slate-600">{opt.note}</p>
                   </div>
                 </div>
                 <p className={`font-display text-sm font-bold ${on ? 'text-bff-700' : 'text-slate-500'}`}>
@@ -448,7 +448,7 @@ export default function BensInsurance() {
                     <span className="mr-1" aria-hidden="true">{p.emoji}</span>
                     {p.label}
                   </p>
-                  <p className="mt-0.5 text-xs text-slate-500">{p.note}</p>
+                  <p className="mt-0.5 text-xs text-slate-600">{p.note}</p>
                 </div>
                 <div className="text-right">
                   <p className={`font-display text-sm font-bold ${on ? 'text-bff-700' : 'text-slate-500'}`}>

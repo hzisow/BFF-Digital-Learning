@@ -4,6 +4,7 @@ import Landing from './pages/Landing'
 import LessonsIndex from './pages/LessonsIndex'
 import LessonPage from './pages/LessonPage'
 import ActivitiesIndex from './pages/ActivitiesIndex'
+import GlossaryPage from './pages/GlossaryPage'
 import JoinPage from './pages/student/JoinPage'
 import StudentHome from './pages/student/StudentHome'
 import BensBudget from './activities/bens-budget/BensBudget'
@@ -25,6 +26,7 @@ export default function App() {
         <Route path="/lessons" element={<LessonsIndex />} />
         <Route path="/lessons/:slug" element={<LessonPage />} />
         <Route path="/activities" element={<ActivitiesIndex />} />
+        <Route path="/glossary" element={<GlossaryPage />} />
         <Route path="/join" element={<JoinPage />} />
         <Route path="/student" element={<StudentHome />} />
         <Route path="/challenge/bens-budget" element={<BensBudget />} />
