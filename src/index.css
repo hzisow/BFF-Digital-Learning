@@ -12,6 +12,25 @@
   h1, h2, h3, h4 {
     @apply font-display;
   }
+
+  /* Visible keyboard-focus ring on every interactive element, including the
+     bare buttons/links (icon buttons, path nodes) that don't use .btn-*. */
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    @apply outline-none ring-2 ring-bff-500 ring-offset-2 ring-offset-white;
+    border-radius: 0.5rem;
+  }
+
+  /* Respect users who ask for less motion: neutralize animations/transitions. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 @layer components {
@@ -22,7 +41,7 @@
     @apply inline-flex items-center justify-center gap-2 rounded-xl border-2 border-bff-600 bg-white px-5 py-2.5 font-display font-semibold text-bff-700 transition hover:bg-bff-50 focus:outline-none focus:ring-2 focus:ring-bff-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
   }
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 font-display font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 font-display font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-bff-400 focus-visible:ring-offset-2;
   }
   .card {
     @apply rounded-2xl border border-slate-200 bg-white p-6 shadow-sm;
