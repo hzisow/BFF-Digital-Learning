@@ -44,6 +44,7 @@ export default function TeamAuth() {
 
   const [mode, setMode] = useState<Mode>('signin')
   const [fullName, setFullName] = useState('')
+  const [chapter, setChapter] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [busy, setBusy] = useState(false)
@@ -84,7 +85,7 @@ export default function TeamAuth() {
         const { data, error: authError } = await supabase.auth.signUp({
           email: email.trim(),
           password,
-          options: { data: { full_name: fullName.trim() } },
+          options: { data: { full_name: fullName.trim(), chapter: chapter.trim() } },
         })
         if (authError) throw new Error(authError.message)
         if (data.session) {
@@ -161,20 +162,39 @@ export default function TeamAuth() {
           aria-labelledby={mode === 'signin' ? 'tab-signin' : 'tab-signup'}
         >
           {mode === 'signup' && (
-            <label className="block">
-              <span className="mb-1 block text-sm font-semibold text-slate-700">
-                Full name
-              </span>
-              <input
-                className="input"
-                type="text"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                placeholder="Jamie Rivera"
-                autoComplete="name"
-                required
-              />
-            </label>
+            <>
+              <label className="block">
+                <span className="mb-1 block text-sm font-semibold text-slate-700">
+                  Full name
+                </span>
+                <input
+                  className="input"
+                  type="text"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  placeholder="Jamie Rivera"
+                  autoComplete="name"
+                  required
+                />
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-sm font-semibold text-slate-700">
+                  BFF chapter / region
+                </span>
+                <input
+                  className="input"
+                  type="text"
+                  value={chapter}
+                  onChange={(e) => setChapter(e.target.value)}
+                  placeholder="e.g. Chicago, IL · Midwest"
+                  autoComplete="organization"
+                  required
+                />
+                <span className="mt-1 block text-xs text-slate-500">
+                  Which BFF of America chapter or region you volunteer with.
+                </span>
+              </label>
+            </>
           )}
           <label className="block">
             <span className="mb-1 block text-sm font-semibold text-slate-700">
