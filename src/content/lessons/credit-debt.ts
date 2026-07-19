@@ -291,6 +291,299 @@ const lesson: Lesson = {
         'Credit card companies profit from interest when balances go unpaid, plus late payment fees, annual fees, and over-limit fees. Pay in full and on time, and you flip the deal in your favor.',
     },
   ],
+  es: {
+    title: 'Crédito y deuda',
+    description:
+      'Entiende cómo funciona el crédito, qué afecta tu puntaje de crédito y cómo pedir dinero prestado con responsabilidad.',
+    sections: [
+      {
+        type: 'intro',
+        heading: '¿Pedir prestado ahora y pagar después?',
+        body:
+          'Pregunta de calentamiento: imagina que quieres algo que no puedes pagar ahora mismo. ¿Esperarías y ahorrarías, o pedirías dinero prestado para tenerlo hoy? ¿Por qué? No hay una única respuesta correcta, y esa tensión es exactamente de lo que trata la lección de hoy. Al final, sabrás cómo funciona el crédito, qué mide realmente un puntaje de crédito y cómo pedir prestado sin quemarte.',
+      },
+      {
+        type: 'terms',
+        heading: 'Cómo funciona el crédito',
+        terms: [
+          {
+            term: 'Crédito (credit)',
+            definition:
+              'La capacidad de pedir dinero prestado ahora y pagarlo después, normalmente con interés. Los prestamistas dan crédito basándose en la confianza de que les vas a pagar.',
+          },
+          {
+            term: 'Crédito revolvente (revolving credit)',
+            definition:
+              'Crédito con un límite establecido en el que pagas el monto que debes cada mes o haces pagos mínimos mensuales. Las tarjetas de crédito son el ejemplo clásico.',
+          },
+          {
+            term: 'Crédito en cuotas (installment credit)',
+            definition:
+              'Una suma de dinero que el prestatario debe devolver en cuotas fijas antes de una fecha determinada. Las hipotecas y los préstamos de auto son ejemplos.',
+          },
+        ],
+      },
+      {
+        type: 'content',
+        heading: '¿Para qué sirve realmente el crédito?',
+        body:
+          'El crédito se usa a menudo para compras grandes y caras, como una hipoteca para una casa, porque la mayoría de la gente no puede pagarlas de contado. Pero el crédito también aparece en la vida diaria: mucha gente usa tarjetas de crédito con cashback (dinero de vuelta) u otros beneficios para las compras de todos los días. Eso sí, no las confundas con las tarjetas de débito, que sacan el dinero directamente de tu cuenta de cheques.',
+        bullets: [
+          'Compras grandes: hipotecas, préstamos de auto y otras cosas que la gente rara vez paga de una sola vez',
+          'Compras del día a día: tarjetas de crédito con cashback o beneficios',
+          'Las tarjetas de débito son diferentes: cobran directamente de tu cuenta de cheques, sin ningún préstamo de por medio',
+        ],
+      },
+      {
+        type: 'checkpoint',
+        checkpoint: {
+          question: '¿Cuál de estos es un ejemplo de crédito en cuotas?',
+          options: [
+            'Una tarjeta de crédito que pagas por completo cada mes',
+            'Una tarjeta de débito conectada a tu cuenta de cheques',
+            'Un préstamo de auto que se paga en cuotas mensuales fijas antes de una fecha establecida',
+            'Las recompensas de cashback en el supermercado',
+          ],
+          answerIndex: 2,
+          explanation:
+            '¡Correcto! El crédito en cuotas te da una suma de dinero que devuelves en cuotas fijas antes de una fecha determinada, como los préstamos de auto y las hipotecas. Las tarjetas de crédito son crédito revolvente, y las tarjetas de débito ni siquiera son crédito, porque sacan el dinero directo de tu cuenta de cheques.',
+        },
+      },
+      {
+        type: 'content',
+        heading: 'El puntaje de crédito: tu boleta de calificaciones financiera',
+        body:
+          'Un puntaje de crédito (credit score) es un número de 3 dígitos que les dice a los prestamistas qué tan riesgoso es prestarte. Los puntajes de crédito usan el sistema de FICO y van de 300 a 850. Mientras más alto, mejor. Tu puntaje afecta si te aprobarán préstamos y qué tasa de interés te darán en ellos, así que este numerito puede ahorrarte (o costarte) mucho dinero.',
+      },
+      {
+        type: 'content',
+        heading: 'Los cinco factores de tu puntaje de crédito',
+        body:
+          'Cinco cosas determinan tu puntaje de crédito, y no pesan lo mismo. La más grande es simplemente pagar tus cuentas a tiempo. Aquí están, de la más pesada a la más ligera.',
+        bullets: [
+          'Historial de pagos (35%): pagar las cuentas a tiempo',
+          'Utilización del crédito (30%): cuánto usas del crédito que tienes disponible',
+          'Antigüedad del historial de crédito (15%): cuánto tiempo llevas teniendo cuentas de crédito',
+          'Mezcla de crédito (10%): tu combinación de tipos de crédito, revolvente y en cuotas',
+          'Crédito nuevo (10%): solicitudes recientes de crédito nuevo',
+        ],
+      },
+      {
+        type: 'checkpoint',
+        checkpoint: {
+          question: '¿Cuál par de actividades AYUDARÍA a tu puntaje de crédito?',
+          options: [
+            'Llevar tu tarjeta de crédito al límite y abrir cinco tarjetas nuevas en una semana',
+            'Pagar siempre tu tarjeta de crédito a tiempo y usar solo el 20% de tu límite de crédito',
+            'Ignorar tus cuentas y cerrar tu cuenta más antigua',
+            'Usar solo efectivo para todo, por siempre',
+          ],
+          answerIndex: 1,
+          explanation:
+            '¡Sí! Los pagos a tiempo son el factor más grande (35%), y mantener baja la utilización, como usar solo el 20% de tu límite, ayuda al segundo factor más grande (30%). Llevar las tarjetas al límite y abrir cinco tarjetas nuevas en una semana dañan tu puntaje. ¡Buen trabajo!',
+        },
+      },
+      {
+        type: 'video',
+        heading: 'Mira el video: ¿Qué compone tu puntaje de crédito?',
+        body:
+          'Acabas de aprender los cinco factores — ahora mira cómo Two Cents explica cómo funcionan en la vida real. El video está en inglés y se pausa para comprobar qué captaste, ¡así que ojos arriba!',
+        videoId: 'ozbGWLtZdoY',
+        source: 'Two Cents · PBS Digital Studios',
+        questions: [
+          {
+            at: 110,
+            question: '¿Qué factor cuenta MÁS en tu puntaje de crédito FICO?',
+            options: [
+              'Cuántas tarjetas de crédito tienes',
+              'Tu historial de pagos — pagar tus cuentas a tiempo',
+              'Tu sueldo',
+              'Qué tan seguido revisas tu puntaje',
+            ],
+            answerIndex: 1,
+            explanation:
+              'El historial de pagos es el peso pesado, con el 35% de tu puntaje. Un solo pago perdido puede perseguir tu puntaje durante años — por eso el pago automático es tu mejor amigo.',
+          },
+          {
+            at: 240,
+            question:
+              'Según el video, ¿cuál es una de las PEORES cosas que le puedes hacer a tu puntaje de crédito?',
+            options: [
+              'Mantener abierta una tarjeta de crédito antigua',
+              'Usar menos del 30% de tu límite de crédito',
+              'No hacer un pago',
+              'Revisar tu propio reporte de crédito',
+            ],
+            answerIndex: 2,
+            explanation:
+              'No hacer un pago golpea el factor más grande (¡35%!) y se queda en tu reporte hasta por siete años. Las cuentas antiguas y la utilización baja en realidad te AYUDAN, y revisar tu propio reporte nunca daña tu puntaje.',
+          },
+        ],
+      },
+      {
+        type: 'content',
+        heading: 'Deuda buena vs. deuda mala',
+        body:
+          'No todas las deudas son iguales. La deuda buena es pedir prestado para cosas que te ayudan a ganar dinero o que crecen en valor. La deuda mala es pedir prestado para cosas innecesarias que no te ayudarán a largo plazo. El truco es preguntarte: ¿esta deuda me dejará mejor después, o solo más a la moda hoy?',
+        bullets: [
+          'Buena: los préstamos estudiantiles pueden aumentar tu ingreso potencial, siempre que manejes bien el dinero',
+          'Buena: las hipotecas, siempre que te mantengas al día con los pagos',
+          'Buena: los préstamos de negocio, que aumentan tu ingreso potencial',
+          'Mala: los préstamos para deseos como moda de diseñador, tecnología o el leasing de autos',
+        ],
+      },
+      {
+        type: 'example',
+        heading: 'La trampa de los préstamos de día de pago',
+        body:
+          'Los préstamos de día de pago (payday loans) son préstamos de corto plazo con intereses altísimos que solo te harán daño financiero. Se anuncian como ayuda para la gente que vive "de cheque en cheque", pero en realidad casi siempre te dejan con más deuda de la que tenías al empezar. El interés alto se acumula rápido, así que vuelves a pedir prestado para cubrirlo, y el ciclo se repite. Mantente lejos.',
+      },
+      {
+        type: 'content',
+        heading: 'Entender las tarjetas de crédito',
+        body:
+          'Las tarjetas de crédito pueden ser una herramienta extremadamente poderosa si se usan correctamente. Una tarjeta de crédito te permite pedir dinero prestado hasta un límite y pagarlo después. Si la pagas por completo cada mes, es esencialmente un préstamo gratis. Pero si no pagas el monto completo antes de la fecha límite, se cobra interés sobre el saldo, y pagar solo el pago mínimo te cuesta más con el tiempo.',
+        bullets: [
+          'Paga el total cada mes y no pagas nada de interés',
+          'Deja un saldo pendiente y el interés se acumula sobre lo que debes',
+          'Los pagos mínimos te mantienen endeudado más tiempo y cuestan más en total',
+          'Algunas tarjetas ofrecen beneficios como cashback o puntos de viaje, ¡pero cuidado con las trampas!',
+          '¿Ya estás endeudado? Los métodos bola de nieve (snowball) y avalancha (avalanche) son dos estrategias para pagar la deuda',
+        ],
+      },
+      {
+        type: 'example',
+        heading: 'Leer una oferta real de tarjeta de crédito',
+        body:
+          'Aquí tienes una tarjeta de crédito de ejemplo: APR del 22.99%, límite de crédito de $1,000, cuota anual de $0, pago mínimo de $35 al mes. Traducción: puedes pedir prestado hasta $1,000 y no hay cuota anual. Pero si dejas un saldo pendiente, crece a un empinado 22.99% al año. Si pagas solo el mínimo de $35 con la tarjeta al tope, el interés se comerá la mayor parte de ese pago. Pagar el total es la jugada ganadora.',
+      },
+      {
+        type: 'content',
+        heading: 'Cómo ganan dinero las compañías de tarjetas de crédito',
+        body:
+          '¿Alguna vez te has preguntado por qué las compañías regalan tarjetas con recompensas gratis? Las compañías de tarjetas de crédito ganan dinero con el interés cuando los saldos se quedan sin pagar, y con las cuotas: cargos por pago tardío, cuotas anuales y cargos por pasarse del límite. Su modelo de negocio cuenta con que la gente se equivoque. Tu trabajo es no ser esa persona.',
+        bullets: [
+          'Paga siempre tu saldo completo cada mes',
+          'Usa tu tarjeta de crédito para gastos mensuales constantes que ya tienes presupuestados',
+        ],
+      },
+      {
+        type: 'checkpoint',
+        checkpoint: {
+          question:
+            'Tienes la tarjeta de ejemplo con 22.99% de APR. ¿Qué pasa si solo pagas el pago mínimo de $35 cada mes sobre un saldo grande?',
+          options: [
+            'El interés se sigue cobrando sobre el saldo restante, así que te cuesta más con el tiempo',
+            'El saldo desaparece después de tres pagos',
+            'La compañía te perdona todo el interés como recompensa',
+            'Tu límite de crédito se duplica automáticamente',
+          ],
+          answerIndex: 0,
+          explanation:
+            'Exacto. Los pagos mínimos apenas rascan el saldo, así que ese APR del 22.99% sigue cobrando interés sobre todo lo que queda. Pagar el total cada mes es lo que convierte una tarjeta de crédito en un préstamo esencialmente gratis en lugar de uno caro.',
+        },
+      },
+      {
+        type: 'content',
+        heading: 'Para cerrar',
+        body:
+          'Hoy aprendiste que el crédito es confianza prestada, que tu puntaje de crédito se construye sobre todo pagando a tiempo y manteniendo baja la utilización, que la deuda buena ayuda a tu futuro mientras la deuda mala lo drena, y que las tarjetas de crédito solo son gratis si pagas el total. Anota lo que te quedó claro y lo que necesitas repasar. Próxima sesión: Gestión de riesgos y seguros, ¡más la actividad Cover Your Bases (cubre tus bases)!',
+      },
+    ],
+    quiz: [
+      {
+        question: '¿Qué es el crédito?',
+        options: [
+          'Dinero que el gobierno te da gratis',
+          'La capacidad de pedir dinero prestado ahora y pagarlo después, normalmente con interés',
+          'Un tipo de cuenta de ahorros',
+          'El dinero de tu cuenta de cheques',
+        ],
+        answerIndex: 1,
+        explanation:
+          'El crédito significa pedir prestado ahora y devolver después, normalmente con interés. Los prestamistas otorgan crédito basándose en la confianza de que les vas a pagar, que es exactamente lo que mide tu puntaje de crédito.',
+      },
+      {
+        question: 'Una tarjeta de crédito es un ejemplo de ¿qué tipo de crédito?',
+        options: [
+          'Crédito en cuotas',
+          'Una cuenta de débito',
+          'Crédito revolvente',
+          'Un préstamo de día de pago',
+        ],
+        answerIndex: 2,
+        explanation:
+          'Las tarjetas de crédito son crédito revolvente: tienes un límite de crédito y pagas el monto que debes cada mes (o haces pagos mínimos). El crédito en cuotas, como las hipotecas y los préstamos de auto, es una suma que se devuelve en pagos fijos antes de una fecha establecida.',
+      },
+      {
+        question: '¿En qué rango caen los puntajes de crédito FICO?',
+        options: ['De 0 a 100', 'De 100 a 1,000', 'De 1 a 10', 'De 300 a 850'],
+        answerIndex: 3,
+        explanation:
+          'Los puntajes de crédito usan el sistema FICO y van de 300 a 850. Mientras más alto tu puntaje, menos riesgoso te ves para los prestamistas, lo que significa aprobaciones de préstamos más fáciles y mejores tasas de interés.',
+      },
+      {
+        question: '¿Qué factor tiene el MAYOR impacto en tu puntaje de crédito?',
+        options: [
+          'Historial de pagos: pagar tus cuentas a tiempo (35%)',
+          'Mezcla de crédito (10%)',
+          'Solicitudes de crédito nuevo (10%)',
+          'Antigüedad del historial de crédito (15%)',
+        ],
+        answerIndex: 0,
+        explanation:
+          'El historial de pagos es el peso pesado con el 35%, seguido por la utilización del crédito con el 30%. Simplemente pagar cada cuenta a tiempo es lo más poderoso que puedes hacer por tu puntaje.',
+      },
+      {
+        question: '¿Cuál de estas se considera generalmente deuda BUENA?',
+        options: [
+          'Un préstamo de día de pago para cubrir el fin de semana',
+          'Un préstamo para moda de diseñador',
+          'Un préstamo estudiantil que aumenta tu ingreso potencial',
+          'Financiar un equipo de videojuegos que no puedes pagar',
+        ],
+        answerIndex: 2,
+        explanation:
+          'La deuda buena te ayuda a ganar dinero o crece en valor, como los préstamos estudiantiles, las hipotecas y los préstamos de negocio (manejados con responsabilidad). Los préstamos para deseos como moda y tecnología, y especialmente los préstamos de día de pago, son deuda mala.',
+      },
+      {
+        question: '¿Por qué se consideran peligrosos los préstamos de día de pago?',
+        options: [
+          'Requieren un crédito excelente para conseguirlos',
+          'Son préstamos de corto plazo con intereses altos que casi siempre te dejan con más deuda de la que tenías al empezar',
+          'Solo se pueden usar para comprar casas',
+          'Tardan demasiado en aprobarse',
+        ],
+        answerIndex: 1,
+        explanation:
+          'Los préstamos de día de pago se anuncian como ayuda rápida entre cheques de pago, pero sus intereses extremadamente altos atrapan a los prestatarios en un ciclo de volver a pedir prestado. Casi siempre te dejan peor que antes.',
+      },
+      {
+        question: '¿Cómo usas una tarjeta de crédito para que funcione como un préstamo gratis?',
+        options: [
+          'Pagando solo el pago mínimo cada mes',
+          'Llevando la tarjeta al límite para ganar el máximo de recompensas',
+          'No activando nunca la tarjeta',
+          'Pagando tu saldo completo cada mes',
+        ],
+        answerIndex: 3,
+        explanation:
+          'Si pagas tu saldo completo antes de la fecha límite, nunca se cobra interés, lo que hace que la tarjeta sea esencialmente un préstamo gratis (a veces con cashback encima). Dejar un saldo pendiente o pagar solo el mínimo es donde los costos se acumulan.',
+      },
+      {
+        question: '¿Cómo ganan la mayor parte de su dinero las compañías de tarjetas de crédito?',
+        options: [
+          'Vendiendo las tarjetas de plástico físicas',
+          'Con el interés de los saldos sin pagar más las cuotas: cargos por pago tardío, cuotas anuales y cargos por pasarse del límite',
+          'Con subvenciones del gobierno',
+          'No cobrándoles nada ni a las tiendas ni a los usuarios',
+        ],
+        answerIndex: 1,
+        explanation:
+          'Las compañías de tarjetas de crédito ganan con el interés cuando los saldos se quedan sin pagar, más los cargos por pago tardío, las cuotas anuales y los cargos por pasarse del límite. Paga el total y a tiempo, y volteas el trato a tu favor.',
+      },
+    ],
+  },
 }
 
 export default lesson
