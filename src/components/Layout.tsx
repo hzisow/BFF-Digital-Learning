@@ -18,7 +18,7 @@ function LangSwitcher() {
       aria-pressed={lang === l}
       aria-label={l === 'en' ? 'Switch to English' : 'Cambiar a español'}
       className={`rounded-md px-2 py-0.5 font-display text-xs font-bold transition ${
-        lang === l ? 'bg-white text-bff-700 shadow-sm' : 'text-slate-500 hover:text-slate-800'
+        lang === l ? 'bg-white text-bff-700 shadow-sm' : 'text-slate-600 hover:text-slate-800'
       }`}
     >
       {label}

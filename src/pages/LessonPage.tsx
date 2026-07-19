@@ -3,9 +3,32 @@ import { Link, useParams } from 'react-router-dom'
 import { getLesson } from '../content/lessons'
 import type { Lesson, LessonSection } from '../content/types'
 import VideoCheckpoint from '../components/VideoCheckpoint'
+import ReadAloud from '../components/ReadAloud'
 import { ACTIVITIES } from '../lib/activities'
+import { useLang, localizeLesson } from '../lib/i18n'
 import { saveProgress } from '../lib/progress'
 import { useStudent } from '../lib/session'
+
+// Plain-text version of a step, for the read-aloud button.
+function sectionText(section: LessonSection): string {
+  switch (section.type) {
+    case 'intro':
+      return `${section.heading}. ${section.body}`
+    case 'content':
+      return [section.heading, section.body, ...(section.bullets ?? [])].join('. ')
+    case 'terms':
+      return [
+        section.heading,
+        ...section.terms.map((t) => `${t.term}: ${t.definition}`),
+      ].join('. ')
+    case 'example':
+      return `${section.heading}. ${section.body}`
+    case 'checkpoint':
+      return `${section.checkpoint.question}. ${section.checkpoint.options.join('. ')}`
+    case 'video':
+      return `${section.heading}. ${section.body}`
+  }
+}
 
 // ---------- Answer state for checkpoints & quiz questions ----------
 
@@ -55,13 +78,17 @@ function MultipleChoice({
   state: AnswerState
   onSelect: (i: number) => void
 }) {
+  const { lang } = useLang()
+  const es = lang === 'es'
   const gotIt = state.chosen === answerIndex
   const questionId = useMemo(() => `mc-question-${(mcCounter += 1)}`, [])
 
   function optionStateLabel(i: number): string | undefined {
     if (!state.revealed) return undefined
-    if (i === answerIndex) return `${options[i]}, correct answer`
-    if (i === state.chosen) return `${options[i]}, your answer, incorrect`
+    if (i === answerIndex)
+      return `${options[i]}, ${es ? 'respuesta correcta' : 'correct answer'}`
+    if (i === state.chosen)
+      return `${options[i]}, ${es ? 'tu respuesta, incorrecta' : 'your answer, incorrect'}`
     return undefined
   }
 
@@ -98,7 +125,8 @@ function MultipleChoice({
           role="status"
           className="mt-4 rounded-xl bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-700"
         >
-          Not quite — take one more shot! <span aria-hidden="true">🎯</span>
+          {es ? 'Casi — ¡inténtalo una vez más!' : 'Not quite — take one more shot!'}{' '}
+          <span aria-hidden="true">🎯</span>
         </p>
       )}
       {state.revealed && (
@@ -113,8 +141,10 @@ function MultipleChoice({
           >
             {gotIt ? (
               <>
-                Nailed it! <span aria-hidden="true">✅</span>
+                {es ? '¡Perfecto!' : 'Nailed it!'} <span aria-hidden="true">✅</span>
               </>
+            ) : es ? (
+              `¡Buen intento! La respuesta es “${options[answerIndex]}”`
             ) : (
               `Good try! The answer is “${options[answerIndex]}”`
             )}
@@ -243,6 +273,8 @@ type Phase = 'lesson' | 'quiz' | 'results'
 
 function LessonPlayer({ lesson }: { lesson: Lesson }) {
   const { student } = useStudent()
+  const { lang, t } = useLang()
+  const loc = useMemo(() => localizeLesson(lesson, lang), [lesson, lang])
   const [phase, setPhase] = useState<Phase>('lesson')
   const [sectionIndex, setSectionIndex] = useState(0)
   const [quizIndex, setQuizIndex] = useState(0)
@@ -263,17 +295,17 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [phase, sectionIndex, quizIndex])
 
-  const totalSteps = lesson.sections.length + lesson.quiz.length
+  const totalSteps = loc.sections.length + loc.quiz.length
   const currentStep =
     phase === 'lesson'
       ? sectionIndex + 1
       : phase === 'quiz'
-        ? lesson.sections.length + quizIndex + 1
+        ? loc.sections.length + quizIndex + 1
         : totalSteps
   const percent = totalSteps > 0 ? Math.round((currentStep / totalSteps) * 100) : 100
 
-  const section = lesson.sections[sectionIndex]
-  const quizQuestion = lesson.quiz[quizIndex]
+  const section = loc.sections[sectionIndex]
+  const quizQuestion = loc.quiz[quizIndex]
 
   const canContinue =
     phase === 'lesson'
@@ -287,29 +319,31 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
         : false
 
   function finishQuiz(answers: Record<number, AnswerState>) {
-    const total = lesson.quiz.length
-    const correct = lesson.quiz.filter((q, i) => answers[i]?.chosen === q.answerIndex).length
+    const total = loc.quiz.length
+    const correct = loc.quiz.filter((q, i) => answers[i]?.chosen === q.answerIndex).length
     const pct = total > 0 ? Math.round((correct / total) * 100) : 100
     setPhase('results')
     void saveProgress(studentRef.current, lesson.slug, {
       status: 'completed',
       score: pct,
-      data: { correct, total },
+      // Per-question picks (-1 = unanswered) power the Practice page and the
+      // mentor's per-question analytics. answerIndex is language-independent.
+      data: { correct, total, answers: loc.quiz.map((_, i) => answers[i]?.chosen ?? -1) },
     })
   }
 
   function goNext() {
     if (phase === 'lesson') {
-      if (sectionIndex < lesson.sections.length - 1) {
+      if (sectionIndex < loc.sections.length - 1) {
         setSectionIndex(sectionIndex + 1)
-      } else if (lesson.quiz.length > 0) {
+      } else if (loc.quiz.length > 0) {
         setPhase('quiz')
         setQuizIndex(0)
       } else {
         finishQuiz(quizAnswers)
       }
     } else if (phase === 'quiz') {
-      if (quizIndex < lesson.quiz.length - 1) {
+      if (quizIndex < loc.quiz.length - 1) {
         setQuizIndex(quizIndex + 1)
       } else {
         finishQuiz(quizAnswers)
@@ -379,51 +413,71 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
 
   const stepLabel =
     phase === 'lesson'
-      ? `Step ${currentStep} of ${totalSteps}`
+      ? `${t('lesson.step')} ${currentStep} ${t('lesson.of')} ${totalSteps}`
       : phase === 'quiz'
-        ? `Question ${quizIndex + 1} of ${lesson.quiz.length}`
-        : 'Complete!'
+        ? `${t('lesson.questionWord')} ${quizIndex + 1} ${t('lesson.of')} ${loc.quiz.length}`
+        : t('lesson.complete')
 
   const continueLabel =
-    phase === 'lesson' && sectionIndex === lesson.sections.length - 1
-      ? 'Start the quiz'
-      : phase === 'quiz' && quizIndex === lesson.quiz.length - 1
-        ? 'See my results'
-        : 'Continue'
+    phase === 'lesson' && sectionIndex === loc.sections.length - 1
+      ? t('lesson.startQuiz')
+      : phase === 'quiz' && quizIndex === loc.quiz.length - 1
+        ? t('lesson.seeResults')
+        : t('common.continue')
+
+  const readText =
+    phase === 'lesson'
+      ? sectionText(section)
+      : phase === 'quiz' && quizQuestion
+        ? `${quizQuestion.question}. ${quizQuestion.options.join('. ')}`
+        : ''
 
   // ---------- Results ----------
 
   if (phase === 'results') {
-    const total = lesson.quiz.length
-    const correct = lesson.quiz.filter((q, i) => quizAnswers[i]?.chosen === q.answerIndex).length
+    const es = lang === 'es'
+    const total = loc.quiz.length
+    const correct = loc.quiz.filter((q, i) => quizAnswers[i]?.chosen === q.answerIndex).length
     const pct = total > 0 ? Math.round((correct / total) * 100) : 100
     const tier =
       pct === 100
-        ? 'Perfect score — you are officially a money master! 🏆'
+        ? es
+          ? '¡Puntaje perfecto — eres oficialmente un master del dinero! 🏆'
+          : 'Perfect score — you are officially a money master! 🏆'
         : pct >= 80
-          ? 'Amazing work — you really know your stuff! 🌟'
+          ? es
+            ? '¡Increíble — de verdad sabes de esto! 🌟'
+            : 'Amazing work — you really know your stuff! 🌟'
           : pct >= 60
-            ? 'Nice job! One quick review and you will have it down. 💪'
-            : 'Good effort! Skim the lesson again and retake the quiz — you have got this. 🚀'
+            ? es
+              ? '¡Bien hecho! Un repaso rápido y lo dominas. 💪'
+              : 'Nice job! One quick review and you will have it down. 💪'
+            : es
+              ? '¡Buen esfuerzo! Repasa la lección y repite el examen — tú puedes. 🚀'
+              : 'Good effort! Skim the lesson again and retake the quiz — you have got this. 🚀'
 
     return (
       <div className="mx-auto max-w-2xl px-4 py-12">
         <div className="animate-pop-in rounded-3xl bg-gradient-to-br from-bff-600 to-bff-800 p-8 text-center text-white shadow-lg">
           <p className="text-5xl" aria-hidden="true">{pct >= 80 ? '🎉' : pct >= 60 ? '👏' : '💪'}</p>
           <h1 className="mt-4 font-display text-3xl font-extrabold">
-            {lesson.title}: {pct}%
+            {loc.title}: {pct}%
           </h1>
           <div role="status">
             <p className="mt-2 text-bff-100">
-              You got {correct} of {total} questions right on the first try.
+              {es
+                ? `Acertaste ${correct} de ${total} preguntas al primer intento.`
+                : `You got ${correct} of ${total} questions right on the first try.`}
             </p>
             <p className="mt-4 font-display text-lg font-semibold">{tier}</p>
           </div>
         </div>
 
-        <h2 className="mt-10 font-display text-xl font-bold text-slate-900">Review your answers</h2>
+        <h2 className="mt-10 font-display text-xl font-bold text-slate-900">
+          {t('lesson.reviewAnswers')}
+        </h2>
         <div className="mt-4 space-y-4">
-          {lesson.quiz.map((q, i) => {
+          {loc.quiz.map((q, i) => {
             const chosen = quizAnswers[i]?.chosen ?? null
             const right = chosen === q.answerIndex
             return (
@@ -441,16 +495,16 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
                     }`}
                   >
                     <span aria-hidden="true">{right ? '✓' : '✗'}</span>{' '}
-                    {right ? 'Correct' : 'Missed'}
+                    {right ? t('lesson.correctChip') : t('lesson.missedChip')}
                   </span>
                 </div>
                 <p className="mt-3 text-sm text-slate-600">
-                  <span className="font-semibold text-slate-700">Your answer:</span>{' '}
+                  <span className="font-semibold text-slate-700">{t('lesson.yourAnswer')}</span>{' '}
                   {chosen != null ? q.options[chosen] : '—'}
                 </p>
                 {!right && (
                   <p className="mt-1 text-sm text-slate-600">
-                    <span className="font-semibold text-green-700">Correct answer:</span>{' '}
+                    <span className="font-semibold text-green-700">{t('lesson.correctAnswer')}</span>{' '}
                     {q.options[q.answerIndex]}
                   </p>
                 )}
@@ -464,15 +518,15 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
 
         <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:justify-center">
           <button type="button" onClick={retakeQuiz} className="btn-secondary">
-            Retake quiz <span aria-hidden="true">🔄</span>
+            {t('lesson.retake')} <span aria-hidden="true">🔄</span>
           </button>
           <Link to="/lessons" className="btn-ghost">
-            Back to lessons
+            {t('lesson.backToLessons')}
           </Link>
           {nextLesson && (
             <Link to={nextLesson.path} className="btn-primary">
-              Next lesson: <span aria-hidden="true">{nextLesson.emoji}</span> {nextLesson.title}{' '}
-              <span aria-hidden="true">→</span>
+              {t('lesson.nextLesson')}: <span aria-hidden="true">{nextLesson.emoji}</span>{' '}
+              {nextLesson.title} <span aria-hidden="true">→</span>
             </Link>
           )}
         </div>
@@ -488,11 +542,21 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
       <div className="sticky top-16 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
         <div className="mx-auto max-w-2xl px-4 py-3">
           <div className="flex items-center justify-between gap-3 text-xs font-semibold text-slate-500">
-            <span className="truncate">
-              <span aria-hidden="true">{lesson.emoji}</span> {lesson.title}
+            <span className="flex min-w-0 items-center gap-2">
+              <span className="truncate">
+                <span aria-hidden="true">{lesson.emoji}</span> {loc.title}
+              </span>
+              {loc.fallback && (
+                <span className="chip shrink-0 bg-amber-100 text-amber-700">
+                  {t('common.englishOnly')}
+                </span>
+              )}
             </span>
-            <span className="shrink-0">
-              {stepLabel} · {percent}%
+            <span className="flex shrink-0 items-center gap-2">
+              <span>
+                {stepLabel} · {percent}%
+              </span>
+              {readText && <ReadAloud text={readText} />}
             </span>
           </div>
           <div
@@ -523,7 +587,7 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
         ) : (
           quizQuestion && (
             <MultipleChoice
-              kicker={`Quiz · Question ${quizIndex + 1} of ${lesson.quiz.length}`}
+              kicker={`${t('lesson.quizKicker')} · ${t('lesson.questionWord')} ${quizIndex + 1} ${t('lesson.of')} ${loc.quiz.length}`}
               kickerEmoji="📝"
               question={quizQuestion.question}
               options={quizQuestion.options}
@@ -550,11 +614,11 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
         </div>
         {canContinue && (
           <p className="mt-4 text-center text-xs text-slate-500">
-            Tip: press{' '}
+            {t('lesson.enterTip')}{' '}
             <kbd className="rounded border border-slate-300 bg-slate-100 px-1 text-slate-700">
               Enter ↵
             </kbd>{' '}
-            to continue
+            {t('lesson.enterTipEnd')}
           </p>
         )}
       </div>

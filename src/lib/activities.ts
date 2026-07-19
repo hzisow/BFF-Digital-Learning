@@ -2,7 +2,7 @@
 // so new activities added here automatically appear everywhere (library,
 // admin assignment picker, progress views).
 
-export type ActivityKind = 'lesson' | 'challenge' | 'game'
+export type ActivityKind = 'lesson' | 'elective' | 'challenge' | 'game'
 
 export interface ActivityMeta {
   slug: string
@@ -83,6 +83,80 @@ export const ACTIVITIES: ActivityMeta[] = [
     path: '/challenge/bens-insurance',
     sortKey: 103,
   },
+  {
+    slug: 'paystub-detective',
+    kind: 'challenge',
+    title: 'Paystub Detective',
+    emoji: '🔍',
+    description:
+      'Three paystubs, planted errors. Find every mistake before someone loses money — it pays to check your pay.',
+    durationMin: 10,
+    path: '/challenge/paystub-detective',
+    sortKey: 104,
+  },
+  {
+    slug: 'credit-score-sim',
+    kind: 'challenge',
+    title: 'Credit Score Builder',
+    emoji: '📊',
+    description:
+      'Ten months of real-life credit decisions. Watch your score climb — or crater — with every choice.',
+    durationMin: 12,
+    path: '/challenge/credit-score',
+    sortKey: 105,
+  },
+  {
+    slug: 'scam-spotter',
+    kind: 'challenge',
+    title: 'Scam Spotter',
+    emoji: '🚨',
+    description:
+      'Eight messages hit your inbox. Some are real, some are scams. Can you spot every red flag?',
+    durationMin: 10,
+    path: '/challenge/scam-spotter',
+    sortKey: 106,
+  },
+  {
+    slug: 'smart-shopper',
+    kind: 'challenge',
+    title: 'Smart Shopper',
+    emoji: '🛒',
+    description:
+      'Six head-to-head deals where the shelf tag lies. Do the math, beat the marketing.',
+    durationMin: 8,
+    path: '/challenge/smart-shopper',
+    sortKey: 107,
+  },
+  {
+    slug: 'goal-getter',
+    kind: 'challenge',
+    title: 'Goal Getter',
+    emoji: '🎯',
+    description:
+      'Three savings goals, $200 a month, and life keeps happening. Allocate wisely and hit every deadline.',
+    durationMin: 12,
+    path: '/challenge/goal-getter',
+    sortKey: 108,
+  },
+  // Bonus elective units — off the core path, self-paced deep dives.
+  ...(
+    [
+      ['first-paycheck', 'Your First Paycheck', '🧾', 'Decode a real paystub: gross vs. net, taxes, FICA, and catching errors.', 1],
+      ['taxes-deep-dive', 'Taxes Deep-Dive', '🏛️', 'Where taxes go, how brackets really work, and why refunds happen.', 2],
+      ['paying-for-college', 'Paying for College', '🎓', 'FAFSA, grants, scholarships, loans, and how to compare offers like a pro.', 3],
+      ['entrepreneurship', 'Entrepreneurship & Side Hustles', '🚀', 'Turn a skill into income: pricing, profit, and your first business.', 4],
+      ['crypto-and-scams', 'Crypto & Modern Money Traps', '🪙', 'Crypto, hype, betting, and BNPL — spot the traps before they cost you.', 5],
+    ] as Array<[string, string, string, string, number]>
+  ).map(([slug, title, emoji, description, day]) => ({
+    slug,
+    kind: 'elective' as const,
+    title,
+    emoji,
+    description,
+    durationMin: 15,
+    path: `/lessons/${slug}`,
+    sortKey: 200 + day,
+  })),
 ]
 
 export function getActivity(slug: string): ActivityMeta | undefined {
@@ -91,6 +165,7 @@ export function getActivity(slug: string): ActivityMeta | undefined {
 
 export const KIND_LABEL: Record<ActivityKind, string> = {
   lesson: 'Lesson',
+  elective: 'Elective',
   challenge: 'Challenge',
   game: 'Game',
 }

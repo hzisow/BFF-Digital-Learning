@@ -257,6 +257,261 @@ const lesson: Lesson = {
         "Education generally boosts income, but it doesn't have to mean college. Skilled trades like plumbing and electrical work usually require certification, not a bachelor's degree — and skills and experience can contribute as much to income as education.",
     },
   ],
+  es: {
+    title: 'Cómo ganar ingresos',
+    description:
+      'Cómo empezar a generar un ingreso e interpretar todos los números que vienen con él: desde los tipos de ingreso hasta leer tu primer talón de pago.',
+    sections: [
+      {
+        type: 'intro',
+        heading: '¡Te damos la bienvenida a BFF Classroom!',
+        body:
+          '¡Llegaste a la Semana 1, Día 1! Antes de hablar de dinero, hablemos de por qué estamos aquí. La educación financiera es el conocimiento y la comprensión de los conceptos, las herramientas y las prácticas financieras que necesitas para navegar el mundo del dinero y tomar decisiones informadas. Entender las finanzas personales te ayuda a construir una relación positiva con el dinero, para que puedas gastar y ahorrar con responsabilidad. Hoy: cómo funcionan realmente los ingresos.',
+      },
+      {
+        type: 'content',
+        heading: 'Ingreso ganado vs. ingreso no ganado',
+        body:
+          'No todo el dinero llega de la misma manera. El ingreso ganado (earned income) es el dinero que recibes como pago por tu trabajo: la paga gravable de un empleado. El ingreso no ganado (unearned income) es dinero que ganas de forma pasiva, sin marcar tarjeta. En general también paga impuestos, con algunas excepciones. Saber cuál es cuál importa, porque se tratan de forma distinta a la hora de los impuestos.',
+        bullets: [
+          'El ingreso ganado incluye: salarios por hora (wages), sueldos fijos (salaries), bonos, comisiones, propinas y ganancias del trabajo por cuenta propia',
+          'El ingreso no ganado incluye: intereses de tus ahorros, dividendos de acciones, premios de lotería o casino, rentas de propiedades, herencias y regalos',
+          'Prueba rápida: ¿lo cambiaste por tu trabajo? Es ganado. ¿Te llegó de forma pasiva? Es no ganado.',
+        ],
+      },
+      {
+        type: 'terms',
+        heading: 'Tres sabores de ingreso ganado',
+        terms: [
+          {
+            term: 'Salario por hora (wages)',
+            definition:
+              'Pago basado en horas de trabajo: el formato más común para adolescentes. El pago por hora va desde el mínimo federal de $7.25 hasta cientos de dólares por hora en trabajos como el de abogado. Muchos trabajos por hora vienen de pequeños negocios, pasantías y empleos similares.',
+          },
+          {
+            term: 'Sueldo fijo (salary)',
+            definition:
+              'Pago fijado como un monto total, normalmente dividido en pagos mensuales, quincenales o semanales establecidos. Los empleados asalariados reciben la misma cantidad sin importar las horas trabajadas, a diferencia de los trabajos por hora.',
+          },
+          {
+            term: 'Comisión (commission)',
+            definition:
+              'Pago que varía según el desempeño en ventas, común para agentes, vendedores y asesores. Un agente de bienes raíces puede llevarse un porcentaje de cada venta; un vendedor de autos puede llevarse un monto fijo por cada auto vendido.',
+          },
+        ],
+      },
+      {
+        type: 'checkpoint',
+        checkpoint: {
+          question:
+            'A tu prima le pagan $15 por cada hora que trabaja en una tienda de licuados. ¿Qué tipo de ingreso es ese?',
+          options: [
+            'Un sueldo fijo: los pagos son regulares',
+            'Salario por hora (wages): ingreso ganado basado en horas trabajadas',
+            'Ingreso no ganado: los licuados cuentan como algo pasivo',
+            'Una comisión: gana por cada licuado vendido',
+          ],
+          answerIndex: 1,
+          explanation:
+            '¡Exacto! El pago basado en horas trabajadas es un salario por hora (wage), una forma clásica de ingreso ganado. Un sueldo fijo sería un monto total sin importar las horas, y una comisión dependería de cuánto vende, no de cuánto tiempo trabaja.',
+        },
+      },
+      {
+        type: 'content',
+        heading: 'Factor 1: La educación',
+        body:
+          '¿Qué decide cuánto ganas? Factor uno: la educación. En general, mientras más aprendes, más ganas: los niveles más altos de educación suelen traducirse en mayores ingresos y abren más oportunidades en el mundo de hoy. Aclaración importante, directo de nosotros: ¡esto NO significa que tengas que ir a la universidad! Los oficios, las certificaciones y las habilidades también cuentan, como verás más adelante en esta lección.',
+      },
+      {
+        type: 'content',
+        heading: 'Factor 2: La antigüedad',
+        body:
+          'La antigüedad (seniority) significa servicio continuo y prolongado en una empresa u organización: piensa en trabajar en la misma empresa por 20 años versus trabajar en 5 empresas distintas por 4 años cada una. Las personas que llevan más tiempo en un lugar tienen la mayor antigüedad, y normalmente rinde frutos. Pero hay un precio.',
+        bullets: [
+          'Mayor antigüedad generalmente trae: mejor sueldo, más prioridad para los ascensos y más días libres pagados (PTO)',
+          'El detalle: acumular antigüedad reduce tu flexibilidad',
+          'Podrías ganar más en otra empresa, u otra empresa podría ofrecerte un mejor paquete de beneficios',
+        ],
+      },
+      {
+        type: 'content',
+        heading: 'Factor 3: Habilidades y experiencia',
+        body:
+          'Los trabajadores calificados ganan, en promedio, mejores salarios que los no calificados. Todos tenemos una aptitud, una habilidad natural para hacer algo, y tomar una prueba de aptitudes puede ayudarte a identificar áreas de trabajo donde podrías brillar. La experiencia importa igual: los estudios encuentran que la experiencia laboral puede aportar al ingreso tanto como la educación. Mientras más experiencia tienes, más te pagan.',
+      },
+      {
+        type: 'content',
+        heading: 'Factor 4: Factores macroeconómicos',
+        body:
+          'Algunas cosas que afectan tu ingreso no tienen nada que ver contigo. Los factores macroeconómicos son eventos fiscales, naturales o geopolíticos influyentes que afectan ampliamente la economía de un país, como la inflación, el desempleo y el PIB. La economía se mueve en ciclos, y tu cheque de pago viaja con ella.',
+        bullets: [
+          'Las recesiones son épocas de alto desempleo; las expansiones son épocas de bajo desempleo',
+          'Durante las recesiones, las empresas tienen que reducir costos',
+          'Eso suele significar sueldos más bajos y más despidos, incluso para empleados excelentes',
+        ],
+      },
+      {
+        type: 'checkpoint',
+        checkpoint: {
+          question:
+            'Maria ha trabajado en la misma empresa por 15 años. ¿Cuál beneficio es MENOS probable que obtenga gracias a esa antigüedad?',
+          options: [
+            'Un sueldo más alto',
+            'Más días libres pagados',
+            'Más prioridad para los ascensos',
+            'Más flexibilidad para cambiar de trabajo',
+          ],
+          answerIndex: 3,
+          explanation:
+            '¡Lo lograste! La antigüedad suele traer mejor paga, más PTO y mejores oportunidades de ascenso, pero en realidad reduce la flexibilidad. Maria podría ganar más o encontrar mejores beneficios en otro lugar, e irse significa reiniciar su reloj de antigüedad desde cero.',
+        },
+      },
+      {
+        type: 'terms',
+        heading: 'Talones de pago y deducciones',
+        terms: [
+          {
+            term: 'Talón de pago (paystub)',
+            definition:
+              'Un registro en papel o digital que se entrega al empleado con cada cheque de pago. Muestra la cantidad de dinero que ganó el empleado y la cantidad que se le descontó por impuestos, costos de seguros y otras deducciones.',
+          },
+          {
+            term: 'Ingreso bruto (gross income)',
+            definition:
+              'Tu ingreso antes de las deducciones: el número grande, antes de que le quiten nada.',
+          },
+          {
+            term: 'Ingreso neto (net income)',
+            definition:
+              'Tu ingreso después de las deducciones: la cantidad que realmente te llevas a casa.',
+          },
+          {
+            term: 'Deducciones obligatorias (mandatory deductions)',
+            definition:
+              'Deducciones exigidas por ley: el impuesto federal y estatal sobre el ingreso, más los impuestos FICA, que financian el Seguro Social (Social Security) y Medicare.',
+          },
+          {
+            term: 'Deducciones voluntarias (voluntary deductions)',
+            definition:
+              'Deducciones que tú eliges, como las primas del seguro médico, las primas del seguro de vida y las contribuciones a cuentas de jubilación.',
+          },
+        ],
+      },
+      {
+        type: 'content',
+        heading: 'Anatomía de un talón de pago',
+        body:
+          "Un talón de pago real se ve intimidante, pero solo son unas cuantas zonas. Primero viene la información del período de pago (cuándo se emitió el talón y qué días laborales cubre), más tus datos de empleado, como tu lugar de trabajo, tu número de empleado y el contacto de nómina. Hay una sección para los permisos pagados (por enfermedad, asuntos de trabajo, necesidad y vacaciones) y tus códigos de estado fiscal (por ejemplo, 'M4' significa una persona casada).",
+        bullets: [
+          'Pago bruto (gross pay): todo lo ganado en el período, incluyendo el pago normal, bonos y pagos extra por credenciales como una maestría o un doctorado',
+          'Deducciones: las deducciones del empleado se retienen de tu pago bruto; las deducciones del empleador las paga el empleador, no salen de tu bolsillo',
+          'Pago neto (net pay): lo que realmente te llevas a casa después de las deducciones. Siempre es menor que el bruto, así que no te asustes',
+          'Totales actuales vs. YTD (year-to-date, acumulado del año): un resumen continuo que incluye deducciones antes de impuestos, como los fondos de pensión y jubilación',
+        ],
+      },
+      {
+        type: 'example',
+        heading: 'Ejemplo de la vida real: MrBeast',
+        body:
+          'MrBeast (Jimmy Donaldson) es quizás uno de los emprendedores más famosos del mundo en este momento, y gana su dinero de varias formas a la vez. Trabajo por cuenta propia: gana principalmente con sus propios videos de YouTube y acuerdos de marca construidos sobre su propia propiedad intelectual y digital — ingreso ganado. Ingresos de negocios: ser dueño de Feastables y MrBeast Burger son activos enormes más allá de YouTube. Regalías: gran parte de su dinero viene de los ingresos por publicidad y las regalías de sus videos.',
+      },
+      {
+        type: 'example',
+        heading: 'Ejemplo de la vida real: Mario',
+        body:
+          'Quizás el plomero más famoso del mundo, Mario y su hermano se ganan la vida sin un título universitario, representando a millones de trabajadores calificados de los oficios. Salario por hora y comisiones: como plomero, Mario gana una tarifa por hora combinada con pagos por comisión por cada trabajo. Educación: igual que los electricistas y otros trabajadores de oficios, normalmente necesita una certificación pero no una licenciatura, y puede ganar tanto o más que muchos que sí la tienen. Y todo es ingreso ganado: le pagan por su trabajo (rescatar princesas, arreglar tuberías), no por inversiones pasivas.',
+      },
+      {
+        type: 'example',
+        heading: 'Ejemplo de la vida real: LeBron James',
+        body:
+          'A lo largo de sus más de 20 años en la NBA, King James ha construido una carrera que va mucho más allá de la cancha. Patrocinios: LeBron es patrocinado por Nike, una de las marcas más grandes del mundo, generando ingresos enormes con contratos de tenis y otras empresas. Ingresos de negocios: es copropietario de negocios como Blaze Pizza y SpringHill Entertainment. Ingreso ganado: años de trabajo duro le ganaron uno de los sueldos más altos de la historia de la NBA — ¡actualmente casi $49 millones!',
+      },
+    ],
+    quiz: [
+      {
+        question: '¿Cuál de los siguientes es un ejemplo de ingreso NO ganado?',
+        options: [
+          'Propinas por atender mesas',
+          'Un bono de tu empleador',
+          'Los intereses de tu cuenta de ahorros',
+          'Ganancias por cuenta propia por cortar el césped',
+        ],
+        answerIndex: 2,
+        explanation:
+          'Los intereses de los ahorros llegan de forma pasiva: no trabajaste por esos dólares específicos, así que son ingreso no ganado. Las propinas, los bonos y las ganancias por cuenta propia son pagos por trabajo, lo que los convierte en ingreso ganado.',
+      },
+      {
+        question:
+          'Una agente de bienes raíces se lleva un porcentaje de cada casa que vende. ¿Qué tipo de pago es este?',
+        options: ['Comisión', 'Sueldo fijo', 'Salario por hora', 'Dividendos'],
+        answerIndex: 0,
+        explanation:
+          'El pago que varía según el desempeño en ventas es la comisión, común para agentes, vendedores y asesores. El salario por hora se paga por hora, el sueldo fijo es un monto total fijo, y los dividendos son ingreso no ganado que viene de las acciones.',
+      },
+      {
+        question: '¿Cuál es la diferencia principal entre un salario por hora (wage) y un sueldo fijo (salary)?',
+        options: [
+          'El salario por hora siempre es más alto que el sueldo fijo',
+          'El salario por hora se basa en las horas trabajadas; el sueldo fijo es un monto total sin importar las horas',
+          'El sueldo fijo es ingreso no ganado; el salario por hora es ingreso ganado',
+          'Solo el sueldo fijo paga impuestos',
+        ],
+        answerIndex: 1,
+        explanation:
+          'El salario por hora te paga por cada hora de trabajo, mientras que el sueldo fijo es un monto total dividido en pagos regulares sin importar cuántas horas trabajes. Ambos son ingreso ganado, y ambos pagan impuestos.',
+      },
+      {
+        question: 'Durante una recesión, ¿cuál de estas cosas es más probable que ocurra?',
+        options: [
+          'El desempleo baja y los sueldos suben',
+          'Las empresas contratan gente a gran velocidad',
+          'El salario mínimo federal sube automáticamente',
+          'Las empresas recortan costos, lo que lleva a sueldos más bajos y más despidos',
+        ],
+        answerIndex: 3,
+        explanation:
+          'Las recesiones son épocas de alto desempleo. Las empresas tienen que reducir costos, lo que a menudo significa sueldos más bajos y más despidos. Las expansiones, en cambio, son épocas de bajo desempleo.',
+      },
+      {
+        question: 'Tu ingreso bruto es de $2,000 y tu ingreso neto es de $1,550. ¿Qué explica la diferencia?',
+        options: [
+          'Un error de cálculo del departamento de nómina',
+          'Las deducciones del empleador se sumaron a tu pago',
+          'Se restaron de tu pago bruto deducciones como impuestos y seguros',
+          'Te quitaron tu ingreso no ganado',
+        ],
+        answerIndex: 2,
+        explanation:
+          'El ingreso bruto es tu pago antes de las deducciones; el ingreso neto es lo que queda después de restar deducciones como el impuesto federal y estatal sobre el ingreso, los impuestos FICA y las primas de seguros. Esa brecha de $450 son tus deducciones.',
+      },
+      {
+        question: '¿Cuál de estas es una deducción OBLIGATORIA en un talón de pago?',
+        options: [
+          'Las contribuciones a cuentas de jubilación',
+          'Los impuestos FICA para el Seguro Social y Medicare',
+          'Las primas del seguro de vida',
+          'Las primas del seguro médico',
+        ],
+        answerIndex: 1,
+        explanation:
+          'Los impuestos FICA, que financian el Seguro Social y Medicare, son exigidos por ley, junto con los impuestos federales y estatales sobre el ingreso. El seguro médico, el seguro de vida y las contribuciones para la jubilación son deducciones voluntarias que tú eliges.',
+      },
+      {
+        question:
+          'Mario se gana muy bien la vida como plomero sin un título universitario. ¿Qué muestra su historia sobre los factores que afectan el ingreso?',
+        options: [
+          'La educación nunca afecta cuánto ganas',
+          'Solo el ingreso no ganado puede hacerte rico',
+          'La antigüedad es el único factor que importa',
+          'Los trabajadores calificados de los oficios con certificaciones pueden ganar tanto o más que muchos con título universitario',
+        ],
+        answerIndex: 3,
+        explanation:
+          'La educación generalmente aumenta el ingreso, pero no tiene que significar universidad. Los oficios calificados como la plomería y la electricidad normalmente requieren una certificación, no una licenciatura, y las habilidades y la experiencia pueden aportar al ingreso tanto como la educación.',
+      },
+    ],
+  },
 }
 
 export default lesson

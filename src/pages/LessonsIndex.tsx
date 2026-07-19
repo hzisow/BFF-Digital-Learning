@@ -7,14 +7,19 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ACTIVITIES } from '../lib/activities'
 import type { ActivityMeta } from '../lib/activities'
+import { getLesson } from '../content/lessons'
+import { useLang } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
 import type { ActivityProgress } from '../lib/progress'
+import { getStreak } from '../lib/streak'
 
 // ---------- Path data ----------
 
 interface WeekTheme {
   name: string
+  nameEs: string
   blurb: string
+  blurbEs: string
   banner: string // gradient classes
   nodeBg: string
   nodeShadow: string
@@ -26,7 +31,9 @@ interface WeekTheme {
 const WEEK_THEMES: Record<number, WeekTheme> = {
   1: {
     name: 'Money In, Money Out',
+    nameEs: 'Dinero que entra, dinero que sale',
     blurb: 'Where money comes from — and where yours goes.',
+    blurbEs: 'De dónde viene el dinero — y a dónde se va el tuyo.',
     banner: 'from-bff-500 to-bff-700',
     nodeBg: 'bg-bff-500',
     nodeShadow: 'shadow-[0_5px_0_#036092]',
@@ -36,7 +43,9 @@ const WEEK_THEMES: Record<number, WeekTheme> = {
   },
   2: {
     name: 'Make It Grow',
+    nameEs: 'Hazlo crecer',
     blurb: 'Growing your money and borrowing without the traps.',
+    blurbEs: 'Haz crecer tu dinero y pide prestado sin caer en trampas.',
     banner: 'from-emerald-500 to-emerald-700',
     nodeBg: 'bg-emerald-500',
     nodeShadow: 'shadow-[0_5px_0_#047857]',
@@ -46,7 +55,9 @@ const WEEK_THEMES: Record<number, WeekTheme> = {
   },
   3: {
     name: 'Play It Smart',
+    nameEs: 'Juega con inteligencia',
     blurb: 'Protecting yourself and making smarter choices.',
+    blurbEs: 'Protégete y toma decisiones más inteligentes.',
     banner: 'from-amber-500 to-orange-600',
     nodeBg: 'bg-amber-500',
     nodeShadow: 'shadow-[0_5px_0_#b45309]',
@@ -56,7 +67,9 @@ const WEEK_THEMES: Record<number, WeekTheme> = {
   },
   4: {
     name: 'Plan & Protect',
+    nameEs: 'Planea y protege',
     blurb: 'Planning ahead and outsmarting the scammers.',
+    blurbEs: 'Planifica tu futuro y gánale a los estafadores.',
     banner: 'from-violet-500 to-violet-700',
     nodeBg: 'bg-violet-500',
     nodeShadow: 'shadow-[0_5px_0_#6d28d9]',
@@ -167,6 +180,26 @@ function NodeCircle({ node, theme }: { node: PathNode; theme: WeekTheme }) {
 
 export default function LessonsIndex() {
   const progress = useMemo(() => loadLocalProgress(), [])
+  const { lang } = useLang()
+  const es = lang === 'es'
+  const streak = useMemo(() => getStreak(), [])
+  // Missed quiz questions across all lessons — powers the Practice chip.
+  const missedCount = useMemo(() => {
+    let count = 0
+    for (const [slug, p] of Object.entries(progress)) {
+      const answers = p.data?.answers
+      const lesson = getLesson(slug)
+      if (!lesson || !Array.isArray(answers)) continue
+      answers.forEach((chosen, i) => {
+        const q = lesson.quiz[i]
+        if (q && chosen !== q.answerIndex) count++
+      })
+    }
+    return count
+  }, [progress])
+  /** Lesson title in the active language (falls back to English). */
+  const lessonTitle = (meta: ActivityMeta) =>
+    (es ? getLesson(meta.slug)?.es?.title : undefined) ?? meta.title
   const [jumpTarget, setJumpTarget] = useState<ActivityMeta | null>(null)
   const jumpDialogRef = useRef<HTMLDivElement>(null)
   const jumpTriggerRef = useRef<HTMLElement | null>(null)
@@ -244,13 +277,35 @@ export default function LessonsIndex() {
       {/* Header */}
       <div className="text-center">
         <p className="chip mx-auto bg-bff-50 text-bff-700">
-          <span aria-hidden="true">📚</span> The curriculum
+          <span aria-hidden="true">📚</span> {es ? 'El plan de estudios' : 'The curriculum'}
         </p>
         <h1 className="mt-3 font-display text-4xl font-extrabold text-slate-900">BFF Academy</h1>
         <p className="mx-auto mt-3 max-w-xl leading-relaxed text-slate-600">
-          4 weeks, 8 lessons, ~20 minutes each. Follow the path — finish a lesson to unlock
-          the next stop and claim the trophy at the end.
+          {es
+            ? '4 semanas, 8 lecciones, ~20 minutos cada una. Sigue la ruta: termina una lección para desbloquear la siguiente parada y gana el trofeo al final.'
+            : '4 weeks, 8 lessons, ~20 minutes each. Follow the path — finish a lesson to unlock the next stop and claim the trophy at the end.'}
         </p>
+        {(streak.current > 0 || missedCount > 0) && (
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+            {streak.current > 0 && (
+              <span className="chip bg-orange-100 text-orange-700">
+                <span aria-hidden="true">🔥</span>{' '}
+                {es
+                  ? `Racha de ${streak.current} ${streak.current === 1 ? 'día' : 'días'}`
+                  : `${streak.current}-day streak`}
+                {!streak.activeToday && (es ? ' — ¡practica hoy!' : ' — practice today!')}
+              </span>
+            )}
+            {missedCount > 0 && (
+              <Link to="/practice" className="chip bg-bff-100 text-bff-800 hover:bg-bff-200">
+                <span aria-hidden="true">🔁</span>{' '}
+                {es
+                  ? `Repasar ${missedCount} ${missedCount === 1 ? 'pregunta fallada' : 'preguntas falladas'}`
+                  : `Review ${missedCount} missed ${missedCount === 1 ? 'question' : 'questions'}`}
+              </Link>
+            )}
+          </div>
+        )}
         <div className="mx-auto mt-5 flex max-w-md items-center gap-3">
           <div
             role="progressbar"
@@ -271,13 +326,17 @@ export default function LessonsIndex() {
         </div>
         {allDone ? (
           <p className="mt-4 font-display text-lg font-bold text-bff-700">
-            Course complete — you legend! <span aria-hidden="true">🏆</span>
+            {es ? '¡Curso completado — leyenda!' : 'Course complete — you legend!'}{' '}
+            <span aria-hidden="true">🏆</span>
+            <Link to="/certificate" className="btn-primary mt-3 flex sm:ml-3 sm:mt-0 sm:inline-flex">
+              {es ? 'Obtener mi certificado' : 'Get my certificate'} <span aria-hidden="true">📜</span>
+            </Link>
           </p>
         ) : (
           current && (
             <Link to={current.path} className="btn-primary mt-5 inline-flex">
-              {doneCount === 0 ? 'Start Day 1' : 'Continue'}:{' '}
-              <span aria-hidden="true">{current.emoji}</span> {current.title}{' '}
+              {doneCount === 0 ? (es ? 'Empezar Día 1' : 'Start Day 1') : es ? 'Continuar' : 'Continue'}:{' '}
+              <span aria-hidden="true">{current.emoji}</span> {lessonTitle(current)}{' '}
               <span aria-hidden="true">→</span>
             </Link>
           )
@@ -302,10 +361,12 @@ export default function LessonsIndex() {
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <p className="text-xs font-bold uppercase tracking-widest text-white/90">
-                      Week {week}
+                      {es ? 'Semana' : 'Week'} {week}
                     </p>
-                    <h2 className="font-display text-xl font-extrabold">{theme.name}</h2>
-                    <p className="mt-1 text-sm text-white/90">{theme.blurb}</p>
+                    <h2 className="font-display text-xl font-extrabold">
+                      {es ? theme.nameEs : theme.name}
+                    </h2>
+                    <p className="mt-1 text-sm text-white/90">{es ? theme.blurbEs : theme.blurb}</p>
                   </div>
                   <span className="shrink-0 rounded-full bg-white/20 px-3 py-1 text-sm font-bold">
                     {weekDone}/{weekLessons.length}
@@ -336,12 +397,16 @@ export default function LessonsIndex() {
                   const label =
                     node.kind === 'trophy'
                       ? allDone
-                        ? 'Course complete!'
-                        : 'Finish every lesson'
-                      : node.meta!.title
+                        ? es
+                          ? '¡Curso completado!'
+                          : 'Course complete!'
+                        : es
+                          ? 'Termina todas las lecciones'
+                          : 'Finish every lesson'
+                      : lessonTitle(node.meta!)
                   const sub =
                     node.kind === 'lesson'
-                      ? `Day ${node.meta!.sortKey % 10} · ${node.meta!.durationMin} min`
+                      ? `${es ? 'Día' : 'Day'} ${node.meta!.sortKey % 10} · ${node.meta!.durationMin} min`
                       : ''
 
                   const circle = <NodeCircle node={node} theme={theme} />
@@ -374,7 +439,16 @@ export default function LessonsIndex() {
                           {circle}
                         </Link>
                       ) : node.kind === 'trophy' ? (
-                        circle
+                        node.state === 'done' ? (
+                          <Link
+                            to="/certificate"
+                            aria-label={es ? 'Ver mi certificado' : 'View my certificate'}
+                          >
+                            {circle}
+                          </Link>
+                        ) : (
+                          circle
+                        )
                       ) : (
                         <button
                           type="button"
@@ -459,7 +533,7 @@ export default function LessonsIndex() {
           >
             <p className="text-5xl" aria-hidden="true">{jumpTarget.emoji}</p>
             <h3 id="jump-dialog-title" className="mt-3 font-display text-xl font-bold text-slate-900">
-              Jumping ahead to {jumpTarget.title}?
+              {es ? `¿Saltando a ${lessonTitle(jumpTarget)}?` : `Jumping ahead to ${lessonTitle(jumpTarget)}?`}
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-slate-600">
               This stop comes later on the path. If your mentor assigned it — or you're just
@@ -472,7 +546,7 @@ export default function LessonsIndex() {
               {current && (
                 <Link to={current.path} className="btn-secondary w-full">
                   Take me to my next lesson (<span aria-hidden="true">{current.emoji}</span>{' '}
-                  {current.title})
+                  {lessonTitle(current)})
                 </Link>
               )}
               <button type="button" className="btn-ghost" onClick={() => setJumpTarget(null)}>
