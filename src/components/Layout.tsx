@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { Link, NavLink, Outlet } from 'react-router-dom'
 import { Logo } from './Logo'
 import { useAdmin, useStudent } from '../lib/session'
@@ -9,18 +10,43 @@ const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     isActive ? 'bg-bff-50 text-bff-700' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
   }`
 
+// Simple inline SVG flags (not emoji, so they render identically everywhere).
+const flagClass = 'h-3 w-[18px] rounded-[2px] ring-1 ring-black/10'
+
+function FlagUS() {
+  return (
+    <svg viewBox="0 0 20 14" className={flagClass} aria-hidden="true" focusable="false">
+      <rect width="20" height="14" fill="#fff" />
+      {[0, 4, 8, 12].map((y) => (
+        <rect key={y} y={y} width="20" height="2" fill="#b22234" />
+      ))}
+      <rect width="9" height="8" fill="#3c3b6e" />
+    </svg>
+  )
+}
+
+function FlagES() {
+  return (
+    <svg viewBox="0 0 20 14" className={flagClass} aria-hidden="true" focusable="false">
+      <rect width="20" height="14" fill="#c60b1e" />
+      <rect y="3.5" width="20" height="7" fill="#ffc400" />
+    </svg>
+  )
+}
+
 function LangSwitcher() {
   const { lang, setLang } = useLang()
-  const opt = (l: Lang, label: string) => (
+  const opt = (l: Lang, label: string, flag: ReactNode) => (
     <button
       type="button"
       onClick={() => setLang(l)}
       aria-pressed={lang === l}
       aria-label={l === 'en' ? 'Switch to English' : 'Cambiar a español'}
-      className={`rounded-md px-2 py-0.5 font-display text-xs font-bold transition ${
+      className={`flex items-center gap-1.5 rounded-md px-2 py-1 font-display text-xs font-bold transition ${
         lang === l ? 'bg-white text-bff-700 shadow-sm' : 'text-slate-600 hover:text-slate-800'
       }`}
     >
+      {flag}
       {label}
     </button>
   )
@@ -30,11 +56,8 @@ function LangSwitcher() {
       role="group"
       aria-label="Language / Idioma"
     >
-      <span aria-hidden="true" className="pl-1 text-sm">
-        🌐
-      </span>
-      {opt('en', 'EN')}
-      {opt('es', 'ES')}
+      {opt('en', 'EN', <FlagUS />)}
+      {opt('es', 'ES', <FlagES />)}
     </div>
   )
 }
