@@ -43,10 +43,13 @@ export default function StudentHome() {
     BACKEND_ENABLED ? null : [],
   )
   const [loadError, setLoadError] = useState<string | null>(null)
+  // true once we confirm the mentor archived (closed) this class.
+  const [classClosed, setClassClosed] = useState(false)
 
   const classroomId = student?.classroomId
+  const studentId = student?.studentId
   useEffect(() => {
-    if (!BACKEND_ENABLED || !classroomId) return
+    if (!BACKEND_ENABLED || !classroomId || !studentId) return
     let cancelled = false
     async function load() {
       const { supabase } = await import('../../lib/supabase')
@@ -54,6 +57,17 @@ export default function StudentHome() {
         if (!cancelled) setAssignments([])
         return
       }
+      // Is the class still open? An archived class should read as closed.
+      const { data: state } = await supabase.rpc('student_classroom_state', {
+        p_student_id: studentId,
+      })
+      const row = Array.isArray(state) ? state[0] : state
+      if (!cancelled && row?.archived === true) {
+        setClassClosed(true)
+        setAssignments([])
+        return
+      }
+
       const { data, error } = await supabase
         .from('assignments')
         .select('activity_slug, note, due_at')
@@ -71,7 +85,7 @@ export default function StudentHome() {
     return () => {
       cancelled = true
     }
-  }, [classroomId])
+  }, [classroomId, studentId])
 
   const allActivities = useMemo(() => [...ACTIVITIES].sort((a, b) => a.sortKey - b.sortKey), [])
   const completedCount = allActivities.filter(
@@ -89,6 +103,40 @@ export default function StudentHome() {
     if (!sure) return
     leaveClass()
     navigate('/')
+  }
+
+  // The mentor archived (closed) this class — the student can no longer use it.
+  if (classClosed) {
+    return (
+      <div className="mx-auto max-w-lg px-4 py-16">
+        <div className="card animate-pop-in text-center">
+          <p className="text-5xl" aria-hidden="true">🔒</p>
+          <h1 className="mt-4 font-display text-2xl font-bold text-slate-900">
+            This class is closed
+          </h1>
+          <p className="mt-3 leading-relaxed text-slate-600">
+            Your mentor closed <span className="font-semibold">{student.classroomName}</span>, so
+            it's no longer active. Your progress is still saved — and every lesson, game, and
+            challenge is still open to explore on your own.
+          </p>
+          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+            <Link to="/lessons" className="btn-primary">
+              Keep learning <span aria-hidden="true">📚</span>
+            </Link>
+            <button
+              type="button"
+              onClick={() => {
+                leaveClass()
+                navigate('/join')
+              }}
+              className="btn-secondary"
+            >
+              Join a different class
+            </button>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
