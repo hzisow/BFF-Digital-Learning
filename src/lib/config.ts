@@ -29,7 +29,8 @@ export const BACKEND_ENABLED = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY)
 // Public by design — safe to ship. Used by Google Identity Services to mint an
 // ID token, which we exchange with Supabase via signInWithIdToken (no redirect
 // through the supabase.co domain). Set VITE_GOOGLE_CLIENT_ID to override.
-const FALLBACK_GOOGLE_CLIENT_ID = ''
+const FALLBACK_GOOGLE_CLIENT_ID =
+  '320974823060-14u0de4f28q3n4tm59t15c30at7206o2.apps.googleusercontent.com'
 
 export const GOOGLE_CLIENT_ID: string =
   (import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined) || FALLBACK_GOOGLE_CLIENT_ID
