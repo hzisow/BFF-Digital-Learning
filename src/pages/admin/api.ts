@@ -46,6 +46,15 @@ export interface ProgressRow {
   updated_at: string
 }
 
+export interface ProfileRow {
+  id: string
+  email: string
+  full_name: string
+  chapter: string
+  approved: boolean
+  created_at: string
+}
+
 // ---------- Small utilities ----------
 
 /** Unambiguous characters only (no 0/O, 1/I) — matches game codes. */
@@ -90,6 +99,39 @@ export function useCopy(): { copied: boolean; copy: (text: string) => void } {
       })
   }, [])
   return { copied, copy }
+}
+
+// ---------- Team approval ----------
+
+/** The signed-in team member's own profile (null if not created yet). */
+export async function fetchMyProfile(uid: string): Promise<ProfileRow | null> {
+  const db = requireSupabase()
+  const { data, error } = await db
+    .from('profiles')
+    .select('*')
+    .eq('id', uid)
+    .maybeSingle()
+  if (error) throw new Error(error.message)
+  return (data as ProfileRow | null) ?? null
+}
+
+/** Pending (un-approved) team members — visible only to approved admins. */
+export async function fetchPendingAdmins(): Promise<ProfileRow[]> {
+  const db = requireSupabase()
+  const { data, error } = await db
+    .from('profiles')
+    .select('*')
+    .eq('approved', false)
+    .order('created_at', { ascending: true })
+  if (error) throw new Error(error.message)
+  return (data ?? []) as ProfileRow[]
+}
+
+/** Approve a pending member (approved admins only; enforced server-side). */
+export async function approveTeamMember(userId: string): Promise<void> {
+  const db = requireSupabase()
+  const { error } = await db.rpc('approve_team_member', { p_user_id: userId })
+  if (error) throw new Error(error.message)
 }
 
 // ---------- Classrooms ----------

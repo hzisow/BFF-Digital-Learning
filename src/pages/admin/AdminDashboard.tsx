@@ -9,11 +9,16 @@ import { useAdmin } from '../../lib/session'
 import { createSession } from '../../activities/wolf/live'
 import { BackendOffCard } from './TeamAuth'
 import {
+  approveTeamMember,
   createClassroom,
   errMsg,
   fetchClassrooms,
+  fetchMyProfile,
+  fetchPendingAdmins,
+  formatDate,
   useCopy,
   type Classroom,
+  type ProfileRow,
 } from './api'
 
 function displayName(user: User): string {
@@ -77,6 +82,11 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  // Approval gating: null = still checking, false = pending, true = approved.
+  const [approved, setApproved] = useState<boolean | null>(null)
+  const [pending, setPending] = useState<ProfileRow[]>([])
+  const [approvingId, setApprovingId] = useState<string | null>(null)
+
   // New classroom form
   const [name, setName] = useState('')
   const [school, setSchool] = useState('')
@@ -92,15 +102,38 @@ export default function AdminDashboard() {
     setLoading(true)
     setError(null)
     try {
+      // Approval status decides what the rest of the dashboard shows.
+      const profile = await fetchMyProfile(uid)
+      const isApproved = profile?.approved === true
+      setApproved(isApproved)
+      if (!isApproved) return
+
       const res = await fetchClassrooms(uid)
       setClassrooms(res.classrooms)
       setCounts(res.studentCounts)
+      try {
+        setPending(await fetchPendingAdmins())
+      } catch {
+        setPending([]) // non-fatal — the rest of the dashboard still loads
+      }
     } catch (err) {
       setError(errMsg(err))
     } finally {
       setLoading(false)
     }
   }, [uid])
+
+  async function handleApprove(row: ProfileRow) {
+    setApprovingId(row.id)
+    try {
+      await approveTeamMember(row.id)
+      setPending((prev) => prev.filter((p) => p.id !== row.id))
+    } catch (err) {
+      setError(errMsg(err))
+    } finally {
+      setApprovingId(null)
+    }
+  }
 
   useEffect(() => {
     void load()
@@ -150,6 +183,51 @@ export default function AdminDashboard() {
     }
   }
 
+  // Still checking approval status.
+  if (approved === null) {
+    return (
+      <div role="status" className="px-4 py-24 text-center text-slate-500">
+        Checking your access…
+      </div>
+    )
+  }
+
+  // Signed in, but not yet approved by a BFF admin.
+  if (approved === false) {
+    return (
+      <div className="mx-auto max-w-lg px-4 py-16">
+        <div className="card animate-pop-in text-center">
+          <div className="text-5xl" aria-hidden="true">
+            🔒
+          </div>
+          <h1 className="mt-4 font-display text-2xl font-bold text-slate-900">
+            Waiting for admin approval
+          </h1>
+          <p className="mt-3 leading-relaxed text-slate-600">
+            You're signed in as <span className="font-semibold">{adminUser.email}</span>. A BFF
+            administrator needs to approve your account before you can create classrooms and host
+            games. You'll get in as soon as they do — just check back.
+          </p>
+          <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
+            <button type="button" className="btn-primary" onClick={() => void load()}>
+              <span aria-hidden="true">↻</span> Check again
+            </button>
+            <button type="button" className="btn-ghost" onClick={() => void handleSignOut()}>
+              Sign out
+            </button>
+          </div>
+          <p className="mt-6 text-xs text-slate-400">
+            Are you a student? You don't need an account — just{' '}
+            <Link to="/join" className="font-semibold text-bff-700 hover:underline">
+              join with your class code
+            </Link>
+            .
+          </p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -170,6 +248,47 @@ export default function AdminDashboard() {
           </button>
         </div>
       </div>
+
+      {/* ---------- Pending team approvals ---------- */}
+      {pending.length > 0 && (
+        <section className="mt-8">
+          <div className="card border-amber-200 bg-amber-50">
+            <h2 className="font-display text-lg font-bold text-amber-900">
+              <span aria-hidden="true">🔔</span> Pending team approvals ({pending.length})
+            </h2>
+            <p className="mt-1 text-sm text-amber-800">
+              These people signed in and are waiting to be approved as BFF team members.
+            </p>
+            <ul className="mt-4 space-y-2">
+              {pending.map((p) => (
+                <li
+                  key={p.id}
+                  className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-200 bg-white px-4 py-3"
+                >
+                  <div className="min-w-0">
+                    <p className="font-display font-semibold text-slate-900">
+                      {p.full_name || p.email}
+                    </p>
+                    <p className="truncate text-sm text-slate-600">
+                      {p.email}
+                      {p.chapter && <> · {p.chapter}</>} · requested {formatDate(p.created_at)}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn-primary shrink-0 text-sm"
+                    onClick={() => void handleApprove(p)}
+                    disabled={approvingId === p.id}
+                    aria-busy={approvingId === p.id}
+                  >
+                    {approvingId === p.id ? 'Approving…' : 'Approve'}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       {/* ---------- Your classrooms ---------- */}
       <section className="mt-10">
