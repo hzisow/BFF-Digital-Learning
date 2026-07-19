@@ -500,8 +500,54 @@ export default function LessonsIndex() {
         })}
       </div>
 
+      {/* Bonus electives — off the core 4-week path, self-paced deep dives */}
+      <section className="mt-16">
+        <h2 className="font-display text-2xl font-bold text-slate-900">
+          <span aria-hidden="true">✨</span> {es ? 'Unidades extra' : 'Bonus electives'}
+        </h2>
+        <p className="mt-2 max-w-2xl text-slate-600">
+          {es
+            ? 'Cinco temas extra para profundizar cuando quieras — no son parte de las 4 semanas, pero cuentan para tu progreso y racha.'
+            : "Five extra deep-dives to explore anytime — they're off the 4-week path, but still count toward your progress and streak."}
+        </p>
+        <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {ACTIVITIES.filter((a) => a.kind === 'elective').map((meta) => {
+            const p = progress[meta.slug]
+            return (
+              <Link
+                key={meta.slug}
+                to={meta.path}
+                className="card group flex gap-4 transition hover:-translate-y-0.5 hover:border-bff-300 hover:shadow-md"
+              >
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-bff-50 text-2xl">
+                  <span aria-hidden="true">{meta.emoji}</span>
+                </div>
+                <div className="min-w-0">
+                  <h3 className="font-display font-bold text-slate-900 group-hover:text-bff-700">
+                    {lessonTitle(meta)}
+                  </h3>
+                  <p className="mt-1 text-sm leading-relaxed text-slate-600">{meta.description}</p>
+                  <p className="mt-2 text-xs font-semibold text-slate-500">
+                    ⏱️ ~{meta.durationMin} min
+                    {p?.status === 'completed'
+                      ? es
+                        ? ' · ¡completado! 🎉'
+                        : ' · done! 🎉'
+                      : p?.status === 'started'
+                        ? es
+                          ? ' · en progreso'
+                          : ' · in progress'
+                        : ''}
+                  </p>
+                </div>
+              </Link>
+            )
+          })}
+        </div>
+      </section>
+
       {/* Games live outside the curriculum path */}
-      <div className="card mt-14 flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-between sm:text-left">
+      <div className="card mt-16 flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-between sm:text-left">
         <div>
           <p className="font-display font-bold text-slate-900">
             <span aria-hidden="true">🐺🏠☂️</span> Looking for the games?

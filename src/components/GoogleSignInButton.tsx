@@ -4,7 +4,6 @@
 // domain — the whole thing stays on our own site.
 
 import { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { GOOGLE_CLIENT_ID } from '../lib/config'
 import { supabase } from '../lib/supabase'
 
@@ -67,7 +66,6 @@ export default function GoogleSignInButton({
   onError: (message: string) => void
 }) {
   const holderRef = useRef<HTMLDivElement>(null)
-  const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -97,9 +95,9 @@ export default function GoogleSignInButton({
             })
             if (error) {
               onError(error.message)
-              return
             }
-            navigate('/admin')
+            // On success, the auth state changes and TeamAuth redirects to
+            // /admin on its own — no manual navigation (avoids a redirect race).
           },
         })
 
@@ -125,7 +123,7 @@ export default function GoogleSignInButton({
     return () => {
       cancelled = true
     }
-  }, [navigate, onError])
+  }, [onError])
 
   // No client ID configured yet → render nothing (email sign-in still works).
   if (!GOOGLE_CLIENT_ID) return null

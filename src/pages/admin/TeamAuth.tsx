@@ -2,7 +2,7 @@
 // Students never see this — they join classes with a code, no email needed.
 
 import { useState, type FormEvent } from 'react'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { BACKEND_ENABLED, GOOGLE_CLIENT_ID } from '../../lib/config'
 import { supabase } from '../../lib/supabase'
 import { useAdmin } from '../../lib/session'
@@ -41,7 +41,6 @@ type Mode = 'signin' | 'signup'
 
 export default function TeamAuth() {
   const { adminUser, adminReady } = useAdmin()
-  const navigate = useNavigate()
 
   const [mode, setMode] = useState<Mode>('signin')
   const [fullName, setFullName] = useState('')
@@ -109,7 +108,8 @@ export default function TeamAuth() {
           password,
         })
         if (authError) throw new Error(authError.message)
-        navigate('/admin')
+        // No manual navigate: once the auth state updates, the redirect at the
+        // top of this component sends us to /admin exactly once (no bounce).
       } else {
         const { data, error: authError } = await supabase.auth.signUp({
           email: email.trim(),
@@ -117,15 +117,14 @@ export default function TeamAuth() {
           options: { data: { full_name: fullName.trim(), chapter: chapter.trim() } },
         })
         if (authError) throw new Error(authError.message)
-        if (data.session) {
-          navigate('/admin')
-        } else {
+        if (!data.session) {
           // Email confirmation is turned on for this Supabase project.
           setNotice(
             'Almost there! Check your email for a confirmation link, then come back and sign in.',
           )
           setMode('signin')
         }
+        // If a session came back, the reactive redirect handles the rest.
       }
     } catch (err) {
       setError(errMsg(err))

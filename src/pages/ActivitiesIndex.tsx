@@ -22,7 +22,10 @@ function ProgressChip({ progress }: { progress: ActivityProgress | undefined }) 
 export default function ActivitiesIndex() {
   const progress = useMemo(() => loadLocalProgress(), [])
   const activities = useMemo(
-    () => ACTIVITIES.filter((a) => a.kind !== 'lesson').sort((a, b) => a.sortKey - b.sortKey),
+    () =>
+      ACTIVITIES.filter((a) => a.kind === 'game' || a.kind === 'challenge').sort(
+        (a, b) => a.sortKey - b.sortKey,
+      ),
     [],
   )
 
