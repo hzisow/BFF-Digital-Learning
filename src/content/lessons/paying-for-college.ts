@@ -240,6 +240,242 @@ const lesson: Lesson = {
         'The rule of thumb says keep total borrowing under your expected first-year salary — for Jordan, under $48,000 — so payments stay manageable. Borrowing less is even better, but modest loans for a degree with solid earning power can be a reasonable investment.',
     },
   ],
+  es: {
+    title: 'Cómo pagar la universidad',
+    description:
+      'Aprende a reducir precios de etiqueta que dan miedo, a apilar dinero gratis antes que préstamos y a comprar universidad como la compra más inteligente de tu vida — porque podría serlo.',
+    sections: [
+      {
+        type: 'intro',
+        heading: 'La compra más grande de tu adolescencia',
+        body:
+          'La universidad puede ser una de las mejores inversiones que hagas en la vida — y una de las más caras. Pero aquí está el secreto que casi nadie te cuenta: el precio gigante de la página web es como el primer precio en un mercadillo. Casi nadie lo paga. Hoy vas a aprender cómo funciona de verdad la ayuda financiera, cómo comparar ofertas como un comprador experto y cómo asegurarte de que un título te pague de vuelta. 🎓',
+      },
+      {
+        type: 'content',
+        heading: 'Precio de etiqueta vs. precio neto',
+        body:
+          'El precio de etiqueta (oficialmente el "costo de asistencia" o cost of attendance) es el costo total publicado: matrícula, cuotas, alojamiento, comida y libros. El precio neto es lo que TÚ pagas en realidad después de restar becas y subvenciones. Estos pueden ser muy distintos — una universidad privada con un precio de etiqueta de $60,000 puede terminar más barata que una universidad estatal con etiqueta de $28,000 una vez aplicada la ayuda. Nunca taches una escuela de tu lista solo por el precio de etiqueta.',
+        bullets: [
+          'Precio de etiqueta = el costo total publicado de asistencia',
+          'Precio neto = precio de etiqueta menos el dinero gratis (subvenciones + becas)',
+          'La mayoría de las universidades tienen una "calculadora de precio neto" en su sitio web — pruébala antes de postularte',
+          'Compara universidades por el precio neto, nunca por el precio de etiqueta',
+        ],
+      },
+      {
+        type: 'content',
+        heading: 'FAFSA: el formulario que abre la bóveda',
+        body:
+          'La FAFSA — Solicitud Gratuita de Ayuda Federal para Estudiantes (Free Application for Federal Student Aid) — es LA llave que abre la mayor parte de la ayuda financiera en Estados Unidos. Tú (y un padre, madre o tutor) la llenan en línea gratis cada otoño de tu último año de preparatoria y cada año de universidad. Usa la información financiera de tu familia para calcular a qué ayuda calificas. Saltártela es como dejar un cheque de beca tirado en la banqueta: cada año quedan sin reclamar miles de millones en ayuda porque los estudiantes nunca la solicitaron.',
+        bullets: [
+          'La FAFSA es 100% GRATIS de presentar en studentaid.gov — nunca le pagues a un sitio por enviarla',
+          'Abre subvenciones federales, trabajo-estudio y préstamos estudiantiles federales',
+          'Muchos estados y universidades también la usan para otorgar su propia ayuda',
+          'Preséntala cada año, aunque creas que tu familia gana demasiado — te podrías sorprender',
+        ],
+      },
+      {
+        type: 'terms',
+        heading: 'El menú de la ayuda financiera',
+        terms: [
+          {
+            term: 'FAFSA',
+            definition:
+              'La Solicitud Gratuita de Ayuda Federal para Estudiantes (Free Application for Federal Student Aid) — el formulario gratuito del gobierno que determina tu elegibilidad para subvenciones, trabajo-estudio y préstamos federales.',
+          },
+          {
+            term: 'Subvención (grant)',
+            definition:
+              'Dinero gratis para la universidad, por lo general basado en necesidad económica (como la subvención federal Pell). Nunca lo devuelves.',
+          },
+          {
+            term: 'Beca (scholarship)',
+            definition:
+              'Dinero gratis que normalmente se otorga por mérito — calificaciones, deportes, arte, ensayos, servicio comunitario. Tampoco se devuelve, y puedes apilar muchas pequeñas.',
+          },
+          {
+            term: 'Trabajo-estudio (work-study)',
+            definition:
+              'Un programa federal que te da un empleo de medio tiempo en el campus para que ganes dinero para tus gastos mientras estás inscrito.',
+          },
+          {
+            term: 'Préstamo subsidiado (subsidized loan)',
+            definition:
+              'Un préstamo federal basado en necesidad en el que el gobierno paga los intereses mientras estás en la escuela — el préstamo más amable que puedes conseguir.',
+          },
+          {
+            term: 'Préstamo no subsidiado (unsubsidized loan)',
+            definition:
+              'Un préstamo federal disponible sin importar la necesidad, pero los intereses empiezan a crecer desde el primer día, incluso mientras sigues en clase.',
+          },
+        ],
+      },
+      {
+        type: 'checkpoint',
+        checkpoint: {
+          question:
+            '¿Cuál de estos NO tienes que devolver después de la universidad?',
+          options: [
+            'Un préstamo federal subsidiado',
+            'Un préstamo federal no subsidiado',
+            'Un préstamo de un banco privado',
+            'Una subvención Pell',
+          ],
+          answerIndex: 3,
+          explanation:
+            'Las subvenciones y las becas son dinero gratis — nunca se devuelven. Todo tipo de préstamo, por más amables que sean las condiciones, debe pagarse con intereses. Por eso el orden dorado es: primero el dinero gratis, los préstamos al final.',
+        },
+      },
+      {
+        type: 'content',
+        heading: 'El orden dorado: primero el dinero gratis',
+        body:
+          'No toda la ayuda es igual, así que los estudiantes inteligentes la toman en un orden estricto. Primero, agarra cada subvención y beca que puedas — ese dinero es gratis. Luego, toma el trabajo-estudio si te lo ofrecen; te lo ganas, pero nunca lo debes. Solo ENTONCES considera los préstamos, y hasta esos tienen un ranking: primero los préstamos federales subsidiados (el gobierno cubre tus intereses mientras estás en la escuela), segundo los préstamos federales no subsidiados (los intereses corren desde el primer día), y los préstamos privados de últimos — suelen tener tasas más altas y muchas menos protecciones.',
+        bullets: [
+          '1. Subvenciones y becas — gratis, nunca se devuelven',
+          '2. Trabajo-estudio — dinero ganado, nunca debido',
+          '3. Préstamos federales subsidiados — sin intereses mientras estás en la escuela',
+          '4. Préstamos federales no subsidiados — los intereses crecen desde el primer día',
+          '5. Préstamos privados — solo como último recurso',
+        ],
+      },
+      {
+        type: 'example',
+        heading: 'Ejemplo: el duelo de las cartas de oferta',
+        body:
+          'A Amara la aceptan en dos escuelas. La Universidad A tiene un precio de etiqueta de $32,000 y le ofrece un paquete de subvención y beca de $18,000 — precio neto: $14,000. La Universidad B tiene un precio de etiqueta de $22,000 pero le ofrece solo $5,000 en dinero gratis — precio neto: $17,000. Giro inesperado: la escuela "cara" en realidad es $3,000 más barata al año — ¡$12,000 más barata en cuatro años! Pero cuidado: la carta de la Universidad B también incluye un préstamo de $7,500 en letras grandes y amigables como parte de la "oferta". Los préstamos no son un descuento — son solo una factura con retraso. 🔍',
+      },
+      {
+        type: 'content',
+        heading: 'Leer las cartas de oferta como un experto',
+        body:
+          'Después de que te aceptan, cada universidad te envía una carta de oferta de ayuda financiera — y algunas están diseñadas con astucia para que la escuela parezca más barata de lo que es. Algunas cartas mezclan préstamos justo con las subvenciones para que la "ayuda total" se vea enorme. Tu trabajo: separar el dinero gratis del dinero prestado, y calcular tú mismo el precio neto real.',
+        bullets: [
+          'Resta SOLO las subvenciones y becas del precio de etiqueta para obtener el precio neto',
+          'Los préstamos y el trabajo-estudio no son descuentos — nunca los restes',
+          'Revisa si las becas son renovables por los cuatro años, y qué promedio (GPA) las mantiene',
+          'Pídele a cada escuela los mismos números para poder comparar peras con peras',
+        ],
+      },
+      {
+        type: 'checkpoint',
+        checkpoint: {
+          question:
+            'El precio de etiqueta de una universidad es $30,000. Tu carta de oferta incluye una beca de $12,000, $2,000 de trabajo-estudio y un préstamo de $5,500. ¿Cuál es tu precio neto real?',
+          options: [
+            '$10,500 — resta todo lo que aparece en la carta',
+            '$18,000 — resta solo la beca de $12,000',
+            '$12,500 — resta la beca y el préstamo',
+            '$30,000 — la ayuda nunca cambia el precio',
+          ],
+          answerIndex: 1,
+          explanation:
+            '¡Perfecto! Solo el dinero gratis reduce tu precio: $30,000 - $12,000 = $18,000 de precio neto. El trabajo-estudio es dinero que tendrías que ganar, y el préstamo es dinero que tendrías que devolver — ninguno de los dos es un descuento.',
+        },
+      },
+      {
+        type: 'content',
+        heading: 'La jugada maestra del colegio comunitario',
+        body:
+          'Aquí hay una ruta que le ahorra a los estudiantes decenas de miles de dólares: dos años en un colegio comunitario (a menudo alrededor de $4,000 al año de matrícula), y luego transferirte a una universidad de cuatro años para terminar tu licenciatura. Tu diploma se ve exactamente igual al de todos los demás — solo lleva el nombre de la escuela de la que te graduaste. Muchos estados incluso tienen acuerdos de transferencia garantizada con sus universidades públicas. Dos años a $4,000 en lugar de $25,000 puede significar graduarte con poca o ninguna deuda. Eso es una jugada maestra, no un plan B. 💪',
+      },
+      {
+        type: 'content',
+        heading: 'ROI: piensa como inversionista',
+        body:
+          'Un título es una inversión, así que piensa en su retorno. Investiga los salarios iniciales de las carreras que estás considerando — alguien graduado en ingeniería podría empezar en unos $75,000 mientras que algunos campos empiezan más cerca de $40,000. Ninguno está "mal", pero lo que pidas prestado debería ir acorde con tu ingreso futuro. La regla general clásica: trata de pedir prestado en total MENOS que tu salario esperado del primer año. Si esperas ganar $50,000 en el año uno, mantén el total de préstamos por debajo de $50,000 — eso suele mantener los pagos manejables. Una deuda muy por encima de ese número puede perseguirte por décadas.',
+        bullets: [
+          'Regla general: deuda estudiantil total por debajo de tu salario esperado del primer año',
+          'Busca salarios iniciales reales para las carreras y profesiones antes de pedir prestado',
+          'Una ruta de menor costo hacia la misma profesión es un mayor retorno de la inversión',
+          'Los oficios, certificados y aprendizajes también son rutas de buen ROI — la universidad es una opción, no la única',
+        ],
+      },
+      {
+        type: 'example',
+        heading: 'Ejemplo: el plan de ROI de Maya',
+        body:
+          'Maya quiere ser maestra y descubre que los salarios iniciales cerca de ella rondan los $46,000 — así que su techo para pedir prestado es $46,000, y su meta ambiciosa es mucho menos. Su plan: dos años en un colegio comunitario ($4,200 al año), luego transferirse a la universidad estatal ($11,000 al año después de una beca de transferencia renovable de $4,000). Matrícula total de cuatro años: alrededor de $30,400. Con un trabajo de medio tiempo, una subvención Pell y trabajo de verano, pide prestado apenas $15,000 en total — un tercio de su techo para pedir prestado. El mismo salón de clases, el mismo diploma, y un pago mensual de préstamo que su salario de maestra puede manejar con facilidad. 🍎',
+      },
+    ],
+    quiz: [
+      {
+        question: '¿Cuál es la diferencia entre el precio de etiqueta y el precio neto?',
+        options: [
+          'El precio de etiqueta incluye el alojamiento; el precio neto es solo la matrícula',
+          'El precio neto es el costo publicado; el precio de etiqueta es lo que pagas',
+          'El precio de etiqueta es el costo total publicado; el precio neto es lo que pagas en realidad después de subvenciones y becas',
+          'Siempre son el mismo número',
+        ],
+        answerIndex: 2,
+        explanation:
+          'El precio de etiqueta es el costo total publicado de asistencia, mientras que el precio neto resta tu dinero gratis (subvenciones y becas). Como la mayoría de los estudiantes reciben algo de ayuda, el precio neto es el número que importa al comparar escuelas.',
+      },
+      {
+        question: '¿Cuánto cuesta presentar la FAFSA, y qué desbloquea?',
+        options: [
+          'Cuesta $99 y desbloquea solo becas',
+          'Es gratis y desbloquea subvenciones federales, trabajo-estudio y préstamos estudiantiles federales',
+          'Es gratis pero solo califican las familias adineradas',
+          'Cuesta $50 y garantiza la admisión a las escuelas estatales',
+        ],
+        answerIndex: 1,
+        explanation:
+          'La FAFSA es completamente gratis en studentaid.gov y es la puerta de entrada a subvenciones federales, trabajo-estudio y préstamos federales — además de mucha ayuda estatal y universitaria. Cualquier sitio que te cobre por presentarla es una estafa.',
+      },
+      {
+        question: '¿Cuál es la diferencia clave entre los préstamos federales subsidiados y no subsidiados?',
+        options: [
+          'Los préstamos subsidiados nunca se tienen que devolver',
+          'Los préstamos no subsidiados son solo para estudiantes de posgrado',
+          'Los préstamos subsidiados no tienen límite en dólares',
+          'El gobierno paga los intereses de los préstamos subsidiados mientras estás en la escuela; los no subsidiados generan intereses desde el primer día',
+        ],
+        answerIndex: 3,
+        explanation:
+          'Ambos son préstamos federales que debes devolver, pero los préstamos subsidiados (basados en necesidad económica) no cobran intereses mientras estás inscrito porque el gobierno los cubre. Los préstamos no subsidiados empiezan a acumular intereses de inmediato.',
+      },
+      {
+        question: '¿Qué es el trabajo-estudio?',
+        options: [
+          'Un programa federal que te da un empleo de medio tiempo para ganar dinero para los gastos universitarios',
+          'Una subvención para estudiantes que prometen estudiar más',
+          'Un préstamo que devuelves trabajando después de graduarte',
+          'Un servicio de suscripción de ayuda con la tarea',
+        ],
+        answerIndex: 0,
+        explanation:
+          'El trabajo-estudio es un programa federal (que desbloquea la FAFSA) que ofrece empleos de medio tiempo, a menudo en el campus, para que los estudiantes ganen dinero mientras están inscritos. Lo ganas como salario — nunca se debe devolver, pero tampoco es un descuento.',
+      },
+      {
+        question:
+          'Universidad X: $40,000 de etiqueta con $24,000 en subvenciones. Universidad Y: $25,000 de etiqueta con $6,000 en subvenciones. ¿Cuál es más barata para asistir?',
+        options: [
+          'Universidad Y — su precio de etiqueta es más bajo',
+          'Universidad X — su precio neto es $16,000 frente a $19,000 de la Universidad Y',
+          'Cuestan lo mismo',
+          'Imposible saberlo sin los montos de los préstamos',
+        ],
+        answerIndex: 1,
+        explanation:
+          'El precio neto es lo que cuenta: la Universidad X cuesta $40,000 - $24,000 = $16,000, mientras que la Universidad Y cuesta $25,000 - $6,000 = $19,000. La escuela con la etiqueta más aterradora en realidad es $3,000 más barata al año — que es exactamente por qué nunca juzgas por el precio de etiqueta.',
+      },
+      {
+        question:
+          'Jordan espera un salario inicial de $48,000 en la carrera que eligió. Según la regla general, ¿cuál es la deuda estudiantil total máxima que debería asumir?',
+        options: [
+          'La que sea que le ofrezca la universidad',
+          'Alrededor de $96,000 — el doble de su salario está bien',
+          'Menos de $48,000 — el total de lo prestado por debajo de su salario esperado del primer año',
+          '$0 — todos los préstamos estudiantiles siempre son un error',
+        ],
+        answerIndex: 2,
+        explanation:
+          'La regla general dice mantener el total de lo prestado por debajo de tu salario esperado del primer año — para Jordan, menos de $48,000 — para que los pagos sigan siendo manejables. Pedir prestado menos es aún mejor, pero préstamos modestos para un título con buen poder de ganancia pueden ser una inversión razonable.',
+      },
+    ],
+  },
 }
 
 export default lesson
