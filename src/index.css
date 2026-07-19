@@ -4,19 +4,20 @@
 
 @layer base {
   html {
-    @apply font-body text-slate-800 antialiased;
+    @apply font-body text-ink antialiased;
   }
   body {
-    @apply bg-slate-50;
+    @apply bg-paper;
   }
   h1, h2, h3, h4 {
     @apply font-display;
+    letter-spacing: -0.02em;
   }
 
   /* Visible keyboard-focus ring on every interactive element, including the
      bare buttons/links (icon buttons, path nodes) that don't use .btn-*. */
   :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-    @apply outline-none ring-2 ring-bff-500 ring-offset-2 ring-offset-white;
+    @apply outline-none ring-2 ring-bff-500 ring-offset-2 ring-offset-paper;
     border-radius: 0.5rem;
   }
 
@@ -34,22 +35,26 @@
 }
 
 @layer components {
+  /* Editorial-fintech buttons: confident ink primary, hairline outline
+     secondary, tighter radius, no candy shadows. */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-bff-600 px-5 py-2.5 font-display font-semibold text-white shadow-sm transition hover:bg-bff-700 focus:outline-none focus:ring-2 focus:ring-bff-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-ink px-5 py-2.5 font-display font-semibold tracking-tight text-paper transition hover:bg-ink-soft focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-40;
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl border-2 border-bff-600 bg-white px-5 py-2.5 font-display font-semibold text-bff-700 transition hover:bg-bff-50 focus:outline-none focus:ring-2 focus:ring-bff-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-ink/20 bg-transparent px-5 py-2.5 font-display font-semibold tracking-tight text-ink transition hover:bg-ink/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-40;
   }
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 font-display font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-bff-400 focus-visible:ring-offset-2;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 font-display font-medium text-ink-soft transition hover:bg-ink/5 hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2;
   }
+  /* Flat card: white on paper with a hairline warm border, minimal shadow. */
   .card {
-    @apply rounded-2xl border border-slate-200 bg-white p-6 shadow-sm;
+    @apply rounded-xl border border-paper-200 bg-white p-6;
   }
   .input {
-    @apply w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-900 placeholder-slate-400 focus:border-bff-500 focus:outline-none focus:ring-2 focus:ring-bff-200;
+    @apply w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder-ink-faint/60 focus:border-bff-600 focus:outline-none focus:ring-2 focus:ring-bff-200;
   }
+  /* Understated tag, not a candy pill. */
   .chip {
-    @apply inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold;
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide;
   }
 }

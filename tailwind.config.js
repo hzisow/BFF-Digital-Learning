@@ -17,13 +17,24 @@ export default {
           900: '#0b4364',
           950: '#072b43',
         },
+        // Warm paper background + warm ink text = editorial, not cold-AI-gray.
+        paper: {
+          DEFAULT: '#faf7f2',
+          100: '#f3eee5',
+          200: '#e9e2d5',
+        },
+        ink: {
+          DEFAULT: '#1c1a17',
+          soft: '#4b463f',
+          faint: '#726b60',
+        },
         gold: {
           400: '#fbbf24',
           500: '#f59e0b',
         },
       },
       fontFamily: {
-        display: ['Poppins', 'system-ui', 'sans-serif'],
+        display: ['"Bricolage Grotesque"', 'Georgia', 'serif'],
         body: ['Inter', 'system-ui', 'sans-serif'],
       },
       keyframes: {
