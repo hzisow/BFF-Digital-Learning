@@ -6,14 +6,14 @@ import { useLang } from '../lib/i18n'
 import type { Lang } from '../lib/i18n'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-  `rounded-lg px-3 py-1.5 font-display text-sm font-semibold tracking-tight transition ${
-    isActive ? 'bg-ink/5 text-ink' : 'text-ink-soft hover:bg-ink/5 hover:text-ink'
+  `rounded-lg px-3 py-1.5 font-display text-sm font-semibold transition ${
+    isActive ? 'bg-bff-50 text-bff-700' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
   }`
 
 // Larger tap targets for the mobile dropdown.
 const mobileLinkClass = ({ isActive }: { isActive: boolean }) =>
-  `block rounded-lg px-4 py-3 font-display text-base font-semibold transition ${
-    isActive ? 'bg-ink/5 text-ink' : 'text-ink-soft hover:bg-ink/5'
+  `block rounded-xl px-4 py-3 font-display text-base font-semibold transition ${
+    isActive ? 'bg-bff-50 text-bff-700' : 'text-slate-700 hover:bg-slate-100'
   }`
 
 // Simple inline SVG flags (not emoji, so they render identically everywhere).
@@ -124,7 +124,7 @@ export default function Layout() {
       >
         Skip to main content
       </a>
-      <header className="sticky top-0 z-40 border-b border-paper-200 bg-paper/90 backdrop-blur">
+      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4">
           <Link
             to="/"
@@ -132,7 +132,7 @@ export default function Layout() {
             aria-label="BFF Classroom home"
           >
             <Logo className="h-9" />
-            <span className="hidden font-display text-lg font-bold tracking-tight text-ink sm:block">
+            <span className="hidden font-display text-lg font-bold text-bff-800 sm:block">
               BFF Classroom
             </span>
           </Link>
@@ -186,7 +186,7 @@ export default function Layout() {
           <nav
             id="mobile-menu"
             aria-label="Primary"
-            className="animate-slide-up border-t border-paper-200 bg-paper px-4 py-3 md:hidden"
+            className="animate-slide-up border-t border-slate-200 bg-white px-4 py-3 md:hidden"
           >
             <div className="flex flex-col gap-1">
               <NavLink to="/lessons" className={mobileLinkClass}>
@@ -225,15 +225,15 @@ export default function Layout() {
         <Outlet />
       </main>
 
-      <footer className="border-t border-paper-200 bg-paper-100">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-4 py-10 text-center sm:flex-row sm:justify-between sm:text-left">
+      <footer className="border-t border-slate-200 bg-white">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-4 py-8 text-center sm:flex-row sm:justify-between sm:text-left">
           <div className="flex items-center gap-3">
             <Logo className="h-8" />
             <div>
-              <p className="font-display text-sm font-bold tracking-tight text-ink">
+              <p className="font-display text-sm font-bold text-bff-800">
                 Building Financial Futures of America
               </p>
-              <p className="text-xs text-ink-faint">
+              <p className="text-xs text-slate-500">
                 Free financial literacy for every student. 501(c)(3) nonprofit.
               </p>
             </div>
@@ -242,7 +242,7 @@ export default function Layout() {
             href="https://www.bffofamerica.org"
             target="_blank"
             rel="noreferrer"
-            className="text-sm font-semibold text-bff-700 hover:text-ink"
+            className="text-sm font-semibold text-bff-600 hover:text-bff-700"
           >
             bffofamerica.org →
           </a>
