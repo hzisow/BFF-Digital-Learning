@@ -161,9 +161,14 @@ export default function AdminDashboard() {
             Your mentor dashboard — classrooms, assignments, and live games.
           </p>
         </div>
-        <button type="button" className="btn-ghost" onClick={() => void handleSignOut()}>
-          Sign out
-        </button>
+        <div className="flex items-center gap-2">
+          <Link to="/account" className="btn-ghost">
+            Account
+          </Link>
+          <button type="button" className="btn-ghost" onClick={() => void handleSignOut()}>
+            Sign out
+          </button>
+        </div>
       </div>
 
       {/* ---------- Your classrooms ---------- */}

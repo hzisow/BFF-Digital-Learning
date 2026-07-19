@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react'
-import { Link, NavLink, Outlet } from 'react-router-dom'
+import { useEffect, useState, type ReactNode } from 'react'
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { Logo } from './Logo'
 import { useAdmin, useStudent } from '../lib/session'
 import { useLang } from '../lib/i18n'
@@ -8,6 +8,12 @@ import type { Lang } from '../lib/i18n'
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `rounded-lg px-3 py-1.5 font-display text-sm font-semibold transition ${
     isActive ? 'bg-bff-50 text-bff-700' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+  }`
+
+// Larger tap targets for the mobile dropdown.
+const mobileLinkClass = ({ isActive }: { isActive: boolean }) =>
+  `block rounded-xl px-4 py-3 font-display text-base font-semibold transition ${
+    isActive ? 'bg-bff-50 text-bff-700' : 'text-slate-700 hover:bg-slate-100'
   }`
 
 // Simple inline SVG flags (not emoji, so they render identically everywhere).
@@ -66,6 +72,49 @@ export default function Layout() {
   const { student } = useStudent()
   const { adminUser } = useAdmin()
   const { t } = useLang()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const location = useLocation()
+
+  // Close the mobile menu whenever the route changes.
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [location.pathname])
+
+  const links = (
+    <>
+      <NavLink to="/lessons" className={navLinkClass}>
+        {t('nav.lessons')}
+      </NavLink>
+      <NavLink to="/activities" className={navLinkClass}>
+        {t('nav.activities')}
+      </NavLink>
+      <NavLink
+        to="/glossary"
+        className={`${navLinkClass({ isActive: false })} hidden md:inline-flex`}
+      >
+        {t('nav.glossary')}
+      </NavLink>
+      {student ? (
+        <NavLink to="/student" className={navLinkClass}>
+          <span className="hidden sm:inline">{t('nav.myClass')} · </span>
+          {student.nickname}
+        </NavLink>
+      ) : (
+        <NavLink to="/join" className={navLinkClass}>
+          {t('nav.join')}
+        </NavLink>
+      )}
+      {adminUser ? (
+        <NavLink to="/admin" className={navLinkClass}>
+          {t('nav.dashboard')}
+        </NavLink>
+      ) : (
+        <NavLink to="/team" className={navLinkClass}>
+          {t('nav.team')}
+        </NavLink>
+      )}
+    </>
+  )
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -76,45 +125,100 @@ export default function Layout() {
         Skip to main content
       </a>
       <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
-          <Link to="/" className="flex items-center gap-3" aria-label="BFF Classroom home">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4">
+          <Link
+            to="/"
+            className="flex shrink-0 items-center gap-2"
+            aria-label="BFF Classroom home"
+          >
             <Logo className="h-9" />
             <span className="hidden font-display text-lg font-bold text-bff-800 sm:block">
               BFF Classroom
             </span>
           </Link>
-          <nav className="flex items-center gap-1" aria-label="Primary">
-            <NavLink to="/lessons" className={navLinkClass}>
-              {t('nav.lessons')}
-            </NavLink>
-            <NavLink to="/activities" className={navLinkClass}>
-              {t('nav.activities')}
-            </NavLink>
-            <NavLink to="/glossary" className={`${navLinkClass({ isActive: false })} hidden md:inline-flex`}>
-              {t('nav.glossary')}
-            </NavLink>
-            {student ? (
-              <NavLink to="/student" className={navLinkClass}>
-                <span className="hidden sm:inline">{t('nav.myClass')} · </span>
-                {student.nickname}
-              </NavLink>
-            ) : (
-              <NavLink to="/join" className={navLinkClass}>
-                {t('nav.join')}
-              </NavLink>
-            )}
-            {adminUser ? (
-              <NavLink to="/admin" className={navLinkClass}>
-                {t('nav.dashboard')}
-              </NavLink>
-            ) : (
-              <NavLink to="/team" className={navLinkClass}>
-                {t('nav.team')}
-              </NavLink>
-            )}
+
+          {/* Desktop nav */}
+          <nav className="hidden items-center gap-1 md:flex" aria-label="Primary">
+            {links}
             <LangSwitcher />
           </nav>
+
+          {/* Mobile: compact language switch + hamburger */}
+          <div className="flex items-center gap-2 md:hidden">
+            <LangSwitcher />
+            <button
+              type="button"
+              onClick={() => setMenuOpen((o) => !o)}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-menu"
+              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+              className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100"
+            >
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                aria-hidden="true"
+              >
+                {menuOpen ? (
+                  <>
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                  </>
+                ) : (
+                  <>
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <line x1="3" y1="12" x2="21" y2="12" />
+                    <line x1="3" y1="18" x2="21" y2="18" />
+                  </>
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
+
+        {/* Mobile dropdown panel */}
+        {menuOpen && (
+          <nav
+            id="mobile-menu"
+            aria-label="Primary"
+            className="animate-slide-up border-t border-slate-200 bg-white px-4 py-3 md:hidden"
+          >
+            <div className="flex flex-col gap-1">
+              <NavLink to="/lessons" className={mobileLinkClass}>
+                {t('nav.lessons')}
+              </NavLink>
+              <NavLink to="/activities" className={mobileLinkClass}>
+                {t('nav.activities')}
+              </NavLink>
+              <NavLink to="/glossary" className={mobileLinkClass}>
+                {t('nav.glossary')}
+              </NavLink>
+              {student ? (
+                <NavLink to="/student" className={mobileLinkClass}>
+                  {t('nav.myClass')} · {student.nickname}
+                </NavLink>
+              ) : (
+                <NavLink to="/join" className={mobileLinkClass}>
+                  {t('nav.join')}
+                </NavLink>
+              )}
+              {adminUser ? (
+                <NavLink to="/admin" className={mobileLinkClass}>
+                  {t('nav.dashboard')}
+                </NavLink>
+              ) : (
+                <NavLink to="/team" className={mobileLinkClass}>
+                  {t('nav.team')}
+                </NavLink>
+              )}
+            </div>
+          </nav>
+        )}
       </header>
 
       <main id="main-content" className="flex-1">

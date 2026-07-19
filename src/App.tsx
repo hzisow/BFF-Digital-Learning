@@ -25,6 +25,7 @@ import WolfHost from './activities/wolf/WolfHost'
 import TeamAuth from './pages/admin/TeamAuth'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import ClassroomDetail from './pages/admin/ClassroomDetail'
+import AccountPage from './pages/admin/AccountPage'
 import NotFound from './pages/NotFound'
 
 export default function App() {
@@ -52,6 +53,7 @@ export default function App() {
         <Route path="/team" element={<TeamAuth />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/class/:id" element={<ClassroomDetail />} />
+        <Route path="/account" element={<AccountPage />} />
         <Route path="*" element={<NotFound />} />
       </Route>
       {/* Full-screen routes (no site chrome): live game screens */}
