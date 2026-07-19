@@ -257,6 +257,276 @@ const lesson: Lesson = {
         'Exactly! Public Wi-Fi at places like coffee shops and airports is not secure. Wait until you are on a trusted private network like your home Wi-Fi, or use your phone’s hotspot before entering anything sensitive.',
     },
   ],
+  es: {
+    title: 'Protección al consumidor',
+    description:
+      'Aprende a reconocer las estafas, proteger tu identidad y entender tus derechos como consumidor.',
+    sections: [
+      {
+        type: 'intro',
+        heading: 'Aquí hay algo sospechoso',
+        body:
+          '¿Cuál es el mensaje de texto, correo o anuncio más sospechoso que has visto? ¿Cómo supiste que era falso, o acaso te engañó? Los estafadores están en todas partes, y les encanta apuntar a personas de tu edad. Hoy aprenderás a detectar sus trucos, proteger tu identidad y conocer tus derechos como consumidor.',
+      },
+      {
+        type: 'content',
+        heading: 'Lo básico de la protección al consumidor',
+        body:
+          'Los niños y adolescentes son blancos comunes de las estafas digitales y el robo de identidad por sus hábitos en línea y su falta de experiencia. No es un problema pequeño: el 38% de las personas que reportaron un fraude dijeron que perdieron dinero (FTC, 2024). ¿La buena noticia? Existe todo un sistema construido para defenderte.',
+      },
+      {
+        type: 'terms',
+        heading: 'Quiénes te respaldan',
+        terms: [
+          {
+            term: 'Protección al consumidor (consumer protection)',
+            definition:
+              'Las leyes, agencias y herramientas que defienden a las personas contra estafas, fraudes y prácticas comerciales turbias.',
+          },
+          {
+            term: 'Comisión Federal de Comercio (Federal Trade Commission, FTC)',
+            definition:
+              'Agencia federal que hace cumplir las leyes antimonopolio y protege a los consumidores.',
+          },
+          {
+            term: 'Oficina para la Protección Financiera del Consumidor (Consumer Financial Protection Bureau, CFPB)',
+            definition:
+              'Agencia encargada de supervisar los productos y servicios financieros para consumidores.',
+          },
+          {
+            term: 'Better Business Bureau (BBB)',
+            definition:
+              'Una organización ante la cual los consumidores pueden reportar prácticas comerciales poco éticas.',
+          },
+        ],
+      },
+      {
+        type: 'checkpoint',
+        checkpoint: {
+          question:
+            '¿Qué organización es una agencia federal que hace cumplir las leyes antimonopolio y protege a los consumidores?',
+          options: [
+            'Better Business Bureau (BBB)',
+            'Comisión Federal de Comercio (FTC)',
+            'Servicio de Impuestos Internos (IRS)',
+            'Departamento de Vehículos Motorizados (DMV)',
+          ],
+          answerIndex: 1,
+          explanation:
+            '¡Correcto! La FTC es la agencia federal que hace cumplir las leyes antimonopolio y protege a los consumidores. La BBB también ayuda, pero es una organización para reportar negocios poco éticos, no una agencia federal.',
+        },
+      },
+      {
+        type: 'content',
+        heading: 'Estafas comunes: en línea',
+        body:
+          'Por desgracia, las estafas se encuentran casi en cualquier lugar al que vayas, ya sea fuera de línea o en línea. En internet, unos cuantos clásicos aparecen una y otra vez, y cada año son más convincentes.',
+        bullets: [
+          'Phishing: correos, textos o mensajes directos que fingen ser de bancos, maestros, servicios de paquetería y más.',
+          'Tiendas en línea falsas o sorteos en redes sociales ("¡AirPods gratis si llenas este formulario!")',
+          'Trampas de suscripción: pruebas gratis que se renuevan automáticamente sin permiso o que son extremadamente difíciles de cancelar.',
+        ],
+      },
+      {
+        type: 'content',
+        heading: 'Estafas comunes: fuera de línea',
+        body:
+          'Las estafas en línea no son el único peligro. Algunos de los trucos más viejos del mundo ocurren cara a cara, y funcionan porque abusan de tu confianza.',
+        bullets: [
+          'Fraude por afinidad (affinity fraud): cuando alguien afirma falsamente ser miembro del mismo grupo étnico, religioso, profesional o comunitario para ganarse la confianza de un posible inversionista.',
+          'Estafas de reventa de boletos: los revendedores venden boletos falsos o copiados para conciertos o juegos deportivos. Pagas en efectivo y descubres en la puerta que no son válidos.',
+        ],
+      },
+      {
+        type: 'content',
+        heading: 'Señales de alerta de estafa',
+        body:
+          'La mayoría de las estafas se delatan solas si sabes qué buscar. Guarda esta lista de señales de alerta en tu bolsillo: si un mensaje presenta aunque sea una de ellas, detente antes de tocar cualquier cosa.',
+        bullets: [
+          'Ofertas "demasiado buenas para ser verdad"',
+          'Pedir pagos con tarjetas de regalo o información personal',
+          'Urgencia ("¡Actúa ahora o tu cuenta será bloqueada!")',
+          'Mala ortografía o enlaces sospechosos',
+          'Correos con terminaciones raras, como números y letras al azar',
+          'Sitios web con extensiones de dominio raras como .xyz, .vip o .site',
+        ],
+      },
+      {
+        type: 'checkpoint',
+        checkpoint: {
+          question:
+            'Recibes un texto: "¡URGENTE: Tu paquete está retenido! Paga una cuota de $1 en los próximos 30 minutos en usps-delivery.xyz o será devuelto!" ¿Cuántas señales de alerta puedes detectar?',
+          options: [
+            'Ninguna, esto parece legítimo',
+            'Una: la cuota pequeña',
+            'Varias: urgencia, un enlace sospechoso y una extensión de dominio rara',
+            'Solo es una estafa si la cuota supera los $100',
+          ],
+          answerIndex: 2,
+          explanation:
+            '¡Buen ojo! Ese mensaje acumula varias señales de alerta: urgencia falsa con cuenta regresiva, un enlace sospechoso y un dominio .xyz raro. Las empresas reales no te presionan así. Si tienes dudas, bórralo y entra tú mismo al sitio web oficial.',
+        },
+      },
+      {
+        type: 'content',
+        heading: 'El robo de identidad',
+        body:
+          'El robo de identidad es cuando alguien roba tu información personal, como tu nombre, tu número de Seguro Social o tus datos bancarios, para cometer fraude. Suele comenzar con pequeños errores que son fáciles de evitar una vez que los conoces.',
+        bullets: [
+          'No triturar información sensible (como los estados de cuenta del banco)',
+          'Hacer clic en enlaces falsos',
+          'Compartir información personal en redes sociales',
+          'Contraseñas débiles o repetidas',
+          'Dispositivos perdidos o robados',
+        ],
+      },
+      {
+        type: 'content',
+        heading: 'Protégete: S.H.I.E.L.D.',
+        body:
+          'Para protegerte del robo de identidad, recuerda el acrónimo S.H.I.E.L.D. (que en inglés significa "escudo"). Seis hábitos, un escudo entre tú y los estafadores.',
+        bullets: [
+          'S - Secure your passwords (asegura tus contraseñas): usa contraseñas fuertes y únicas para cada cuenta, con mayúsculas, minúsculas, números y símbolos. Evita opciones obvias como tu nombre o "123456". Considera un administrador de contraseñas, ¡y no las guardes todas en tu app de Notas!',
+          'H - Hide your personal info (esconde tu información personal): no publiques detalles privados como tu cumpleaños, dirección, nombre de tu escuela o número de teléfono en redes sociales públicas. Los estafadores pueden usarlos para responder preguntas de seguridad o hacerse pasar por ti.',
+          'I - Ignore suspicious messages (ignora los mensajes sospechosos): si un texto, correo o mensaje directo extraño te pide dinero o información personal, o dice "¡Haz clic aquí rápido!", solo bórralo. No respondas y no hagas clic. Las empresas reales no piden información sensible de esta manera.',
+          'E - Enable 2FA (activa la autenticación de dos factores): la autenticación de dos factores requiere dos formas de identificación para entrar a tus cuentas, como un código enviado a tu teléfono. Aunque alguien tenga tu contraseña, se queda afuera.',
+          'L - Lock your devices (bloquea tus dispositivos): usa siempre un código, huella digital o reconocimiento facial en tu teléfono, tableta y laptop. Si un dispositivo se pierde o te lo roban, tu información queda a salvo de extraños.',
+          'D - Do not shop on public Wi-Fi (no compres en Wi-Fi público): el Wi-Fi de cafeterías y aeropuertos no es seguro. Nunca ingreses datos de tarjetas ni contraseñas en él. Espera a una red privada de confianza, como la de tu casa, o usa el hotspot de tu teléfono.',
+        ],
+      },
+      {
+        type: 'checkpoint',
+        checkpoint: {
+          question: '¿Qué hace la autenticación de dos factores (2FA)?',
+          options: [
+            'Duplica automáticamente la fuerza de tu contraseña',
+            'Requiere dos formas de identificación para entrar a una cuenta, como una contraseña más un código enviado a tu teléfono',
+            'Permite que dos personas compartan una cuenta de forma segura',
+            'Bloquea todos los correos sospechosos antes de que te lleguen',
+          ],
+          answerIndex: 1,
+          explanation:
+            '¡Exacto! La 2FA agrega un paso extra, como un código enviado por texto a tu teléfono, además de tu contraseña. Aunque un estafador robe tu contraseña, no puede entrar. Es una de las mejoras de seguridad más fáciles que puedes hacer hoy mismo.',
+        },
+      },
+      {
+        type: 'example',
+        heading: 'Actividad: ¡Vamos de phishing!',
+        body:
+          'Es hora de pensar como un estafador (para poder vencerlos). En grupos pequeños, creen su mejor mensaje falso de phishing: un correo, un texto o un mensaje directo en redes sociales. Elijan una identidad falsa como Amazon, USPS, Netflix o el IRS. Escojan una carnada: una alerta de inicio de sesión sospechoso, una entrega perdida o un premio gratis. Sean creativos pero manténganlo apropiado, y luego preséntenlo para ver si la clase puede detectar las señales de alerta.',
+      },
+      {
+        type: 'content',
+        heading: 'Gracias de parte de BFF Academy',
+        body:
+          '¡Así concluye BFF Academy! Gracias por sacar tiempo de tus semanas ocupadas para aprender con BFF of America. Ahora sabes cómo ganar dinero, hacer un presupuesto, ahorrar, invertir, manejar el crédito, enfrentar los riesgos, planear tu futuro y protegerte de las estafas. Esperamos con gusto ver de qué eres capaz. Un último quiz: ¡pongamos a prueba tus habilidades!',
+      },
+    ],
+    quiz: [
+      {
+        question: '¿Qué es la protección al consumidor?',
+        options: [
+          'Un tipo de seguro que compras para tus compras',
+          'Las leyes, agencias y herramientas que defienden a las personas contra estafas, fraudes y prácticas comerciales turbias',
+          'Una garantía que viene con los aparatos electrónicos',
+          'Un programa del gobierno que reembolsa automáticamente a todas las víctimas de estafas',
+        ],
+        answerIndex: 1,
+        explanation:
+          '¡Correcto! La protección al consumidor es todo el sistema de leyes, agencias y herramientas, como la FTC, la CFPB y la BBB, que defiende a las personas contra estafas, fraudes y prácticas comerciales turbias.',
+      },
+      {
+        question:
+          '¿Qué agencia está encargada de supervisar los productos y servicios financieros para consumidores?',
+        options: [
+          'Better Business Bureau (BBB)',
+          'Comisión Federal de Comercio (FTC)',
+          'Oficina para la Protección Financiera del Consumidor (CFPB)',
+          'Administración del Seguro Social (SSA)',
+        ],
+        answerIndex: 2,
+        explanation:
+          '¡Esa es la CFPB! Se enfoca específicamente en los productos y servicios financieros para consumidores, mientras que la FTC se encarga de la protección al consumidor en general y de hacer cumplir las leyes antimonopolio.',
+      },
+      {
+        question:
+          'Un correo dice ser de tu banco y te pide hacer clic en un enlace y confirmar tu contraseña. ¿De qué es más probable que sea un ejemplo?',
+        options: [
+          'Phishing',
+          'Una trampa de suscripción',
+          'Fraude por afinidad',
+          'Una estafa de reventa de boletos',
+        ],
+        answerIndex: 0,
+        explanation:
+          '¡Lo clavaste! El phishing es cuando correos, textos o mensajes directos fingen ser de bancos, maestros, servicios de paquetería y más para engañarte y sacarte información. Las empresas reales no piden información sensible de esta manera.',
+      },
+      {
+        question:
+          'Una "prueba gratis" que en silencio empieza a cobrarle a tu tarjeta cada mes y es casi imposible de cancelar, ¿cómo se llama?',
+        options: [
+          'Un sorteo',
+          'Un texto de phishing',
+          'Fraude por afinidad',
+          'Una trampa de suscripción',
+        ],
+        answerIndex: 3,
+        explanation:
+          '¡Así es! Las trampas de suscripción son pruebas gratis que se renuevan automáticamente sin un permiso claro o que son extremadamente difíciles de cancelar. Siempre revisa las letras pequeñas antes de ingresar los datos de tu tarjeta para una prueba "gratis".',
+      },
+      {
+        question:
+          'Alguien finge pertenecer a tu comunidad religiosa para ganarse tu confianza y lograr que inviertas en su plan. ¿Cómo se llama esto?',
+        options: [
+          'Phishing',
+          'Fraude por afinidad',
+          'Una trampa de suscripción',
+          'Robo de identidad',
+        ],
+        answerIndex: 1,
+        explanation:
+          '¡Correcto! El fraude por afinidad es cuando alguien afirma falsamente ser miembro del mismo grupo étnico, religioso, profesional o comunitario para ganarse la confianza de un posible inversionista. Confía en las matemáticas, no solo en la membresía.',
+      },
+      {
+        question:
+          '¿Cuál de estas es una señal de alerta de que un mensaje podría ser una estafa?',
+        options: [
+          'Viene de un dominio que reconoces y usas con frecuencia',
+          'Te pide pagar con tarjetas de regalo',
+          'No tiene enlaces ni archivos adjuntos',
+          'Llega durante el horario laboral',
+        ],
+        answerIndex: 1,
+        explanation:
+          '¡Sí! Pedir pagos con tarjetas de regalo es una señal de alerta clásica de estafa, junto con la urgencia, las ofertas "demasiado buenas para ser verdad", la mala ortografía, los enlaces sospechosos y las extensiones de dominio raras como .xyz o .vip. Ninguna empresa real exige tarjetas de regalo.',
+      },
+      {
+        question: 'En el acrónimo S.H.I.E.L.D., ¿qué significa la "L"?',
+        options: [
+          'Log out (cierra sesión en cada sitio web)',
+          'Limit (limita tu tiempo de pantalla)',
+          'Lock (bloquea tus dispositivos)',
+          'Leave (abandona las redes sociales)',
+        ],
+        answerIndex: 2,
+        explanation:
+          '¡Correcto! La L es de Lock your devices (bloquea tus dispositivos): usa siempre un código, huella digital o reconocimiento facial en tu teléfono, tableta y laptop para que tu información quede a salvo si un dispositivo se pierde o te lo roban.',
+      },
+      {
+        question:
+          '¿Por qué debes evitar ingresar datos de tarjetas o contraseñas en el Wi-Fi público?',
+        options: [
+          'El Wi-Fi público es demasiado lento para pagos seguros',
+          'El Wi-Fi público no es seguro, así que extraños podrían capturar tu información sensible',
+          'Las tiendas cobran cuotas extra por compras hechas en Wi-Fi público',
+          'El Wi-Fi público comparte automáticamente tu historial con el dueño de la red',
+        ],
+        answerIndex: 1,
+        explanation:
+          '¡Exacto! El Wi-Fi público de lugares como cafeterías y aeropuertos no es seguro. Espera a estar en una red privada de confianza, como el Wi-Fi de tu casa, o usa el hotspot de tu teléfono antes de ingresar cualquier dato sensible.',
+      },
+    ],
+  },
 }
 
 export default lesson

@@ -298,6 +298,300 @@ const lesson: Lesson = {
         'Each year, compounding pays interest on a bigger balance, so growth accelerates the longer you stay invested. That is the time value of money in action, and it is why starting young is such an advantage.',
     },
   ],
+  es: {
+    title: 'Ahorro e inversión',
+    description:
+      'Cómo construir riqueza con el tiempo, poner tu dinero en los lugares correctos y entender el poder del tiempo en el crecimiento compuesto.',
+    sections: [
+      {
+        type: 'intro',
+        heading: 'Construir riqueza con el tiempo',
+        body:
+          'Calentamiento rápido: ¿qué es algo grande que te gustaría poder pagar algún día, y cuánto tiempo crees que te tomaría ahorrar para conseguirlo? ¿Un auto? ¿La universidad? ¿Un viaje? Mantén esa meta en mente, porque hoy se trata de cómo llegar ahí de verdad. Veremos ahorrar vs. invertir, la magia del interés compuesto y dónde poner tu dinero.',
+      },
+      {
+        type: 'content',
+        heading: 'Ahorrar vs. invertir: ¡no son lo mismo!',
+        body:
+          'Al contrario de lo que mucha gente cree, ahorrar e invertir no son lo mismo. Ahorrar significa apartar dinero en un lugar seguro para necesidades de corto plazo o emergencias, como guardar efectivo en una cuenta de ahorros para un teléfono nuevo. No hay riesgo de perder ese dinero. Invertir significa poner dinero en activos con la meta de que crezca a largo plazo, como comprar acciones o fondos mutuos para el retiro.',
+        bullets: [
+          'Ahorrar: riesgo bajo, rendimiento bajo, ideal para emergencias y metas de corto plazo',
+          'Invertir: riesgo medio a alto, rendimiento más alto, ideal para metas de largo plazo',
+          'Incluso hay ramas de la inversión, como el day-trading, que sigue los patrones diarios de la bolsa de valores',
+        ],
+      },
+      {
+        type: 'checkpoint',
+        checkpoint: {
+          question:
+            'Sean está en primer grado. Sus padres apartan dinero de forma constante para pagar su educación dentro de muchos años. ¿Esto es ahorrar o invertir?',
+          options: [
+            'Ahorrar, porque están siendo cuidadosos',
+            'Invertir, porque es dinero destinado a crecer a largo plazo para una meta lejana',
+            'Ninguna de las dos, porque Sean es demasiado pequeño',
+            'Ambas son exactamente lo mismo',
+          ],
+          answerIndex: 1,
+          explanation:
+            '¡Bien pensado! Como la educación de Sean está a muchos años de distancia, el dinero apartado para ella busca crecer a largo plazo, y eso lo convierte en inversión. El ahorro es para necesidades de corto plazo o emergencias. Y recuerda: ¡ahorrar e invertir definitivamente no son lo mismo!',
+        },
+      },
+      {
+        type: 'terms',
+        heading: 'Interés, APR e interés compuesto',
+        terms: [
+          {
+            term: 'Interés (interest)',
+            definition:
+              'La tasa que se paga por el dinero depositado. Por ejemplo, un interés del 3% sobre un depósito de $1,000 te gana $30.',
+          },
+          {
+            term: 'APR (Annual Percentage Rate, tasa de porcentaje anual)',
+            definition: 'El interés expresado como una tasa anual.',
+          },
+          {
+            term: 'Interés compuesto (compound interest)',
+            definition:
+              'Interés que se gana sobre el interés. Tu dinero crece más y más cada año, lo que lo convierte en una de las formas más fáciles de construir riqueza.',
+          },
+          {
+            term: 'Valor del dinero en el tiempo (time value of money)',
+            definition:
+              'La idea de que un dólar vale más ahora que en el futuro, por la inflación y por la posibilidad de empezar a ganar interés desde hoy.',
+          },
+        ],
+      },
+      {
+        type: 'example',
+        heading: 'El interés compuesto en acción: conoce a Joe',
+        body:
+          'Joe gana 5% APR sobre su depósito de $10,000. Año 1: $10,000 x 1.05 = $10,500, una ganancia de $500. Año 2: $10,500 x 1.05 = $11,025, una ganancia de $525. Año 3: $11,025 x 1.05 = $11,576.25, una ganancia de $551.25. ¿Notas cómo la ganancia de cada año es mayor que la del anterior? Eso es el interés compuesto: interés que gana interés. Y Joe no movió ni un dedo.',
+      },
+      {
+        type: 'content',
+        heading: 'La clave del interés compuesto es el tiempo',
+        body:
+          'Mientras más tiempo tengas, más dinero puedes ganar. Por eso empezar joven es básicamente un superpoder. Aquí tienes dos estrategias que hacen que el interés compuesto trabaje para ti de forma automática.',
+        bullets: [
+          'Págate a ti primero (Pay Yourself First): toma una pequeña parte de cada cheque de pago e inviértela antes de gastar en cualquier otra cosa (¡recuerda la regla 50/30/20!)',
+          'Promedio de costo en dólares (Dollar Cost Averaging, DCA): compra un monto fijo en dólares de una acción de forma constante, como comprar $50 de AMZN cada mes, sin importar el precio',
+        ],
+      },
+      {
+        type: 'checkpoint',
+        checkpoint: {
+          question:
+            'Joe deposita $10,000 al 5% APR con interés compuesto. ¿Por qué gana MÁS de $500 en el año 2?',
+          options: [
+            'El banco se siente generoso en el año 2',
+            'Su APR se duplica automáticamente cada año',
+            'Gana interés sobre su depósito original más el interés del año 1',
+            'No gana más; el interés compuesto paga la misma cantidad cada año',
+          ],
+          answerIndex: 2,
+          explanation:
+            '¡Exacto! Después del año 1, el saldo de Joe es de $10,500, así que el 5% del año 2 se aplica a ese número más grande, ganándole $525 en lugar de $500. El interés que gana interés es todo el truco de magia del interés compuesto, y crece como bola de nieve mientras más tiempo lo dejes quieto.',
+        },
+      },
+      {
+        type: 'video',
+        heading: 'Mira el video: El interés compuesto en acción',
+        body:
+          '¿Quieres ver las matemáticas detrás de la magia? Mira cómo Khan Academy explica exactamente cómo el interés compuesto crece como bola de nieve. El video está en inglés y se pausará para hacerte preguntas — ¡nada de adelantarse!',
+        videoId: 'Rm6UdfRs3gw',
+        source: 'Khan Academy',
+        questions: [
+          {
+            at: 95,
+            question:
+              'Depositas $100 al 10% de interés, compuesto anualmente. Después del año 1 tienes $110. ¿Aproximadamente cuánto tienes después del año 2?',
+            options: ['$120', '$121', '$130', '$110 — se queda igual'],
+            answerIndex: 1,
+            explanation:
+              'El 10% del año 2 se aplica a los $110 completos — no solo a tus $100 originales — así que ganas $11 y llegas a $121. Ese dólar extra es interés que gana interés, y crece cada año que pasa.',
+          },
+          {
+            at: 240,
+            question: '¿Qué hace diferente al interés compuesto del interés simple?',
+            options: [
+              'El interés compuesto solo funciona en los bancos grandes',
+              'Con el interés compuesto, ganas interés sobre tu interés — no solo sobre lo que depositaste',
+              'El interés simple crece más rápido con el tiempo',
+              'No hay diferencia, solo son nombres distintos',
+            ],
+            answerIndex: 1,
+            explanation:
+              'El interés simple paga solo sobre tu depósito original, para siempre. El compuesto paga sobre tu depósito MÁS todo lo que ya ha ganado — por eso empieza lento y luego explota con los años.',
+          },
+        ],
+      },
+      {
+        type: 'content',
+        heading: '¿Dónde deberías poner tu dinero?',
+        body:
+          'Existen varios tipos de cuentas e inversiones, y cuáles usar depende de tus metas y de tu situación financiera. (¿Recuerdas la estrategia de metas SMART? Te ayudará a decidir.) Las opciones principales incluyen acciones, fondos mutuos y ETFs, bonos, cuentas de ahorro, cuentas de retiro como los 401(k) y planes de educación. Vamos a recorrer cada una.',
+      },
+      {
+        type: 'content',
+        heading: 'Acciones',
+        body:
+          'Las acciones (stocks) son participaciones de empresas que cotizan en bolsa. Cuando compras la acción de una empresa, te conviertes en dueño parcial de esa empresa. Bastante genial, ¿no? Las acciones pueden ser de riesgo alto o bajo dependiendo de la empresa.',
+        bullets: [
+          'Un índice bursátil es un segmento hipotético del mercado de valores, como el NASDAQ o el Dow Jones',
+          'El S&P 500, un índice bursátil, promedia rendimientos de alrededor del 10% año tras año',
+          'Las ganancias de capital (capital gains) son las utilidades por vender una inversión a un precio mayor del que pagaste',
+          'Los dividendos son porciones de las utilidades que la empresa paga directamente a sus accionistas',
+        ],
+      },
+      {
+        type: 'content',
+        heading: 'Fondos mutuos, ETFs y bonos',
+        body:
+          'Los fondos mutuos y los ETFs son "canastas" de diferentes acciones. Un fondo de energía, por ejemplo, puede incluir una amplia gama de empresas de energía. Las canastas generalmente tienen menos riesgo que las acciones individuales porque te dan diversificación: repartir tus inversiones por todo el mercado. Los bonos (bonds) son una inversión de préstamo en la que le prestas dinero a una empresa o a un gobierno y a cambio recibes pagos de interés.',
+        bullets: [
+          'Los fondos mutuos son administrados por un gestor profesional de fondos, pero cobran una cuota anual',
+          'Los ETFs no cobran cuota anual, pero no tienen administración profesional',
+          'Los bonos vienen en tipos como corporativos, del tesoro y municipales',
+          'Los bonos tienen calificaciones de crédito; los bonos riesgosos pueden caer en impago (default), es decir, que el prestatario no devuelve su deuda',
+        ],
+      },
+      {
+        type: 'content',
+        heading: 'Cuentas de ahorro, cuentas de retiro y planes 529',
+        body:
+          'Las cuentas de ahorro son cuentas bancarias para el dinero que no planeas gastar de inmediato. Normalmente limitan los retiros mensuales, pero a cambio te pagan interés compuesto. Para el retiro, los 401(k) (patrocinados por el empleador) y las IRA (no patrocinadas por el empleador) invierten en el mercado contribuciones mensuales de tu cheque de pago. Y los planes 529 son cuentas de ahorro para la universidad que crecen con el tiempo mediante una inversión constante.',
+        bullets: [
+          'Las cuentas de ahorro de alto rendimiento (High-Yield Savings Accounts, HYSAs) promedian 4-5% APR, mientras que las cuentas de ahorro tradicionales promedian apenas 0.1-0.3% APR',
+          'Los 401(k) e IRA tradicionales tienen impuestos diferidos: contribuyes dólares antes de impuestos y luego pagas impuestos al retirar',
+          'Los 401(k) e IRA Roth lo invierten: pagas con dólares después de impuestos, pero los retiros no pagan impuestos',
+          'Puedes abrir un plan 529 en cualquier momento, pero el dinero que no se usa para educación recibe un impuesto del 10%, que es muchísimo',
+        ],
+      },
+      {
+        type: 'checkpoint',
+        checkpoint: {
+          question:
+            'Quieres invertir, pero las acciones individuales te parecen demasiado riesgosas. ¿Qué opción reparte tu dinero entre muchas empresas a la vez?',
+          options: [
+            'Un préstamo de día de pago (payday loan)',
+            'Una sola acción de una sola empresa',
+            'Una cuenta de ahorros tradicional',
+            'Un fondo mutuo o un ETF',
+          ],
+          answerIndex: 3,
+          explanation:
+            '¡Lo lograste! Los fondos mutuos y los ETFs son "canastas" de muchas acciones que te dan diversificación, la cual reparte tus inversiones por todo el mercado y baja tu riesgo comparado con apostarlo todo a una sola empresa. Los gestores de fondos manejan los fondos mutuos por una cuota; los ETFs se saltan la cuota y el gestor.',
+        },
+      },
+      {
+        type: 'example',
+        heading: '¡El lobo de Wall Street! (Juego de clase)',
+        body:
+          'En clase, esta lección viene con un juego. Recibes un presupuesto de $1,000 para "invertir" en 3 acciones de tu elección, decidiendo cuántas participaciones de cada una comprar según su desempeño pasado. Al final de la presentación, todos revisan cómo les fue a sus elecciones y suman sus ganancias (o pérdidas). Es una forma divertida y sin riesgo de sentir cómo son las decisiones de inversión reales: analizar el desempeño, diversificar y vivir con los resultados.',
+      },
+      {
+        type: 'content',
+        heading: 'Para cerrar',
+        body:
+          'Las grandes ideas de hoy: ahorrar es seguro y de corto plazo, invertir es más riesgoso pero hace crecer tu dinero a largo plazo, y el interés compuesto más el tiempo es el combo más fácil que existe para construir riqueza. Págate a ti primero, diversifica y elige la cuenta según la meta. Anota un resumen rápido de lo que te quedó claro y lo que quieres repasar. Próxima sesión: ¡Crédito y deuda!',
+      },
+    ],
+    quiz: [
+      {
+        question: '¿Cuál es la diferencia principal entre ahorrar e invertir?',
+        options: [
+          'Ahorrar es poner dinero en un lugar seguro para necesidades de corto plazo; invertir es poner dinero en activos para que crezca a largo plazo',
+          'Ahorrar gana rendimientos más altos que invertir',
+          'Invertir no tiene riesgo, mientras que ahorrar es riesgoso',
+          'Son lo mismo con nombres diferentes',
+        ],
+        answerIndex: 0,
+        explanation:
+          'Ahorrar es de bajo riesgo y bajo rendimiento, perfecto para emergencias y metas de corto plazo. Invertir conlleva un riesgo medio a alto pero ofrece rendimientos más altos, lo que lo convierte en la herramienta para metas de largo plazo como el retiro.',
+      },
+      {
+        question:
+          'Joe deposita $10,000 al 5% APR con interés compuesto. ¿Aproximadamente cuánto tiene después de 2 años?',
+        options: ['$10,500', '$11,000', '$11,025', '$12,000'],
+        answerIndex: 2,
+        explanation:
+          'Año 1: $10,000 x 1.05 = $10,500. Año 2: $10,500 x 1.05 = $11,025. El interés compuesto significa que el año 2 gana interés sobre el interés del año 1, y por eso la ganancia crece de $500 a $525.',
+      },
+      {
+        question: '¿Qué significa "Págate a ti primero" (Pay Yourself First)?',
+        options: [
+          'Cómprate un gusto antes de pagar cualquier cuenta',
+          'Toma una pequeña parte de cada cheque de pago e inviértela antes de gastar en cualquier otra cosa',
+          'Paga todas tus deudas antes de siquiera ahorrar',
+          'Pídele a tu empleador que te pague antes que a tus compañeros',
+        ],
+        answerIndex: 1,
+        explanation:
+          'Págate a ti primero significa apartar una parte de cada cheque de pago para ahorrar e invertir antes de gastar un solo centavo, para que tu futuro siempre reciba su parte. Combina perfecto con la regla 50/30/20.',
+      },
+      {
+        question: '¿Qué es un dividendo?',
+        options: [
+          'La cuota que cobra cada año el gestor de un fondo mutuo',
+          'La utilidad que obtienes al vender una acción a un precio más alto',
+          'Un préstamo que le haces a un gobierno',
+          'Una porción de las utilidades de la empresa pagada directamente a los accionistas',
+        ],
+        answerIndex: 3,
+        explanation:
+          'Los dividendos son porciones de las utilidades que una empresa paga a sus accionistas. Las ganancias de capital, en cambio, son las utilidades que obtienes al vender una inversión a un precio mayor del que pagaste.',
+      },
+      {
+        question: '¿En qué se diferencia un ETF de un fondo mutuo?',
+        options: [
+          'Un ETF tiene una sola acción, mientras que un fondo mutuo tiene muchas',
+          'Un ETF no cobra cuota anual pero no tiene administración profesional; un fondo mutuo es administrado profesionalmente pero cobra una cuota',
+          'Un ETF es un tipo de bono, mientras que un fondo mutuo es un tipo de acción',
+          'Los ETFs son solo para cuentas de retiro',
+        ],
+        answerIndex: 1,
+        explanation:
+          'Ambos son "canastas" de acciones que ofrecen diversificación. El intercambio: los fondos mutuos vienen con un gestor profesional y una cuota anual, mientras que los ETFs se saltan tanto al gestor como la cuota.',
+      },
+      {
+        question:
+          '¿Qué cuenta suele ganar 4-5% APR, comparado con el 0.1-0.3% de una cuenta de ahorros tradicional?',
+        options: [
+          'Una cuenta de cheques',
+          'Un plan 529 usado para el supermercado',
+          'Una cuenta de ahorros de alto rendimiento (High-Yield Savings Account, HYSA)',
+          'Una cuenta de préstamos de día de pago',
+        ],
+        answerIndex: 2,
+        explanation:
+          'Las cuentas de ahorro de alto rendimiento promedian 4-5% APR mientras que las cuentas de ahorro tradicionales promedian apenas 0.1-0.3% APR. La misma seguridad con un interés compuesto mucho mejor, así que dónde estacionas tus ahorros realmente importa.',
+      },
+      {
+        question: '¿Cuál es la diferencia clave entre un 401(k) o IRA tradicional y uno Roth?',
+        options: [
+          'Las cuentas tradicionales son solo para maestros',
+          'Las cuentas Roth solo pueden tener bonos',
+          'Las cuentas tradicionales no pagan impuestos en absoluto',
+          'Las cuentas tradicionales usan dólares antes de impuestos y pagan impuestos al retirar; las cuentas Roth usan dólares después de impuestos y no pagan impuestos al retirar',
+        ],
+        answerIndex: 3,
+        explanation:
+          'Los 401(k) e IRA tradicionales tienen impuestos diferidos: contribuyes antes de impuestos ahora y pagas impuestos cuando retiras. Las versiones Roth lo invierten: pagas los impuestos del dinero ahora y retiras libre de impuestos después.',
+      },
+      {
+        question: '¿Por qué el tiempo es tan importante para el interés compuesto?',
+        options: [
+          'Los bancos solo pagan interés a los clientes mayores',
+          'Mientras más tiempo se compone tu dinero, más interés gana interés, así que las ganancias crecen cada año',
+          'Las acciones solo se venden durante ciertos años',
+          'La inflación hace que tu dinero valga más con el tiempo',
+        ],
+        answerIndex: 1,
+        explanation:
+          'Cada año, el interés compuesto paga interés sobre un saldo más grande, así que el crecimiento se acelera mientras más tiempo te mantengas invertido. Ese es el valor del dinero en el tiempo en acción, y es la razón por la que empezar joven es una ventaja tan grande.',
+      },
+    ],
+  },
 }
 
 export default lesson

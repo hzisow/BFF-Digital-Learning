@@ -256,6 +256,258 @@ const lesson: Lesson = {
         'Investing is often the smarter financial move, but as the tariff twist showed, there is always a risk of losing money. Smart deciders weigh both risk and reward.',
     },
   ],
+  es: {
+    title: 'Toma de decisiones financieras',
+    description:
+      'Aprende a evaluar tus opciones financieras usando el costo de oportunidad, la comparación de precios y otras herramientas para tomar decisiones.',
+    sections: [
+      {
+        type: 'intro',
+        heading: 'Cada elección tiene un precio',
+        body:
+          'Tomas docenas de decisiones cada día: qué comer, qué comprar, qué dejar pasar. Hoy aprenderás las herramientas que convierten un "bueno, supongo que lo compro" en una decisión inteligente y segura. Al final, estarás evaluando opciones como todo un profesional, y tu billetera del futuro te lo agradecerá.',
+      },
+      {
+        type: 'content',
+        heading: 'Calentamiento: el dilema de los $50',
+        body:
+          'Imagina esto: te ofrecen $50 por cuidar niños esta noche, pero tus amigos van a un concierto que no te quieres perder. ¿Qué harías y por qué? Aquí no hay respuesta incorrecta, pero fíjate en algo: elijas la opción que elijas, renuncias a la otra. Ese intercambio tiene un nombre, y es nuestra primera gran idea.',
+      },
+      {
+        type: 'content',
+        heading: 'El costo de oportunidad',
+        body:
+          'Cada elección viene con un intercambio, sobre todo cuando se trata de dinero. El costo de oportunidad es el valor de aquello a lo que renuncias cuando eliges una cosa en lugar de otra. Toda decisión tiene un costo. Por ejemplo, el costo de oportunidad de comprar un carro nuevo es el dinero extra que habrías ahorrado comprando uno usado. No puedes tenerlo todo, así que las decisiones inteligentes significan sopesar todas tus opciones y analizar los costos y beneficios de cada una.',
+      },
+      {
+        type: 'checkpoint',
+        checkpoint: {
+          question:
+            'Gastas $60 en boletos para un concierto en lugar de ahorrarlos para una patineta nueva. ¿Cuál es el costo de oportunidad de tu elección?',
+          options: [
+            'Los $60 que gastaste en los boletos',
+            'La diversión que tuviste en el concierto',
+            'La patineta a la que renunciaste',
+            'No hay costo porque disfrutaste el concierto',
+          ],
+          answerIndex: 2,
+          explanation:
+            '¡Eso es! El costo de oportunidad es el valor de aquello a lo que renuncias, en este caso la patineta. Hasta las compras divertidas tienen un costo de oportunidad.',
+        },
+      },
+      {
+        type: 'terms',
+        heading: 'Caja de herramientas para decidir',
+        terms: [
+          {
+            term: 'Costo de oportunidad (opportunity cost)',
+            definition:
+              'El valor de aquello a lo que renuncias cuando eliges una cosa en lugar de otra.',
+          },
+          {
+            term: 'Comparación de precios (comparison shopping)',
+            definition:
+              'Comparar el precio y las características de productos o servicios de diferentes vendedores antes de comprar.',
+          },
+          {
+            term: 'Análisis de costo-beneficio (cost-benefit analysis)',
+            definition:
+              'Comparar los beneficios de comprar un bien o servicio con sus costos.',
+          },
+          {
+            term: 'Gratificación aplazada (delayed gratification)',
+            definition:
+              'Esperar antes de comprar. Cuanto más esperas, más valor puedes obtener, o menos te arrepientes.',
+          },
+        ],
+      },
+      {
+        type: 'content',
+        heading: 'Estrategias para gastar con inteligencia',
+        body:
+          'Cuando una compra te esté llamando por tu nombre, baja la velocidad y pásala por estas tres estrategias. Funcionan para tenis, suscripciones y, algún día, para carros y apartamentos.',
+        bullets: [
+          'Comparación de precios: revisa primero los precios y características de diferentes vendedores. Los tenis de básquetbol Kyrie del año pasado pueden costar mucho menos que los de este año.',
+          'Análisis de costo-beneficio: haz una lista de lo que ganas con la compra y compárala con lo que te cuesta.',
+          'Gratificación aplazada: espera antes de comprar. Los precios bajan, la emoción se desvanece y descubres si de verdad lo querías.',
+        ],
+      },
+      {
+        type: 'content',
+        heading: 'El consejo final',
+        body:
+          'Antes de cualquier compra, hazte dos preguntas rápidas: ¿es necesaria esta compra? ¿Y puedo esperar una oferta o elegir una opción más barata? Esos diez segundos de reflexión les han ahorrado a los compradores más dinero que cualquier cupón jamás impreso. Además, piensa en una compra reciente de la que estés orgulloso. ¿Qué la hizo inteligente?',
+      },
+      {
+        type: 'checkpoint',
+        checkpoint: {
+          question:
+            'Deja quiere los tenis de básquetbol más nuevos de este año, pero revisa tres tiendas y descubre que el modelo del año pasado tiene características casi idénticas por la mitad del precio. ¿Qué estrategia está usando?',
+          options: [
+            'Comparación de precios',
+            'Compra por impulso',
+            'Protección contra sobregiros',
+            'Transferencia de riesgo',
+          ],
+          answerIndex: 0,
+          explanation:
+            '¡Lo clavaste! Comparar precios y características entre diferentes vendedores antes de comprar es la comparación de precios, y acaba de ahorrarle a Deja la mitad del precio.',
+        },
+      },
+      {
+        type: 'content',
+        heading: 'Cómo evaluar servicios financieros',
+        body:
+          'Estas mismas habilidades funcionan al elegir bancos, cuentas y otros servicios financieros. Comparar te ayuda a tomar decisiones más inteligentes. Y ojo: muchos servicios intentan atraparte con suscripciones y pequeños cargos que se acumulan con el tiempo, ¡así que lleva un registro de tus pagos!',
+        bullets: [
+          'Precio: ¿cuánto cuesta de entrada?',
+          'Valor: ¿qué recibes realmente por tu dinero?',
+          'Calidad: ¿va a durar y funcionar bien?',
+          'Características: ¿qué extras te importan de verdad?',
+          'Cargos ocultos: ¿qué cobros escondidos están enterrados en las letras pequeñas?',
+        ],
+      },
+      {
+        type: 'example',
+        heading: 'Batalla de bancos: EasyBank vs. SecurePlus',
+        body:
+          'Compara dos cuentas de cheques. EasyBank Basic no tiene cuota mensual, ofrece acceso gratuito en más de 15,000 cajeros automáticos, una app básica con transferencias y alertas, y un cargo de $35 por cada sobregiro. SecurePlus Checking cuesta $5 al mes (que se elimina con un saldo de $500), ofrece acceso gratuito en cualquier cajero del país, incluye herramientas de presupuesto y acceso anticipado a tu sueldo, y no tiene cargos por sobregiro porque rechaza automáticamente las compras. ¿Cuál es mejor para alguien con un saldo mensual bajo? ¿Quién aprovecha más las herramientas de presupuesto? ¿Qué tipo de comprador evita por completo los cargos por sobregiro? Personas diferentes, respuestas diferentes.',
+      },
+      {
+        type: 'checkpoint',
+        checkpoint: {
+          question:
+            'Sam normalmente mantiene menos de $100 en su cuenta. Según la comparación, ¿qué cuenta probablemente le conviene más y por qué?',
+          options: [
+            'SecurePlus, porque toda cuenta con cuota es de mayor calidad',
+            'EasyBank Basic, porque evita la cuota mensual de $5 que SecurePlus le cobraría por su saldo bajo',
+            'SecurePlus, porque mantiene más de $500 en su cuenta',
+            'Ninguna, porque las cuentas de cheques son solo para adultos',
+          ],
+          answerIndex: 1,
+          explanation:
+            '¡Gran análisis! Con menos de $500 en su cuenta, Sam pagaría la cuota mensual de $5 de SecurePlus, así que la cuota de $0 de EasyBank probablemente le sirve más. Solo tiene que cuidarse de ese cargo de $35 por sobregiro.',
+        },
+      },
+      {
+        type: 'example',
+        heading: '¿Qué preferirías?',
+        body:
+          'Ganas $70,000 al año. ¿Preferirías comprar un carro nuevo y usar todo tu dinero, o comprar un carro usado y ahorrar el resto? Financieramente, el carro usado suele ganar, aunque se vea un poco peor. Siguiente: ¿un iPhone nuevo de $1,000 o $1,000 en acciones de Apple? Invertir suele ser la jugada más inteligente, pero imagina que llegan los aranceles y los inversionistas de Apple pierden la mitad de su dinero. Invertir también conlleva un riesgo real. Última: ¿un trabajo con un salario mucho más alto pero menos beneficios, o un trabajo con menor paga y comisiones pero con beneficios mucho mejores, como vacaciones pagadas? Toda opción tiene intercambios. De eso se trata todo.',
+      },
+      {
+        type: 'content',
+        heading: 'Para cerrar',
+        body:
+          'Ahora tienes una caja de herramientas completa para decidir: detecta el costo de oportunidad, compara precios, haz un análisis de costo-beneficio y deja que la gratificación aplazada haga su magia. Anota qué te quedó claro hoy y qué quieres practicar más. Próxima sesión: Planificación financiera, con un video de Dave Ramsey y un quiz al final de la lección. ¡Nos vemos allá!',
+      },
+    ],
+    quiz: [
+      {
+        question: '¿Qué es el costo de oportunidad?',
+        options: [
+          'La etiqueta de precio de un artículo caro',
+          'El valor de aquello a lo que renuncias cuando eliges una cosa en lugar de otra',
+          'El cargo que cobra una tienda por las devoluciones',
+          'El interés que un banco paga por los ahorros',
+        ],
+        answerIndex: 1,
+        explanation:
+          'El costo de oportunidad es el valor de aquello a lo que renuncias al elegir una opción en lugar de otra. Toda decisión tiene un costo.',
+      },
+      {
+        question:
+          'El costo de oportunidad de comprar un carro completamente nuevo en lugar de uno usado es...',
+        options: [
+          'El dinero extra que habrías ahorrado comprando el carro usado',
+          'La gasolina que usa el carro nuevo',
+          'La prima mensual del seguro',
+          'Nada, porque los carros nuevos nunca pierden valor',
+        ],
+        answerIndex: 0,
+        explanation:
+          'Al elegir el carro nuevo, renuncias a los ahorros extra que el carro usado habría dejado en tu bolsillo. Esos ahorros perdidos son el costo de oportunidad.',
+      },
+      {
+        question:
+          'Revisar los precios y características de varios vendedores diferentes antes de comprar se llama...',
+        options: [
+          'Gratificación aplazada',
+          'Compra por impulso',
+          'Transferencia de costos',
+          'Comparación de precios',
+        ],
+        answerIndex: 3,
+        explanation:
+          'La comparación de precios significa comparar el precio y las características entre vendedores antes de comprar, como conseguir los tenis Kyrie del año pasado por menos que los de este año.',
+      },
+      {
+        question:
+          'Sopesar los beneficios de una compra frente a lo que te cuesta es un...',
+        options: [
+          'Repaso del deducible',
+          'Congelamiento del presupuesto',
+          'Análisis de costo-beneficio',
+          'Chequeo de crédito',
+        ],
+        answerIndex: 2,
+        explanation:
+          'Un análisis de costo-beneficio compara los beneficios de comprar un bien o servicio con sus costos, y te ayuda a decidir si vale la pena.',
+      },
+      {
+        question:
+          'Esperar unas semanas antes de comprar un artículo nuevo muy publicitado, y a menudo conseguir un mejor precio o evitar el arrepentimiento, es un ejemplo de...',
+        options: [
+          'Gratificación aplazada',
+          'Costo de oportunidad',
+          'Protección contra sobregiros',
+          'Cobertura de responsabilidad civil',
+        ],
+        answerIndex: 0,
+        explanation:
+          'Eso es la gratificación aplazada. Cuanto más esperas, más valor puedes obtener, o menos arrepentimiento puedes sentir.',
+      },
+      {
+        question:
+          'Al evaluar un servicio financiero, ¿con cuál de estos debes tener cuidado porque los cargos pequeños se acumulan con el tiempo?',
+        options: [
+          'Acceso gratuito a cajeros automáticos',
+          'Cargos ocultos y suscripciones',
+          'Alertas de la app móvil',
+          'Una cuota mensual eliminada',
+        ],
+        answerIndex: 1,
+        explanation:
+          'Muchos servicios esconden suscripciones y pequeños cargos ocultos que se acumulan en silencio. ¡Lleva un registro de tus pagos!',
+      },
+      {
+        question:
+          'En la comparación de bancos, ¿por qué SecurePlus Checking podría atraer a alguien que se sobregira con frecuencia?',
+        options: [
+          'Les paga $35 a los clientes por cada sobregiro',
+          'Tiene los cargos de cajero más baratos de la ciudad',
+          'Ofrece sobregiros gratis hasta $500',
+          'No tiene cargos por sobregiro porque rechaza automáticamente las transacciones que sobregirarían la cuenta',
+        ],
+        answerIndex: 3,
+        explanation:
+          'SecurePlus rechaza automáticamente las compras que sobregirarían la cuenta, así que no hay cargos por sobregiro, a diferencia del cargo de $35 por sobregiro de EasyBank.',
+      },
+      {
+        question:
+          'La actividad de "¿Qué preferirías?" mostró que invertir $1,000 en acciones de Apple en lugar de comprar un iPhone...',
+        options: [
+          'Garantiza que duplicarás tu dinero',
+          'Siempre es peor que comprar el teléfono',
+          'Puede hacer crecer tu dinero, pero aun así conlleva un riesgo real de perder valor',
+          'Es ilegal para cualquier menor de 30 años',
+        ],
+        answerIndex: 2,
+        explanation:
+          'Invertir suele ser la jugada financiera más inteligente, pero como mostró el giro de los aranceles, siempre existe el riesgo de perder dinero. Quienes deciden con inteligencia sopesan tanto el riesgo como la recompensa.',
+      },
+    ],
+  },
 }
 
 export default lesson

@@ -289,6 +289,292 @@ const lesson: Lesson = {
         "The final tip: ask yourself whether you'll care about the purchase a week from now. If the answer is no, skip it — that one question filters out most impulse buys before they happen.",
     },
   ],
+  es: {
+    title: 'Gastos y presupuesto',
+    description:
+      'Cómo gastar con inteligencia, evitar las trampas de las compras impulsivas y armar un presupuesto sencillo que funcione con tus necesidades y tus deseos.',
+    sections: [
+      {
+        type: 'intro',
+        heading: 'Calentamiento: la pregunta de los $100',
+        body:
+          '¡Bienvenido de vuelta a BFF Classroom — Semana 1, Día 2! Un calentamiento rápido antes de empezar: si te dieran $100 ahora mismo, ¿en qué los gastarías y por qué? En serio, imagínalo. Guarda esa respuesta, porque al final de esta lección sabrás si esa compra era una necesidad, un deseo o una trampa de gasto en toda regla. Hoy se trata de gastar con inteligencia y armar un presupuesto que de verdad funcione.',
+      },
+      {
+        type: 'content',
+        heading: 'Necesidades vs. deseos',
+        body:
+          'Cada dólar que gastas va hacia una necesidad o hacia un deseo. Las necesidades son cosas que debes tener para sobrevivir y funcionar; los deseos son cosas que hacen la vida más agradable pero no son esenciales. Ninguno de los dos es malo, pero confundirlos es la razón por la que los presupuestos se desmoronan.',
+        bullets: [
+          'Necesidad: comida y agua básicas — todos las necesitamos para sobrevivir, y las compras de supermercado económicas ayudan a cubrirlas',
+          'Necesidad: aire limpio — tener acceso a aire sin contaminación es esencial para mantenerse sano',
+          'Necesidad: vivienda y ropa — nos protegen del clima y nos ayudan a participar en la vida diaria',
+          'Deseo: comer fuera o pedir comida a domicilio seguido — es cómodo, pero normalmente innecesario y más caro',
+          'Deseo: la tecnología más nueva — la tecnología puede aumentar tu productividad, pero no es necesaria para la vida diaria, ni siquiera en nuestro mundo moderno',
+          'Deseo: la moda de diseñador — la ropa con estilo puede subir tu confianza y tu estatus social, pero no es esencial para cubrir necesidades básicas',
+        ],
+      },
+      {
+        type: 'checkpoint',
+        checkpoint: {
+          question:
+            'Tu abrigo de invierno se rompe sin remedio, así que compras uno de reemplazo. Tu amigo compra su tercera sudadera de diseñador para combinar con sus tenis. ¿Cuál afirmación es cierta?',
+          options: [
+            'Ambas compras son deseos',
+            'Ambas compras son necesidades',
+            'Tu abrigo es una necesidad; la tercera sudadera de diseñador es un deseo',
+            'La ropa nunca es una necesidad',
+          ],
+          answerIndex: 2,
+          explanation:
+            'En el clavo. La ropa que te protege del clima es una necesidad. Pero la moda de diseñador — especialmente una tercera sudadera — es un deseo: puede subir tu confianza y tu estilo, pero no es esencial. Misma categoría, compras muy distintas.',
+        },
+      },
+      {
+        type: 'content',
+        heading: 'Crear un presupuesto: B.U.I.L.D.',
+        body:
+          'Crear un presupuesto (budget) es una de las habilidades más importantes para manejar tus finanzas. Para recordar el proceso, usa el acrónimo en inglés B.U.I.L.D.: Begin with a goal (comienza con una meta), Understand your income (entiende tu ingreso), Identify your expenses (identifica tus gastos), Limit your spending (limita tu gasto) y Develop a habit (desarrolla un hábito). Vamos a recorrer cada letra, un paso a la vez.',
+      },
+      {
+        type: 'content',
+        heading: 'B — Comienza con una meta',
+        body:
+          'Todo presupuesto comienza con tus metas. Decide exactamente para qué estás presupuestando: ahorrar para un teléfono nuevo, construir tu portafolio de inversiones o comprar un auto. Y cada meta que te pongas debe ser SMART (inteligente, por sus siglas en inglés):',
+        bullets: [
+          'Specific (específica) — haz tu meta precisa; esto te mantiene en el camino correcto',
+          'Measurable (medible) — debes poder entender tus resultados a lo largo del camino',
+          'Attainable (alcanzable) — no pongas tus expectativas demasiado alto',
+          'Relevant (relevante) — asegúrate de que tus metas encajen con tu situación real',
+          'Timely (con tiempo definido) — ponle un plazo',
+        ],
+      },
+      {
+        type: 'example',
+        heading: '¿SMART o no? Tú decides',
+        body:
+          "Vamos a calificar algunas metas. 'Voy a ahorrar $150 durante los próximos 3 meses para comprar tenis nuevos para correr' — SMART: específica, medible y con plazo. 'Voy a apartar $10 por semana durante 6 meses para armar un fondo de emergencia de $240' — SMART. 'Voy a pagarle a mi amigo la deuda de $60 en 4 semanas ahorrando $15 por semana' — SMART. Pero, ¿'quiero ahorrar dinero algún día para comprar un auto'? Sin monto, sin fecha límite — no es SMART. ¿Y 'voy a gastar menos dinero en comida y cosas este mes'? 'Menos' y 'cosas' no se pueden medir. Las metas vagas son el lugar donde los presupuestos se van a dormir la siesta.",
+      },
+      {
+        type: 'content',
+        heading: 'U — Entiende tu ingreso',
+        body:
+          "Después de fijar tus metas, empieza a llevar la cuenta de tus entradas y salidas de dinero — este paso es lo que la mayoría de la gente se imagina cuando escucha la palabra 'presupuestar'. Calcula cuánto dinero recibes regularmente: de trabajos, tu mesada semanal, regalos, etcétera. Por ejemplo, Joe gana $80 a la semana cuidando a los niños de sus vecinos. Esos $80 son la materia prima de todo su presupuesto.",
+      },
+      {
+        type: 'content',
+        heading: 'I — Identifica tus gastos',
+        body:
+          "Este paso va de la mano con el anterior. Haz una lista de todo tu gasto durante un período determinado: necesidades como comida y cuentas por pagar, y deseos como compras, botanas y suscripciones. Por ejemplo: 'Gasto $450 al mes en necesidades y $200 al mes en deseos'. Puedes ser más específico agrupando los gastos en categorías, como este presupuesto de ejemplo de un adulto que suma $3,840 al mes:",
+        bullets: [
+          'Vivienda: renta $1,700 — total $1,700',
+          'Transporte: préstamo del auto $380, seguro $100, gasolina $200 — total $680',
+          'Vida diaria: supermercado $800, servicios (agua, luz, etc.) unos $300 — total $1,100',
+          'Misceláneos: tarjetas de crédito $75, teléfono celular $185, entretenimiento $100 — total $360',
+        ],
+      },
+      {
+        type: 'content',
+        heading: 'L — Limita tu gasto',
+        body:
+          'Ahora que ya identificaste tu ingreso y tus gastos, es hora de repartir tu dinero de verdad según tu presupuesto. Usa la regla 50/30/20 como guía: el 50% de tu dinero va a las necesidades, el 30% a los deseos y el 20% al ahorro. Es un punto de partida, no una ley — ajústala según tu situación.',
+      },
+      {
+        type: 'content',
+        heading: 'D — Desarrolla un hábito',
+        body:
+          'El último paso para crear un presupuesto es el más difícil y el más importante: seguir de verdad el plan que creaste. La forma más fácil es registrar tus compras. Usa un cuaderno, una hoja de cálculo o una app para anotar lo que gastas, y ajusta tu plan cuando haga falta. Un presupuesto que ignoras es solo una lista de deseos con buen formato.',
+      },
+      {
+        type: 'checkpoint',
+        checkpoint: {
+          question:
+            'Usando la regla 50/30/20, si recibes $200 al mes, ¿cuánto debería ir al ahorro?',
+          options: ['$100', '$60', '$40', '$20'],
+          answerIndex: 2,
+          explanation:
+            '¡Sí! La regla 50/30/20 manda el 20% al ahorro — y el 20% de $200 es $40. Las otras partes: $100 (50%) para necesidades y $60 (30%) para deseos. Y recuerda: puedes ajustar los porcentajes para que encajen con tu situación.',
+        },
+      },
+      {
+        type: 'video',
+        heading: 'Mira el video: Fundamentos del presupuesto',
+        body:
+          'Antes de hablar de llevar el registro, mira este video rápido de Two Cents. El video está en inglés, y ojo — se pausa para hacerte preguntas en el camino, ¡así que pon atención! (Dato curioso: empieza con George Washington. Sí, en serio.)',
+        videoId: 'sVKQn2I4HDM',
+        source: 'Two Cents · PBS Digital Studios',
+        questions: [
+          {
+            at: 95,
+            question:
+              'Los presentadores comparan hacer un presupuesto con George Washington dirigiendo el Ejército Continental. ¿Cuál es el punto de la comparación?',
+            options: [
+              'Washington inventó la primera hoja de cálculo para presupuestos',
+              'Igual que Washington, tienes que hacer un plan inteligente con recursos limitados',
+              'Los presupuestos solo importan durante las guerras',
+              'Debes gastar el dinero tan rápido como un ejército gasta sus provisiones',
+            ],
+            answerIndex: 1,
+            explanation:
+              'Washington casi nunca tuvo suficientes soldados ni provisiones, así que tenía que hacer estrategia con lo que tenía. Un presupuesto es exactamente eso: un plan de batalla para un dinero limitado.',
+          },
+          {
+            at: 250,
+            question: 'Según el video, ¿cuál es el PRIMER paso para armar un presupuesto?',
+            options: [
+              'Abrir una tarjeta de crédito',
+              'Adivinar tus gastos de memoria',
+              'Escribirlo — en papel, en una hoja de cálculo o en una app',
+              'Esperar hasta ganar más dinero',
+            ],
+            answerIndex: 2,
+            explanation:
+              'El paso uno es escribir tu plan: lápiz y papel, hoja de cálculo o app, todo funciona. Después lo actualizas cada mes, porque un presupuesto es un plan vivo, no un deseo de una sola vez.',
+          },
+        ],
+      },
+      {
+        type: 'content',
+        heading: 'Lleva el registro de tus gastos',
+        body:
+          'Llevar el registro de tu presupuesto y tus gastos es una de las mejores formas de alcanzar tus metas financieras. Te asegura no encontrarte nunca en un aprieto y estar siempre listo para lo que viene. Registrar te ayuda a no gastar de más — porque si no sabes a dónde va tu dinero, nunca sabrás por dónde desaparece. Por suerte, hay montones de formas de llevar el registro:',
+        bullets: [
+          'Cuaderno o diario — un poco a la antigua, pero las copias físicas te ayudan a mantener todo en orden',
+          'Apps de gastos — Mint, Goodbudget o incluso tu app de Notas pueden registrar el gasto del día a día',
+          'Estados de cuenta del banco y de la tarjeta de crédito — nunca tendrás un registro más exacto que tu propio historial de compras',
+        ],
+      },
+      {
+        type: 'content',
+        heading: 'Consejos para llevar el registro',
+        body:
+          'Tres hábitos que hacen que el registro funcione. Primero, revisa tus gastos cada pocos días en lugar de esperar al final del mes, para que siempre sepas cómo vas. Segundo, ponte límites semanales o mensuales en categorías como comida rápida, artículos personales, juegos y suscripciones — recuerda la regla 50/30/20. Tercero, ¡celebra las pequeñas victorias! Alégrate de verdad por ti cuando te mantengas dentro del presupuesto. Una presentación solo puede llegar hasta cierto punto — se necesita una persona fuerte para dar ese paso extra y no gastar de más.',
+      },
+      {
+        type: 'content',
+        heading: 'Trampas de gasto comunes',
+        body:
+          'Una trampa de gasto es un hábito, una compra o una decisión que te hace gastar más dinero del que te das cuenta o del que pretendías — muchas veces sin pensarlo. Aquí están las tres grandes, más cómo escapar de cada una. Consejo final: antes de cualquier compra, pregúntate — ¿me va a importar esto dentro de una semana? Si no, déjalo pasar.',
+        bullets: [
+          'Compras impulsivas — ves algo, lo quieres ya y lo compras sin pensar. Solución: la regla de las 24 horas — espera un día antes de comprar un deseo',
+          'Gasto en suscripciones — acumular servicios de streaming, apps y pases de juego que se renuevan solos. Solución: haz una auditoría de suscripciones cada pocos meses',
+          'Presión social y FOMO (miedo a perderse algo) — gastar para seguirles el ritmo a tus amigos en ropa nueva, eventos y más. Solución: propón alternativas más baratas',
+        ],
+      },
+      {
+        type: 'checkpoint',
+        checkpoint: {
+          question:
+            'Estás a punto de comprar una skin de $30 para un juego del teléfono en el momento en que la ves. ¿Qué estrategia combate mejor esta trampa de gasto?',
+          options: [
+            'Comprarla rápido antes de que te convenzas de no hacerlo',
+            'Usar la regla de las 24 horas y esperar un día antes de decidir',
+            'Agregar tres artículos más para que el envío valga la pena',
+            'Suscribirte para que las skins se renueven solas cada mes',
+          ],
+          answerIndex: 1,
+          explanation:
+            'Exacto — esa sensación de lo-veo-lo-quiero-lo-compro es una compra impulsiva, y la regla de las 24 horas es el antídoto: espera un día antes de comprar un deseo. Jugada extra: pregúntate si te va a importar dentro de una semana. Si no, déjalo pasar.',
+        },
+      },
+    ],
+    quiz: [
+      {
+        question: '¿Cuál de las siguientes es una NECESIDAD y no un deseo?',
+        options: [
+          'Pedir comida a domicilio casi todas las noches',
+          'El smartphone más nuevo el día de su lanzamiento',
+          'Moda de diseñador',
+          'Compras de supermercado económicas',
+        ],
+        answerIndex: 3,
+        explanation:
+          'La comida y el agua básicas son necesidades, y las compras de supermercado económicas las cubren. La comida a domicilio frecuente, la tecnología más nueva y la moda de diseñador son deseos — agradables de tener, pero no esenciales para sobrevivir y funcionar.',
+      },
+      {
+        question: '¿Qué significa el acrónimo B.U.I.L.D. en el mundo del presupuesto?',
+        options: [
+          'Begin with a goal (comienza con una meta), Understand your income (entiende tu ingreso), Identify your expenses (identifica tus gastos), Limit your spending (limita tu gasto), Develop a habit (desarrolla un hábito)',
+          'Compra menos, Usa cupones, Invierte temprano, Limita las deudas, Diversifica',
+          'Presupuesta cada mes, Entiende los impuestos, Asegura todo, Presta con cuidado, Dona seguido',
+          'Comienza a ahorrar, Usa efectivo, Ignora los deseos, Lista las necesidades, Pospón las compras',
+        ],
+        answerIndex: 0,
+        explanation:
+          'B.U.I.L.D. es el proceso de presupuesto en cinco pasos: Begin with a goal (comienza con una meta), Understand your income (entiende tu ingreso), Identify your expenses (identifica tus gastos), Limit your spending (limita tu gasto) y Develop a habit (desarrolla un hábito).',
+      },
+      {
+        question: '¿Cuál de estas metas es SMART?',
+        options: [
+          'Quiero ahorrar dinero algún día para comprar un auto',
+          'Voy a gastar menos dinero en comida y cosas este mes',
+          'Voy a ahorrar $150 durante los próximos 3 meses para comprar tenis nuevos para correr',
+          'Espero ser rico en algún momento',
+        ],
+        answerIndex: 2,
+        explanation:
+          'Ahorrar $150 en 3 meses para unos tenis de correr es Específica, Medible, Alcanzable, Relevante y con Tiempo definido. Las otras son vagas — sin monto claro, sin fecha límite y sin forma de medir el progreso.',
+      },
+      {
+        question: 'Según la regla 50/30/20, ¿a qué debe ir el 30%?',
+        options: ['Al ahorro', 'A los deseos', 'A las necesidades', 'A los impuestos'],
+        answerIndex: 1,
+        explanation:
+          'La regla 50/30/20 manda el 50% a las necesidades, el 30% a los deseos y el 20% al ahorro. Es una guía que puedes ajustar para que encaje con tu propia situación.',
+      },
+      {
+        question: '¿Por qué importa llevar el registro de tus gastos?',
+        options: [
+          'Aumenta tu ingreso automáticamente',
+          'Te permite saltarte por completo el hacer un presupuesto',
+          'Los bancos exigen a sus clientes registrar sus gastos',
+          'Te ayuda a no gastar de más — si no sabes a dónde va tu dinero, nunca sabrás por dónde desaparece',
+        ],
+        answerIndex: 3,
+        explanation:
+          'Llevar el registro te mantiene fuera de aprietos y listo para lo que viene. Ya sea con un cuaderno, una app o tus estados de cuenta del banco, saber a dónde va tu dinero es la manera de evitar que desaparezca.',
+      },
+      {
+        question:
+          'Te das cuenta de que estás pagando cinco servicios de streaming y tres suscripciones de juegos que se renuevan solas. ¿Cuál es la solución recomendada?',
+        options: [
+          'Hacer una auditoría de suscripciones cada pocos meses',
+          'Aplicar la regla de las 24 horas a cada renovación',
+          'Pedirles a tus amigos que dividan cada suscripción',
+          'Cambiarlas todas a facturación anual',
+        ],
+        answerIndex: 0,
+        explanation:
+          'Ese montón de servicios que se renuevan solos es el gasto en suscripciones, una de las trampas de gasto más comunes. La solución es una auditoría de suscripciones cada pocos meses — revisar lo que pagas y cancelar lo que ya no usas.',
+      },
+      {
+        question:
+          'Todos tus amigos van a un evento caro y sientes presión de gastar dinero que habías presupuestado para el ahorro. ¿Qué trampa de gasto es esta, y cuál es una solución?',
+        options: [
+          'Compras impulsivas; se resuelve con una app de gastos',
+          'Gasto en suscripciones; se resuelve cancelando el evento',
+          'Presión social y FOMO; se resuelve proponiendo alternativas más baratas',
+          'La regla 50/30/20; se resuelve gastándote el ahorro',
+        ],
+        answerIndex: 2,
+        explanation:
+          'Gastar para seguirles el ritmo a tus amigos es la trampa de la presión social y el FOMO. Proponer alternativas más baratas te deja conservar la amistad y el presupuesto. Tu categoría de ahorro te lo agradecerá.',
+      },
+      {
+        question:
+          'Antes de comprar algo que deseas, ¿qué pregunta final sugiere esta lección que te hagas?',
+        options: [
+          '¿Puedo ponerlo en una tarjeta de crédito?',
+          '¿Me va a importar esta compra dentro de una semana?',
+          '¿Está en oferta ahora mismo?',
+          '¿Mis amigos ya lo tienen?',
+        ],
+        answerIndex: 1,
+        explanation:
+          'El consejo final: pregúntate si la compra te va a importar dentro de una semana. Si la respuesta es no, déjala pasar — esa sola pregunta filtra la mayoría de las compras impulsivas antes de que ocurran.',
+      },
+    ],
+  },
 }
 
 export default lesson
