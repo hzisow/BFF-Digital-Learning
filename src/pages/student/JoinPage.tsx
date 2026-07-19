@@ -32,6 +32,7 @@ function JoinForm() {
   const navigate = useNavigate()
   const [code, setCode] = useState('')
   const [nickname, setNickname] = useState('')
+  const [pin, setPin] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
 
@@ -41,7 +42,7 @@ function JoinForm() {
     setError(null)
     setBusy(true)
     try {
-      await joinClass(code, nickname)
+      await joinClass(code, nickname, pin)
       navigate('/student')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong — try again!')
@@ -99,6 +100,27 @@ function JoinForm() {
           <p id="nickname-hint" className="mt-1.5 text-xs text-slate-500">
             Your mentor sees this nickname — keep it recognizable (and school-appropriate{' '}
             <span aria-hidden="true">😄</span>).
+          </p>
+        </div>
+        <div>
+          <label htmlFor="pin" className="font-display text-sm font-semibold text-slate-700">
+            PIN <span className="font-normal text-slate-400">(optional)</span>
+          </label>
+          <input
+            id="pin"
+            className="input mt-1.5 tracking-[0.3em]"
+            type="text"
+            inputMode="numeric"
+            placeholder="4 digits"
+            value={pin}
+            onChange={(e) => setPin(e.target.value.replace(/[^0-9]/g, '').slice(0, 4))}
+            maxLength={4}
+            autoComplete="off"
+            aria-describedby="pin-hint"
+          />
+          <p id="pin-hint" className="mt-1.5 text-xs text-slate-500">
+            Pick a 4-digit PIN and it saves your progress to your name — sign back in with the
+            same nickname + PIN on <strong>any device</strong> to pick up where you left off.
           </p>
         </div>
 

@@ -10,6 +10,7 @@ import {
 import type { Session, User } from '@supabase/supabase-js'
 import { supabase } from './supabase'
 import { BACKEND_ENABLED } from './config'
+import { reconcileProgress } from './progress'
 
 // ---------- Student session (class code + nickname, no email) ----------
 
@@ -25,7 +26,7 @@ const STUDENT_KEY = 'bff_student_session'
 
 interface StudentCtx {
   student: StudentSession | null
-  joinClass: (code: string, nickname: string) => Promise<StudentSession>
+  joinClass: (code: string, nickname: string, pin?: string) => Promise<StudentSession>
   leaveClass: () => void
 }
 
@@ -77,7 +78,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     return () => sub.subscription.unsubscribe()
   }, [])
 
-  const joinClass = useCallback(async (code: string, nickname: string) => {
+  const joinClass = useCallback(async (code: string, nickname: string, pin?: string) => {
     if (!supabase) {
       throw new Error(
         'Class codes are not live yet — ask your BFF mentor, or explore the activities in solo mode!',
@@ -85,6 +86,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     }
     const cleanCode = code.trim().toUpperCase()
     const cleanNick = nickname.trim().slice(0, 24)
+    const cleanPin = (pin ?? '').trim()
     if (!cleanCode || !cleanNick) throw new Error('Enter your class code and a nickname.')
 
     // Students sign in anonymously — no email or personal info collected.
@@ -96,12 +98,20 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     const { data, error } = await supabase.rpc('join_classroom', {
       p_code: cleanCode,
       p_nickname: cleanNick,
+      p_pin: cleanPin || null,
     })
     if (error) {
-      if (error.message.includes('classroom_not_found')) {
+      const m = error.message
+      if (m.includes('classroom_not_found')) {
         throw new Error('That class code was not found. Double-check it with your mentor!')
       }
-      throw new Error(error.message)
+      if (m.includes('pin_required')) {
+        throw new Error(`"${cleanNick}" is protected with a PIN in this class. Enter it to continue.`)
+      }
+      if (m.includes('pin_incorrect')) {
+        throw new Error('That PIN does not match. Try again, or ask your mentor for help.')
+      }
+      throw new Error(m)
     }
     const row = Array.isArray(data) ? data[0] : data
     const sess: StudentSession = {
@@ -113,6 +123,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     }
     localStorage.setItem(STUDENT_KEY, JSON.stringify(sess))
     setStudent(sess)
+    // Pull any existing progress for this record onto this device (and push
+    // this device's progress up) so it's the same everywhere.
+    await reconcileProgress(sess)
     return sess
   }, [])
 
