@@ -24,3 +24,12 @@ export const SUPABASE_ANON_KEY: string =
   FALLBACK_SUPABASE_ANON_KEY
 
 export const BACKEND_ENABLED = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY)
+
+// Google OAuth "Web application" Client ID (ends with .apps.googleusercontent.com).
+// Public by design — safe to ship. Used by Google Identity Services to mint an
+// ID token, which we exchange with Supabase via signInWithIdToken (no redirect
+// through the supabase.co domain). Set VITE_GOOGLE_CLIENT_ID to override.
+const FALLBACK_GOOGLE_CLIENT_ID = ''
+
+export const GOOGLE_CLIENT_ID: string =
+  (import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined) || FALLBACK_GOOGLE_CLIENT_ID
