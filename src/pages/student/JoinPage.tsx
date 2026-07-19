@@ -33,12 +33,20 @@ function JoinForm() {
   const [code, setCode] = useState('')
   const [nickname, setNickname] = useState('')
   const [pin, setPin] = useState('')
+  const [confirmPin, setConfirmPin] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
+
+  const pinMismatch = pin.length > 0 && confirmPin.length > 0 && pin !== confirmPin
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     if (busy) return
+    // If they're setting a PIN, both boxes must match so it can't be a typo.
+    if (pin.length > 0 && pin !== confirmPin) {
+      setError("Your PINs don't match — type the same 4 digits in both boxes.")
+      return
+    }
     setError(null)
     setBusy(true)
     try {
@@ -123,6 +131,35 @@ function JoinForm() {
             same nickname + PIN on <strong>any device</strong> to pick up where you left off.
           </p>
         </div>
+        {pin.length > 0 && (
+          <div>
+            <label htmlFor="confirm-pin" className="font-display text-sm font-semibold text-slate-700">
+              Confirm PIN
+            </label>
+            <input
+              id="confirm-pin"
+              className={`input mt-1.5 tracking-[0.3em] ${
+                pinMismatch ? 'border-red-400 focus:border-red-400 focus:ring-red-200' : ''
+              }`}
+              type="text"
+              inputMode="numeric"
+              placeholder="type it again"
+              value={confirmPin}
+              onChange={(e) => setConfirmPin(e.target.value.replace(/[^0-9]/g, '').slice(0, 4))}
+              maxLength={4}
+              autoComplete="off"
+              aria-invalid={pinMismatch}
+              aria-describedby="confirm-pin-hint"
+            />
+            <p id="confirm-pin-hint" className="mt-1.5 text-xs text-slate-500">
+              {pinMismatch ? (
+                <span className="font-semibold text-red-600">The two PINs don't match yet.</span>
+              ) : (
+                'Type the same 4 digits so you don’t forget them.'
+              )}
+            </p>
+          </div>
+        )}
 
         {error && (
           <p
@@ -136,7 +173,12 @@ function JoinForm() {
         <button
           type="submit"
           className="btn-primary w-full"
-          disabled={busy || code.length !== 6 || nickname.trim().length === 0}
+          disabled={
+            busy ||
+            code.length !== 6 ||
+            nickname.trim().length === 0 ||
+            (pin.length > 0 && confirmPin !== pin)
+          }
           aria-busy={busy}
         >
           {busy ? 'Joining…' : <>Join class <span aria-hidden="true">🚀</span></>}
