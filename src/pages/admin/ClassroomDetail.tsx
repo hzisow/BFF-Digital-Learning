@@ -5,6 +5,7 @@ import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { BACKEND_ENABLED } from '../../lib/config'
 import { useAdmin } from '../../lib/session'
 import { ACTIVITIES, getActivity } from '../../lib/activities'
+import { toCsv, downloadCsv } from '../../lib/csv'
 import HostLauncher from '../../components/HostLauncher'
 import { BackendOffCard } from './TeamAuth'
 import {
@@ -253,6 +254,66 @@ export default function ClassroomDetail() {
     }
   })
 
+  // ---- Class-level analytics (computed from the same roster + progress) ----
+  const cellsTotal = students.length * assignments.length
+  const cellsCompleted = progress.filter(
+    (p) => p.status === 'completed' && assignments.some((a) => a.activity_slug === p.activity_slug),
+  ).length
+  const completionPct = cellsTotal > 0 ? Math.round((cellsCompleted / cellsTotal) * 100) : 0
+
+  const allScores = progress
+    .filter((p) => p.status === 'completed' && p.score != null)
+    .map((p) => p.score as number)
+  const classAvg =
+    allScores.length > 0
+      ? Math.round(allScores.reduce((s, n) => s + n, 0) / allScores.length)
+      : null
+
+  // "Active this week" = a student whose progress moved in the last 7 days.
+  const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000
+  const activeStudentIds = new Set(
+    progress.filter((p) => new Date(p.updated_at).getTime() >= weekAgo).map((p) => p.student_id),
+  )
+
+  function handleExportCsv() {
+    if (!classroom) return
+    const header = [
+      'Student',
+      'Joined',
+      'Completed',
+      'Avg score',
+      ...assignments.map((a) => getActivity(a.activity_slug)?.title ?? a.activity_slug),
+    ]
+    const rows = students.map((s) => {
+      const byActivity = progressByStudent.get(s.id)
+      const done = assignments.filter(
+        (a) => byActivity?.get(a.activity_slug)?.status === 'completed',
+      ).length
+      const scores = assignments
+        .map((a) => byActivity?.get(a.activity_slug)?.score)
+        .filter((n): n is number => n != null)
+      const avg =
+        scores.length > 0 ? Math.round(scores.reduce((x, n) => x + n, 0) / scores.length) : ''
+      const cells = assignments.map((a) => {
+        const row = byActivity?.get(a.activity_slug)
+        if (!row) return 'Not started'
+        if (row.status === 'completed') return row.score != null ? `Completed (${row.score})` : 'Completed'
+        return 'Started'
+      })
+      return [
+        s.nickname,
+        formatDate(s.created_at),
+        `${done}/${assignments.length}`,
+        avg,
+        ...cells,
+      ]
+    })
+    const csv = toCsv([header, ...rows])
+    const stamp = new Date().toISOString().slice(0, 10)
+    const safeName = classroom.name.replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '')
+    downloadCsv(`${safeName || 'class'}-${classroom.code}-progress-${stamp}.csv`, csv)
+  }
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
       {/* ---------- Header ---------- */}
@@ -469,9 +530,61 @@ export default function ClassroomDetail() {
 
       {/* ---------- Students & progress ---------- */}
       <section className="mt-12">
-        <h2 className="font-display text-xl font-bold text-slate-900">
-          Students &amp; progress
-        </h2>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="font-display text-xl font-bold text-slate-900">
+            Students &amp; progress
+          </h2>
+          {students.length > 0 && (
+            <button
+              type="button"
+              className="btn-secondary text-sm"
+              onClick={handleExportCsv}
+            >
+              <span aria-hidden="true">⬇</span> Export CSV
+            </button>
+          )}
+        </div>
+
+        {/* Class analytics at a glance */}
+        {students.length > 0 && (
+          <dl className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="card p-4">
+              <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                Students
+              </dt>
+              <dd className="mt-1 font-display text-2xl font-bold text-slate-900">
+                {students.length}
+              </dd>
+            </div>
+            <div className="card p-4">
+              <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                Active this week
+              </dt>
+              <dd className="mt-1 font-display text-2xl font-bold text-slate-900">
+                {activeStudentIds.size}
+                <span className="text-base font-semibold text-slate-400">
+                  /{students.length}
+                </span>
+              </dd>
+            </div>
+            <div className="card p-4">
+              <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                Completion
+              </dt>
+              <dd className="mt-1 font-display text-2xl font-bold text-slate-900">
+                {assignments.length === 0 ? '—' : `${completionPct}%`}
+              </dd>
+            </div>
+            <div className="card p-4">
+              <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                Class avg score
+              </dt>
+              <dd className="mt-1 font-display text-2xl font-bold text-slate-900">
+                {classAvg == null ? '—' : classAvg}
+              </dd>
+            </div>
+          </dl>
+        )}
 
         {students.length === 0 ? (
           <div className="card mt-4 text-center">
