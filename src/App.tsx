@@ -18,6 +18,9 @@ import SmartShopper from './activities/smart-shopper/SmartShopper'
 import GoalGetter from './activities/goal-getter/GoalGetter'
 import QuizHost from './activities/quiz/QuizHost'
 import QuizPlay from './activities/quiz/QuizPlay'
+import CoPlayHost from './activities/live/CoPlayHost'
+import CoPlayPlayer from './activities/live/CoPlayPlayer'
+import LiveJoin from './pages/LiveJoin'
 import WolfHome from './activities/wolf/WolfHome'
 import WolfSolo from './activities/wolf/WolfSolo'
 import WolfPlayer from './activities/wolf/WolfPlayer'
@@ -40,6 +43,7 @@ export default function App() {
         <Route path="/certificate" element={<CertificatePage />} />
         <Route path="/practice" element={<PracticePage />} />
         <Route path="/join" element={<JoinPage />} />
+        <Route path="/game" element={<LiveJoin />} />
         <Route path="/student" element={<StudentHome />} />
         <Route path="/challenge/bens-budget" element={<BensBudget />} />
         <Route path="/challenge/bens-insurance" element={<BensInsurance />} />
@@ -61,6 +65,8 @@ export default function App() {
       <Route path="/host/:sessionId" element={<WolfHost />} />
       <Route path="/quiz/:code" element={<QuizPlay />} />
       <Route path="/quiz-host/:sessionId" element={<QuizHost />} />
+      <Route path="/coplay/:code" element={<CoPlayPlayer />} />
+      <Route path="/coplay-host/:sessionId" element={<CoPlayHost />} />
     </Routes>
   )
 }

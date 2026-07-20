@@ -6,7 +6,7 @@ import type { User } from '@supabase/supabase-js'
 import { BACKEND_ENABLED } from '../../lib/config'
 import { supabase } from '../../lib/supabase'
 import { useAdmin } from '../../lib/session'
-import { createSession } from '../../activities/wolf/live'
+import HostLauncher from '../../components/HostLauncher'
 import { BackendOffCard } from './TeamAuth'
 import {
   approveTeamMember,
@@ -93,9 +93,6 @@ export default function AdminDashboard() {
   const [creating, setCreating] = useState(false)
   const [createError, setCreateError] = useState<string | null>(null)
 
-  // Quick host
-  const [hosting, setHosting] = useState(false)
-  const [hostError, setHostError] = useState<string | null>(null)
 
   const load = useCallback(async () => {
     if (!uid) return
@@ -168,18 +165,6 @@ export default function AdminDashboard() {
       setCreateError(errMsg(err))
     } finally {
       setCreating(false)
-    }
-  }
-
-  async function handleQuickHost() {
-    setHosting(true)
-    setHostError(null)
-    try {
-      const session = await createSession(null)
-      navigate(`/host/${session.id}`)
-    } catch (err) {
-      setHostError(errMsg(err))
-      setHosting(false)
     }
   }
 
@@ -393,40 +378,15 @@ export default function AdminDashboard() {
         )}
       </section>
 
-      {/* ---------- Quick host ---------- */}
+      {/* ---------- Quick host (any game, no classroom needed) ---------- */}
       <section className="mt-10">
         <h2 className="font-display text-xl font-bold text-slate-900">Live game</h2>
-        <div className="card mt-4 flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-start gap-3">
-            <span className="text-3xl" aria-hidden>
-              🐺
-            </span>
-            <div>
-              <h3 className="font-display text-lg font-bold text-slate-900">
-                Quick host: Wolf of Wall Street
-              </h3>
-              <p className="text-sm text-slate-600">
-                Start a live game right now — no classroom needed. Players join
-                with the game code on the big screen.
-              </p>
-              {hostError && (
-                <p
-                  role="alert"
-                  className="mt-2 rounded-xl bg-red-50 px-4 py-2 text-sm font-medium text-red-700"
-                >
-                  {hostError}
-                </p>
-              )}
-            </div>
-          </div>
-          <button
-            type="button"
-            className="btn-primary"
-            onClick={() => void handleQuickHost()}
-            disabled={hosting}
-          >
-            {hosting ? 'Starting…' : 'Start a live game'}
-          </button>
+        <p className="mt-1 text-sm text-slate-600">
+          Start a live game right now — no classroom needed. Players join with the code on the
+          big screen.
+        </p>
+        <div className="mt-4">
+          <HostLauncher classroomId={null} />
         </div>
       </section>
     </div>

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
+import type { LiveGameProps } from '../live/types'
 
 // ---------- Score bands (standard FICO ranges) ----------
 
@@ -425,7 +426,7 @@ interface HistoryEntry {
   explanation: string
 }
 
-export default function CreditScoreSim() {
+export default function CreditScoreSim({ onComplete }: LiveGameProps) {
   const { student } = useStudent()
   const [monthIndex, setMonthIndex] = useState(0)
   const [score, setScore] = useState(START_SCORE)
@@ -470,6 +471,7 @@ export default function CreditScoreSim() {
         score: progressScore(score),
         data: { finalScore: score, choices: history.map((h) => h.choiceId) },
       })
+      onComplete?.(progressScore(score))
     } else {
       setMonthIndex((i) => i + 1)
       setFeedback(null)

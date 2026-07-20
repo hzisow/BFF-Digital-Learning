@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
+import type { LiveGameProps } from '../live/types'
 
 // ---------- The official numbers (from the BFF of America paper activity) ----------
 
@@ -174,7 +175,7 @@ const EVENT_DELAY = 0.55 // seconds between story cards
 
 // ---------- Component ----------
 
-export default function BensInsurance() {
+export default function BensInsurance({ onComplete }: LiveGameProps) {
   const { student } = useStudent()
   const [policies, setPolicies] = useState<ReadonlySet<PolicyId>>(new Set())
   const [car, setCar] = useState<CarChoice>('none')
@@ -212,6 +213,7 @@ export default function BensInsurance() {
         surpriseCosts: r.surpriseCosts,
       },
     })
+    onComplete?.(r.score)
   }
 
   function reset() {

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
+import type { LiveGameProps } from '../live/types'
 
 const SLUG = 'smart-shopper'
 
@@ -244,7 +245,7 @@ function tierFor(score: number): { title: string; emoji: string } {
 
 // ---------- Component ----------
 
-export default function SmartShopper() {
+export default function SmartShopper({ onComplete }: LiveGameProps) {
   const { student } = useStudent()
   const [roundIndex, setRoundIndex] = useState(0)
   const [picked, setPicked] = useState<0 | 1 | null>(null)
@@ -281,6 +282,7 @@ export default function SmartShopper() {
         score: Math.round((finalCorrect / ROUNDS.length) * 100),
         data: { correct: finalCorrect, total: ROUNDS.length },
       })
+      onComplete?.(Math.round((finalCorrect / ROUNDS.length) * 100))
     }
   }
 

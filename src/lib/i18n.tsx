@@ -18,6 +18,7 @@ const STRINGS: Record<string, { en: string; es: string }> = {
   'nav.activities': { en: 'Activities', es: 'Actividades' },
   'nav.glossary': { en: 'Glossary', es: 'Glosario' },
   'nav.join': { en: 'Join Class', es: 'Unirse a clase' },
+  'nav.playLive': { en: 'Play Live', es: 'Jugar en vivo' },
   'nav.myClass': { en: 'My Class', es: 'Mi clase' },
   'nav.team': { en: 'Team', es: 'Equipo' },
   'nav.dashboard': { en: 'Dashboard', es: 'Panel' },

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
+import type { LiveGameProps } from '../live/types'
 
 const SLUG = 'scam-spotter'
 
@@ -277,7 +278,7 @@ function Body({ message, revealed }: { message: InboxMessage; revealed: boolean 
 
 // ---------- Component ----------
 
-export default function ScamSpotter() {
+export default function ScamSpotter({ onComplete }: LiveGameProps) {
   const { student } = useStudent()
   const [verdicts, setVerdicts] = useState<Partial<Record<string, Verdict>>>({})
   const [openId, setOpenId] = useState<string | null>(null)
@@ -316,6 +317,7 @@ export default function ScamSpotter() {
       score: Math.round((finalCorrect / MESSAGES.length) * 100),
       data: { verdicts, correct: finalCorrect, total: MESSAGES.length },
     })
+    onComplete?.(Math.round((finalCorrect / MESSAGES.length) * 100))
   }
 
   function reset() {

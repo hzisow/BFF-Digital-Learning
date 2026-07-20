@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
+import type { LiveGameProps } from '../live/types'
 
 // ---------- Round data (all numbers hand-checked for consistency) ----------
 //
@@ -398,7 +399,7 @@ function revealRowClasses(status: LineStatus): string {
 
 type Phase = 'picking' | 'reveal' | 'done'
 
-export default function PaystubDetective() {
+export default function PaystubDetective({ onComplete }: LiveGameProps) {
   const { student } = useStudent()
   const [roundIndex, setRoundIndex] = useState(0)
   const [selected, setSelected] = useState<ReadonlySet<string>>(new Set())
@@ -447,6 +448,7 @@ export default function PaystubDetective() {
         score,
         data: { found: totalFound, falseAccusations: totalFalse },
       })
+      onComplete?.(score)
     } else {
       setRoundIndex((i) => i + 1)
       setSelected(new Set())

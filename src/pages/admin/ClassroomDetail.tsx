@@ -5,7 +5,7 @@ import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { BACKEND_ENABLED } from '../../lib/config'
 import { useAdmin } from '../../lib/session'
 import { ACTIVITIES, getActivity } from '../../lib/activities'
-import { createSession } from '../../activities/wolf/live'
+import HostLauncher from '../../components/HostLauncher'
 import { BackendOffCard } from './TeamAuth'
 import {
   addAssignment,
@@ -72,8 +72,6 @@ export default function ClassroomDetail() {
   const [assignError, setAssignError] = useState<string | null>(null)
 
   const [archiving, setArchiving] = useState(false)
-  const [hosting, setHosting] = useState(false)
-  const [hostError, setHostError] = useState<string | null>(null)
 
   const load = useCallback(async () => {
     if (!id || !uid) return
@@ -215,19 +213,6 @@ export default function ClassroomDetail() {
       await load()
     } catch (err) {
       setError(errMsg(err))
-    }
-  }
-
-  async function handleHost() {
-    if (!classroom) return
-    setHosting(true)
-    setHostError(null)
-    try {
-      const session = await createSession(classroom.id)
-      navigate(`/host/${session.id}`)
-    } catch (err) {
-      setHostError(errMsg(err))
-      setHosting(false)
     }
   }
 
@@ -476,38 +461,8 @@ export default function ClassroomDetail() {
         {/* ---------- Live game ---------- */}
         <section>
           <h2 className="font-display text-xl font-bold text-slate-900">Live game</h2>
-          <div className="card mt-4">
-            <div className="flex items-start gap-3">
-              <span className="text-3xl" aria-hidden>
-                🐺
-              </span>
-              <div>
-                <h3 className="font-display text-lg font-bold text-slate-900">
-                  Wolf of Wall Street — live
-                </h3>
-                <p className="text-sm text-slate-600">
-                  Host a live market game for this class. Put the host screen on
-                  the projector; students join from their devices with the game
-                  code.
-                </p>
-              </div>
-            </div>
-            {hostError && (
-              <p
-                role="alert"
-                className="mt-3 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
-              >
-                {hostError}
-              </p>
-            )}
-            <button
-              type="button"
-              className="btn-primary mt-4"
-              onClick={() => void handleHost()}
-              disabled={hosting}
-            >
-              {hosting ? 'Starting…' : 'Start a live game'}
-            </button>
+          <div className="mt-4">
+            <HostLauncher classroomId={classroom.id} />
           </div>
         </section>
       </div>

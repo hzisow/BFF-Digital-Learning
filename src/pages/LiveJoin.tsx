@@ -1,0 +1,100 @@
+// One "Join a live game" screen: the student types a code and we route them to
+// the right live player view (Wolf, live Quiz, or a co-play challenge).
+
+import { useState, type FormEvent } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { BACKEND_ENABLED } from '../lib/config'
+import { findLiveSession } from '../activities/live/coplay'
+
+export default function LiveJoin() {
+  const navigate = useNavigate()
+  const [code, setCode] = useState('')
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault()
+    if (busy) return
+    setError(null)
+    setBusy(true)
+    try {
+      const found = await findLiveSession(code)
+      if (!found) {
+        setError('No live game with that code right now — double-check it with your host!')
+        return
+      }
+      if (found.kind === 'wolf') navigate(`/play/${found.code}`)
+      else if (found.kind === 'quiz') navigate(`/quiz/${found.code}`)
+      else navigate(`/coplay/${found.code}`)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong — try again!')
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <div className="mx-auto max-w-6xl px-4 py-16">
+      <div className="card animate-pop-in mx-auto max-w-md">
+        <div className="text-center">
+          <p className="text-5xl" aria-hidden="true">🎮</p>
+          <h1 className="mt-4 font-display text-2xl font-bold text-slate-900">Join a live game</h1>
+          <p className="mt-2 text-sm text-slate-600">
+            Your mentor is hosting a game on the big screen — type the code they show to jump in.
+          </p>
+        </div>
+
+        {!BACKEND_ENABLED ? (
+          <p role="status" className="mt-6 rounded-xl bg-amber-50 px-4 py-3 text-center text-sm text-amber-700">
+            Live games need the class backend connected. Ask your mentor, or explore everything
+            solo!
+          </p>
+        ) : (
+          <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+            <div>
+              <label htmlFor="game-code" className="font-display text-sm font-semibold text-slate-700">
+                Game code
+              </label>
+              <input
+                id="game-code"
+                className="input mt-1.5 text-center font-display text-2xl font-bold uppercase tracking-[0.35em]"
+                placeholder="ABC123"
+                value={code}
+                onChange={(e) =>
+                  setCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6))
+                }
+                maxLength={6}
+                autoComplete="off"
+                autoCapitalize="characters"
+                spellCheck={false}
+              />
+            </div>
+
+            {error && (
+              <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+                {error}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              className="btn-primary w-full"
+              disabled={busy || code.length !== 6}
+              aria-busy={busy}
+            >
+              {busy ? 'Finding your game…' : <>Join game <span aria-hidden="true">🚀</span></>}
+            </button>
+          </form>
+        )}
+
+        <p className="mt-6 text-center text-xs text-slate-500">
+          No game code?{' '}
+          <Link to="/activities" className="font-semibold text-bff-700 hover:text-bff-800">
+            Play any game solo
+          </Link>
+          .
+        </p>
+      </div>
+    </div>
+  )
+}

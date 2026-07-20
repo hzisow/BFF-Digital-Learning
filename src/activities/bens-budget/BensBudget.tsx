@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
+import type { LiveGameProps } from '../live/types'
 
 // ---------- The official numbers (from the BFF of America paper activity) ----------
 
@@ -269,7 +270,7 @@ function toneClasses(tone: Tone): string {
 
 // ---------- Component ----------
 
-export default function BensBudget() {
+export default function BensBudget({ onComplete }: LiveGameProps) {
   const { student } = useStudent()
   const [picked, setPicked] = useState<ReadonlySet<string>>(new Set())
   const [saved, setSaved] = useState<SavingsAmount | null>(null)
@@ -299,6 +300,7 @@ export default function BensBudget() {
       score: r.score,
       data: { choices: [...picked], saved },
     })
+    onComplete?.(r.score)
   }
 
   function reset() {

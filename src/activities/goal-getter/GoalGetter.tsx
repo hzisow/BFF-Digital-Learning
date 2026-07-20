@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
+import type { LiveGameProps } from '../live/types'
 
 const SLUG = 'goal-getter'
 const TOTAL_MONTHS = 6
@@ -74,7 +75,7 @@ function usd(n: number): string {
 
 // ---------- Component ----------
 
-export default function GoalGetter() {
+export default function GoalGetter({ onComplete }: LiveGameProps) {
   const { student } = useStudent()
   const [month, setMonth] = useState(1)
   const [phase, setPhase] = useState<'allocate' | 'event' | 'results'>('allocate')
@@ -243,6 +244,7 @@ export default function GoalGetter() {
           funTotal: nextBalances.fun,
         },
       })
+      onComplete?.(score)
     } else {
       enterMonth(month + 1, nextBalances)
     }
