@@ -4,7 +4,10 @@ import { ACTIVITIES, KIND_LABEL, getActivity } from '../../lib/activities'
 import { BACKEND_ENABLED } from '../../lib/config'
 import type { ActivityProgress } from '../../lib/progress'
 import { loadLocalProgress } from '../../lib/progress'
+import { totalXp } from '../../lib/xp'
 import { useStudent } from '../../lib/session'
+import LevelCard from '../../components/LevelCard'
+import ClassLeaderboard from '../../components/ClassLeaderboard'
 
 interface AssignmentRow {
   activity_slug: string
@@ -91,6 +94,7 @@ export default function StudentHome() {
   const completedCount = allActivities.filter(
     (a) => progress[a.slug]?.status === 'completed',
   ).length
+  const xp = useMemo(() => totalXp(progress), [progress])
 
   if (!student) {
     return <Navigate to="/join" replace />
@@ -159,14 +163,24 @@ export default function StudentHome() {
         </button>
       </div>
 
-      {/* Completed banner */}
-      <div className="mt-8 rounded-2xl bg-gradient-to-r from-bff-600 to-bff-800 px-6 py-4 text-white shadow-sm">
-        <p className="font-display font-semibold">
-          {completedCount > 0
-            ? `You've completed ${completedCount} of ${allActivities.length} activities 🎉`
-            : `${allActivities.length} activities are waiting for you — let's get that first one done! 💪`}
-        </p>
+      {/* Level + XP */}
+      <div className="mt-8 grid gap-4 lg:grid-cols-2">
+        <LevelCard xp={xp} />
+        <div className="flex items-center rounded-2xl border border-slate-200 bg-white px-6 py-4">
+          <p className="font-display font-semibold text-slate-700">
+            {completedCount > 0
+              ? `You've completed ${completedCount} of ${allActivities.length} activities 🎉`
+              : `${allActivities.length} activities are waiting for you — let's get that first one done! 💪`}
+          </p>
+        </div>
       </div>
+
+      {/* Class leaderboard */}
+      {BACKEND_ENABLED && classroomId && (
+        <section className="mt-8">
+          <ClassLeaderboard classroomId={classroomId} highlightStudentId={studentId} />
+        </section>
+      )}
 
       {/* Assigned work */}
       <section className="mt-10">

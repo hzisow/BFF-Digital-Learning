@@ -1,9 +1,11 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { Logo } from './Logo'
 import { useAdmin, useStudent } from '../lib/session'
 import { useLang } from '../lib/i18n'
 import type { Lang } from '../lib/i18n'
+import { loadLocalProgress } from '../lib/progress'
+import { totalXp, levelInfo } from '../lib/xp'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `rounded-lg px-3 py-1.5 font-display text-sm font-semibold transition ${
@@ -80,6 +82,9 @@ export default function Layout() {
     setMenuOpen(false)
   }, [location.pathname])
 
+  // Recompute XP/level on each navigation so it reflects just-finished work.
+  const level = useMemo(() => levelInfo(totalXp(loadLocalProgress())), [location.pathname])
+
   const links = (
     <>
       <NavLink to="/lessons" className={navLinkClass}>
@@ -99,6 +104,12 @@ export default function Layout() {
       </NavLink>
       {student ? (
         <NavLink to="/student" className={navLinkClass}>
+          <span
+            className="mr-1 rounded-md bg-bff-100 px-1.5 py-0.5 text-xs font-bold text-bff-700"
+            title={`Level ${level.level} · ${level.tier.name}`}
+          >
+            <span aria-hidden="true">{level.tier.emoji}</span> Lv{level.level}
+          </span>
           <span className="hidden sm:inline">{t('nav.myClass')} · </span>
           {student.nickname}
         </NavLink>

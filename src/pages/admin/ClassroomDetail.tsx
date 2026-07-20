@@ -7,6 +7,7 @@ import { useAdmin } from '../../lib/session'
 import { ACTIVITIES, getActivity } from '../../lib/activities'
 import { toCsv, downloadCsv } from '../../lib/csv'
 import HostLauncher from '../../components/HostLauncher'
+import ClassLeaderboard from '../../components/ClassLeaderboard'
 import { BackendOffCard } from './TeamAuth'
 import {
   addAssignment,
@@ -695,6 +696,13 @@ export default function ClassroomDetail() {
           </>
         )}
       </section>
+
+      {/* ---------- Class leaderboard ---------- */}
+      {students.length > 0 && (
+        <section className="mt-12">
+          <ClassLeaderboard classroomId={classroom.id} />
+        </section>
+      )}
     </div>
   )
 }

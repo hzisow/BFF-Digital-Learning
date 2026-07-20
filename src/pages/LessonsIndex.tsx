@@ -12,6 +12,8 @@ import { useLang } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
 import type { ActivityProgress } from '../lib/progress'
 import { getStreak } from '../lib/streak'
+import { totalXp, levelInfo } from '../lib/xp'
+import { dailyQuests } from '../lib/quests'
 
 // ---------- Path data ----------
 
@@ -183,6 +185,9 @@ export default function LessonsIndex() {
   const { lang } = useLang()
   const es = lang === 'es'
   const streak = useMemo(() => getStreak(), [])
+  const level = useMemo(() => levelInfo(totalXp(progress)), [progress])
+  const quests = useMemo(() => dailyQuests(progress), [progress])
+  const questsDone = quests.filter((q) => q.done).length
   // Missed quiz questions across all lessons — powers the Practice chip.
   const missedCount = useMemo(() => {
     let count = 0
@@ -285,8 +290,13 @@ export default function LessonsIndex() {
             ? '4 semanas, 8 lecciones, ~20 minutos cada una. Sigue la ruta: termina una lección para desbloquear la siguiente parada y gana el trofeo al final.'
             : '4 weeks, 8 lessons, ~20 minutes each. Follow the path — finish a lesson to unlock the next stop and claim the trophy at the end.'}
         </p>
-        {(streak.current > 0 || missedCount > 0) && (
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+          <span className="chip bg-bff-100 text-bff-800">
+            <span aria-hidden="true">{level.tier.emoji}</span>{' '}
+            {es ? 'Nivel' : 'Level'} {level.level} · {level.tier.name}
+          </span>
+          {(streak.current > 0 || missedCount > 0) && (
+            <>
             {streak.current > 0 && (
               <span className="chip bg-orange-100 text-orange-700">
                 <span aria-hidden="true">🔥</span>{' '}
@@ -304,8 +314,46 @@ export default function LessonsIndex() {
                   : `Review ${missedCount} missed ${missedCount === 1 ? 'question' : 'questions'}`}
               </Link>
             )}
+            </>
+          )}
+        </div>
+
+        {/* Daily quests */}
+        <div className="mx-auto mt-5 max-w-md rounded-2xl border border-slate-200 bg-white p-4 text-left">
+          <div className="flex items-center justify-between gap-2">
+            <p className="font-display text-sm font-bold text-slate-900">
+              <span aria-hidden="true">📅</span> {es ? 'Misiones de hoy' : "Today's quests"}
+            </p>
+            <span className="text-xs font-semibold text-slate-500">
+              {questsDone}/{quests.length} {es ? 'hechas' : 'done'}
+            </span>
           </div>
-        )}
+          <ul className="mt-3 space-y-1.5">
+            {quests.map((q) => (
+              <li key={q.id} className="flex items-center gap-2.5 text-sm">
+                <span
+                  className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs ${
+                    q.done ? 'bg-green-500 text-white' : 'border-2 border-slate-300 text-transparent'
+                  }`}
+                  aria-hidden="true"
+                >
+                  ✓
+                </span>
+                <span className={q.done ? 'text-slate-400 line-through' : 'text-slate-700'}>
+                  <span aria-hidden="true">{q.emoji}</span> {es ? q.es : q.en}
+                </span>
+                <span className="sr-only">{q.done ? (es ? 'completada' : 'done') : (es ? 'pendiente' : 'not done')}</span>
+              </li>
+            ))}
+          </ul>
+          {questsDone === quests.length && (
+            <p className="mt-3 rounded-lg bg-green-50 px-3 py-2 text-center text-xs font-semibold text-green-700">
+              <span aria-hidden="true">🎉</span>{' '}
+              {es ? '¡Todas las misiones de hoy completadas!' : "All of today's quests complete!"}
+            </p>
+          )}
+        </div>
+
         <div className="mx-auto mt-5 flex max-w-md items-center gap-3">
           <div
             role="progressbar"
