@@ -169,3 +169,124 @@ export const KIND_LABEL: Record<ActivityKind, string> = {
   challenge: 'Challenge',
   game: 'Game',
 }
+
+const KIND_LABEL_ES: Record<ActivityKind, string> = {
+  lesson: 'Lección',
+  elective: 'Electiva',
+  challenge: 'Desafío',
+  game: 'Juego',
+}
+
+/** Localized label for an activity kind. */
+export function kindLabel(kind: ActivityKind, lang: 'en' | 'es'): string {
+  return (lang === 'es' ? KIND_LABEL_ES : KIND_LABEL)[kind]
+}
+
+// Spanish titles/descriptions for every activity, keyed by slug. Titles that are
+// proper nouns (e.g. "Wolf of Wall Street") intentionally stay in English.
+const ACTIVITY_ES: Record<string, { title?: string; description: string }> = {
+  'earning-income': {
+    title: 'Ganar Ingresos',
+    description: 'Cheques de pago, carreras, impuestos y cómo se gana el dinero.',
+  },
+  'spending-budgeting': {
+    title: 'Gastos y Presupuesto',
+    description: 'Necesidades vs. deseos y cómo crear un presupuesto que funcione.',
+  },
+  'saving-investing': {
+    title: 'Ahorrar e Invertir',
+    description: 'Por qué ahorrar temprano gana, y cómo invertir hace crecer el dinero.',
+  },
+  'credit-debt': {
+    title: 'Crédito y Deudas',
+    description: 'Puntajes de crédito, préstamos y cómo evitar las trampas de la deuda.',
+  },
+  'risk-insurance': {
+    title: 'Gestión de Riesgos y Seguros',
+    description: 'Protegerte a ti y a tu dinero de lo inesperado.',
+  },
+  'financial-decision-making': {
+    title: 'Toma de Decisiones Financieras',
+    description: 'Tomar decisiones inteligentes de dinero con herramientas reales.',
+  },
+  'financial-planning': {
+    title: 'Planificación Financiera',
+    description: 'Fijar metas y crear un plan para tu futuro financiero.',
+  },
+  'consumer-protection': {
+    title: 'Protección al Consumidor',
+    description: 'Detectar estafas, fraudes y conocer tus derechos.',
+  },
+  'wolf-of-wall-street': {
+    description:
+      'Invierte $1,000 en 12 empresas, reacciona a las noticias de última hora y sobrevive al mercado. Juega solo o en vivo con tu clase.',
+  },
+  'bens-budget': {
+    title: 'La Situación de Ben',
+    description:
+      'Ayuda a Ben (maestro de secundaria, 3 hijos, presupuesto ajustado) a sobrevivir el mes y aun así ahorrar para el viaje a la playa.',
+  },
+  'bens-insurance': {
+    title: 'La Situación de Seguros de Ben',
+    description:
+      'Ben tiene $500 para seguros. Elige su cobertura y descubre lo que el mes le depara a su familia.',
+  },
+  'paystub-detective': {
+    title: 'Detective de Cheques',
+    description:
+      'Tres cheques de pago, errores escondidos. Encuentra cada error antes de que alguien pierda dinero: revisar tu pago vale la pena.',
+  },
+  'credit-score-sim': {
+    title: 'Constructor de Puntaje de Crédito',
+    description:
+      'Diez meses de decisiones de crédito de la vida real. Observa cómo tu puntaje sube (o se desploma) con cada decisión.',
+  },
+  'scam-spotter': {
+    title: 'Cazador de Estafas',
+    description:
+      'Ocho mensajes llegan a tu bandeja. Algunos son reales, otros son estafas. ¿Puedes detectar cada señal de alerta?',
+  },
+  'smart-shopper': {
+    title: 'Comprador Inteligente',
+    description: 'Seis ofertas frente a frente donde la etiqueta engaña. Haz las cuentas y vence al marketing.',
+  },
+  'goal-getter': {
+    title: 'Cazador de Metas',
+    description:
+      'Tres metas de ahorro, $200 al mes, y la vida no para. Distribuye con astucia y cumple cada fecha límite.',
+  },
+  'first-paycheck': {
+    title: 'Tu Primer Cheque de Pago',
+    description: 'Descifra un cheque real: bruto vs. neto, impuestos, FICA y cómo detectar errores.',
+  },
+  'taxes-deep-dive': {
+    title: 'Impuestos a Fondo',
+    description: 'Adónde van los impuestos, cómo funcionan los tramos y por qué existen los reembolsos.',
+  },
+  'paying-for-college': {
+    title: 'Pagar la Universidad',
+    description: 'FAFSA, becas, subvenciones, préstamos y cómo comparar ofertas como un profesional.',
+  },
+  entrepreneurship: {
+    title: 'Emprendimiento y Trabajos Extra',
+    description: 'Convierte una habilidad en ingresos: precios, ganancias y tu primer negocio.',
+  },
+  'crypto-and-scams': {
+    title: 'Cripto y Trampas Modernas del Dinero',
+    description:
+      "Cripto, exageración, apuestas y 'compra ahora, paga después': detecta las trampas antes de que te cuesten.",
+  },
+}
+
+/** Activity title + description in the active language (English fallback). */
+export function localizeActivity(
+  meta: ActivityMeta,
+  lang: 'en' | 'es',
+): { title: string; description: string } {
+  if (lang !== 'es') return { title: meta.title, description: meta.description }
+  const es = ACTIVITY_ES[meta.slug]
+  return {
+    title: es?.title ?? meta.title,
+    description: es?.description ?? meta.description,
+  }
+}
