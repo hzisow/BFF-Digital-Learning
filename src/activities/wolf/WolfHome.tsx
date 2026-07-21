@@ -5,13 +5,19 @@ import { money } from './TradingBoard'
 import { createSession } from './live'
 import { useAdmin } from '../../lib/session'
 import { BACKEND_ENABLED } from '../../lib/config'
+import { useLang } from '../../lib/i18n'
 
 const OFFLINE_NOTE =
   'Live games unlock when the class backend is connected — solo mode is ready now!'
+const OFFLINE_NOTE_ES =
+  'Los juegos en vivo se activan cuando el backend de la clase está conectado — ¡el modo individual ya está listo!'
 
 export default function WolfHome() {
   const navigate = useNavigate()
   const { adminUser } = useAdmin()
+  const { lang } = useLang()
+  const es = lang === 'es'
+  const offlineNote = es ? OFFLINE_NOTE_ES : OFFLINE_NOTE
   const [code, setCode] = useState('')
   const [hosting, setHosting] = useState(false)
   const [hostError, setHostError] = useState<string | null>(null)
@@ -31,7 +37,13 @@ export default function WolfHome() {
       const session = await createSession(null)
       navigate(`/host/${session.id}`)
     } catch (err) {
-      setHostError(err instanceof Error ? err.message : 'Could not create a game. Try again!')
+      setHostError(
+        err instanceof Error
+          ? err.message
+          : es
+            ? 'No se pudo crear el juego. ¡Inténtalo de nuevo!'
+            : 'Could not create a game. Try again!',
+      )
       setHosting(false)
     }
   }
@@ -45,10 +57,21 @@ export default function WolfHome() {
           Wolf of Wall Street
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-slate-600">
-          You have <strong className="text-slate-900">{money(STARTING_CASH)}</strong> to invest
-          across 12 up-and-coming (and totally fictional) companies. Study the market, ride out two
-          rounds of breaking news, and hold your nerve until the closing-bell reveal shows how every
-          company really performed. Best portfolio wins!
+          {es ? (
+            <>
+              Tienes <strong className="text-slate-900">{money(STARTING_CASH)}</strong> para invertir
+              en 12 empresas prometedoras (y totalmente ficticias). Estudia el mercado, resiste dos
+              rondas de noticias de última hora y mantén la calma hasta que la campana de cierre revele
+              cómo le fue de verdad a cada empresa. ¡Gana la mejor cartera!
+            </>
+          ) : (
+            <>
+              You have <strong className="text-slate-900">{money(STARTING_CASH)}</strong> to invest
+              across 12 up-and-coming (and totally fictional) companies. Study the market, ride out two
+              rounds of breaking news, and hold your nerve until the closing-bell reveal shows how every
+              company really performed. Best portfolio wins!
+            </>
+          )}
         </p>
       </section>
 
@@ -57,26 +80,29 @@ export default function WolfHome() {
         {/* Solo */}
         <div className="card flex flex-col gap-3 text-center">
           <p className="text-4xl" aria-hidden="true">🎯</p>
-          <h2 className="font-display text-lg font-bold text-slate-900">Play solo</h2>
+          <h2 className="font-display text-lg font-bold text-slate-900">{es ? 'Juega individual' : 'Play solo'}</h2>
           <p className="flex-1 text-sm text-slate-600">
-            Practice at your own pace — trade through every round and see how your instincts stack
-            up.
+            {es
+              ? 'Practica a tu propio ritmo — negocia en cada ronda y descubre qué tan buenos son tus instintos.'
+              : 'Practice at your own pace — trade through every round and see how your instincts stack up.'}
           </p>
           <Link to="/wolf/solo" className="btn-primary w-full">
-            Start a solo game
+            {es ? 'Iniciar un juego individual' : 'Start a solo game'}
           </Link>
         </div>
 
         {/* Join */}
         <div className="card flex flex-col gap-3 text-center">
           <p className="text-4xl" aria-hidden="true">📱</p>
-          <h2 className="font-display text-lg font-bold text-slate-900">Join a live game</h2>
+          <h2 className="font-display text-lg font-bold text-slate-900">{es ? 'Únete a un juego en vivo' : 'Join a live game'}</h2>
           <p className="flex-1 text-sm text-slate-600">
-            Got a 6-character game code from your host? Jump in and trade against the whole room.
+            {es
+              ? '¿Tienes un código de juego de 6 caracteres de tu anfitrión? Únete y compite contra toda la sala.'
+              : 'Got a 6-character game code from your host? Jump in and trade against the whole room.'}
           </p>
           <form className="space-y-2" onSubmit={joinGame}>
             <label htmlFor="wolf-join-code" className="sr-only">
-              6-character game code
+              {es ? 'Código de juego de 6 caracteres' : '6-character game code'}
             </label>
             <input
               id="wolf-join-code"
@@ -92,33 +118,37 @@ export default function WolfHome() {
               className="btn-primary w-full"
               disabled={!BACKEND_ENABLED || code.trim().length !== 6}
             >
-              Join the game
+              {es ? 'Entrar al juego' : 'Join the game'}
             </button>
           </form>
-          {!BACKEND_ENABLED && <p className="text-xs text-slate-500">{OFFLINE_NOTE}</p>}
+          {!BACKEND_ENABLED && <p className="text-xs text-slate-500">{offlineNote}</p>}
         </div>
 
         {/* Host */}
         <div className="card flex flex-col gap-3 text-center">
           <p className="text-4xl" aria-hidden="true">🖥️</p>
-          <h2 className="font-display text-lg font-bold text-slate-900">Host a live game</h2>
+          <h2 className="font-display text-lg font-bold text-slate-900">{es ? 'Organiza un juego en vivo' : 'Host a live game'}</h2>
           {!BACKEND_ENABLED ? (
             <>
               <p className="flex-1 text-sm text-slate-600">
-                Put the game on the big screen and run the market for your whole class.
+                {es
+                  ? 'Pon el juego en la pantalla grande y dirige el mercado para toda tu clase.'
+                  : 'Put the game on the big screen and run the market for your whole class.'}
               </p>
               <button className="btn-secondary w-full" disabled>
-                Host a game
+                {es ? 'Organizar un juego' : 'Host a game'}
               </button>
-              <p className="text-xs text-slate-500">{OFFLINE_NOTE}</p>
+              <p className="text-xs text-slate-500">{offlineNote}</p>
             </>
           ) : adminUser ? (
             <>
               <p className="flex-1 text-sm text-slate-600">
-                Create a game, throw the join code on the projector, and run the market live.
+                {es
+                  ? 'Crea un juego, muestra el código de acceso en el proyector y dirige el mercado en vivo.'
+                  : 'Create a game, throw the join code on the projector, and run the market live.'}
               </p>
               <button className="btn-primary w-full" onClick={hostGame} disabled={hosting}>
-                {hosting ? 'Setting up your game…' : 'Host a game'}
+                {hosting ? (es ? 'Preparando tu juego…' : 'Setting up your game…') : es ? 'Organizar un juego' : 'Host a game'}
               </button>
               {hostError && (
                 <p className="text-xs font-semibold text-red-600" role="alert">
@@ -129,11 +159,12 @@ export default function WolfHome() {
           ) : (
             <>
               <p className="flex-1 text-sm text-slate-600">
-                BFF mentors host live games from the big screen. Sign in on the team page to get
-                started.
+                {es
+                  ? 'Los mentores de BFF organizan juegos en vivo desde la pantalla grande. Inicia sesión en la página del equipo para comenzar.'
+                  : 'BFF mentors host live games from the big screen. Sign in on the team page to get started.'}
               </p>
               <Link to="/team" className="btn-secondary w-full">
-                Team sign in
+                {es ? 'Iniciar sesión de equipo' : 'Team sign in'}
               </Link>
             </>
           )}
@@ -142,16 +173,18 @@ export default function WolfHome() {
 
       {/* Companies */}
       <section>
-        <h2 className="mb-1 font-display text-xl font-bold text-slate-900">Meet the market</h2>
+        <h2 className="mb-1 font-display text-xl font-bold text-slate-900">{es ? 'Conoce el mercado' : 'Meet the market'}</h2>
         <p className="mb-4 text-sm text-slate-500">
-          Twelve companies, twelve stories — which ones will you back?
+          {es
+            ? 'Doce empresas, doce historias — ¿por cuáles vas a apostar?'
+            : 'Twelve companies, twelve stories — which ones will you back?'}
         </p>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {COMPANIES.map((c) => (
             <div key={c.ticker} className="card p-4">
               <p className="font-display text-sm font-bold text-slate-900">{c.name}</p>
               <p className="text-xs font-semibold text-bff-700">{c.ticker}</p>
-              <p className="mt-1 text-xs text-slate-500">{c.industry}</p>
+              <p className="mt-1 text-xs text-slate-500">{es ? c.industryEs : c.industry}</p>
             </div>
           ))}
         </div>

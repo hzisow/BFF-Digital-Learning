@@ -4,16 +4,19 @@ import { COMPANIES, STARTING_CASH, portfolioValue, priceAt, type Holdings } from
 import TradingBoard, { money } from './TradingBoard'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
+import { useLang } from '../../lib/i18n'
 
-const STAGE_TITLES: Record<number, { emoji: string; title: string }> = {
-  1: { emoji: '🔔', title: 'Opening Bell — pick your stocks' },
-  2: { emoji: '📰', title: 'Breaking News — round 1' },
-  3: { emoji: '📰', title: 'Breaking News — round 2' },
-  4: { emoji: '🔒', title: 'Closing Bell — the results are in' },
+const STAGE_TITLES: Record<number, { emoji: string; title: string; titleEs: string }> = {
+  1: { emoji: '🔔', title: 'Opening Bell — pick your stocks', titleEs: 'Campana de apertura — elige tus acciones' },
+  2: { emoji: '📰', title: 'Breaking News — round 1', titleEs: 'Última hora — ronda 1' },
+  3: { emoji: '📰', title: 'Breaking News — round 2', titleEs: 'Última hora — ronda 2' },
+  4: { emoji: '🔒', title: 'Closing Bell — the results are in', titleEs: 'Campana de cierre — ya están los resultados' },
 }
 
 export default function WolfSolo() {
   const { student } = useStudent()
+  const { lang } = useLang()
+  const es = lang === 'es'
   const [stage, setStage] = useState(1)
   const [cash, setCash] = useState(STARTING_CASH)
   const [holdings, setHoldings] = useState<Holdings>({})
@@ -61,21 +64,41 @@ export default function WolfSolo() {
           </h1>
           <p className="text-sm text-slate-500">
             <span aria-hidden="true">{STAGE_TITLES[Math.min(stage, 4)].emoji}</span>{' '}
-            {STAGE_TITLES[Math.min(stage, 4)].title}
+            {es ? STAGE_TITLES[Math.min(stage, 4)].titleEs : STAGE_TITLES[Math.min(stage, 4)].title}
           </p>
         </div>
         {stage <= 3 && (
           <button className="btn-primary" onClick={advance}>
-            {stage === 1 ? "I'm invested — ring the bell" : stage === 2 ? 'Next news round' : 'Close the market'}
+            {stage === 1
+              ? es
+                ? 'Ya invertí — toca la campana'
+                : "I'm invested — ring the bell"
+              : stage === 2
+                ? es
+                  ? 'Siguiente ronda de noticias'
+                  : 'Next news round'
+                : es
+                  ? 'Cerrar el mercado'
+                  : 'Close the market'}
           </button>
         )}
       </div>
 
       {stage === 1 && (
         <p className="card mb-4 border-bff-200 bg-bff-50 text-sm text-slate-700">
-          You have <strong>{money(STARTING_CASH)}</strong> to invest across 12 companies. Study the
-          market information below, build your portfolio, then ring the bell. You can buy and sell
-          again after each news round.
+          {es ? (
+            <>
+              Tienes <strong>{money(STARTING_CASH)}</strong> para invertir en 12 empresas. Estudia la
+              información del mercado de abajo, arma tu cartera y luego toca la campana. Puedes comprar y
+              vender de nuevo después de cada ronda de noticias.
+            </>
+          ) : (
+            <>
+              You have <strong>{money(STARTING_CASH)}</strong> to invest across 12 companies. Study the
+              market information below, build your portfolio, then ring the bell. You can buy and sell
+              again after each news round.
+            </>
+          )}
         </p>
       )}
 
@@ -86,7 +109,9 @@ export default function WolfSolo() {
       {stage === 4 && (
         <div className="space-y-3">
           <p className="text-sm text-slate-600">
-            The market has closed. Tap to reveal how each company performed…
+            {es
+              ? 'El mercado ha cerrado. Toca para revelar cómo le fue a cada empresa…'
+              : 'The market has closed. Tap to reveal how each company performed…'}
           </p>
           <div className="space-y-3" aria-live="polite">
             {COMPANIES.slice(0, revealIndex).map((c) => {
@@ -98,17 +123,21 @@ export default function WolfSolo() {
                     <p className="font-display font-bold text-slate-900">
                       {c.name} <span className="text-xs text-slate-500">{c.ticker}</span>
                       {shares > 0 && (
-                        <span className="chip ml-2 bg-bff-50 text-bff-700">you own {shares}</span>
+                        <span className="chip ml-2 bg-bff-50 text-bff-700">{es ? `tienes ${shares}` : `you own ${shares}`}</span>
                       )}
                     </p>
-                    <p className="text-sm text-slate-600">{c.summary}</p>
+                    <p className="text-sm text-slate-600">{es ? c.summaryEs : c.summary}</p>
                   </div>
                   <p className={`whitespace-nowrap font-display text-lg font-bold ${change >= 0 ? 'text-green-700' : 'text-red-600'}`}>
                     ${c.prices[3]}{' '}
                     <span className="text-sm">
                       <span aria-hidden="true">({change >= 0 ? '+' : ''}{change})</span>
                       <span className="sr-only">
-                        {change >= 0 ? `up $${change}` : `down $${Math.abs(change)}`} from the open
+                        {es
+                          ? change >= 0
+                            ? `sube $${change} desde la apertura`
+                            : `baja $${Math.abs(change)} desde la apertura`
+                          : `${change >= 0 ? `up $${change}` : `down $${Math.abs(change)}`} from the open`}
                       </span>
                     </span>
                   </p>
@@ -118,10 +147,16 @@ export default function WolfSolo() {
           </div>
           <button className="btn-primary w-full" onClick={revealNext}>
             {revealIndex < COMPANIES.length - 1
-              ? `Reveal ${COMPANIES[revealIndex].name} →`
+              ? es
+                ? `Revelar ${COMPANIES[revealIndex].name} →`
+                : `Reveal ${COMPANIES[revealIndex].name} →`
               : revealIndex === COMPANIES.length - 1
-                ? `Reveal ${COMPANIES[revealIndex].name} and see your total →`
-                : 'See your results →'}
+                ? es
+                  ? `Revelar ${COMPANIES[revealIndex].name} y ver tu total →`
+                  : `Reveal ${COMPANIES[revealIndex].name} and see your total →`
+                : es
+                  ? 'Ver tus resultados →'
+                  : 'See your results →'}
           </button>
         </div>
       )}
@@ -130,23 +165,25 @@ export default function WolfSolo() {
         <div className="card animate-pop-in space-y-4 text-center" role="status">
           <p className="text-5xl" aria-hidden="true">{finalValue >= STARTING_CASH ? '🎉' : '📉'}</p>
           <h2 className="font-display text-2xl font-bold text-slate-900">
-            Final portfolio: {money(finalValue)}
+            {es ? 'Cartera final:' : 'Final portfolio:'} {money(finalValue)}
           </h2>
           <p className={`font-display text-lg font-bold ${finalValue >= STARTING_CASH ? 'text-green-700' : 'text-red-600'}`}>
             {finalValue >= STARTING_CASH ? '+' : '−'}{money(Math.abs(finalValue - STARTING_CASH))}{' '}
-            {finalValue >= STARTING_CASH ? 'profit' : 'loss'} on your {money(STARTING_CASH)} start
+            {es
+              ? `de ${finalValue >= STARTING_CASH ? 'ganancia' : 'pérdida'} sobre tu inicio de ${money(STARTING_CASH)}`
+              : `${finalValue >= STARTING_CASH ? 'profit' : 'loss'} on your ${money(STARTING_CASH)} start`}
           </p>
           <p className="mx-auto max-w-md text-sm text-slate-600">
-            Real investors face the same challenge: hype fades (sorry, Snacksy), steady trends win,
-            and diversifying protects you when one company has a bad month. Play again with a new
-            strategy!
+            {es
+              ? 'Los inversionistas reales enfrentan el mismo reto: la moda pasa (lo sentimos, Snacksy), las tendencias estables ganan y diversificar te protege cuando a una empresa le va mal un mes. ¡Juega otra vez con una nueva estrategia!'
+              : 'Real investors face the same challenge: hype fades (sorry, Snacksy), steady trends win, and diversifying protects you when one company has a bad month. Play again with a new strategy!'}
           </p>
           <div className="flex justify-center gap-3">
             <button className="btn-secondary" onClick={() => window.location.reload()}>
-              Play again
+              {es ? 'Jugar otra vez' : 'Play again'}
             </button>
             <Link to="/activities" className="btn-primary">
-              More activities
+              {es ? 'Más actividades' : 'More activities'}
             </Link>
           </div>
         </div>

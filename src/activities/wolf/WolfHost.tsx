@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { COMPANIES, MARKET_HINTS, NEWS_ROUNDS, portfolioValue, priceAt } from './data'
+import { COMPANIES, MARKET_HINTS, MARKET_HINTS_ES, NEWS_ROUNDS, portfolioValue, priceAt } from './data'
 import { money } from './TradingBoard'
 import {
   createSession,
@@ -14,17 +14,18 @@ import {
 import { Logo } from '../../components/Logo'
 import { BACKEND_ENABLED } from '../../lib/config'
 import { useAdmin } from '../../lib/session'
+import { useLang } from '../../lib/i18n'
 
-const STAGE_TITLES: Record<number, { emoji: string; title: string }> = {
-  1: { emoji: '🔔', title: 'Opening Bell' },
-  2: { emoji: '📰', title: 'Breaking News 1' },
-  3: { emoji: '📰', title: 'Breaking News 2' },
+const STAGE_TITLES: Record<number, { emoji: string; title: string; titleEs: string }> = {
+  1: { emoji: '🔔', title: 'Opening Bell', titleEs: 'Campana de apertura' },
+  2: { emoji: '📰', title: 'Breaking News 1', titleEs: 'Última hora 1' },
+  3: { emoji: '📰', title: 'Breaking News 2', titleEs: 'Última hora 2' },
 }
 
-const ADVANCE_LABELS: Record<number, { label: string; emoji?: string }> = {
-  1: { label: 'Breaking news round 1 →' },
-  2: { label: 'Breaking news round 2 →' },
-  3: { label: 'Ring the closing bell', emoji: '🔔' },
+const ADVANCE_LABELS: Record<number, { label: string; labelEs: string; emoji?: string }> = {
+  1: { label: 'Breaking news round 1 →', labelEs: 'Ronda de noticias 1 →' },
+  2: { label: 'Breaking news round 2 →', labelEs: 'Ronda de noticias 2 →' },
+  3: { label: 'Ring the closing bell', labelEs: 'Toca la campana de cierre', emoji: '🔔' },
 }
 
 const BIG_BUTTON =
@@ -58,6 +59,8 @@ export default function WolfHost() {
   const { sessionId } = useParams<{ sessionId: string }>()
   const navigate = useNavigate()
   const { adminUser, adminReady } = useAdmin()
+  const { lang } = useLang()
+  const es = lang === 'es'
 
   const [session, setSession] = useState<GameSession | null>(null)
   const [players, setPlayers] = useState<GamePlayer[]>([])
@@ -77,7 +80,14 @@ export default function WolfHost() {
         if (active) setSession(s)
       })
       .catch((err) => {
-        if (active) setError(err instanceof Error ? err.message : 'Could not load the game.')
+        if (active)
+          setError(
+            err instanceof Error
+              ? err.message
+              : es
+                ? 'No se pudo cargar el juego.'
+                : 'Could not load the game.',
+          )
       })
     const refresh = () => {
       listPlayers(sessionId)
@@ -98,7 +108,7 @@ export default function WolfHost() {
       active = false
       unsubscribe()
     }
-  }, [sessionId, adminId])
+  }, [sessionId, adminId, es])
 
   function setStage(stage: number) {
     if (!session) return
@@ -122,7 +132,13 @@ export default function WolfHost() {
       const s = await createSession(null)
       navigate(`/host/${s.id}`)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not create a new game.')
+      setError(
+        err instanceof Error
+          ? err.message
+          : es
+            ? 'No se pudo crear un juego nuevo.'
+            : 'Could not create a new game.',
+      )
     } finally {
       setCreating(false)
     }
@@ -133,14 +149,18 @@ export default function WolfHost() {
       <HostShell>
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
           <p className="text-4xl" aria-hidden="true">🖥️</p>
-          <h1 className="font-display text-xl font-bold text-slate-900">Host screen</h1>
+          <h1 className="font-display text-xl font-bold text-slate-900">{es ? 'Pantalla del anfitrión' : 'Host screen'}</h1>
           <p className="text-sm text-slate-600">
             {!BACKEND_ENABLED
-              ? 'Live games unlock when the class backend is connected — solo mode is ready now!'
-              : 'Hosting live games is for signed-in BFF mentors. Head over to the team page to sign in.'}
+              ? es
+                ? 'Los juegos en vivo se activan cuando el backend de la clase está conectado — ¡el modo individual ya está listo!'
+                : 'Live games unlock when the class backend is connected — solo mode is ready now!'
+              : es
+                ? 'Organizar juegos en vivo es para mentores de BFF con sesión iniciada. Ve a la página del equipo para iniciar sesión.'
+                : 'Hosting live games is for signed-in BFF mentors. Head over to the team page to sign in.'}
           </p>
           <Link to="/team" className="btn-primary">
-            Go to the team page
+            {es ? 'Ir a la página del equipo' : 'Go to the team page'}
           </Link>
         </div>
       </HostShell>
@@ -152,10 +172,10 @@ export default function WolfHost() {
       <HostShell>
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
           <p className="text-4xl" aria-hidden="true">🤔</p>
-          <h1 className="font-display text-xl font-bold text-slate-900">Could not load the game</h1>
+          <h1 className="font-display text-xl font-bold text-slate-900">{es ? 'No se pudo cargar el juego' : 'Could not load the game'}</h1>
           <p className="text-sm text-slate-600">{error}</p>
           <Link to="/wolf" className="btn-primary">
-            Back to Wolf of Wall Street
+            {es ? 'Volver a Wolf of Wall Street' : 'Back to Wolf of Wall Street'}
           </Link>
         </div>
       </HostShell>
@@ -166,7 +186,7 @@ export default function WolfHost() {
     return (
       <HostShell>
         <p className="mt-32 text-center font-display text-2xl font-semibold text-bff-200">
-          Warming up the trading floor…
+          {es ? 'Preparando el piso de negociación…' : 'Warming up the trading floor…'}
         </p>
       </HostShell>
     )
@@ -186,7 +206,7 @@ export default function WolfHost() {
           <h1 className="font-display text-4xl font-bold sm:text-5xl">
             <span aria-hidden="true">🐺</span> Wolf of Wall Street
           </h1>
-          <p className="text-xl text-bff-200">Grab a device and join with the game code</p>
+          <p className="text-xl text-bff-200">{es ? 'Toma un dispositivo y únete con el código del juego' : 'Grab a device and join with the game code'}</p>
           <p className="font-display text-7xl font-bold tracking-widest sm:text-8xl md:text-9xl">
             {session.code}
           </p>
@@ -195,7 +215,14 @@ export default function WolfHost() {
           </p>
           <div className="w-full">
             <p className="mb-3 font-display text-2xl font-bold text-bff-100">
-              {players.length} {players.length === 1 ? 'trader' : 'traders'} on the floor
+              {players.length}{' '}
+              {es
+                ? players.length === 1
+                  ? 'inversionista en el piso'
+                  : 'inversionistas en el piso'
+                : players.length === 1
+                  ? 'trader on the floor'
+                  : 'traders on the floor'}
             </p>
             <div className="mx-auto flex max-w-3xl flex-wrap justify-center gap-2">
               {players.map((p) => (
@@ -207,12 +234,12 @@ export default function WolfHost() {
                 </span>
               ))}
               {players.length === 0 && (
-                <span className="text-lg text-bff-300">Waiting for the first trader to join…</span>
+                <span className="text-lg text-bff-300">{es ? 'Esperando a que se una el primer inversionista…' : 'Waiting for the first trader to join…'}</span>
               )}
             </div>
           </div>
           <button className={BIG_BUTTON} onClick={() => setStage(1)}>
-            Start the game <span aria-hidden="true">🔔</span>
+            {es ? 'Comenzar el juego' : 'Start the game'} <span aria-hidden="true">🔔</span>
           </button>
         </div>
       )}
@@ -221,7 +248,7 @@ export default function WolfHost() {
       {stage >= 1 && stage <= 3 && (
         <div className="space-y-6 pt-2">
           <h1 className="font-display text-4xl font-bold sm:text-5xl">
-            <span aria-hidden="true">{STAGE_TITLES[stage].emoji}</span> {STAGE_TITLES[stage].title}
+            <span aria-hidden="true">{STAGE_TITLES[stage].emoji}</span> {es ? STAGE_TITLES[stage].titleEs : STAGE_TITLES[stage].title}
           </h1>
           <div className="grid gap-6 lg:grid-cols-[1fr_minmax(300px,360px)]">
             <div className="space-y-6">
@@ -229,17 +256,17 @@ export default function WolfHost() {
                 <h2 className="mb-4 font-display text-lg font-bold uppercase tracking-wide text-bff-200">
                   {stage === 1 ? (
                     <>
-                      <span aria-hidden="true">🔍</span> Market information
+                      <span aria-hidden="true">🔍</span> {es ? 'Información del mercado' : 'Market information'}
                     </>
                   ) : (
                     <>
-                      <span aria-hidden="true">📰</span> Breaking news
+                      <span aria-hidden="true">📰</span> {es ? 'Última hora' : 'Breaking news'}
                     </>
                   )}
                 </h2>
                 <ul className="space-y-3">
                   {stage === 1
-                    ? MARKET_HINTS.map((h) => (
+                    ? (es ? MARKET_HINTS_ES : MARKET_HINTS).map((h) => (
                         <li key={h} className="text-2xl font-semibold leading-snug">
                           {h}
                         </li>
@@ -248,16 +275,16 @@ export default function WolfHost() {
                         <li key={n.headline} className="text-2xl font-semibold leading-snug">
                           <span aria-hidden="true">{n.direction === 'up' ? '📈' : '📉'}</span>{' '}
                           <span className="sr-only">
-                            {n.direction === 'up' ? 'Good news: ' : 'Bad news: '}
+                            {n.direction === 'up' ? (es ? 'Buenas noticias: ' : 'Good news: ') : (es ? 'Malas noticias: ' : 'Bad news: ')}
                           </span>
-                          {n.headline}
+                          {es ? n.headlineEs : n.headline}
                         </li>
                       ))}
                 </ul>
               </div>
               <div className="rounded-2xl bg-white/10 p-6">
                 <h2 className="mb-4 font-display text-lg font-bold uppercase tracking-wide text-bff-200">
-                  <span aria-hidden="true">💹</span> Prices
+                  <span aria-hidden="true">💹</span> {es ? 'Precios' : 'Prices'}
                 </h2>
                 <div className="grid gap-x-8 gap-y-1 sm:grid-cols-2">
                   {COMPANIES.map((c) => {
@@ -289,11 +316,17 @@ export default function WolfHost() {
                                 {change > 0 ? `▲ +${change}` : change < 0 ? `▼ ${change}` : '· flat'}
                               </span>
                               <span className="sr-only">
-                                {change > 0
-                                  ? `up ${change}`
-                                  : change < 0
-                                    ? `down ${Math.abs(change)}`
-                                    : 'no change'}
+                                {es
+                                  ? change > 0
+                                    ? `sube ${change}`
+                                    : change < 0
+                                      ? `baja ${Math.abs(change)}`
+                                      : 'sin cambios'
+                                  : change > 0
+                                    ? `up ${change}`
+                                    : change < 0
+                                      ? `down ${Math.abs(change)}`
+                                      : 'no change'}
                               </span>
                             </span>
                           )}
@@ -306,7 +339,7 @@ export default function WolfHost() {
             </div>
             <div className="h-fit rounded-2xl bg-white/10 p-6">
               <h2 className="mb-4 font-display text-lg font-bold uppercase tracking-wide text-bff-200">
-                <span aria-hidden="true">🏆</span> Leaderboard
+                <span aria-hidden="true">🏆</span> {es ? 'Tabla de posiciones' : 'Leaderboard'}
               </h2>
               <ol className="space-y-2.5">
                 {standings.map((p, i) => (
@@ -319,16 +352,18 @@ export default function WolfHost() {
                     </span>
                   </li>
                 ))}
-                {standings.length === 0 && <li className="text-lg text-bff-300">No traders yet…</li>}
+                {standings.length === 0 && <li className="text-lg text-bff-300">{es ? 'Aún no hay inversionistas…' : 'No traders yet…'}</li>}
               </ol>
             </div>
           </div>
           <ControlBar>
             <p className="mr-auto hidden text-bff-300 sm:block">
-              Everyone trades on their own device — advance when the room is ready.
+              {es
+                ? 'Cada quien negocia en su propio dispositivo — avanza cuando la sala esté lista.'
+                : 'Everyone trades on their own device — advance when the room is ready.'}
             </p>
             <button className={BIG_BUTTON} onClick={() => setStage(stage + 1)}>
-              {ADVANCE_LABELS[stage].label}
+              {es ? ADVANCE_LABELS[stage].labelEs : ADVANCE_LABELS[stage].label}
               {ADVANCE_LABELS[stage].emoji && (
                 <>
                   {' '}
@@ -344,11 +379,13 @@ export default function WolfHost() {
       {stage === 4 && (
         <div className="space-y-6 pt-2">
           <h1 className="font-display text-4xl font-bold sm:text-5xl">
-            <span aria-hidden="true">🔒</span> Closing Bell — the results are in
+            <span aria-hidden="true">🔒</span> {es ? 'Campana de cierre — ya están los resultados' : 'Closing Bell — the results are in'}
           </h1>
           {session.reveal_index === 0 && (
             <p className="text-2xl text-bff-200">
-              Build the suspense… reveal the companies one at a time!
+              {es
+                ? 'Crea el suspenso… ¡revela las empresas una por una!'
+                : 'Build the suspense… reveal the companies one at a time!'}
             </p>
           )}
           <div className="space-y-3">
@@ -367,7 +404,7 @@ export default function WolfHost() {
                       {c.name}{' '}
                       <span className="text-lg font-semibold text-bff-300">{c.ticker}</span>
                     </p>
-                    <p className="mt-1 text-lg text-bff-100">{c.summary}</p>
+                    <p className="mt-1 text-lg text-bff-100">{es ? c.summaryEs : c.summary}</p>
                   </div>
                   <p
                     className={`whitespace-nowrap font-display text-3xl font-bold ${
@@ -378,7 +415,11 @@ export default function WolfHost() {
                     <span className="text-xl">
                       <span aria-hidden="true">({change >= 0 ? '+' : ''}{change})</span>
                       <span className="sr-only">
-                        {change >= 0 ? `up $${change}` : `down $${Math.abs(change)}`} from the open
+                        {es
+                          ? change >= 0
+                            ? `sube $${change} desde la apertura`
+                            : `baja $${Math.abs(change)} desde la apertura`
+                          : `${change >= 0 ? `up $${change}` : `down $${Math.abs(change)}`} from the open`}
                       </span>
                     </span>
                   </p>
@@ -389,11 +430,11 @@ export default function WolfHost() {
           <ControlBar>
             {session.reveal_index < COMPANIES.length ? (
               <button className={BIG_BUTTON} onClick={revealNext}>
-                Reveal next company →
+                {es ? 'Revelar la siguiente empresa →' : 'Reveal next company →'}
               </button>
             ) : (
               <button className={BIG_BUTTON} onClick={() => setStage(5)}>
-                Show final leaderboard <span aria-hidden="true">🏆</span>
+                {es ? 'Mostrar la tabla final' : 'Show final leaderboard'} <span aria-hidden="true">🏆</span>
               </button>
             )}
           </ControlBar>
@@ -404,7 +445,7 @@ export default function WolfHost() {
       {stage === 5 && (
         <div className="flex flex-col items-center gap-10 pt-6 text-center">
           <h1 className="font-display text-5xl font-bold sm:text-6xl">
-            <span aria-hidden="true">🏆</span> Final Leaderboard
+            <span aria-hidden="true">🏆</span> {es ? 'Tabla de posiciones final' : 'Final Leaderboard'}
           </h1>
           <div className="grid w-full max-w-4xl gap-4 sm:grid-cols-3">
             {standings.slice(0, 3).map((p, i) => (
@@ -420,7 +461,7 @@ export default function WolfHost() {
               >
                 <p className="text-6xl" aria-hidden="true">{i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉'}</p>
                 <p className="mt-3 break-words font-display text-3xl font-bold">
-                  <span className="sr-only">{`${i + 1}${['st', 'nd', 'rd'][i] ?? 'th'} place: `}</span>
+                  <span className="sr-only">{es ? `puesto ${i + 1}: ` : `${i + 1}${['st', 'nd', 'rd'][i] ?? 'th'} place: `}</span>
                   {p.nickname}
                 </p>
                 <p className="mt-1 font-display text-2xl font-bold text-bff-100">
@@ -430,7 +471,7 @@ export default function WolfHost() {
             ))}
           </div>
           {standings.length === 0 && (
-            <p className="text-2xl text-bff-200">No traders this round — the market was quiet!</p>
+            <p className="text-2xl text-bff-200">{es ? 'No hubo inversionistas esta ronda — ¡el mercado estuvo tranquilo!' : 'No traders this round — the market was quiet!'}</p>
           )}
           {standings.length > 3 && (
             <ol className="w-full max-w-xl space-y-2">
@@ -449,10 +490,10 @@ export default function WolfHost() {
           )}
           <button className={BIG_BUTTON} onClick={playAgain} disabled={creating}>
             {creating ? (
-              'Setting up…'
+              es ? 'Preparando…' : 'Setting up…'
             ) : (
               <>
-                Play again with a new game <span aria-hidden="true">🔁</span>
+                {es ? 'Jugar otra vez con un juego nuevo' : 'Play again with a new game'} <span aria-hidden="true">🔁</span>
               </>
             )}
           </button>
