@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
+import { useLang } from '../../lib/i18n'
 import type { LiveGameProps } from '../live/types'
 
 const SLUG = 'goal-getter'
@@ -22,20 +23,21 @@ interface Goal {
   id: GoalId
   emoji: string
   label: string
+  labelEs: string
   target: number
   deadline: number // must be reached by the END of this month
   weight: number
 }
 
 const GOALS: Goal[] = [
-  { id: 'emergency', emoji: '🚨', label: 'Emergency fund', target: 300, deadline: 6, weight: 40 },
-  { id: 'bike', emoji: '🚲', label: 'New bike', target: 240, deadline: 4, weight: 35 },
-  { id: 'concert', emoji: '🎤', label: 'Concert tickets', target: 120, deadline: 3, weight: 25 },
+  { id: 'emergency', emoji: '🚨', label: 'Emergency fund', labelEs: 'Fondo de emergencia', target: 300, deadline: 6, weight: 40 },
+  { id: 'bike', emoji: '🚲', label: 'New bike', labelEs: 'Bicicleta nueva', target: 240, deadline: 4, weight: 35 },
+  { id: 'concert', emoji: '🎤', label: 'Concert tickets', labelEs: 'Entradas para el concierto', target: 120, deadline: 3, weight: 25 },
 ]
 
-const BUCKETS: { id: Bucket; emoji: string; label: string }[] = [
-  ...GOALS.map((g) => ({ id: g.id as Bucket, emoji: g.emoji, label: g.label })),
-  { id: 'fun', emoji: '🍿', label: 'Spend on fun' },
+const BUCKETS: { id: Bucket; emoji: string; label: string; labelEs: string }[] = [
+  ...GOALS.map((g) => ({ id: g.id as Bucket, emoji: g.emoji, label: g.label, labelEs: g.labelEs })),
+  { id: 'fun', emoji: '🍿', label: 'Spend on fun', labelEs: 'Gastar en diversión' },
 ]
 
 type Balances = Record<Bucket, number>
@@ -62,11 +64,11 @@ const PLAIN_MONTH: MonthInfo = { income: BASE_INCOME, minFun: 0, note: null }
 
 // ---------- Scoring ----------
 
-function tierFor(score: number): { title: string; emoji: string } {
-  if (score >= 90) return { title: 'Goal Getter Supreme', emoji: '🎯' }
-  if (score >= 70) return { title: 'On Track', emoji: '🚀' }
-  if (score >= 45) return { title: 'Halfway Hero', emoji: '🌗' }
-  return { title: 'Fun-First Spender', emoji: '🎢' }
+function tierFor(score: number, es: boolean): { title: string; emoji: string } {
+  if (score >= 90) return { title: es ? 'Cazametas Supremo' : 'Goal Getter Supreme', emoji: '🎯' }
+  if (score >= 70) return { title: es ? 'En Buen Camino' : 'On Track', emoji: '🚀' }
+  if (score >= 45) return { title: es ? 'Héroe a Medio Camino' : 'Halfway Hero', emoji: '🌗' }
+  return { title: es ? 'Primero la Diversión' : 'Fun-First Spender', emoji: '🎢' }
 }
 
 function usd(n: number): string {
@@ -77,6 +79,8 @@ function usd(n: number): string {
 
 export default function GoalGetter({ onComplete }: LiveGameProps) {
   const { student } = useStudent()
+  const { lang } = useLang()
+  const es = lang === 'es'
   const [month, setMonth] = useState(1)
   const [phase, setPhase] = useState<'allocate' | 'event' | 'results'>('allocate')
   const [balances, setBalances] = useState<Balances>({ ...ZERO_ALLOC })
@@ -115,16 +119,24 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
         setMonthInfo({
           income: BASE_INCOME,
           minFun: 0,
-          note: `Your emergency fund paid the ${usd(REPAIR_COST)} repair — this month's paycheck is untouched.`,
+          note: es
+            ? `Tu fondo de emergencia pagó la reparación de ${usd(REPAIR_COST)}: el sueldo de este mes queda intacto.`
+            : `Your emergency fund paid the ${usd(REPAIR_COST)} repair — this month's paycheck is untouched.`,
         })
         setEventCard({
           emoji: '📱',
-          title: 'CRACK. Your phone screen shatters.',
-          lines: [
-            `The repair costs ${usd(REPAIR_COST)}.`,
-            `Good news: your emergency fund has ${usd(currentBalances.emergency)}, so it absorbs the hit. That is exactly what it is for.`,
-            `Emergency fund: ${usd(currentBalances.emergency)} → ${usd(currentBalances.emergency - REPAIR_COST)}.`,
-          ],
+          title: es ? 'CRAC. La pantalla de tu teléfono se rompe.' : 'CRACK. Your phone screen shatters.',
+          lines: es
+            ? [
+                `La reparación cuesta ${usd(REPAIR_COST)}.`,
+                `Buenas noticias: tu fondo de emergencia tiene ${usd(currentBalances.emergency)}, así que absorbe el golpe. Para eso es exactamente.`,
+                `Fondo de emergencia: ${usd(currentBalances.emergency)} → ${usd(currentBalances.emergency - REPAIR_COST)}.`,
+              ]
+            : [
+                `The repair costs ${usd(REPAIR_COST)}.`,
+                `Good news: your emergency fund has ${usd(currentBalances.emergency)}, so it absorbs the hit. That is exactly what it is for.`,
+                `Emergency fund: ${usd(currentBalances.emergency)} → ${usd(currentBalances.emergency - REPAIR_COST)}.`,
+              ],
           kind: 'info',
         })
       } else {
@@ -135,18 +147,28 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
         setMonthInfo({
           income: BASE_INCOME - fromIncome,
           minFun: 0,
-          note: `The repair took ${usd(fromIncome)} straight out of this month's paycheck (including a ${usd(PLAN_FEE)} payment-plan fee).`,
+          note: es
+            ? `La reparación se llevó ${usd(fromIncome)} directo del sueldo de este mes (incluida una comisión de plan de pagos de ${usd(PLAN_FEE)}).`
+            : `The repair took ${usd(fromIncome)} straight out of this month's paycheck (including a ${usd(PLAN_FEE)} payment-plan fee).`,
         })
         setEventCard({
           emoji: '📱',
-          title: 'CRACK. Your phone screen shatters.',
-          lines: [
-            `The repair costs ${usd(REPAIR_COST)} — but your emergency fund only has ${usd(fromFund)}.`,
-            fromFund > 0
-              ? `The fund is drained to $0, and the remaining ${usd(REPAIR_COST - fromFund)} plus a ${usd(PLAN_FEE)} payment-plan fee comes straight out of this month's income.`
-              : `With no buffer, the whole ${usd(REPAIR_COST)} plus a ${usd(PLAN_FEE)} payment-plan fee comes straight out of this month's income.`,
-            `This month you only have ${usd(BASE_INCOME - fromIncome)} to allocate. This is why "pay yourself first" matters — a buffer in month 1 would have protected month 2.`,
-          ],
+          title: es ? 'CRAC. La pantalla de tu teléfono se rompe.' : 'CRACK. Your phone screen shatters.',
+          lines: es
+            ? [
+                `La reparación cuesta ${usd(REPAIR_COST)}, pero tu fondo de emergencia solo tiene ${usd(fromFund)}.`,
+                fromFund > 0
+                  ? `El fondo queda vaciado en $0, y los ${usd(REPAIR_COST - fromFund)} restantes más una comisión de plan de pagos de ${usd(PLAN_FEE)} salen directo del ingreso de este mes.`
+                  : `Sin ningún colchón, los ${usd(REPAIR_COST)} completos más una comisión de plan de pagos de ${usd(PLAN_FEE)} salen directo del ingreso de este mes.`,
+                `Este mes solo tienes ${usd(BASE_INCOME - fromIncome)} para repartir. Por eso importa "págate a ti primero": un colchón en el mes 1 habría protegido el mes 2.`,
+              ]
+            : [
+                `The repair costs ${usd(REPAIR_COST)} — but your emergency fund only has ${usd(fromFund)}.`,
+                fromFund > 0
+                  ? `The fund is drained to $0, and the remaining ${usd(REPAIR_COST - fromFund)} plus a ${usd(PLAN_FEE)} payment-plan fee comes straight out of this month's income.`
+                  : `With no buffer, the whole ${usd(REPAIR_COST)} plus a ${usd(PLAN_FEE)} payment-plan fee comes straight out of this month's income.`,
+                `This month you only have ${usd(BASE_INCOME - fromIncome)} to allocate. This is why "pay yourself first" matters — a buffer in month 1 would have protected month 2.`,
+              ],
           kind: 'info',
         })
       }
@@ -156,15 +178,24 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
       setMonthInfo({
         income: BASE_INCOME + WINDFALL,
         minFun: 0,
-        note: `Babysitting bonus: ${usd(WINDFALL)} extra to allocate this month.`,
+        note: es
+          ? `Bono por cuidar niños: ${usd(WINDFALL)} extra para repartir este mes.`
+          : `Babysitting bonus: ${usd(WINDFALL)} extra to allocate this month.`,
       })
       setEventCard({
         emoji: '🍼',
-        title: `Windfall! A weekend of babysitting pays a ${usd(WINDFALL)} bonus.`,
-        lines: [
-          `This month you have ${usd(BASE_INCOME + WINDFALL)} instead of ${usd(BASE_INCOME)}.`,
-          'A windfall is a chance to catch up on a goal — or to blow it all on fun. Your call.',
-        ],
+        title: es
+          ? `¡Dinero extra! Un fin de semana cuidando niños te deja un bono de ${usd(WINDFALL)}.`
+          : `Windfall! A weekend of babysitting pays a ${usd(WINDFALL)} bonus.`,
+        lines: es
+          ? [
+              `Este mes tienes ${usd(BASE_INCOME + WINDFALL)} en lugar de ${usd(BASE_INCOME)}.`,
+              'Un dinero extra es una oportunidad para ponerte al día con una meta, o para gastártelo todo en diversión. Tú decides.',
+            ]
+          : [
+              `This month you have ${usd(BASE_INCOME + WINDFALL)} instead of ${usd(BASE_INCOME)}.`,
+              'A windfall is a chance to catch up on a goal — or to blow it all on fun. Your call.',
+            ],
         kind: 'info',
       })
       setPhase('event')
@@ -173,12 +204,20 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
       setMonthInfo(PLAIN_MONTH) // finalized by the trip choice
       setEventCard({
         emoji: '🚌',
-        title: `Your friends invite you on a ${usd(TRIP_COST)} day trip.`,
-        lines: [
-          'It sounds genuinely fun, and fun matters — budgets that allow zero fun tend to collapse.',
-          `Go, and ${usd(TRIP_COST)} of this month's money is committed to fun before you allocate the rest. Skip it, and you keep the full ${usd(BASE_INCOME)} for your goals.`,
-          'There is no single right answer — only a trade-off. What do you do?',
-        ],
+        title: es
+          ? `Tus amigos te invitan a una excursión de un día de ${usd(TRIP_COST)}.`
+          : `Your friends invite you on a ${usd(TRIP_COST)} day trip.`,
+        lines: es
+          ? [
+              'Suena genuinamente divertido, y la diversión importa: los presupuestos que no permiten nada de diversión tienden a fracasar.',
+              `Ve, y ${usd(TRIP_COST)} del dinero de este mes queda comprometido a diversión antes de repartir el resto. Sáltatela, y conservas los ${usd(BASE_INCOME)} completos para tus metas.`,
+              'No hay una única respuesta correcta, solo una decisión con compensaciones. ¿Qué haces?',
+            ]
+          : [
+              'It sounds genuinely fun, and fun matters — budgets that allow zero fun tend to collapse.',
+              `Go, and ${usd(TRIP_COST)} of this month's money is committed to fun before you allocate the rest. Skip it, and you keep the full ${usd(BASE_INCOME)} for your goals.`,
+              'There is no single right answer — only a trade-off. What do you do?',
+            ],
         kind: 'trip',
       })
       setPhase('event')
@@ -204,7 +243,9 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
       setMonthInfo({
         income: BASE_INCOME,
         minFun: TRIP_COST,
-        note: `Trip booked: ${usd(TRIP_COST)} of this month's paycheck is already committed to fun.`,
+        note: es
+          ? `Excursión reservada: ${usd(TRIP_COST)} del sueldo de este mes ya está comprometido a diversión.`
+          : `Trip booked: ${usd(TRIP_COST)} of this month's paycheck is already committed to fun.`,
       })
       setAlloc({ ...ZERO_ALLOC, fun: TRIP_COST })
     } else {
@@ -286,10 +327,10 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
             <div key={g.id} className="card p-4">
               <p className="text-sm font-semibold text-slate-800">
                 <span className="mr-1" aria-hidden="true">{g.emoji}</span>
-                {g.label}
+                {es ? g.labelEs : g.label}
               </p>
               <p className="mt-0.5 text-xs text-slate-500">
-                {usd(g.target)} by month {g.deadline}
+                {es ? `${usd(g.target)} para el mes ${g.deadline}` : `${usd(g.target)} by month ${g.deadline}`}
               </p>
               <div
                 className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-slate-200"
@@ -297,7 +338,11 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
                 aria-valuemin={0}
                 aria-valuemax={g.target}
                 aria-valuenow={Math.min(saved, g.target)}
-                aria-label={`${g.label}: ${usd(saved)} of ${usd(g.target)} saved`}
+                aria-label={
+                  es
+                    ? `${g.labelEs}: ${usd(saved)} de ${usd(g.target)} ahorrados`
+                    : `${g.label}: ${usd(saved)} of ${usd(g.target)} saved`
+                }
               >
                 <div
                   className={`h-full rounded-full transition-all duration-300 ${
@@ -319,12 +364,14 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
                 >
                   {reached ? (
                     <>
-                      Reached <span aria-hidden="true">✅</span>
+                      {es ? 'Lograda' : 'Reached'} <span aria-hidden="true">✅</span>
                     </>
                   ) : missed ? (
                     <>
-                      Deadline passed <span aria-hidden="true">⏰</span>
+                      {es ? 'Plazo vencido' : 'Deadline passed'} <span aria-hidden="true">⏰</span>
                     </>
+                  ) : es ? (
+                    'Ahorrando'
                   ) : (
                     'Saving'
                   )}
@@ -340,14 +387,16 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
   // ---------- Results view ----------
   if (phase === 'results') {
     const score = computeScore(snapshots)
-    const tier = tierFor(score)
+    const tier = tierFor(score, es)
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
         <h1 className="font-display text-2xl font-bold text-slate-900">
-          <span aria-hidden="true">🎯</span> Goal Getter{' '}
+          <span aria-hidden="true">🎯</span> {es ? 'Cazametas' : 'Goal Getter'}{' '}
           <span aria-hidden="true">💰</span>
         </h1>
-        <p className="mt-1 text-sm text-slate-500">Six months are up. Did your plan hold?</p>
+        <p className="mt-1 text-sm text-slate-500">
+          {es ? 'Se acabaron los seis meses. ¿Aguantó tu plan?' : 'Six months are up. Did your plan hold?'}
+        </p>
 
         <div className="mt-4 space-y-3">
           {GOALS.map((g, i) => {
@@ -362,10 +411,12 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
                 <div>
                   <p className="text-sm font-semibold text-slate-800">
                     <span className="mr-1" aria-hidden="true">{g.emoji}</span>
-                    {g.label}
+                    {es ? g.labelEs : g.label}
                   </p>
                   <p className="mt-0.5 text-xs text-slate-500">
-                    Needed {usd(g.target)} by month {g.deadline} · you had {usd(saved)}
+                    {es
+                      ? `Necesitabas ${usd(g.target)} para el mes ${g.deadline} · tenías ${usd(saved)}`
+                      : `Needed ${usd(g.target)} by month ${g.deadline} · you had ${usd(saved)}`}
                   </p>
                 </div>
                 <span
@@ -373,11 +424,11 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
                 >
                   {hit ? (
                     <>
-                      Goal hit <span aria-hidden="true">🎉</span>
+                      {es ? 'Meta lograda' : 'Goal hit'} <span aria-hidden="true">🎉</span>
                     </>
                   ) : (
                     <>
-                      {Math.round((saved / g.target) * 100)}% there
+                      {Math.round((saved / g.target) * 100)}% {es ? 'del camino' : 'there'}
                     </>
                   )}
                 </span>
@@ -395,9 +446,12 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
           <h2 className="font-display text-3xl font-bold text-slate-900">{tier.title}</h2>
           <p className="font-display text-lg font-bold text-bff-700">{score} / 100</p>
           <p className="text-sm text-slate-600">
-            Fun money spent along the way: {usd(balances.fun)}
-            {tripTaken ? ' (day trip included!)' : ''} — fun is part of a healthy budget, not the
-            enemy.
+            {es ? 'Dinero en diversión a lo largo del camino' : 'Fun money spent along the way'}:{' '}
+            {usd(balances.fun)}
+            {tripTaken ? (es ? ' (¡excursión incluida!)' : ' (day trip included!)') : ''} —{' '}
+            {es
+              ? 'la diversión es parte de un presupuesto sano, no el enemigo.'
+              : 'fun is part of a healthy budget, not the enemy.'}
           </p>
         </div>
 
@@ -406,23 +460,29 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
           style={{ animationDelay: '1s' }}
         >
           <p className="font-display font-bold text-slate-900">
-            <span aria-hidden="true">💡</span> The takeaway
+            <span aria-hidden="true">💡</span> {es ? 'La lección' : 'The takeaway'}
           </p>
           <p className="mt-1">
-            <strong>Pay yourself first:</strong> move money to your goals the moment you're paid,
-            before fun gets a vote.{' '}
+            <strong>{es ? 'Págate a ti primero:' : 'Pay yourself first:'}</strong>{' '}
+            {es
+              ? 'mueve dinero a tus metas en cuanto te pagan, antes de que la diversión tenga voto.'
+              : "move money to your goals the moment you're paid, before fun gets a vote."}{' '}
             {repairCoveredByFund
-              ? `And it worked — when the phone cracked, your emergency fund quietly ate the ${usd(REPAIR_COST)} repair, so your bike and concert savings never felt a thing.`
-              : `When the phone cracked, your emergency fund couldn't cover the ${usd(REPAIR_COST)} repair, so it raided your paycheck — with a ${usd(PLAN_FEE)} fee on top. A buffer built in month 1 would have taken that hit for you. That's what emergency funds are for.`}
+              ? es
+                ? `Y funcionó: cuando el teléfono se rompió, tu fondo de emergencia se comió sin problema la reparación de ${usd(REPAIR_COST)}, así que tus ahorros para la bici y el concierto ni lo sintieron.`
+                : `And it worked — when the phone cracked, your emergency fund quietly ate the ${usd(REPAIR_COST)} repair, so your bike and concert savings never felt a thing.`
+              : es
+                ? `Cuando el teléfono se rompió, tu fondo de emergencia no pudo cubrir la reparación de ${usd(REPAIR_COST)}, así que asaltó tu sueldo, con una comisión de ${usd(PLAN_FEE)} encima. Un colchón construido en el mes 1 habría absorbido ese golpe por ti. Para eso sirven los fondos de emergencia.`
+                : `When the phone cracked, your emergency fund couldn't cover the ${usd(REPAIR_COST)} repair, so it raided your paycheck — with a ${usd(PLAN_FEE)} fee on top. A buffer built in month 1 would have taken that hit for you. That's what emergency funds are for.`}
           </p>
         </div>
 
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <button className="btn-secondary" onClick={reset}>
-            Plan again
+            {es ? 'Planear de nuevo' : 'Plan again'}
           </button>
           <Link to="/activities" className="btn-primary">
-            More activities
+            {es ? 'Más actividades' : 'More activities'}
           </Link>
         </div>
       </div>
@@ -434,11 +494,12 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
         <h1 className="font-display text-2xl font-bold text-slate-900">
-          <span aria-hidden="true">🎯</span> Goal Getter{' '}
+          <span aria-hidden="true">🎯</span> {es ? 'Cazametas' : 'Goal Getter'}{' '}
           <span aria-hidden="true">💰</span>
         </h1>
         <p className="mt-1 text-sm text-slate-500">
-          Month {month} of {TOTAL_MONTHS} — life happens…
+          {es ? 'Mes' : 'Month'} {month} {es ? 'de' : 'of'} {TOTAL_MONTHS} —{' '}
+          {es ? 'la vida pasa…' : 'life happens…'}
         </p>
 
         <div className="card animate-pop-in mt-4" role="status">
@@ -452,16 +513,16 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
           {eventCard.kind === 'trip' ? (
             <div className="mt-5 flex flex-wrap gap-3">
               <button className="btn-primary flex-1" onClick={() => chooseTrip(true)}>
-                Go on the trip ({usd(TRIP_COST)} fun)
+                {es ? `Ir a la excursión (${usd(TRIP_COST)} en diversión)` : `Go on the trip (${usd(TRIP_COST)} fun)`}
               </button>
               <button className="btn-secondary flex-1" onClick={() => chooseTrip(false)}>
-                Skip it this time
+                {es ? 'Saltarla esta vez' : 'Skip it this time'}
               </button>
             </div>
           ) : (
             <div className="mt-5 text-center">
               <button className="btn-primary w-full sm:w-auto" onClick={dismissEvent}>
-                Got it — plan month {month}
+                {es ? `Entendido — planear el mes ${month}` : `Got it — plan month ${month}`}
               </button>
             </div>
           )}
@@ -474,20 +535,28 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="font-display text-2xl font-bold text-slate-900">
-        <span aria-hidden="true">🎯</span> Goal Getter{' '}
+        <span aria-hidden="true">🎯</span> {es ? 'Cazametas' : 'Goal Getter'}{' '}
         <span aria-hidden="true">💰</span>
       </h1>
       <p className="mt-1 text-sm text-slate-500">
-        Month {month} of {TOTAL_MONTHS}
+        {es ? 'Mes' : 'Month'} {month} {es ? 'de' : 'of'} {TOTAL_MONTHS}
       </p>
 
       {month === 1 && (
         <div className="card mt-4 border-bff-200 bg-bff-50 text-sm text-slate-700">
-          <p>
-            You earn <strong>{usd(BASE_INCOME)} a month</strong> for 6 months, and you've set three
-            SMART goals with real deadlines. Each month, split your paycheck between the goals and
-            fun in {usd(STEP)} steps. Heads up: life won't sit still for 6 months.
-          </p>
+          {es ? (
+            <p>
+              Ganas <strong>{usd(BASE_INCOME)} al mes</strong> durante 6 meses, y fijaste tres metas
+              SMART con plazos reales. Cada mes, reparte tu sueldo entre las metas y la diversión en
+              pasos de {usd(STEP)}. Aviso: la vida no se quedará quieta durante 6 meses.
+            </p>
+          ) : (
+            <p>
+              You earn <strong>{usd(BASE_INCOME)} a month</strong> for 6 months, and you've set three
+              SMART goals with real deadlines. Each month, split your paycheck between the goals and
+              fun in {usd(STEP)} steps. Heads up: life won't sit still for 6 months.
+            </p>
+          )}
         </div>
       )}
 
@@ -496,7 +565,10 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
       <section className="card mt-4 p-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="font-display text-lg font-bold text-slate-900">
-            <span aria-hidden="true">💵</span> Month {month} paycheck: {usd(monthInfo.income)}
+            <span aria-hidden="true">💵</span>{' '}
+            {es
+              ? `Sueldo del mes ${month}: ${usd(monthInfo.income)}`
+              : `Month ${month} paycheck: ${usd(monthInfo.income)}`}
           </h2>
         </div>
         {monthInfo.note && <p className="mt-1 text-xs text-slate-600">{monthInfo.note}</p>}
@@ -512,10 +584,10 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
               >
                 <p className="text-sm font-semibold text-slate-800">
                   <span className="mr-1" aria-hidden="true">{b.emoji}</span>
-                  {b.label}
+                  {es ? b.labelEs : b.label}
                   {b.id === 'fun' && min > 0 && (
                     <span className="ml-2 text-xs font-normal text-slate-500">
-                      (includes the {usd(min)} trip)
+                      {es ? `(incluye la excursión de ${usd(min)})` : `(includes the ${usd(min)} trip)`}
                     </span>
                   )}
                 </p>
@@ -524,7 +596,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
                     type="button"
                     onClick={() => bump(b.id, -STEP)}
                     disabled={value <= min}
-                    aria-label={`Take $20 away from ${b.label}`}
+                    aria-label={es ? `Quitar $20 de ${b.labelEs}` : `Take $20 away from ${b.label}`}
                     className="h-9 w-9 rounded-lg border-2 border-slate-200 bg-white font-display text-lg font-bold text-slate-700 transition hover:border-bff-300 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     <span aria-hidden="true">−</span>
@@ -535,7 +607,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
                   <button
                     type="button"
                     onClick={() => bump(b.id, STEP)}
-                    aria-label={`Put $20 more toward ${b.label}`}
+                    aria-label={es ? `Poner $20 más en ${b.labelEs}` : `Put $20 more toward ${b.label}`}
                     className="h-9 w-9 rounded-lg border-2 border-slate-200 bg-white font-display text-lg font-bold text-slate-700 transition hover:border-bff-300 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     <span aria-hidden="true">+</span>
@@ -552,15 +624,20 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
           aria-live="polite"
         >
           {remaining === 0
-            ? `All ${usd(monthInfo.income)} allocated — lock in month ${month}!`
+            ? es
+              ? `¡Repartiste los ${usd(monthInfo.income)} — confirma el mes ${month}!`
+              : `All ${usd(monthInfo.income)} allocated — lock in month ${month}!`
             : remaining > 0
-              ? `${usd(remaining)} left to allocate`
+              ? es
+                ? `Quedan ${usd(remaining)} por repartir`
+                : `${usd(remaining)} left to allocate`
               : ''}
         </p>
         {overAllocated && (
           <p className="mt-1 text-sm font-semibold text-red-600" role="alert">
-            You've allocated {usd(-remaining)} more than your {usd(monthInfo.income)} paycheck —
-            take some back.
+            {es
+              ? `Repartiste ${usd(-remaining)} más que tu sueldo de ${usd(monthInfo.income)} — quita un poco.`
+              : `You've allocated ${usd(-remaining)} more than your ${usd(monthInfo.income)} paycheck — take some back.`}
           </p>
         )}
 
@@ -570,7 +647,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
             onClick={confirmMonth}
             disabled={remaining !== 0}
           >
-            Confirm month {month}
+            {es ? `Confirmar el mes ${month}` : `Confirm month ${month}`}
           </button>
         </div>
       </section>
