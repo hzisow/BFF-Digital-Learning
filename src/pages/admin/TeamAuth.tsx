@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { BACKEND_ENABLED, GOOGLE_CLIENT_ID } from '../../lib/config'
 import { useAdmin } from '../../lib/session'
+import { useLang } from '../../lib/i18n'
 import GoogleSignInButton from '../../components/GoogleSignInButton'
 
 /**
@@ -12,6 +13,8 @@ import GoogleSignInButton from '../../components/GoogleSignInButton'
  * Shared by AdminDashboard and ClassroomDetail.
  */
 export function BackendOffCard() {
+  const { lang } = useLang()
+  const es = lang === 'es'
   return (
     <div className="mx-auto max-w-lg px-4 py-16">
       <div className="card animate-pop-in text-center">
@@ -19,16 +22,15 @@ export function BackendOffCard() {
           🔌
         </div>
         <h1 className="mt-3 font-display text-2xl font-bold text-slate-900">
-          Team dashboard not connected yet
+          {es ? 'El panel del equipo aún no está conectado' : 'Team dashboard not connected yet'}
         </h1>
         <p className="mt-3 text-slate-600">
-          Class codes, assignments, and the mentor dashboard activate once the
-          backend is connected — see the README for the quick Supabase setup.
-          Lessons and solo activities already work for everyone, no backend
-          needed.
+          {es
+            ? 'Los códigos de clase, las tareas y el panel del mentor se activan una vez que el backend está conectado; consulta el README para la configuración rápida de Supabase. Las lecciones y las actividades individuales ya funcionan para todos, sin necesidad de backend.'
+            : 'Class codes, assignments, and the mentor dashboard activate once the backend is connected — see the README for the quick Supabase setup. Lessons and solo activities already work for everyone, no backend needed.'}
         </p>
         <Link to="/" className="btn-secondary mt-6">
-          ← Back home
+          {es ? '← Volver al inicio' : '← Back home'}
         </Link>
       </div>
     </div>
@@ -37,13 +39,15 @@ export function BackendOffCard() {
 
 export default function TeamAuth() {
   const { adminUser, adminReady } = useAdmin()
+  const { lang } = useLang()
+  const es = lang === 'es'
   const [error, setError] = useState<string | null>(null)
 
   if (!BACKEND_ENABLED) return <BackendOffCard />
   if (!adminReady) {
     return (
       <div role="status" className="px-4 py-16 text-center text-slate-500">
-        Loading…
+        {es ? 'Cargando…' : 'Loading…'}
       </div>
     )
   }
@@ -52,9 +56,11 @@ export default function TeamAuth() {
   return (
     <div className="mx-auto max-w-md px-4 py-16">
       <div className="mb-6 text-center">
-        <h1 className="font-display text-3xl font-bold text-slate-900">BFF Team</h1>
+        <h1 className="font-display text-3xl font-bold text-slate-900">{es ? 'Equipo BFF' : 'BFF Team'}</h1>
         <p className="mt-2 text-slate-600">
-          Mentor &amp; admin sign-in for classrooms, assignments, and live games.
+          {es
+            ? 'Acceso para mentores y administradores: aulas, tareas y juegos en vivo.'
+            : 'Mentor & admin sign-in for classrooms, assignments, and live games.'}
         </p>
       </div>
 
@@ -71,21 +77,24 @@ export default function TeamAuth() {
               </p>
             )}
             <p className="mt-5 text-center text-sm text-slate-600">
-              New here? Signing in creates your account. A BFF admin approves it before
-              you can manage classrooms.
+              {es
+                ? '¿Eres nuevo? Al iniciar sesión se crea tu cuenta. Un administrador de BFF la aprueba antes de que puedas gestionar aulas.'
+                : 'New here? Signing in creates your account. A BFF admin approves it before you can manage classrooms.'}
             </p>
           </>
         ) : (
           <p role="status" className="text-center text-sm text-slate-600">
-            Google sign-in isn't configured yet. Add a Google Client ID to enable team
-            sign-in.
+            {es
+              ? 'El inicio de sesión con Google aún no está configurado. Agrega un Google Client ID para habilitar el acceso del equipo.'
+              : "Google sign-in isn't configured yet. Add a Google Client ID to enable team sign-in."}
           </p>
         )}
       </div>
 
       <p className="mt-6 text-center text-xs text-slate-500">
-        Students never need an account — they join with a class code and a nickname.
-        This login is only for the BFF team.
+        {es
+          ? 'Los estudiantes nunca necesitan una cuenta: se unen con un código de clase y un apodo. Este acceso es solo para el equipo de BFF.'
+          : 'Students never need an account — they join with a class code and a nickname. This login is only for the BFF team.'}
       </p>
     </div>
   )

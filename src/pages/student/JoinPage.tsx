@@ -2,25 +2,28 @@ import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { BACKEND_ENABLED } from '../../lib/config'
 import { useStudent } from '../../lib/session'
+import { useLang } from '../../lib/i18n'
 
 function SoloModeCard() {
+  const { lang } = useLang()
+  const es = lang === 'es'
   return (
     <div className="card animate-pop-in mx-auto max-w-md text-center">
       <p className="text-5xl" aria-hidden="true">🎟️</p>
       <h1 className="mt-4 font-display text-2xl font-bold text-slate-900">
-        Class codes are coming online soon!
+        {es ? '¡Los códigos de clase estarán disponibles muy pronto!' : 'Class codes are coming online soon!'}
       </h1>
       <p className="mt-3 leading-relaxed text-slate-600">
-        Your BFF mentor will hand out class codes once classrooms go live. Until then,
-        every lesson, game, and challenge is wide open — and your progress saves right on
-        this device.
+        {es
+          ? 'Tu mentor de BFF repartirá los códigos de clase cuando las aulas estén activas. Mientras tanto, cada lección, juego y desafío está totalmente abierto — y tu progreso se guarda aquí mismo en este dispositivo.'
+          : 'Your BFF mentor will hand out class codes once classrooms go live. Until then, every lesson, game, and challenge is wide open — and your progress saves right on this device.'}
       </p>
       <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
         <Link to="/lessons" className="btn-primary">
-          Explore lessons <span aria-hidden="true">📚</span>
+          {es ? 'Explorar lecciones' : 'Explore lessons'} <span aria-hidden="true">📚</span>
         </Link>
         <Link to="/activities" className="btn-secondary">
-          Games & challenges <span aria-hidden="true">🎮</span>
+          {es ? 'Juegos y desafíos' : 'Games & challenges'} <span aria-hidden="true">🎮</span>
         </Link>
       </div>
     </div>
@@ -30,6 +33,8 @@ function SoloModeCard() {
 function JoinForm() {
   const { joinClass } = useStudent()
   const navigate = useNavigate()
+  const { lang } = useLang()
+  const es = lang === 'es'
   const [code, setCode] = useState('')
   const [nickname, setNickname] = useState('')
   const [pin, setPin] = useState('')
@@ -44,7 +49,11 @@ function JoinForm() {
     if (busy) return
     // If they're setting a PIN, both boxes must match so it can't be a typo.
     if (pin.length > 0 && pin !== confirmPin) {
-      setError("Your PINs don't match — type the same 4 digits in both boxes.")
+      setError(
+        es
+          ? 'Tus PIN no coinciden — escribe los mismos 4 dígitos en ambas casillas.'
+          : "Your PINs don't match — type the same 4 digits in both boxes.",
+      )
       return
     }
     setError(null)
@@ -53,7 +62,13 @@ function JoinForm() {
       await joinClass(code, nickname, pin)
       navigate('/student')
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong — try again!')
+      setError(
+        err instanceof Error
+          ? err.message
+          : es
+            ? 'Algo salió mal — ¡inténtalo de nuevo!'
+            : 'Something went wrong — try again!',
+      )
     } finally {
       setBusy(false)
     }
@@ -64,18 +79,19 @@ function JoinForm() {
       <div className="text-center">
         <p className="text-5xl" aria-hidden="true">👋</p>
         <h1 className="mt-4 font-display text-2xl font-bold text-slate-900">
-          Join your class
+          {es ? 'Únete a tu clase' : 'Join your class'}
         </h1>
         <p className="mt-2 text-sm text-slate-600">
-          Grab the 6-letter class code from your BFF mentor and pick a nickname. No
-          email, no account, no personal info needed.
+          {es
+            ? 'Consigue el código de clase de 6 letras de tu mentor de BFF y elige un apodo. Sin correo, sin cuenta, sin datos personales.'
+            : 'Grab the 6-letter class code from your BFF mentor and pick a nickname. No email, no account, no personal info needed.'}
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="mt-8 space-y-5">
         <div>
           <label htmlFor="class-code" className="font-display text-sm font-semibold text-slate-700">
-            Class code
+            {es ? 'Código de clase' : 'Class code'}
           </label>
           <input
             id="class-code"
@@ -93,12 +109,12 @@ function JoinForm() {
         </div>
         <div>
           <label htmlFor="nickname" className="font-display text-sm font-semibold text-slate-700">
-            Your nickname
+            {es ? 'Tu apodo' : 'Your nickname'}
           </label>
           <input
             id="nickname"
             className="input mt-1.5"
-            placeholder="e.g. SavvySam"
+            placeholder={es ? 'p. ej. SavvySam' : 'e.g. SavvySam'}
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
             maxLength={24}
@@ -106,20 +122,22 @@ function JoinForm() {
             aria-describedby="nickname-hint"
           />
           <p id="nickname-hint" className="mt-1.5 text-xs text-slate-500">
-            Your mentor sees this nickname — keep it recognizable (and school-appropriate{' '}
+            {es
+              ? 'Tu mentor ve este apodo — que sea fácil de reconocer (y apropiado para la escuela '
+              : 'Your mentor sees this nickname — keep it recognizable (and school-appropriate '}
             <span aria-hidden="true">😄</span>).
           </p>
         </div>
         <div>
           <label htmlFor="pin" className="font-display text-sm font-semibold text-slate-700">
-            PIN <span className="font-normal text-slate-400">(optional)</span>
+            PIN <span className="font-normal text-slate-400">{es ? '(opcional)' : '(optional)'}</span>
           </label>
           <input
             id="pin"
             className="input mt-1.5 tracking-[0.3em]"
             type="text"
             inputMode="numeric"
-            placeholder="4 digits"
+            placeholder={es ? '4 dígitos' : '4 digits'}
             value={pin}
             onChange={(e) => setPin(e.target.value.replace(/[^0-9]/g, '').slice(0, 4))}
             maxLength={4}
@@ -127,14 +145,24 @@ function JoinForm() {
             aria-describedby="pin-hint"
           />
           <p id="pin-hint" className="mt-1.5 text-xs text-slate-500">
-            Pick a 4-digit PIN and it saves your progress to your name — sign back in with the
-            same nickname + PIN on <strong>any device</strong> to pick up where you left off.
+            {es ? (
+              <>
+                Elige un PIN de 4 dígitos y tu progreso se guardará con tu nombre — vuelve a entrar
+                con el mismo apodo + PIN en <strong>cualquier dispositivo</strong> para continuar
+                donde lo dejaste.
+              </>
+            ) : (
+              <>
+                Pick a 4-digit PIN and it saves your progress to your name — sign back in with the
+                same nickname + PIN on <strong>any device</strong> to pick up where you left off.
+              </>
+            )}
           </p>
         </div>
         {pin.length > 0 && (
           <div>
             <label htmlFor="confirm-pin" className="font-display text-sm font-semibold text-slate-700">
-              Confirm PIN
+              {es ? 'Confirma el PIN' : 'Confirm PIN'}
             </label>
             <input
               id="confirm-pin"
@@ -143,7 +171,7 @@ function JoinForm() {
               }`}
               type="text"
               inputMode="numeric"
-              placeholder="type it again"
+              placeholder={es ? 'escríbelo de nuevo' : 'type it again'}
               value={confirmPin}
               onChange={(e) => setConfirmPin(e.target.value.replace(/[^0-9]/g, '').slice(0, 4))}
               maxLength={4}
@@ -153,7 +181,11 @@ function JoinForm() {
             />
             <p id="confirm-pin-hint" className="mt-1.5 text-xs text-slate-500">
               {pinMismatch ? (
-                <span className="font-semibold text-red-600">The two PINs don't match yet.</span>
+                <span className="font-semibold text-red-600">
+                  {es ? 'Los dos PIN aún no coinciden.' : "The two PINs don't match yet."}
+                </span>
+              ) : es ? (
+                'Escribe los mismos 4 dígitos para que no se te olviden.'
               ) : (
                 'Type the same 4 digits so you don’t forget them.'
               )}
@@ -181,16 +213,20 @@ function JoinForm() {
           }
           aria-busy={busy}
         >
-          {busy ? 'Joining…' : <>Join class <span aria-hidden="true">🚀</span></>}
+          {busy ? (
+            es ? 'Uniéndote…' : 'Joining…'
+          ) : (
+            <>{es ? 'Unirse a la clase' : 'Join class'} <span aria-hidden="true">🚀</span></>
+          )}
         </button>
       </form>
 
       <p className="mt-6 text-center text-xs text-slate-500">
-        No class code? You can still{' '}
+        {es ? '¿No tienes código de clase? Todavía puedes ' : 'No class code? You can still '}
         <Link to="/lessons" className="font-semibold text-bff-700 hover:text-bff-800">
-          explore everything solo
+          {es ? 'explorar todo por tu cuenta' : 'explore everything solo'}
         </Link>{' '}
-        — progress saves on this device.
+        {es ? '— tu progreso se guarda en este dispositivo.' : '— progress saves on this device.'}
       </p>
     </div>
   )

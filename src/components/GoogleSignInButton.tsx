@@ -6,6 +6,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { GOOGLE_CLIENT_ID } from '../lib/config'
 import { supabase } from '../lib/supabase'
+import { useLang } from '../lib/i18n'
 
 // ---- Minimal typings for the GIS client ----
 interface CredentialResponse {
@@ -67,6 +68,8 @@ export default function GoogleSignInButton({
 }) {
   const holderRef = useRef<HTMLDivElement>(null)
   const [loading, setLoading] = useState(true)
+  const { lang } = useLang()
+  const es = lang === 'es'
 
   useEffect(() => {
     if (!GOOGLE_CLIENT_ID || !supabase) {
@@ -132,7 +135,9 @@ export default function GoogleSignInButton({
     <div>
       <div ref={holderRef} className="flex min-h-[44px] justify-center" />
       {loading && (
-        <p className="text-center text-xs text-slate-400">Loading Google sign-in…</p>
+        <p className="text-center text-xs text-slate-400">
+          {es ? 'Cargando el inicio de sesión con Google…' : 'Loading Google sign-in…'}
+        </p>
       )}
     </div>
   )

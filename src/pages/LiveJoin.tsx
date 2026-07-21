@@ -5,9 +5,12 @@ import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { BACKEND_ENABLED } from '../lib/config'
 import { findLiveSession } from '../activities/live/coplay'
+import { useLang } from '../lib/i18n'
 
 export default function LiveJoin() {
   const navigate = useNavigate()
+  const { lang } = useLang()
+  const es = lang === 'es'
   const [code, setCode] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -20,14 +23,24 @@ export default function LiveJoin() {
     try {
       const found = await findLiveSession(code)
       if (!found) {
-        setError('No live game with that code right now — double-check it with your host!')
+        setError(
+          es
+            ? 'No hay ningún juego en vivo con ese código ahora mismo — ¡verifícalo con tu anfitrión!'
+            : 'No live game with that code right now — double-check it with your host!',
+        )
         return
       }
       if (found.kind === 'wolf') navigate(`/play/${found.code}`)
       else if (found.kind === 'quiz') navigate(`/quiz/${found.code}`)
       else navigate(`/coplay/${found.code}`)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong — try again!')
+      setError(
+        err instanceof Error
+          ? err.message
+          : es
+            ? 'Algo salió mal — ¡inténtalo de nuevo!'
+            : 'Something went wrong — try again!',
+      )
     } finally {
       setBusy(false)
     }
@@ -38,22 +51,27 @@ export default function LiveJoin() {
       <div className="card animate-pop-in mx-auto max-w-md">
         <div className="text-center">
           <p className="text-5xl" aria-hidden="true">🎮</p>
-          <h1 className="mt-4 font-display text-2xl font-bold text-slate-900">Join a live game</h1>
+          <h1 className="mt-4 font-display text-2xl font-bold text-slate-900">
+            {es ? 'Únete a un juego en vivo' : 'Join a live game'}
+          </h1>
           <p className="mt-2 text-sm text-slate-600">
-            Your mentor is hosting a game on the big screen — type the code they show to jump in.
+            {es
+              ? 'Tu mentor está organizando un juego en la pantalla grande — escribe el código que muestra para entrar.'
+              : 'Your mentor is hosting a game on the big screen — type the code they show to jump in.'}
           </p>
         </div>
 
         {!BACKEND_ENABLED ? (
           <p role="status" className="mt-6 rounded-xl bg-amber-50 px-4 py-3 text-center text-sm text-amber-700">
-            Live games need the class backend connected. Ask your mentor, or explore everything
-            solo!
+            {es
+              ? '¡Los juegos en vivo necesitan que el sistema de la clase esté conectado. Pregúntale a tu mentor o explora todo por tu cuenta!'
+              : 'Live games need the class backend connected. Ask your mentor, or explore everything solo!'}
           </p>
         ) : (
           <form onSubmit={handleSubmit} className="mt-8 space-y-5">
             <div>
               <label htmlFor="game-code" className="font-display text-sm font-semibold text-slate-700">
-                Game code
+                {es ? 'Código del juego' : 'Game code'}
               </label>
               <input
                 id="game-code"
@@ -82,15 +100,19 @@ export default function LiveJoin() {
               disabled={busy || code.length !== 6}
               aria-busy={busy}
             >
-              {busy ? 'Finding your game…' : <>Join game <span aria-hidden="true">🚀</span></>}
+              {busy ? (
+                es ? 'Buscando tu juego…' : 'Finding your game…'
+              ) : (
+                <>{es ? 'Unirse al juego' : 'Join game'} <span aria-hidden="true">🚀</span></>
+              )}
             </button>
           </form>
         )}
 
         <p className="mt-6 text-center text-xs text-slate-500">
-          No game code?{' '}
+          {es ? '¿No tienes código del juego? ' : 'No game code? '}
           <Link to="/activities" className="font-semibold text-bff-700 hover:text-bff-800">
-            Play any game solo
+            {es ? 'Juega cualquier juego por tu cuenta' : 'Play any game solo'}
           </Link>
           .
         </p>

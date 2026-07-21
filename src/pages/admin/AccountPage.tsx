@@ -6,11 +6,14 @@ import { Link, Navigate } from 'react-router-dom'
 import { BACKEND_ENABLED } from '../../lib/config'
 import { supabase } from '../../lib/supabase'
 import { useAdmin } from '../../lib/session'
+import { useLang } from '../../lib/i18n'
 import { BackendOffCard } from './TeamAuth'
 import { errMsg, fetchMyProfile } from './api'
 
 export default function AccountPage() {
   const { adminUser, adminReady } = useAdmin()
+  const { lang } = useLang()
+  const es = lang === 'es'
   const [fullName, setFullName] = useState('')
   const [chapter, setChapter] = useState('')
   const [loaded, setLoaded] = useState(false)
@@ -42,7 +45,7 @@ export default function AccountPage() {
   if (!adminReady) {
     return (
       <div role="status" className="px-4 py-16 text-center text-slate-500">
-        Loading…
+        {es ? 'Cargando…' : 'Loading…'}
       </div>
     )
   }
@@ -72,19 +75,20 @@ export default function AccountPage() {
     <div className="mx-auto max-w-md px-4 py-12">
       <div className="mb-6">
         <Link to="/admin" className="text-sm font-semibold text-bff-700 hover:underline">
-          <span aria-hidden="true">←</span> Back to dashboard
+          <span aria-hidden="true">←</span> {es ? 'Volver al panel' : 'Back to dashboard'}
         </Link>
-        <h1 className="mt-3 font-display text-3xl font-bold text-slate-900">Your account</h1>
+        <h1 className="mt-3 font-display text-3xl font-bold text-slate-900">{es ? 'Tu cuenta' : 'Your account'}</h1>
         <p className="mt-2 text-slate-600">
-          Signed in with Google as <span className="font-semibold">{adminUser.email}</span>.
+          {es ? 'Sesión iniciada con Google como ' : 'Signed in with Google as '}
+          <span className="font-semibold">{adminUser.email}</span>.
         </p>
       </div>
 
       <div className="card animate-pop-in">
-        <h2 className="font-display text-lg font-bold text-slate-900">Your details</h2>
+        <h2 className="font-display text-lg font-bold text-slate-900">{es ? 'Tus datos' : 'Your details'}</h2>
         <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-4">
           <label className="block">
-            <span className="mb-1 block text-sm font-semibold text-slate-700">Full name</span>
+            <span className="mb-1 block text-sm font-semibold text-slate-700">{es ? 'Nombre completo' : 'Full name'}</span>
             <input
               className="input"
               type="text"
@@ -96,18 +100,20 @@ export default function AccountPage() {
           </label>
           <label className="block">
             <span className="mb-1 block text-sm font-semibold text-slate-700">
-              BFF chapter / region
+              {es ? 'Capítulo / región de BFF' : 'BFF chapter / region'}
             </span>
             <input
               className="input"
               type="text"
               value={chapter}
               onChange={(e) => setChapter(e.target.value)}
-              placeholder="e.g. Chicago, IL · Midwest"
+              placeholder={es ? 'p. ej. Chicago, IL · Midwest' : 'e.g. Chicago, IL · Midwest'}
               autoComplete="organization"
             />
             <span className="mt-1 block text-xs text-slate-500">
-              Which BFF of America chapter or region you volunteer with.
+              {es
+                ? 'Con qué capítulo o región de BFF of America colaboras como voluntario.'
+                : 'Which BFF of America chapter or region you volunteer with.'}
             </span>
           </label>
 
@@ -118,12 +124,12 @@ export default function AccountPage() {
           )}
           {done && (
             <p role="status" className="rounded-xl bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
-              Saved! <span aria-hidden="true">✅</span>
+              {es ? '¡Guardado!' : 'Saved!'} <span aria-hidden="true">✅</span>
             </p>
           )}
 
           <button type="submit" className="btn-primary" disabled={busy || !loaded} aria-busy={busy}>
-            {busy ? 'Saving…' : 'Save changes'}
+            {busy ? (es ? 'Guardando…' : 'Saving…') : es ? 'Guardar cambios' : 'Save changes'}
           </button>
         </form>
       </div>

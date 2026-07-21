@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 import { Logo } from '../components/Logo'
-import { getActivity, KIND_LABEL } from '../lib/activities'
+import { getActivity, kindLabel, localizeActivity } from '../lib/activities'
 import type { ActivityMeta } from '../lib/activities'
+import { useLang } from '../lib/i18n'
 
 const FEATURED_SLUGS = ['wolf-of-wall-street', 'bens-budget', 'earning-income']
 
@@ -9,34 +10,43 @@ const featured: ActivityMeta[] = FEATURED_SLUGS.map(getActivity).filter(
   (a): a is ActivityMeta => a !== undefined,
 )
 
-const STATS = [
-  { value: '8', label: 'interactive lessons' },
-  { value: '3', label: 'games & challenges' },
-  { value: '100%', label: 'free, forever' },
-]
-
-const STEPS = [
-  {
-    num: '1',
-    emoji: '🎟️',
-    title: 'Get a class code',
-    body: 'Your BFF mentor gives your class a code. No email, no account — just pick a nickname and you are in.',
-  },
-  {
-    num: '2',
-    emoji: '🎮',
-    title: 'Do your lessons & games',
-    body: 'Work through the lessons your mentor assigns, play Wolf of Wall Street, and help Ben survive his budget.',
-  },
-  {
-    num: '3',
-    emoji: '📊',
-    title: 'Track your progress',
-    body: 'Watch your quiz scores climb as you go. No class code? Explore everything solo — it all works anywhere.',
-  },
-]
-
 export default function Landing() {
+  const { lang } = useLang()
+  const es = lang === 'es'
+
+  const STATS = [
+    { value: '8', label: es ? 'lecciones interactivas' : 'interactive lessons' },
+    { value: '3', label: es ? 'juegos y desafíos' : 'games & challenges' },
+    { value: '100%', label: es ? 'gratis, para siempre' : 'free, forever' },
+  ]
+
+  const STEPS = [
+    {
+      num: '1',
+      emoji: '🎟️',
+      title: es ? 'Consigue un código de clase' : 'Get a class code',
+      body: es
+        ? 'Tu mentor de BFF le da un código a tu clase. Sin correo, sin cuenta — solo elige un apodo y ya estás dentro.'
+        : 'Your BFF mentor gives your class a code. No email, no account — just pick a nickname and you are in.',
+    },
+    {
+      num: '2',
+      emoji: '🎮',
+      title: es ? 'Haz tus lecciones y juegos' : 'Do your lessons & games',
+      body: es
+        ? 'Avanza por las lecciones que asigne tu mentor, juega Wolf of Wall Street y ayuda a Ben a sobrevivir su presupuesto.'
+        : 'Work through the lessons your mentor assigns, play Wolf of Wall Street, and help Ben survive his budget.',
+    },
+    {
+      num: '3',
+      emoji: '📊',
+      title: es ? 'Sigue tu progreso' : 'Track your progress',
+      body: es
+        ? 'Mira cómo suben tus puntajes de los quizzes a medida que avanzas. ¿No tienes código de clase? Explora todo por tu cuenta — funciona en cualquier lugar.'
+        : 'Watch your quiz scores climb as you go. No class code? Explore everything solo — it all works anywhere.',
+    },
+  ]
+
   return (
     <div>
       {/* Hero */}
@@ -52,24 +62,27 @@ export default function Landing() {
         <div className="relative mx-auto max-w-6xl px-4 py-20 text-center sm:py-28">
           <Logo reversed className="mx-auto h-16 animate-pop-in sm:h-20" />
           <h1 className="mx-auto mt-8 max-w-3xl animate-slide-up font-display text-4xl font-extrabold leading-tight text-white sm:text-6xl">
-            Money skills that actually matter.
+            {es
+              ? 'Habilidades de dinero que de verdad importan.'
+              : 'Money skills that actually matter.'}
           </h1>
           <p className="mx-auto mt-6 max-w-2xl animate-slide-up text-lg text-bff-100">
-            BFF Academy has gone digital. Learn personal finance in class with your BFF
-            mentor — or at your own pace, from anywhere. Built by students, for students.
+            {es
+              ? 'BFF Academy se volvió digital. Aprende finanzas personales en clase con tu mentor de BFF — o a tu propio ritmo, desde donde sea. Hecho por estudiantes, para estudiantes.'
+              : 'BFF Academy has gone digital. Learn personal finance in class with your BFF mentor — or at your own pace, from anywhere. Built by students, for students.'}
           </p>
           <div className="mt-10 flex animate-slide-up flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               to="/join"
               className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-7 py-3 font-display font-bold text-bff-700 shadow-lg transition hover:bg-bff-50 sm:w-auto"
             >
-              Join your class <span aria-hidden="true">🚀</span>
+              {es ? 'Únete a tu clase' : 'Join your class'} <span aria-hidden="true">🚀</span>
             </Link>
             <Link
               to="/lessons"
               className="inline-flex w-full items-center justify-center gap-2 rounded-xl border-2 border-white/60 px-7 py-3 font-display font-semibold text-white transition hover:border-white hover:bg-white/10 sm:w-auto"
             >
-              Explore lessons
+              {es ? 'Explora las lecciones' : 'Explore lessons'}
             </Link>
           </div>
         </div>
@@ -92,10 +105,12 @@ export default function Landing() {
       {/* How it works */}
       <section className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
         <h2 className="text-center font-display text-3xl font-bold text-slate-900">
-          How it works
+          {es ? 'Cómo funciona' : 'How it works'}
         </h2>
         <p className="mx-auto mt-3 max-w-xl text-center text-slate-600">
-          Three steps between you and being the friend who actually understands money.
+          {es
+            ? 'Tres pasos entre tú y ser el amigo que de verdad entiende de dinero.'
+            : 'Three steps between you and being the friend who actually understands money.'}
         </p>
         <div className="mt-10 grid gap-6 sm:grid-cols-3">
           {STEPS.map((step) => (
@@ -117,38 +132,43 @@ export default function Landing() {
           <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-end">
             <div>
               <h2 className="font-display text-3xl font-bold text-slate-900">
-                Jump into a favorite
+                {es ? 'Métete a una favorita' : 'Jump into a favorite'}
               </h2>
               <p className="mt-2 text-slate-600">
-                The same activities BFF mentors run in classrooms — ready whenever you are.
+                {es
+                  ? 'Las mismas actividades que los mentores de BFF hacen en los salones — listas cuando tú quieras.'
+                  : 'The same activities BFF mentors run in classrooms — ready whenever you are.'}
               </p>
             </div>
             <Link to="/activities" className="btn-ghost shrink-0">
-              See all activities →
+              {es ? 'Ver todas las actividades →' : 'See all activities →'}
             </Link>
           </div>
           <div className="mt-8 grid gap-6 sm:grid-cols-3">
-            {featured.map((a) => (
-              <Link
-                key={a.slug}
-                to={a.path}
-                className="card group flex flex-col transition hover:-translate-y-1 hover:border-bff-300 hover:shadow-md"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-4xl" aria-hidden="true">{a.emoji}</span>
-                  <span className="chip bg-bff-50 text-bff-700">{KIND_LABEL[a.kind]}</span>
-                </div>
-                <h3 className="mt-4 font-display text-lg font-bold text-slate-900 group-hover:text-bff-700">
-                  {a.title}
-                </h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
-                  {a.description}
-                </p>
-                <p className="mt-4 text-xs font-semibold text-slate-500">
-                  <span aria-hidden="true">⏱️</span> ~{a.durationMin} min
-                </p>
-              </Link>
-            ))}
+            {featured.map((a) => {
+              const { title, description } = localizeActivity(a, lang)
+              return (
+                <Link
+                  key={a.slug}
+                  to={a.path}
+                  className="card group flex flex-col transition hover:-translate-y-1 hover:border-bff-300 hover:shadow-md"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-4xl" aria-hidden="true">{a.emoji}</span>
+                    <span className="chip bg-bff-50 text-bff-700">{kindLabel(a.kind, lang)}</span>
+                  </div>
+                  <h3 className="mt-4 font-display text-lg font-bold text-slate-900 group-hover:text-bff-700">
+                    {title}
+                  </h3>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
+                    {description}
+                  </p>
+                  <p className="mt-4 text-xs font-semibold text-slate-500">
+                    <span aria-hidden="true">⏱️</span> ~{a.durationMin} min
+                  </p>
+                </Link>
+              )
+            })}
           </div>
         </div>
       </section>
@@ -158,13 +178,12 @@ export default function Landing() {
         <div className="rounded-3xl bg-gradient-to-br from-bff-50 to-bff-100 px-6 py-12 text-center sm:px-12">
           <p className="text-3xl" aria-hidden="true">🏫</p>
           <h2 className="mt-4 font-display text-2xl font-bold text-bff-900 sm:text-3xl">
-            Bringing BFF Academy to your school?
+            {es ? '¿Quieres traer BFF Academy a tu escuela?' : 'Bringing BFF Academy to your school?'}
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-bff-800">
-            BFF of America is a student-founded 501(c)(3) nonprofit. Our mentors — high
-            schoolers themselves — visit middle and high schools to teach financial
-            literacy for free, and BFF Classroom brings the whole program online. Teachers,
-            counselors, parents: we would love to hear from you.
+            {es
+              ? 'BFF of America es una organización sin fines de lucro 501(c)(3) fundada por estudiantes. Nuestros mentores — estudiantes de secundaria ellos mismos — visitan escuelas de nivel medio y secundaria para enseñar educación financiera gratis, y BFF Classroom lleva todo el programa a internet. Maestros, consejeros, padres: nos encantaría saber de ustedes.'
+              : 'BFF of America is a student-founded 501(c)(3) nonprofit. Our mentors — high schoolers themselves — visit middle and high schools to teach financial literacy for free, and BFF Classroom brings the whole program online. Teachers, counselors, parents: we would love to hear from you.'}
           </p>
           <a
             href="https://www.bffofamerica.org"
@@ -172,7 +191,7 @@ export default function Landing() {
             rel="noreferrer"
             className="btn-primary mt-8"
           >
-            Get in touch at bffofamerica.org
+            {es ? 'Contáctanos en bffofamerica.org' : 'Get in touch at bffofamerica.org'}
           </a>
         </div>
       </section>

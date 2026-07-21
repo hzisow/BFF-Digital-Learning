@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
-import { ACTIVITIES, KIND_LABEL, getActivity } from '../../lib/activities'
+import { ACTIVITIES, getActivity, kindLabel, localizeActivity } from '../../lib/activities'
 import { BACKEND_ENABLED } from '../../lib/config'
 import type { ActivityProgress } from '../../lib/progress'
 import { loadLocalProgress } from '../../lib/progress'
 import { totalXp } from '../../lib/xp'
 import { useStudent } from '../../lib/session'
+import { useLang } from '../../lib/i18n'
 import LevelCard from '../../components/LevelCard'
 import ClassLeaderboard from '../../components/ClassLeaderboard'
 
@@ -15,30 +16,46 @@ interface AssignmentRow {
   due_at: string | null
 }
 
-function ProgressChip({ progress }: { progress: ActivityProgress | undefined }) {
+function ProgressChip({
+  progress,
+  es,
+}: {
+  progress: ActivityProgress | undefined
+  es: boolean
+}) {
   if (progress?.status === 'completed') {
     return (
       <span className="chip bg-green-100 text-green-700">
-        <span aria-hidden="true">✓</span> Completed
+        <span aria-hidden="true">✓</span> {es ? 'Completado' : 'Completed'}
         {progress.score != null ? ` · ${Math.round(progress.score)}%` : ''}
       </span>
     )
   }
   if (progress?.status === 'started') {
-    return <span className="chip bg-amber-100 text-amber-700">In progress</span>
+    return (
+      <span className="chip bg-amber-100 text-amber-700">{es ? 'En progreso' : 'In progress'}</span>
+    )
   }
-  return <span className="chip bg-slate-100 text-slate-600">Not started</span>
+  return (
+    <span className="chip bg-slate-100 text-slate-600">{es ? 'Sin empezar' : 'Not started'}</span>
+  )
 }
 
-function formatDue(dueAt: string): string {
+function formatDue(dueAt: string, es: boolean): string {
   const due = new Date(dueAt)
   if (Number.isNaN(due.getTime())) return dueAt
-  return due.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })
+  return due.toLocaleDateString(es ? 'es' : undefined, {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+  })
 }
 
 export default function StudentHome() {
   const { student, leaveClass } = useStudent()
   const navigate = useNavigate()
+  const { lang } = useLang()
+  const es = lang === 'es'
   const progress = useMemo(() => loadLocalProgress(), [])
 
   // null = loading; [] = loaded and empty (or backend disabled).
@@ -78,7 +95,11 @@ export default function StudentHome() {
         .order('due_at', { ascending: true, nullsFirst: false })
       if (cancelled) return
       if (error) {
-        setLoadError('Could not load your assignments right now — pull up the lessons below instead!')
+        setLoadError(
+          es
+            ? 'No pudimos cargar tus tareas ahora mismo — ¡mejor revisa las lecciones de abajo!'
+            : 'Could not load your assignments right now — pull up the lessons below instead!',
+        )
         setAssignments([])
       } else {
         setAssignments((data ?? []) as AssignmentRow[])
@@ -102,7 +123,9 @@ export default function StudentHome() {
 
   function handleLeave() {
     const sure = window.confirm(
-      'Leave this class? Your progress stays saved on this device, but you will need the class code to rejoin.',
+      es
+        ? '¿Salir de esta clase? Tu progreso se queda guardado en este dispositivo, pero necesitarás el código de clase para volver a entrar.'
+        : 'Leave this class? Your progress stays saved on this device, but you will need the class code to rejoin.',
     )
     if (!sure) return
     leaveClass()
@@ -116,16 +139,26 @@ export default function StudentHome() {
         <div className="card animate-pop-in text-center">
           <p className="text-5xl" aria-hidden="true">🔒</p>
           <h1 className="mt-4 font-display text-2xl font-bold text-slate-900">
-            This class is closed
+            {es ? 'Esta clase está cerrada' : 'This class is closed'}
           </h1>
           <p className="mt-3 leading-relaxed text-slate-600">
-            Your mentor closed <span className="font-semibold">{student.classroomName}</span>, so
-            it's no longer active. Your progress is still saved — and every lesson, game, and
-            challenge is still open to explore on your own.
+            {es ? (
+              <>
+                Tu mentor cerró <span className="font-semibold">{student.classroomName}</span>, así
+                que ya no está activa. Tu progreso sigue guardado — y cada lección, juego y desafío
+                sigue abierto para que lo explores por tu cuenta.
+              </>
+            ) : (
+              <>
+                Your mentor closed <span className="font-semibold">{student.classroomName}</span>, so
+                it's no longer active. Your progress is still saved — and every lesson, game, and
+                challenge is still open to explore on your own.
+              </>
+            )}
           </p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Link to="/lessons" className="btn-primary">
-              Keep learning <span aria-hidden="true">📚</span>
+              {es ? 'Seguir aprendiendo' : 'Keep learning'} <span aria-hidden="true">📚</span>
             </Link>
             <button
               type="button"
@@ -135,7 +168,7 @@ export default function StudentHome() {
               }}
               className="btn-secondary"
             >
-              Join a different class
+              {es ? 'Unirse a otra clase' : 'Join a different class'}
             </button>
           </div>
         </div>
@@ -149,17 +182,19 @@ export default function StudentHome() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl font-extrabold text-slate-900 sm:text-4xl">
-            Hey {student.nickname}! <span aria-hidden="true">👋</span>
+            {es ? '¡Hola' : 'Hey'} {student.nickname}! <span aria-hidden="true">👋</span>
           </h1>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <span className="chip bg-bff-100 text-bff-800">
               <span aria-hidden="true">🏫</span> {student.classroomName}
             </span>
-            <span className="chip bg-slate-100 text-slate-600">Code: {student.classCode}</span>
+            <span className="chip bg-slate-100 text-slate-600">
+              {es ? 'Código' : 'Code'}: {student.classCode}
+            </span>
           </div>
         </div>
         <button type="button" onClick={handleLeave} className="btn-ghost text-sm">
-          Leave class
+          {es ? 'Salir de la clase' : 'Leave class'}
         </button>
       </div>
 
@@ -169,8 +204,12 @@ export default function StudentHome() {
         <div className="flex items-center rounded-2xl border border-slate-200 bg-white px-6 py-4">
           <p className="font-display font-semibold text-slate-700">
             {completedCount > 0
-              ? `You've completed ${completedCount} of ${allActivities.length} activities 🎉`
-              : `${allActivities.length} activities are waiting for you — let's get that first one done! 💪`}
+              ? es
+                ? `Has completado ${completedCount} de ${allActivities.length} actividades 🎉`
+                : `You've completed ${completedCount} of ${allActivities.length} activities 🎉`
+              : es
+                ? `${allActivities.length} actividades te esperan — ¡vamos a completar la primera! 💪`
+                : `${allActivities.length} activities are waiting for you — let's get that first one done! 💪`}
           </p>
         </div>
       </div>
@@ -184,7 +223,9 @@ export default function StudentHome() {
 
       {/* Assigned work */}
       <section className="mt-10">
-        <h2 className="font-display text-xl font-bold text-slate-900">Your assigned work</h2>
+        <h2 className="font-display text-xl font-bold text-slate-900">
+          {es ? 'Tus tareas asignadas' : 'Your assigned work'}
+        </h2>
         {loadError && (
           <p
             role="alert"
@@ -195,18 +236,19 @@ export default function StudentHome() {
         )}
         {assignments === null ? (
           <p role="status" className="mt-4 text-sm text-slate-500">
-            Loading your assignments…
+            {es ? 'Cargando tus tareas…' : 'Loading your assignments…'}
           </p>
         ) : assignments.length === 0 ? (
           !loadError && (
             <div className="card mt-4 text-center">
               <p className="text-3xl" aria-hidden="true">🏖️</p>
               <p className="mt-2 font-display font-semibold text-slate-700">
-                Nothing assigned yet — explore below!
+                {es ? 'Nada asignado todavía — ¡explora abajo!' : 'Nothing assigned yet — explore below!'}
               </p>
               <p className="mt-1 text-sm text-slate-500">
-                Your mentor will post lessons and games here as your class works through
-                BFF Academy.
+                {es
+                  ? 'Tu mentor publicará lecciones y juegos aquí a medida que tu clase avance por BFF Academy.'
+                  : 'Your mentor will post lessons and games here as your class works through BFF Academy.'}
               </p>
             </div>
           )
@@ -216,42 +258,51 @@ export default function StudentHome() {
               const activity = getActivity(asg.activity_slug)
               if (!activity) return null
               const p = progress[activity.slug]
+              const local = localizeActivity(activity, lang)
               return (
                 <div key={asg.activity_slug} className="card flex flex-col">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3">
                       <span className="text-3xl" aria-hidden="true">{activity.emoji}</span>
                       <div>
-                        <p className="font-display font-bold text-slate-900">{activity.title}</p>
+                        <p className="font-display font-bold text-slate-900">{local.title}</p>
                         <p className="text-xs font-semibold text-slate-500">
-                          {KIND_LABEL[activity.kind]} · ~{activity.durationMin} min
+                          {kindLabel(activity.kind, lang)} · ~{activity.durationMin} min
                         </p>
                       </div>
                     </div>
-                    <ProgressChip progress={p} />
+                    <ProgressChip progress={p} es={es} />
                   </div>
                   {asg.note && (
                     <p className="mt-3 rounded-xl bg-bff-50 px-4 py-3 text-sm text-bff-900">
                       <span aria-hidden="true">💬</span>{' '}
-                      <span className="font-semibold">From your mentor:</span> {asg.note}
+                      <span className="font-semibold">{es ? 'De tu mentor:' : 'From your mentor:'}</span> {asg.note}
                     </p>
                   )}
                   <div className="mt-4 flex items-center justify-between gap-2">
                     <span className="text-xs font-semibold text-slate-500">
                       {asg.due_at ? (
                         <>
-                          <span aria-hidden="true">📅</span> Due {formatDue(asg.due_at)}
+                          <span aria-hidden="true">📅</span> {es ? 'Entrega' : 'Due'} {formatDue(asg.due_at, es)}
                         </>
+                      ) : es ? (
+                        'Sin fecha de entrega'
                       ) : (
                         'No due date'
                       )}
                     </span>
                     <Link to={activity.path} className="btn-primary px-4 py-2 text-sm">
                       {p?.status === 'completed'
-                        ? 'Play again'
+                        ? es
+                          ? 'Jugar de nuevo'
+                          : 'Play again'
                         : p?.status === 'started'
-                          ? 'Continue'
-                          : 'Start'}{' '}
+                          ? es
+                            ? 'Continuar'
+                            : 'Continue'
+                          : es
+                            ? 'Empezar'
+                            : 'Start'}{' '}
                       <span aria-hidden="true">→</span>
                     </Link>
                   </div>
@@ -264,13 +315,18 @@ export default function StudentHome() {
 
       {/* Keep learning */}
       <section className="mt-12">
-        <h2 className="font-display text-xl font-bold text-slate-900">Keep learning</h2>
+        <h2 className="font-display text-xl font-bold text-slate-900">
+          {es ? 'Seguir aprendiendo' : 'Keep learning'}
+        </h2>
         <p className="mt-1 text-sm text-slate-500">
-          Everything in BFF Classroom is open to you — assigned or not.
+          {es
+            ? 'Todo en BFF Classroom está disponible para ti — asignado o no.'
+            : 'Everything in BFF Classroom is open to you — assigned or not.'}
         </p>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {allActivities.map((a) => {
             const p = progress[a.slug]
+            const local = localizeActivity(a, lang)
             return (
               <Link
                 key={a.slug}
@@ -279,16 +335,16 @@ export default function StudentHome() {
               >
                 <div className="flex items-start justify-between gap-2">
                   <span className="text-3xl" aria-hidden="true">{a.emoji}</span>
-                  <span className="chip bg-bff-50 text-bff-700">{KIND_LABEL[a.kind]}</span>
+                  <span className="chip bg-bff-50 text-bff-700">{kindLabel(a.kind, lang)}</span>
                 </div>
                 <p className="mt-3 font-display font-bold text-slate-900 group-hover:text-bff-700">
-                  {a.title}
+                  {local.title}
                 </p>
                 <div className="mt-3 flex items-center justify-between gap-2">
                   <span className="text-xs font-semibold text-slate-500">
                     <span aria-hidden="true">⏱️</span> ~{a.durationMin} min
                   </span>
-                  <ProgressChip progress={p} />
+                  <ProgressChip progress={p} es={es} />
                 </div>
               </Link>
             )
