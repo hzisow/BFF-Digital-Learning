@@ -14,6 +14,7 @@ import {
 import { Logo } from '../../components/Logo'
 import { BACKEND_ENABLED } from '../../lib/config'
 import { useStudent } from '../../lib/session'
+import { useLang } from '../../lib/i18n'
 
 const NICK_KEY = 'bff_quiz_nick'
 const QUESTION_SECONDS = 20
@@ -30,8 +31,12 @@ function optionLetter(i: number): string {
   return String.fromCharCode(65 + i)
 }
 
-function errorMessage(err: unknown): string {
-  return err instanceof Error ? err.message : 'Something went wrong. Try again!'
+function errorMessage(err: unknown, es: boolean): string {
+  return err instanceof Error
+    ? err.message
+    : es
+      ? 'Algo salió mal. ¡Inténtalo de nuevo!'
+      : 'Something went wrong. Try again!'
 }
 
 function Shell({ code, children }: { code: string; children: ReactNode }) {
@@ -54,6 +59,8 @@ export default function QuizPlay() {
   const params = useParams<{ code: string }>()
   const code = (params.code ?? '').toUpperCase()
   const { student } = useStudent()
+  const { lang } = useLang()
+  const es = lang === 'es'
 
   const [session, setSession] = useState<QuizSession | null>(null)
   const [loadError, setLoadError] = useState<string | null>(null)
@@ -76,7 +83,7 @@ export default function QuizPlay() {
     fetchedRef.current = true
     getQuizSessionByCode(code)
       .then(setSession)
-      .catch((err) => setLoadError(errorMessage(err)))
+      .catch((err) => setLoadError(errorMessage(err, es)))
   }, [code])
 
   // Once joined: live session updates (state / question) + player refreshes.
@@ -111,7 +118,7 @@ export default function QuizPlay() {
     if (!session || joinRef.current) return
     const nick = nickname.trim()
     if (!nick) {
-      setJoinError('Pick a nickname first!')
+      setJoinError(es ? '¡Primero elige un apodo!' : 'Pick a nickname first!')
       return
     }
     joinRef.current = true
@@ -124,7 +131,7 @@ export default function QuizPlay() {
       setAnswers(p.answers ?? {})
     } catch (err) {
       joinRef.current = false
-      setJoinError(errorMessage(err))
+      setJoinError(errorMessage(err, es))
     } finally {
       setJoining(false)
     }
@@ -162,13 +169,15 @@ export default function QuizPlay() {
         <div className="card mx-auto mt-10 max-w-md space-y-3 text-center">
           <p className="text-4xl" aria-hidden="true">🔌</p>
           <h1 className="font-display text-xl font-bold text-slate-900">
-            Live quizzes are not connected yet
+            {es ? 'Los quiz en vivo aún no están conectados' : 'Live quizzes are not connected yet'}
           </h1>
           <p className="text-sm text-slate-600">
-            Live quizzes unlock when the class backend is connected — the lessons still work solo!
+            {es
+              ? 'Los quiz en vivo se activan cuando se conecta el servidor de la clase; ¡las lecciones siguen funcionando por tu cuenta!'
+              : 'Live quizzes unlock when the class backend is connected — the lessons still work solo!'}
           </p>
           <Link to="/activities" className="btn-primary">
-            Back to activities
+            {es ? 'Volver a las actividades' : 'Back to activities'}
           </Link>
         </div>
       </Shell>
@@ -180,10 +189,12 @@ export default function QuizPlay() {
       <Shell code={code}>
         <div className="card mx-auto mt-10 max-w-md space-y-3 text-center">
           <p className="text-4xl" aria-hidden="true">🤔</p>
-          <h1 className="font-display text-xl font-bold text-slate-900">Hmm, that did not work</h1>
+          <h1 className="font-display text-xl font-bold text-slate-900">
+            {es ? 'Mmm, eso no funcionó' : 'Hmm, that did not work'}
+          </h1>
           <p className="text-sm text-slate-600">{loadError}</p>
           <Link to="/activities" className="btn-primary">
-            Back to activities
+            {es ? 'Volver a las actividades' : 'Back to activities'}
           </Link>
         </div>
       </Shell>
@@ -194,7 +205,7 @@ export default function QuizPlay() {
     return (
       <Shell code={code}>
         <p className="mt-16 text-center font-display text-lg font-semibold text-slate-500">
-          Finding your quiz…
+          {es ? 'Buscando tu quiz…' : 'Finding your quiz…'}
         </p>
       </Shell>
     )
@@ -206,13 +217,15 @@ export default function QuizPlay() {
         <div className="card mx-auto mt-10 max-w-md space-y-3 text-center">
           <p className="text-4xl" aria-hidden="true">📚</p>
           <h1 className="font-display text-xl font-bold text-slate-900">
-            This quiz is not available
+            {es ? 'Este quiz no está disponible' : 'This quiz is not available'}
           </h1>
           <p className="text-sm text-slate-600">
-            The lesson behind this quiz could not be found. Ask your host to start a new one.
+            {es
+              ? 'No se encontró la lección de este quiz. Pídele a tu anfitrión que inicie uno nuevo.'
+              : 'The lesson behind this quiz could not be found. Ask your host to start a new one.'}
           </p>
           <Link to="/activities" className="btn-primary">
-            Back to activities
+            {es ? 'Volver a las actividades' : 'Back to activities'}
           </Link>
         </div>
       </Shell>
@@ -226,22 +239,24 @@ export default function QuizPlay() {
           <div className="text-center">
             <p className="text-4xl" aria-hidden="true">{lesson.emoji}</p>
             <h1 className="mt-2 font-display text-xl font-bold text-slate-900">
-              You found the quiz!
+              {es ? '¡Encontraste el quiz!' : 'You found the quiz!'}
             </h1>
             <p className="mt-1 text-sm text-slate-600">
-              Pick a nickname so everyone knows who is on the leaderboard.
+              {es
+                ? 'Elige un apodo para que todos sepan quién está en la tabla de posiciones.'
+                : 'Pick a nickname so everyone knows who is on the leaderboard.'}
             </p>
           </div>
           <form className="space-y-3" onSubmit={handleJoin}>
             <label htmlFor="quiz-nickname" className="sr-only">
-              Your nickname
+              {es ? 'Tu apodo' : 'Your nickname'}
             </label>
             <input
               id="quiz-nickname"
               className="input text-center font-display text-lg"
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
-              placeholder="Your nickname"
+              placeholder={es ? 'Tu apodo' : 'Your nickname'}
               maxLength={24}
               autoFocus
             />
@@ -255,7 +270,7 @@ export default function QuizPlay() {
               className="btn-primary w-full"
               disabled={joining || !nickname.trim()}
             >
-              {joining ? 'Joining…' : "Let's play!"}
+              {es ? (joining ? 'Entrando…' : '¡A jugar!') : joining ? 'Joining…' : "Let's play!"}
             </button>
           </form>
         </div>
@@ -282,9 +297,13 @@ export default function QuizPlay() {
         <div className="card animate-pop-in mt-6 space-y-4 text-center" role="status">
           <p className="text-5xl" aria-hidden="true">🎉</p>
           <h1 className="font-display text-2xl font-bold text-slate-900">
-            You&apos;re in, {player.nickname}!
+            {es ? `¡Estás dentro, ${player.nickname}!` : `You're in, ${player.nickname}!`}
           </h1>
-          <p className="text-slate-600">Watch the big screen — the quiz starts soon.</p>
+          <p className="text-slate-600">
+            {es
+              ? 'Mira la pantalla grande; el quiz empieza pronto.'
+              : 'Watch the big screen — the quiz starts soon.'}
+          </p>
         </div>
       )}
 
@@ -293,10 +312,12 @@ export default function QuizPlay() {
         <div className="space-y-4">
           <div>
             <h1 className="font-display text-xl font-bold text-slate-900">
-              Question {qIndex + 1} of {total}
+              {es ? `Pregunta ${qIndex + 1} de ${total}` : `Question ${qIndex + 1} of ${total}`}
             </h1>
             <p className="text-sm text-slate-500">
-              Faster correct answers earn more points — watch the big screen!
+              {es
+                ? 'Las respuestas correctas más rápidas ganan más puntos. ¡Mira la pantalla grande!'
+                : 'Faster correct answers earn more points — watch the big screen!'}
             </p>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -326,7 +347,9 @@ export default function QuizPlay() {
           <p aria-live="polite" className="text-center">
             {myAnswer !== undefined && (
               <span className="chip bg-bff-50 font-display text-sm text-bff-700">
-                Answer locked in <span aria-hidden="true">🔒</span> Watch the big screen!
+                {es ? 'Respuesta confirmada' : 'Answer locked in'}{' '}
+                <span aria-hidden="true">🔒</span>{' '}
+                {es ? '¡Mira la pantalla grande!' : 'Watch the big screen!'}
               </span>
             )}
           </p>
@@ -341,18 +364,27 @@ export default function QuizPlay() {
           </p>
           <h1 className="font-display text-2xl font-bold text-slate-900">
             {myAnswer === undefined
-              ? 'Time flew by — no answer this round'
+              ? es
+                ? 'El tiempo voló; no respondiste esta ronda'
+                : 'Time flew by — no answer this round'
               : gotIt
-                ? `Correct! +${myAnswer.points.toLocaleString()} points`
-                : 'Not this time'}
+                ? es
+                  ? `¡Correcto! +${myAnswer.points.toLocaleString()} puntos`
+                  : `Correct! +${myAnswer.points.toLocaleString()} points`
+                : es
+                  ? 'Esta vez no'
+                  : 'Not this time'}
           </h1>
           <p className="text-slate-600">
-            The answer was <strong>{optionLetter(q.answerIndex)}</strong>:{' '}
+            {es ? 'La respuesta era ' : 'The answer was '}
+            <strong>{optionLetter(q.answerIndex)}</strong>:{' '}
             <strong>{q.options[q.answerIndex]}</strong>
           </p>
           {myRank > 0 && (
             <p className="font-display text-lg font-bold text-bff-700">
-              You&apos;re #{myRank} of {standings.length} with {myScore.toLocaleString()} points
+              {es
+                ? `Vas #${myRank} de ${standings.length} con ${myScore.toLocaleString()} puntos`
+                : `You're #${myRank} of ${standings.length} with ${myScore.toLocaleString()} points`}
             </p>
           )}
         </div>
@@ -366,16 +398,20 @@ export default function QuizPlay() {
           </p>
           <div>
             <h1 className="font-display text-2xl font-bold text-slate-900">
-              You finished #{myRank || standings.length} of {standings.length}
+              {es
+                ? `Terminaste #${myRank || standings.length} de ${standings.length}`
+                : `You finished #${myRank || standings.length} of ${standings.length}`}
             </h1>
             <p className="mt-1 font-display text-lg font-bold text-bff-700">
-              {myScore.toLocaleString()} points
+              {es
+                ? `${myScore.toLocaleString()} puntos`
+                : `${myScore.toLocaleString()} points`}
             </p>
           </div>
           {standings.length > 0 && (
             <div className="mx-auto max-w-sm text-left">
               <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-slate-500">
-                Top players
+                {es ? 'Mejores jugadores' : 'Top players'}
               </p>
               <ol className="space-y-1.5">
                 {standings.slice(0, 5).map((p, i) => (
@@ -391,7 +427,11 @@ export default function QuizPlay() {
                       <span aria-hidden="true">
                         {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`}
                       </span>
-                      <span className="sr-only">{`${i + 1}${['st', 'nd', 'rd'][i] ?? 'th'} place, `}</span>{' '}
+                      <span className="sr-only">
+                        {es
+                          ? `puesto ${i + 1}, `
+                          : `${i + 1}${['st', 'nd', 'rd'][i] ?? 'th'} place, `}
+                      </span>{' '}
                       {p.nickname}
                     </span>
                     <span className="font-display font-bold">{p.score.toLocaleString()} pts</span>
@@ -401,7 +441,7 @@ export default function QuizPlay() {
             </div>
           )}
           <Link to="/activities" className="btn-primary">
-            More activities
+            {es ? 'Más actividades' : 'More activities'}
           </Link>
         </div>
       )}
