@@ -193,6 +193,14 @@ const lesson: Lesson = {
           "Exactly — that see-it-want-it-buy-it feeling is impulse buying, and the 24-hour rule is the antidote: wait a day before buying a want. Bonus move: ask yourself if you'll care about it a week from now. If not, skip it.",
       },
     },
+    {
+      type: 'open',
+      heading: 'Your turn: design a budget',
+      prompt:
+        "Imagine you earn $200 a month from a part-time job. In a few sentences, describe how you'd split it between needs, wants, and savings — and explain one trade-off you'd make.",
+      rubric:
+        'Reward answers that split the money across needs/wants/savings with rough amounts and name a concrete trade-off. Encourage saving something. Keep it positive.',
+    },
   ],
   quiz: [
     {
@@ -476,6 +484,14 @@ const lesson: Lesson = {
           explanation:
             'Exacto — esa sensación de lo-veo-lo-quiero-lo-compro es una compra impulsiva, y la regla de las 24 horas es el antídoto: espera un día antes de comprar un deseo. Jugada extra: pregúntate si te va a importar dentro de una semana. Si no, déjalo pasar.',
         },
+      },
+      {
+        type: 'open',
+        heading: 'Tu turno: diseña un presupuesto',
+        prompt:
+          'Imagina que ganas $200 al mes en un trabajo de medio tiempo. En unas frases, describe cómo lo repartirías entre necesidades, deseos y ahorros — y explica un sacrificio que harías.',
+        rubric:
+          'Reward answers that split the money across needs/wants/savings with rough amounts and name a concrete trade-off. Encourage saving something. Keep it positive.',
       },
     ],
     quiz: [
@@ -762,6 +778,14 @@ const lesson: Lesson = {
           explanation:
             '没错——那种一看到就想要、就想买的感觉是冲动购物，而 24 小时法则就是解药：买想要的东西前先等一天。加分动作：问问自己一周之后还会不会在乎它。如果不会，就别买。',
         },
+      },
+      {
+        type: 'open',
+        heading: '轮到你了：设计一份预算',
+        prompt:
+          '假设你做兼职每月赚 $200。用几句话说说你会怎样把这笔钱分配到“需要”、“想要”和储蓄上——并解释你会做出的一个取舍。',
+        rubric:
+          'Reward answers that split the money across needs/wants/savings with rough amounts and name a concrete trade-off. Encourage saving something. Keep it positive.',
       },
     ],
     quiz: [

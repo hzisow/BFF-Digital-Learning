@@ -7,6 +7,8 @@ import ActivitiesIndex from './pages/ActivitiesIndex'
 import GlossaryPage from './pages/GlossaryPage'
 import CertificatePage from './pages/CertificatePage'
 import PracticePage from './pages/PracticePage'
+import MoneyCoach from './pages/MoneyCoach'
+import AIPractice from './pages/AIPractice'
 import JoinPage from './pages/student/JoinPage'
 import StudentHome from './pages/student/StudentHome'
 import BensBudget from './activities/bens-budget/BensBudget'
@@ -28,6 +30,7 @@ import WolfHost from './activities/wolf/WolfHost'
 import TeamAuth from './pages/admin/TeamAuth'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import ClassroomDetail from './pages/admin/ClassroomDetail'
+import LessonPlanGenerator from './pages/admin/LessonPlanGenerator'
 import AccountPage from './pages/admin/AccountPage'
 import NotFound from './pages/NotFound'
 
@@ -42,6 +45,8 @@ export default function App() {
         <Route path="/glossary" element={<GlossaryPage />} />
         <Route path="/certificate" element={<CertificatePage />} />
         <Route path="/practice" element={<PracticePage />} />
+        <Route path="/practice/ai" element={<AIPractice />} />
+        <Route path="/coach" element={<MoneyCoach />} />
         <Route path="/join" element={<JoinPage />} />
         <Route path="/game" element={<LiveJoin />} />
         <Route path="/student" element={<StudentHome />} />
@@ -57,6 +62,7 @@ export default function App() {
         <Route path="/team" element={<TeamAuth />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/class/:id" element={<ClassroomDetail />} />
+        <Route path="/admin/generate" element={<LessonPlanGenerator />} />
         <Route path="/account" element={<AccountPage />} />
         <Route path="*" element={<NotFound />} />
       </Route>

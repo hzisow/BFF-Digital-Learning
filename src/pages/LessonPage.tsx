@@ -4,6 +4,7 @@ import { getLesson } from '../content/lessons'
 import type { Lesson, LessonSection } from '../content/types'
 import VideoCheckpoint from '../components/VideoCheckpoint'
 import ReadAloud from '../components/ReadAloud'
+import OpenResponse from '../components/OpenResponse'
 import { ACTIVITIES } from '../lib/activities'
 import { useLang, localizeLesson } from '../lib/i18n'
 import { saveProgress } from '../lib/progress'
@@ -27,6 +28,8 @@ function sectionText(section: LessonSection): string {
       return `${section.heading}. ${section.body}`
     case 'checkpoint':
       return `${section.checkpoint.question}. ${section.checkpoint.options.join('. ')}`
+    case 'open':
+      return `${section.heading}. ${section.prompt}`
     case 'video':
       return `${section.heading}. ${section.body}`
   }
@@ -249,6 +252,19 @@ function SectionView({
           state={answer}
           onSelect={onSelect}
         />
+      )
+    case 'open':
+      return (
+        <div className="animate-slide-up">
+          <p className="chip bg-bff-100 text-bff-800">
+            <span aria-hidden="true">✍️</span>{' '}
+            {tr({ en: 'Write & get feedback', es: 'Escribe y recibe comentarios', zh: '写作并获得反馈' })}
+          </p>
+          <h2 className="mt-4 font-display text-2xl font-bold text-slate-900">{section.heading}</h2>
+          <div className="mt-5">
+            <OpenResponse prompt={section.prompt} rubric={section.rubric} />
+          </div>
+        </div>
       )
     case 'video':
       return (

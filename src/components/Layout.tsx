@@ -189,6 +189,9 @@ export default function Layout() {
       <NavLink to="/game" className={navLinkClass}>
         {t('nav.playLive')}
       </NavLink>
+      <NavLink to="/coach" className={navLinkClass}>
+        {t('nav.coach')}
+      </NavLink>
       <NavLink
         to="/glossary"
         className={`${navLinkClass({ isActive: false })} hidden md:inline-flex`}
@@ -306,6 +309,9 @@ export default function Layout() {
               </NavLink>
               <NavLink to="/game" className={mobileLinkClass}>
                 {t('nav.playLive')}
+              </NavLink>
+              <NavLink to="/coach" className={mobileLinkClass}>
+                {t('nav.coach')}
               </NavLink>
               <NavLink to="/glossary" className={mobileLinkClass}>
                 {t('nav.glossary')}

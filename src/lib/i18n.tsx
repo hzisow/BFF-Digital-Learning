@@ -28,6 +28,7 @@ const STRINGS: Record<string, Variants> = {
   'nav.glossary': { en: 'Glossary', es: 'Glosario', zh: '词汇表' },
   'nav.join': { en: 'Join Class', es: 'Unirse a clase', zh: '加入班级' },
   'nav.playLive': { en: 'Play Live', es: 'Jugar en vivo', zh: '实时游戏' },
+  'nav.coach': { en: 'AI Coach', es: 'Tutor IA', zh: 'AI 辅导' },
   'nav.myClass': { en: 'My Class', es: 'Mi clase', zh: '我的班级' },
   'nav.team': { en: 'Team', es: 'Equipo', zh: '团队' },
   'nav.dashboard': { en: 'Dashboard', es: 'Panel', zh: '仪表板' },

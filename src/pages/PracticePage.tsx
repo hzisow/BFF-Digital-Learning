@@ -64,9 +64,14 @@ export default function PracticePage() {
               ? 'No tienes preguntas falladas pendientes. Termina más lecciones (o saca todo perfecto) y aquí aparecerá tu repaso personalizado.'
               : "You have no missed questions waiting. Finish more lessons (or ace them all) and your personalized review will appear here."}
         </p>
-        <Link to="/lessons" className="btn-primary mt-8 inline-flex">
-          {zh ? '去上课' : es ? 'Ir a las lecciones' : 'Go to lessons'} <span aria-hidden="true">→</span>
-        </Link>
+        <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+          <Link to="/lessons" className="btn-primary inline-flex">
+            {zh ? '去上课' : es ? 'Ir a las lecciones' : 'Go to lessons'} <span aria-hidden="true">→</span>
+          </Link>
+          <Link to="/practice/ai" className="btn-secondary inline-flex">
+            {zh ? 'AI 生成练习' : es ? 'Práctica con IA' : 'AI-generated practice'}
+          </Link>
+        </div>
       </div>
     )
   }

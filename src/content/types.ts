@@ -36,12 +36,23 @@ export interface VideoSection {
   questions: VideoQuestion[]
 }
 
+/** An open-ended written prompt graded by the AI coach (see OpenResponse). */
+export interface OpenResponseSection {
+  type: 'open'
+  heading: string
+  /** The question the student writes an answer to. */
+  prompt: string
+  /** Optional grading guidance passed to the AI. */
+  rubric?: string
+}
+
 export type LessonSection =
   | { type: 'intro'; heading: string; body: string }
   | { type: 'content'; heading: string; body: string; bullets?: string[] }
   | { type: 'terms'; heading: string; terms: KeyTerm[] }
   | { type: 'example'; heading: string; body: string }
   | { type: 'checkpoint'; checkpoint: Checkpoint }
+  | OpenResponseSection
   | VideoSection
 
 export interface QuizQuestion {

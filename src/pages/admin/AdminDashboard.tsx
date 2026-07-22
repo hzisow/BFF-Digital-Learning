@@ -440,6 +440,34 @@ export default function AdminDashboard() {
           <HostLauncher classroomId={null} />
         </div>
       </section>
+
+      {/* ---------- Teaching tools (AI) ---------- */}
+      <section className="mt-10">
+        <h2 className="font-display text-xl font-bold text-slate-900">
+          {zh ? '教学工具' : es ? 'Herramientas de enseñanza' : 'Teaching tools'}
+        </h2>
+        <div className="card mt-4 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+          <div>
+            <p className="font-display font-semibold text-slate-900">
+              {zh
+                ? 'AI 教案与练习题生成器'
+                : es
+                  ? 'Generador de planes de clase y hojas de trabajo con IA'
+                  : 'AI lesson-plan & worksheet generator'}
+            </p>
+            <p className="mt-1 text-sm text-slate-600">
+              {zh
+                ? '输入一个主题，即可获得可打印的、符合课程标准的教案或练习题（含答案）。'
+                : es
+                  ? 'Escribe un tema y obtén un plan de clase o una hoja de trabajo imprimible y alineada al plan de estudios (con respuestas).'
+                  : 'Type a topic and get a printable, curriculum-aligned lesson plan or worksheet (with answer key).'}
+            </p>
+          </div>
+          <Link to="/admin/generate" className="btn-primary shrink-0">
+            {zh ? '打开生成器' : es ? 'Abrir generador' : 'Open generator'}
+          </Link>
+        </div>
+      </section>
     </div>
   )
 }
