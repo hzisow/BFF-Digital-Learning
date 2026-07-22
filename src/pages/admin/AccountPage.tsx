@@ -14,6 +14,7 @@ export default function AccountPage() {
   const { adminUser, adminReady } = useAdmin()
   const { lang } = useLang()
   const es = lang === 'es'
+  const zh = lang === 'zh'
   const [fullName, setFullName] = useState('')
   const [chapter, setChapter] = useState('')
   const [loaded, setLoaded] = useState(false)
@@ -45,7 +46,7 @@ export default function AccountPage() {
   if (!adminReady) {
     return (
       <div role="status" className="px-4 py-16 text-center text-slate-500">
-        {es ? 'Cargando…' : 'Loading…'}
+        {zh ? '加载中…' : es ? 'Cargando…' : 'Loading…'}
       </div>
     )
   }
@@ -75,20 +76,20 @@ export default function AccountPage() {
     <div className="mx-auto max-w-md px-4 py-12">
       <div className="mb-6">
         <Link to="/admin" className="text-sm font-semibold text-bff-700 hover:underline">
-          <span aria-hidden="true">←</span> {es ? 'Volver al panel' : 'Back to dashboard'}
+          <span aria-hidden="true">←</span> {zh ? '返回仪表板' : es ? 'Volver al panel' : 'Back to dashboard'}
         </Link>
-        <h1 className="mt-3 font-display text-3xl font-bold text-slate-900">{es ? 'Tu cuenta' : 'Your account'}</h1>
+        <h1 className="mt-3 font-display text-3xl font-bold text-slate-900">{zh ? '您的账户' : es ? 'Tu cuenta' : 'Your account'}</h1>
         <p className="mt-2 text-slate-600">
-          {es ? 'Sesión iniciada con Google como ' : 'Signed in with Google as '}
+          {zh ? '已用 Google 登录为 ' : es ? 'Sesión iniciada con Google como ' : 'Signed in with Google as '}
           <span className="font-semibold">{adminUser.email}</span>.
         </p>
       </div>
 
       <div className="card animate-pop-in">
-        <h2 className="font-display text-lg font-bold text-slate-900">{es ? 'Tus datos' : 'Your details'}</h2>
+        <h2 className="font-display text-lg font-bold text-slate-900">{zh ? '您的信息' : es ? 'Tus datos' : 'Your details'}</h2>
         <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-4">
           <label className="block">
-            <span className="mb-1 block text-sm font-semibold text-slate-700">{es ? 'Nombre completo' : 'Full name'}</span>
+            <span className="mb-1 block text-sm font-semibold text-slate-700">{zh ? '全名' : es ? 'Nombre completo' : 'Full name'}</span>
             <input
               className="input"
               type="text"
@@ -100,20 +101,22 @@ export default function AccountPage() {
           </label>
           <label className="block">
             <span className="mb-1 block text-sm font-semibold text-slate-700">
-              {es ? 'Capítulo / región de BFF' : 'BFF chapter / region'}
+              {zh ? 'BFF 分会/地区' : es ? 'Capítulo / región de BFF' : 'BFF chapter / region'}
             </span>
             <input
               className="input"
               type="text"
               value={chapter}
               onChange={(e) => setChapter(e.target.value)}
-              placeholder={es ? 'p. ej. Chicago, IL · Midwest' : 'e.g. Chicago, IL · Midwest'}
+              placeholder={zh ? '例如 Chicago, IL · 中西部' : es ? 'p. ej. Chicago, IL · Midwest' : 'e.g. Chicago, IL · Midwest'}
               autoComplete="organization"
             />
             <span className="mt-1 block text-xs text-slate-500">
-              {es
-                ? 'Con qué capítulo o región de BFF of America colaboras como voluntario.'
-                : 'Which BFF of America chapter or region you volunteer with.'}
+              {zh
+                ? '您作为志愿者参与的 BFF of America 分会或地区。'
+                : es
+                  ? 'Con qué capítulo o región de BFF of America colaboras como voluntario.'
+                  : 'Which BFF of America chapter or region you volunteer with.'}
             </span>
           </label>
 
@@ -124,12 +127,12 @@ export default function AccountPage() {
           )}
           {done && (
             <p role="status" className="rounded-xl bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
-              {es ? '¡Guardado!' : 'Saved!'} <span aria-hidden="true">✅</span>
+              {zh ? '已保存！' : es ? '¡Guardado!' : 'Saved!'} <span aria-hidden="true">✅</span>
             </p>
           )}
 
           <button type="submit" className="btn-primary" disabled={busy || !loaded} aria-busy={busy}>
-            {busy ? (es ? 'Guardando…' : 'Saving…') : es ? 'Guardar cambios' : 'Save changes'}
+            {busy ? (zh ? '保存中…' : es ? 'Guardando…' : 'Saving…') : zh ? '保存更改' : es ? 'Guardar cambios' : 'Save changes'}
           </button>
         </form>
       </div>

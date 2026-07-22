@@ -20,15 +20,20 @@ interface InboxMessage {
   kind: 'email' | 'text'
   sender: string
   senderEs: string
+  senderZh: string
   address: string
   addressEs: string
+  addressZh: string
   subject: string
   subjectEs: string
+  subjectZh: string
   body: Segment[][] // paragraphs of segments
   bodyEs: Segment[][]
+  bodyZh: Segment[][]
   isScam: boolean
   verdictNote: string
   verdictNoteEs: string
+  verdictNoteZh: string
 }
 
 const MESSAGES: InboxMessage[] = [
@@ -37,10 +42,13 @@ const MESSAGES: InboxMessage[] = [
     kind: 'email',
     sender: 'Amazon Support',
     senderEs: 'Soporte de Amazon',
+    senderZh: 'Amazon 客服',
     address: 'security@amaz0n-support.help',
     addressEs: 'security@amaz0n-support.help',
+    addressZh: 'security@amaz0n-support.help',
     subject: 'URGENT: Your account will be locked',
     subjectEs: 'URGENTE: Tu cuenta será bloqueada',
+    subjectZh: '紧急：你的账户即将被锁定',
     body: [
       [
         'Dear Valued Customer, we detected unusual activity on your account. ',
@@ -77,21 +85,44 @@ const MESSAGES: InboxMessage[] = [
         ' y restaurar el acceso completo: http://amaz0n-support.help/verify',
       ],
     ],
+    bodyZh: [
+      [
+        '尊敬的贵宾客户，我们检测到你的账户有异常活动。',
+        {
+          cue: '你必须在接下来的 10 分钟内采取行动',
+          why: '人为制造的紧迫感——真正的公司绝不会给你一个 10 分钟的倒计时。',
+        },
+        '，否则你的账户将被永久锁定。',
+      ],
+      [
+        '点击下方以',
+        {
+          cue: '验证你的密码',
+          why: '没有任何真正的公司会让你通过邮件里的链接来确认密码。',
+        },
+        '，恢复完整访问权限：http://amaz0n-support.help/verify',
+      ],
+    ],
     isScam: true,
     verdictNote:
       'Classic phishing. Also check the sender: "amaz0n" with a zero, on a weird ".help" domain — not amazon.com.',
     verdictNoteEs:
       'Phishing clásico. Fíjate también en el remitente: "amaz0n" con un cero, en un dominio raro ".help", no amazon.com.',
+    verdictNoteZh:
+      '经典的钓鱼攻击。也留意一下发件人：「amaz0n」里用的是数字零，而且域名是奇怪的「.help」——根本不是 amazon.com。',
   },
   {
     id: 'newsletter',
     kind: 'email',
     sender: 'Jefferson High School',
     senderEs: 'Jefferson High School',
+    senderZh: 'Jefferson High School',
     address: 'newsletter@jeffersonhigh.edu',
     addressEs: 'newsletter@jeffersonhigh.edu',
+    addressZh: 'newsletter@jeffersonhigh.edu',
     subject: 'Eagle Weekly — Spirit Week schedule',
     subjectEs: 'Eagle Weekly — Horario de la Semana Escolar',
+    subjectZh: 'Eagle Weekly——校园精神周日程',
     body: [
       [
         'Hi Eagles! Spirit Week starts Monday: Pajama Day, Decades Day, and Friday pep rally in the gym at 2:00.',
@@ -116,21 +147,38 @@ const MESSAGES: InboxMessage[] = [
         },
       ],
     ],
+    bodyZh: [
+      [
+        '嗨，Eagles！校园精神周从周一开始：睡衣日、年代装扮日，还有周五在体育馆 2:00 的动员大会。',
+      ],
+      [
+        '毕业纪念册的补拍安排在周三午餐时间。',
+        {
+          cue: '有疑问？到前台办公室来一趟，或拨打 555-0148。',
+          why: '可信信号：它把你指向一个你早就熟悉的地点和电话号码——没有链接，也不催你。',
+        },
+      ],
+    ],
     isScam: false,
     verdictNote:
       'Legit. Calm tone, a school domain you recognize, and it asks for nothing — no links, no money, no personal info.',
     verdictNoteEs:
       'Legítimo. Tono tranquilo, un dominio escolar que reconoces y no pide nada: sin enlaces, sin dinero, sin información personal.',
+    verdictNoteZh:
+      '合法。语气平和，是你认得的学校域名，而且什么都不索取——没有链接、不要钱、不要个人信息。',
   },
   {
     id: 'giftcard-prize',
     kind: 'text',
     sender: '+1 (830) 555-0142',
     senderEs: '+1 (830) 555-0142',
+    senderZh: '+1 (830) 555-0142',
     address: 'Unknown number',
     addressEs: 'Número desconocido',
+    addressZh: '未知号码',
     subject: 'You WON a $1,000 gift card!',
     subjectEs: '¡GANASTE una tarjeta de regalo de $1,000!',
+    subjectZh: '你中了一张 $1,000 的礼品卡！',
     body: [
       [
         'CONGRATS! ',
@@ -165,21 +213,43 @@ const MESSAGES: InboxMessage[] = [
         ' — toca para cobrar: http://claim-prize.win/8842',
       ],
     ],
+    bodyZh: [
+      [
+        '恭喜！',
+        {
+          cue: '你已被选为一张 $1,000 Visa 礼品卡的中奖者',
+          why: '你不可能中一个自己从没参加过的抽奖。天上掉下来的奖品就是诱饵。',
+        },
+        '，来自全国学生抽奖活动！',
+      ],
+      [
+        {
+          cue: '领取资格今天到期',
+          why: '又是紧迫感——骗子催你赶紧行动，好让你没空停下来想一想。',
+        },
+        '——点击领取：http://claim-prize.win/8842',
+      ],
+    ],
     isScam: true,
     verdictNote:
       'Prize scam. You never entered any raffle, the link is a sketchy ".win" domain, and the "prize" evaporates today. Delete.',
     verdictNoteEs:
       'Estafa de premio. Nunca participaste en ninguna rifa, el enlace es un dominio sospechoso ".win" y el "premio" se esfuma hoy. Bórralo.',
+    verdictNoteZh:
+      '中奖骗局。你从没参加过任何抽奖，链接是可疑的「.win」域名，而且这个「奖品」今天就会蒸发。删掉它。',
   },
   {
     id: 'bank-statement',
     kind: 'email',
     sender: 'First National Bank',
     senderEs: 'First National Bank',
+    senderZh: 'First National Bank',
     address: 'no-reply@firstnational.com',
     addressEs: 'no-reply@firstnational.com',
+    addressZh: 'no-reply@firstnational.com',
     subject: 'Your June statement is ready',
     subjectEs: 'Tu estado de cuenta de junio está listo',
+    subjectZh: '你的 6 月对账单已生成',
     body: [
       [
         'Hello, your monthly account statement is now available. ',
@@ -210,21 +280,41 @@ const MESSAGES: InboxMessage[] = [
         },
       ],
     ],
+    bodyZh: [
+      [
+        '你好，你的每月账户对账单现已生成。',
+        {
+          cue: '要查看它，请像平常一样登录网上银行，或使用我们的手机 App。',
+          why: '可信信号：它让你用自己一贯的方式登录——不塞给你链接，也不索取任何东西。',
+        },
+      ],
+      [
+        {
+          cue: '我们绝不会通过邮件向你索要密码或 PIN。',
+          why: '可信信号：真正的银行会这么说，正是因为骗子的做法恰恰相反。',
+        },
+      ],
+    ],
     isScam: false,
     verdictNote:
       'Legit. No link to click, no urgency, nothing requested. It even reminds you it will never ask for your password.',
     verdictNoteEs:
       'Legítimo. Sin enlaces para hacer clic, sin urgencia, sin pedir nada. Incluso te recuerda que nunca te pedirá tu contraseña.',
+    verdictNoteZh:
+      '合法。没有可点的链接，没有紧迫感，什么都不索取。它甚至提醒你，它绝不会向你索要密码。',
   },
   {
     id: 'principal-giftcards',
     kind: 'email',
     sender: "Principal's Office",
     senderEs: 'Oficina del Director',
+    senderZh: '校长办公室',
     address: 'principal.desk@school-payments-portal.com',
     addressEs: 'principal.desk@school-payments-portal.com',
+    addressZh: 'principal.desk@school-payments-portal.com',
     subject: 'Overdue lunch balance — final notice',
     subjectEs: 'Saldo de almuerzo vencido — aviso final',
+    subjectZh: '午餐费欠款逾期——最后通知',
     body: [
       [
         'Our records show an overdue cafeteria balance of $85. ',
@@ -259,21 +349,43 @@ const MESSAGES: InboxMessage[] = [
         ' del reverso para saldar tu cuenta.',
       ],
     ],
+    bodyZh: [
+      [
+        '我们的记录显示，你有一笔 $85 的食堂欠款逾期未付。',
+        {
+          cue: '为避免午餐权限被暂停，请今天就付款',
+          why: '威胁再加上「当天截止」是施压手段，学校根本不是这么办事的。',
+        },
+        '。',
+      ],
+      [
+        {
+          cue: '购买两张 $50 的 Apple 礼品卡，并把卡背面的兑换码回复给我们',
+          why: '礼品卡就是无法追踪的现金。没有任何真正的学校、公司或政府机构会用礼品卡收款。永远不会。',
+        },
+        '，以结清你的账户。',
+      ],
+    ],
     isScam: true,
     verdictNote:
       'Gift-card scam. The sender domain is not your school, and gift-card codes = instant, untraceable money for a scammer.',
     verdictNoteEs:
       'Estafa de tarjetas de regalo. El dominio del remitente no es tu escuela, y los códigos de tarjetas de regalo son dinero instantáneo e imposible de rastrear para un estafador.',
+    verdictNoteZh:
+      '礼品卡骗局。发件人域名根本不是你的学校，而礼品卡兑换码 = 骗子马上到手、又无法追踪的钱。',
   },
   {
     id: 'shipping',
     kind: 'text',
     sender: '28777',
     senderEs: '28777',
+    senderZh: '28777',
     address: 'Delivery notifications',
     addressEs: 'Notificaciones de entrega',
+    addressZh: '配送通知',
     subject: 'Your order has shipped',
     subjectEs: 'Tu pedido ha sido enviado',
+    subjectZh: '你的订单已发货',
     body: [
       [
         {
@@ -294,21 +406,36 @@ const MESSAGES: InboxMessage[] = [
       ],
       ['No se requiere ninguna acción. Rastréalo cuando quieras desde la página de pedidos de tu cuenta.'],
     ],
+    bodyZh: [
+      [
+        {
+          cue: '你的订单 #83921（蓝色手机壳）已发货',
+          why: '可信信号：它写出了你确实下过的那笔订单里的具体商品和订单号。',
+        },
+        '，将于周四送达。',
+      ],
+      ['无需任何操作。你随时可以在账户的订单页面查看物流。'],
+    ],
     isScam: false,
     verdictNote:
       'Legit. You did order that phone case. It matches a real order, asks for nothing, and says "no action needed."',
     verdictNoteEs:
       'Legítimo. Sí pediste esa funda para teléfono. Coincide con un pedido real, no pide nada y dice "no se requiere ninguna acción".',
+    verdictNoteZh:
+      '合法。你确实订过那个手机壳。它和一笔真实订单对得上，什么都不索取，还写着「无需任何操作」。',
   },
   {
     id: 'crypto',
     kind: 'text',
     sender: '+44 7700 900123',
     senderEs: '+44 7700 900123',
+    senderZh: '+44 7700 900123',
     address: 'Unknown international number',
     addressEs: 'Número internacional desconocido',
+    addressZh: '未知的国际号码',
     subject: 'Double your crypto — giveaway!',
     subjectEs: '¡Duplica tu cripto — sorteo!',
+    subjectZh: '让你的加密币翻倍——免费赠送活动！',
     body: [
       [
         'OFFICIAL GIVEAWAY: ',
@@ -343,21 +470,43 @@ const MESSAGES: InboxMessage[] = [
         '. Billetera: bc1q-giveaway-now',
       ],
     ],
+    bodyZh: [
+      [
+        '官方赠送活动：',
+        {
+          cue: '发送 0.1 个比特币，立刻返还给你 0.2 个比特币',
+          why: '「发钱给你返双倍」百分之百是骗局，每一次都是。钱一发出去就是有去无回。',
+        },
+        '——保证到账！',
+      ],
+      [
+        {
+          cue: '仅限前 100 名有资格',
+          why: '虚假的稀缺感——又一个催你赶紧行动的施压手段。',
+        },
+        '。钱包地址：bc1q-giveaway-now',
+      ],
+    ],
     isScam: true,
     verdictNote:
       'Too good to be true = not true. Nobody doubles strangers’ money. Crypto payments cannot be reversed, so it’s gone forever.',
     verdictNoteEs:
       'Demasiado bueno para ser verdad = no es verdad. Nadie duplica el dinero de desconocidos. Los pagos en cripto no se pueden revertir, así que se pierde para siempre.',
+    verdictNoteZh:
+      '好到不真实 = 就是不真实。没有人会把陌生人的钱翻倍。加密币付款无法撤销，所以钱一去就永远回不来了。',
   },
   {
     id: 'netflix',
     kind: 'email',
     sender: 'Netflix Billing',
     senderEs: 'Facturación de Netflix',
+    senderZh: 'Netflix 账单',
     address: 'billing@netfIix-accounts.com',
     addressEs: 'billing@netfIix-accounts.com',
+    addressZh: 'billing@netfIix-accounts.com',
     subject: 'Payment declined — update card within 24 hours',
     subjectEs: 'Pago rechazado — actualiza tu tarjeta en 24 horas',
+    subjectZh: '付款被拒——请在 24 小时内更新银行卡',
     body: [
       [
         'We could not process your payment. ',
@@ -394,11 +543,31 @@ const MESSAGES: InboxMessage[] = [
         ' aquí: http://netfIix-accounts.com/billing',
       ],
     ],
+    bodyZh: [
+      [
+        '我们无法处理你的付款。',
+        {
+          cue: '除非你现在就行动，否则你的账户将在 24 小时内被暂停',
+          why: '一个通往灾难的倒计时是施压手段。真正的账单问题会一直等着你。',
+        },
+        '。',
+      ],
+      [
+        '请在此',
+        {
+          cue: '确认你的卡号和安全码',
+          why: '真正的公司绝不会让你通过邮件里的链接输入银行卡信息——银行卡就是这么被盗的。',
+        },
+        '：http://netfIix-accounts.com/billing',
+      ],
+    ],
     isScam: true,
     verdictNote:
       'Look closely at the sender: "netfIix" uses a capital I disguised as an L, on a fake domain. Spoofed sender + card-detail request = phishing.',
     verdictNoteEs:
       'Mira de cerca el remitente: "netfIix" usa una I mayúscula disfrazada de L, en un dominio falso. Remitente falsificado + petición de datos de tarjeta = phishing.',
+    verdictNoteZh:
+      '仔细看发件人：「netfIix」用了一个大写字母 I 冒充小写 L，而且域名是假的。伪造的发件人 + 索要卡片信息 = 钓鱼。',
   },
 ]
 
@@ -406,22 +575,22 @@ const MESSAGES: InboxMessage[] = [
 
 type Verdict = 'legit' | 'scam'
 
-function tierFor(score: number, es: boolean): { title: string; emoji: string } {
-  if (score >= 100) return { title: es ? 'Escudo Antiestafas' : 'Scam-Proof Shield', emoji: '🛡️' }
-  if (score >= 75) return { title: es ? 'Escéptico de Ojo Agudo' : 'Sharp-Eyed Skeptic', emoji: '🔍' }
-  if (score >= 50) return { title: es ? 'Empezando a Sospechar' : 'Getting Suspicious', emoji: '🤨' }
-  return { title: es ? 'Carnada de Phishing' : 'Phish Food', emoji: '🎣' }
+function tierFor(score: number, es: boolean, zh: boolean): { title: string; emoji: string } {
+  if (score >= 100) return { title: zh ? '防骗金钟罩' : es ? 'Escudo Antiestafas' : 'Scam-Proof Shield', emoji: '🛡️' }
+  if (score >= 75) return { title: zh ? '火眼金睛怀疑派' : es ? 'Escéptico de Ojo Agudo' : 'Sharp-Eyed Skeptic', emoji: '🔍' }
+  if (score >= 50) return { title: zh ? '开始起疑心' : es ? 'Empezando a Sospechar' : 'Getting Suspicious', emoji: '🤨' }
+  return { title: zh ? '钓鱼诱饵' : es ? 'Carnada de Phishing' : 'Phish Food', emoji: '🎣' }
 }
 
-function cuesOf(m: InboxMessage, es: boolean): { cue: string; why: string }[] {
-  const body = es ? m.bodyEs : m.body
+function cuesOf(m: InboxMessage, es: boolean, zh: boolean): { cue: string; why: string }[] {
+  const body = zh ? m.bodyZh : es ? m.bodyEs : m.body
   return body.flat().filter((s): s is { cue: string; why: string } => typeof s !== 'string')
 }
 
 // ---------- Body rendering ----------
 
-function Body({ message, revealed, es }: { message: InboxMessage; revealed: boolean; es: boolean }) {
-  const body = es ? message.bodyEs : message.body
+function Body({ message, revealed, es, zh }: { message: InboxMessage; revealed: boolean; es: boolean; zh: boolean }) {
+  const body = zh ? message.bodyZh : es ? message.bodyEs : message.body
   return (
     <div className="space-y-2 text-sm text-slate-700">
       {body.map((para, i) => (
@@ -454,6 +623,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
   const { student } = useStudent()
   const { lang } = useLang()
   const es = lang === 'es'
+  const zh = lang === 'zh'
   const [verdicts, setVerdicts] = useState<Partial<Record<string, Verdict>>>({})
   const [openId, setOpenId] = useState<string | null>(null)
   const [submitted, setSubmitted] = useState(false)
@@ -472,7 +642,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
     (m) => verdicts[m.id] === (m.isScam ? 'scam' : 'legit'),
   ).length
   const score = Math.round((correctCount / MESSAGES.length) * 100)
-  const tier = tierFor(score, es)
+  const tier = tierFor(score, es, zh)
 
   function mark(id: string, v: Verdict) {
     setVerdicts((prev) => ({ ...prev, [id]: v }))
@@ -506,11 +676,13 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
         <h1 className="font-display text-2xl font-bold text-slate-900">
-          <span aria-hidden="true">🕵️</span> {es ? 'Detector de Estafas' : 'Scam Spotter'}{' '}
+          <span aria-hidden="true">🕵️</span> {zh ? '识骗高手' : es ? 'Detector de Estafas' : 'Scam Spotter'}{' '}
           <span aria-hidden="true">📱</span>
         </h1>
         <p className="mt-1 text-sm text-slate-500">
-          {es
+          {zh
+            ? '案子结了。这些是消息里藏着的东西。'
+            : es
             ? 'Caso cerrado. Esto es lo que escondían los mensajes.'
             : "Case closed. Here's what the messages were hiding."}
         </p>
@@ -520,7 +692,9 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
           <h2 className="font-display text-3xl font-bold text-slate-900">{tier.title}</h2>
           <p className="font-display text-lg font-bold text-bff-700">{score} / 100</p>
           <p className="text-sm text-slate-600">
-            {es
+            {zh
+              ? `${MESSAGES.length} 条消息里你答对了 ${correctCount} 条。`
+              : es
               ? `Acertaste ${correctCount} de ${MESSAGES.length} mensajes.`
               : `You called ${correctCount} of ${MESSAGES.length} messages correctly.`}
           </p>
@@ -539,33 +713,33 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="text-sm font-semibold text-slate-800">
                     <span className="mr-1" aria-hidden="true">{m.kind === 'email' ? '📧' : '💬'}</span>
-                    {es ? m.senderEs : m.sender} — {es ? m.subjectEs : m.subject}
+                    {zh ? m.senderZh : es ? m.senderEs : m.sender} — {zh ? m.subjectZh : es ? m.subjectEs : m.subject}
                   </p>
                   <span
                     className={`chip ${correct ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-700'}`}
                   >
                     {correct ? (
                       <>
-                        <span aria-hidden="true">✓</span> {es ? 'Acertaste' : 'You got it'}
+                        <span aria-hidden="true">✓</span> {zh ? '答对了' : es ? 'Acertaste' : 'You got it'}
                       </>
                     ) : (
                       <>
-                        <span aria-hidden="true">✗</span> {es ? 'Fallaste este' : 'You missed this one'}
+                        <span aria-hidden="true">✗</span> {zh ? '这条看走眼了' : es ? 'Fallaste este' : 'You missed this one'}
                       </>
                     )}
                   </span>
                 </div>
                 <p className="mt-1 text-xs text-slate-500">
-                  {es ? 'De' : 'From'}: {es ? m.addressEs : m.address} ·{' '}
-                  {es ? 'En realidad es' : 'Actually'}{' '}
+                  {zh ? '来自' : es ? 'De' : 'From'}: {zh ? m.addressZh : es ? m.addressEs : m.address} ·{' '}
+                  {zh ? '实际上是' : es ? 'En realidad es' : 'Actually'}{' '}
                   <span className={`font-bold ${m.isScam ? 'text-red-600' : 'text-green-700'}`}>
-                    {m.isScam ? (es ? 'una ESTAFA' : 'a SCAM') : es ? 'legítimo' : 'legit'}
+                    {m.isScam ? (zh ? '一个骗局' : es ? 'una ESTAFA' : 'a SCAM') : zh ? '合法' : es ? 'legítimo' : 'legit'}
                   </span>{' '}
-                  · {es ? 'Dijiste' : 'You said'}:{' '}
-                  {yourCall === 'scam' ? (es ? 'Estafa' : 'Scam') : es ? 'Legítimo' : 'Legit'}
+                  · {zh ? '你的判断' : es ? 'Dijiste' : 'You said'}:{' '}
+                  {yourCall === 'scam' ? (zh ? '骗局' : es ? 'Estafa' : 'Scam') : zh ? '合法' : es ? 'Legítimo' : 'Legit'}
                 </p>
                 <div className="mt-3">
-                  <Body message={m} revealed es={es} />
+                  <Body message={m} revealed es={es} zh={zh} />
                 </div>
                 <div
                   className={`mt-3 rounded-xl p-3 text-xs ${
@@ -575,22 +749,22 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
                   <p className="font-display font-bold text-slate-900">
                     {m.isScam ? (
                       <>
-                        <span aria-hidden="true">🚩</span> {es ? 'Señales de alerta' : 'Red flags'}
+                        <span aria-hidden="true">🚩</span> {zh ? '危险信号' : es ? 'Señales de alerta' : 'Red flags'}
                       </>
                     ) : (
                       <>
-                        <span aria-hidden="true">🤝</span> {es ? 'Señales de confianza' : 'Trust signals'}
+                        <span aria-hidden="true">🤝</span> {zh ? '可信信号' : es ? 'Señales de confianza' : 'Trust signals'}
                       </>
                     )}
                   </p>
                   <ul className="mt-1 list-disc space-y-1 pl-4">
-                    {cuesOf(m, es).map((c) => (
+                    {cuesOf(m, es, zh).map((c) => (
                       <li key={c.cue}>
                         <span className="font-semibold">“{c.cue}”</span> — {c.why}
                       </li>
                     ))}
                   </ul>
-                  <p className="mt-2">{es ? m.verdictNoteEs : m.verdictNote}</p>
+                  <p className="mt-2">{zh ? m.verdictNoteZh : es ? m.verdictNoteEs : m.verdictNote}</p>
                 </div>
               </div>
             )
@@ -603,9 +777,15 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
         >
           <p className="font-display font-bold text-slate-900">
             <span aria-hidden="true">🛡️</span>{' '}
-            {es ? 'Mantén tu S.H.I.E.L.D. en alto' : 'Keep your S.H.I.E.L.D. up'}
+            {zh ? '举好你的 S.H.I.E.L.D. 盾牌' : es ? 'Mantén tu S.H.I.E.L.D. en alto' : 'Keep your S.H.I.E.L.D. up'}
           </p>
-          {es ? (
+          {zh ? (
+            <p className="mt-1">
+              <strong>S</strong>：守好你的密码 · <strong>H</strong>：藏好你的个人信息 ·{' '}
+              <strong>I</strong>：忽略可疑消息 · <strong>E</strong>：开启双重验证（2FA） ·{' '}
+              <strong>L</strong>：锁好你的设备 · <strong>D</strong>：别在公共 Wi-Fi 上购物。当一条消息拿紧迫感、奖品、礼品卡或索要密码的链接来推你时，慢下来。骗子就指望着你慌慌张张。
+            </p>
+          ) : es ? (
             <p className="mt-1">
               <strong>S</strong>eguridad en tus contraseñas · <strong>H</strong>az privada tu
               información personal · <strong>I</strong>gnora los mensajes sospechosos ·{' '}
@@ -627,10 +807,10 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
 
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <button className="btn-secondary" onClick={reset}>
-            {es ? 'Investigar de nuevo' : 'Investigate again'}
+            {zh ? '重新调查' : es ? 'Investigar de nuevo' : 'Investigate again'}
           </button>
           <Link to="/activities" className="btn-primary">
-            {es ? 'Más actividades' : 'More activities'}
+            {zh ? '更多活动' : es ? 'Más actividades' : 'More activities'}
           </Link>
         </div>
       </div>
@@ -643,31 +823,33 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
         <h1 className="font-display text-2xl font-bold text-slate-900">
-          <span aria-hidden="true">🕵️</span> {es ? 'Detector de Estafas' : 'Scam Spotter'}{' '}
+          <span aria-hidden="true">🕵️</span> {zh ? '识骗高手' : es ? 'Detector de Estafas' : 'Scam Spotter'}{' '}
           <span aria-hidden="true">📱</span>
         </h1>
         <p className="mt-1 text-sm text-slate-500">
-          {es
+          {zh
+            ? '仔细读。这条消息是合法的，还是一个骗局？'
+            : es
             ? 'Lee con atención. ¿Este mensaje es legítimo o una estafa?'
             : 'Read closely. Is this message legit, or a scam?'}
         </p>
 
         <div className="card animate-pop-in mt-4">
           <button className="btn-ghost -ml-2 text-sm" onClick={() => setOpenId(null)}>
-            <span aria-hidden="true">←</span> {es ? 'Volver a la bandeja' : 'Back to inbox'}
+            <span aria-hidden="true">←</span> {zh ? '返回收件箱' : es ? 'Volver a la bandeja' : 'Back to inbox'}
           </button>
           <div className="mt-3 border-b border-slate-200 pb-3">
             <p className="text-sm font-semibold text-slate-800">
               <span className="mr-1" aria-hidden="true">{open.kind === 'email' ? '📧' : '💬'}</span>
-              {es ? open.senderEs : open.sender}
+              {zh ? open.senderZh : es ? open.senderEs : open.sender}
             </p>
-            <p className="text-xs text-slate-500">{es ? open.addressEs : open.address}</p>
+            <p className="text-xs text-slate-500">{zh ? open.addressZh : es ? open.addressEs : open.address}</p>
             <p className="mt-1 font-display font-bold text-slate-900">
-              {es ? open.subjectEs : open.subject}
+              {zh ? open.subjectZh : es ? open.subjectEs : open.subject}
             </p>
           </div>
           <div className="mt-3">
-            <Body message={open} revealed={false} es={es} />
+            <Body message={open} revealed={false} es={es} zh={zh} />
           </div>
           <div className="mt-5 flex flex-wrap gap-3">
             <button
@@ -680,7 +862,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
                   : 'border-slate-200 bg-white text-slate-700 hover:border-green-400'
               }`}
             >
-              {es ? 'Legítimo' : 'Legit'} <span aria-hidden="true">✅</span>
+              {zh ? '合法' : es ? 'Legítimo' : 'Legit'} <span aria-hidden="true">✅</span>
             </button>
             <button
               type="button"
@@ -692,15 +874,19 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
                   : 'border-slate-200 bg-white text-slate-700 hover:border-red-400'
               }`}
             >
-              {es ? 'Estafa' : 'Scam'} <span aria-hidden="true">🚨</span>
+              {zh ? '骗局' : es ? 'Estafa' : 'Scam'} <span aria-hidden="true">🚨</span>
             </button>
           </div>
           <p className="mt-3 text-center text-xs text-slate-500" role="status" aria-live="polite">
             {v
-              ? es
+              ? zh
+                ? `已标记为${v === 'scam' ? '骗局' : '合法'}——提交之前你随时可以改主意。`
+                : es
                 ? `Marcado como ${v === 'scam' ? 'estafa' : 'legítimo'}: puedes cambiar de opinión en cualquier momento antes de enviar.`
                 : `Marked as ${v === 'scam' ? 'scam' : 'legit'} — you can change your mind anytime before submitting.`
-              : es
+              : zh
+                ? '选一个判断来归档这条消息。'
+                : es
                 ? 'Elige un veredicto para archivar este mensaje.'
                 : 'Pick a verdict to file this message.'}
           </p>
@@ -713,17 +899,31 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="font-display text-2xl font-bold text-slate-900">
-        <span aria-hidden="true">🕵️</span> {es ? 'Detector de Estafas' : 'Scam Spotter'}{' '}
+        <span aria-hidden="true">🕵️</span> {zh ? '识骗高手' : es ? 'Detector de Estafas' : 'Scam Spotter'}{' '}
         <span aria-hidden="true">📱</span>
       </h1>
       <p className="mt-1 text-sm text-slate-500">
-        {es
+        {zh
+          ? '你的收件箱有 8 条新消息。其中一些是陷阱。'
+          : es
           ? 'Tu bandeja tiene 8 mensajes nuevos. Algunos son trampas.'
           : 'Your inbox has 8 new messages. Some of them are traps.'}
       </p>
 
       <div className="card mt-4 border-bff-200 bg-bff-50 text-sm text-slate-700">
-        {es ? (
+        {zh ? (
+          <p>
+            打开每一条消息，像侦探一样读它，然后把它标记为{' '}
+            <strong>
+              合法 <span aria-hidden="true">✅</span>
+            </strong>{' '}
+            或{' '}
+            <strong>
+              骗局 <span aria-hidden="true">🚨</span>
+            </strong>
+            。留意紧迫感、奇怪的发件人地址、天上掉下来的奖品、索要礼品卡，以及任何索取密码或卡号的人。把这 8 条都分类好，然后提交。
+          </p>
+        ) : es ? (
           <p>
             Abre cada mensaje, léelo como un detective y márcalo{' '}
             <strong>
@@ -754,7 +954,9 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
       </div>
 
       <p className="mt-4 text-sm font-semibold text-slate-600" role="status" aria-live="polite">
-        {es
+        {zh
+          ? `${MESSAGES.length} 条消息中已分类 ${classifiedCount} 条`
+          : es
           ? `${classifiedCount} de ${MESSAGES.length} mensajes clasificados`
           : `${classifiedCount} of ${MESSAGES.length} messages classified`}
       </p>
@@ -772,9 +974,9 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold text-slate-800">
                     <span className="mr-1" aria-hidden="true">{m.kind === 'email' ? '📧' : '💬'}</span>
-                    {es ? m.senderEs : m.sender}
+                    {zh ? m.senderZh : es ? m.senderEs : m.sender}
                   </p>
-                  <p className="truncate text-xs text-slate-600">{es ? m.subjectEs : m.subject}</p>
+                  <p className="truncate text-xs text-slate-600">{zh ? m.subjectZh : es ? m.subjectEs : m.subject}</p>
                 </div>
                 <span
                   className={`chip shrink-0 ${
@@ -787,12 +989,14 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
                 >
                   {v === 'scam' ? (
                     <>
-                      {es ? 'Estafa' : 'Scam'} <span aria-hidden="true">🚨</span>
+                      {zh ? '骗局' : es ? 'Estafa' : 'Scam'} <span aria-hidden="true">🚨</span>
                     </>
                   ) : v === 'legit' ? (
                     <>
-                      {es ? 'Legítimo' : 'Legit'} <span aria-hidden="true">✅</span>
+                      {zh ? '合法' : es ? 'Legítimo' : 'Legit'} <span aria-hidden="true">✅</span>
                     </>
+                  ) : zh ? (
+                    '未读'
                   ) : es ? (
                     'Sin leer'
                   ) : (
@@ -807,11 +1011,13 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
 
       <div className="mt-8 text-center">
         <button className="btn-primary w-full sm:w-auto" onClick={submit} disabled={!allClassified}>
-          {es ? 'Enviar veredictos' : 'Submit verdicts'}
+          {zh ? '提交判断' : es ? 'Enviar veredictos' : 'Submit verdicts'}
         </button>
         {!allClassified && (
           <p className="mt-2 text-sm text-slate-500">
-            {es
+            {zh
+              ? `提交前请把每一条消息都分类好——还剩 ${MESSAGES.length - classifiedCount} 条。`
+              : es
               ? `Clasifica todos los mensajes antes de enviar — faltan ${MESSAGES.length - classifiedCount}.`
               : `Classify every message before submitting — ${MESSAGES.length - classifiedCount} to go.`}
           </p>

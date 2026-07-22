@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { COMPANIES, MARKET_HINTS, MARKET_HINTS_ES, NEWS_ROUNDS, portfolioValue, priceAt } from './data'
+import { COMPANIES, MARKET_HINTS, MARKET_HINTS_ES, MARKET_HINTS_ZH, NEWS_ROUNDS, portfolioValue, priceAt } from './data'
 import { money } from './TradingBoard'
 import {
   createSession,
@@ -16,16 +16,16 @@ import { BACKEND_ENABLED } from '../../lib/config'
 import { useAdmin } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
 
-const STAGE_TITLES: Record<number, { emoji: string; title: string; titleEs: string }> = {
-  1: { emoji: '🔔', title: 'Opening Bell', titleEs: 'Campana de apertura' },
-  2: { emoji: '📰', title: 'Breaking News 1', titleEs: 'Última hora 1' },
-  3: { emoji: '📰', title: 'Breaking News 2', titleEs: 'Última hora 2' },
+const STAGE_TITLES: Record<number, { emoji: string; title: string; titleEs: string; titleZh: string }> = {
+  1: { emoji: '🔔', title: 'Opening Bell', titleEs: 'Campana de apertura', titleZh: '开盘钟声' },
+  2: { emoji: '📰', title: 'Breaking News 1', titleEs: 'Última hora 1', titleZh: '突发新闻 1' },
+  3: { emoji: '📰', title: 'Breaking News 2', titleEs: 'Última hora 2', titleZh: '突发新闻 2' },
 }
 
-const ADVANCE_LABELS: Record<number, { label: string; labelEs: string; emoji?: string }> = {
-  1: { label: 'Breaking news round 1 →', labelEs: 'Ronda de noticias 1 →' },
-  2: { label: 'Breaking news round 2 →', labelEs: 'Ronda de noticias 2 →' },
-  3: { label: 'Ring the closing bell', labelEs: 'Toca la campana de cierre', emoji: '🔔' },
+const ADVANCE_LABELS: Record<number, { label: string; labelEs: string; labelZh: string; emoji?: string }> = {
+  1: { label: 'Breaking news round 1 →', labelEs: 'Ronda de noticias 1 →', labelZh: '第 1 轮突发新闻 →' },
+  2: { label: 'Breaking news round 2 →', labelEs: 'Ronda de noticias 2 →', labelZh: '第 2 轮突发新闻 →' },
+  3: { label: 'Ring the closing bell', labelEs: 'Toca la campana de cierre', labelZh: '敲响收盘钟声', emoji: '🔔' },
 }
 
 const BIG_BUTTON =
@@ -61,6 +61,7 @@ export default function WolfHost() {
   const { adminUser, adminReady } = useAdmin()
   const { lang } = useLang()
   const es = lang === 'es'
+  const zh = lang === 'zh'
 
   const [session, setSession] = useState<GameSession | null>(null)
   const [players, setPlayers] = useState<GamePlayer[]>([])
@@ -84,9 +85,11 @@ export default function WolfHost() {
           setError(
             err instanceof Error
               ? err.message
-              : es
-                ? 'No se pudo cargar el juego.'
-                : 'Could not load the game.',
+              : zh
+                ? '无法加载游戏。'
+                : es
+                  ? 'No se pudo cargar el juego.'
+                  : 'Could not load the game.',
           )
       })
     const refresh = () => {
@@ -108,7 +111,7 @@ export default function WolfHost() {
       active = false
       unsubscribe()
     }
-  }, [sessionId, adminId, es])
+  }, [sessionId, adminId, es, zh])
 
   function setStage(stage: number) {
     if (!session) return
@@ -135,9 +138,11 @@ export default function WolfHost() {
       setError(
         err instanceof Error
           ? err.message
-          : es
-            ? 'No se pudo crear un juego nuevo.'
-            : 'Could not create a new game.',
+          : zh
+            ? '无法创建新游戏。'
+            : es
+              ? 'No se pudo crear un juego nuevo.'
+              : 'Could not create a new game.',
       )
     } finally {
       setCreating(false)
@@ -149,18 +154,22 @@ export default function WolfHost() {
       <HostShell>
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
           <p className="text-4xl" aria-hidden="true">🖥️</p>
-          <h1 className="font-display text-xl font-bold text-slate-900">{es ? 'Pantalla del anfitrión' : 'Host screen'}</h1>
+          <h1 className="font-display text-xl font-bold text-slate-900">{zh ? '主持人屏幕' : es ? 'Pantalla del anfitrión' : 'Host screen'}</h1>
           <p className="text-sm text-slate-600">
             {!BACKEND_ENABLED
-              ? es
-                ? 'Los juegos en vivo se activan cuando el backend de la clase está conectado — ¡el modo individual ya está listo!'
-                : 'Live games unlock when the class backend is connected — solo mode is ready now!'
-              : es
-                ? 'Organizar juegos en vivo es para mentores de BFF con sesión iniciada. Ve a la página del equipo para iniciar sesión.'
-                : 'Hosting live games is for signed-in BFF mentors. Head over to the team page to sign in.'}
+              ? zh
+                ? '当班级后端接通后，实时对战就会解锁——单人模式现在就能玩！'
+                : es
+                  ? 'Los juegos en vivo se activan cuando el backend de la clase está conectado — ¡el modo individual ya está listo!'
+                  : 'Live games unlock when the class backend is connected — solo mode is ready now!'
+              : zh
+                ? '主持实时对战需要 BFF 导师登录后进行。前往团队页面登录吧。'
+                : es
+                  ? 'Organizar juegos en vivo es para mentores de BFF con sesión iniciada. Ve a la página del equipo para iniciar sesión.'
+                  : 'Hosting live games is for signed-in BFF mentors. Head over to the team page to sign in.'}
           </p>
           <Link to="/team" className="btn-primary">
-            {es ? 'Ir a la página del equipo' : 'Go to the team page'}
+            {zh ? '前往团队页面' : es ? 'Ir a la página del equipo' : 'Go to the team page'}
           </Link>
         </div>
       </HostShell>
@@ -172,10 +181,10 @@ export default function WolfHost() {
       <HostShell>
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
           <p className="text-4xl" aria-hidden="true">🤔</p>
-          <h1 className="font-display text-xl font-bold text-slate-900">{es ? 'No se pudo cargar el juego' : 'Could not load the game'}</h1>
+          <h1 className="font-display text-xl font-bold text-slate-900">{zh ? '无法加载游戏' : es ? 'No se pudo cargar el juego' : 'Could not load the game'}</h1>
           <p className="text-sm text-slate-600">{error}</p>
           <Link to="/wolf" className="btn-primary">
-            {es ? 'Volver a Wolf of Wall Street' : 'Back to Wolf of Wall Street'}
+            {zh ? '返回 Wolf of Wall Street' : es ? 'Volver a Wolf of Wall Street' : 'Back to Wolf of Wall Street'}
           </Link>
         </div>
       </HostShell>
@@ -186,7 +195,7 @@ export default function WolfHost() {
     return (
       <HostShell>
         <p className="mt-32 text-center font-display text-2xl font-semibold text-bff-200">
-          {es ? 'Preparando el piso de negociación…' : 'Warming up the trading floor…'}
+          {zh ? '正在预热交易大厅…' : es ? 'Preparando el piso de negociación…' : 'Warming up the trading floor…'}
         </p>
       </HostShell>
     )
@@ -206,7 +215,7 @@ export default function WolfHost() {
           <h1 className="font-display text-4xl font-bold sm:text-5xl">
             <span aria-hidden="true">🐺</span> Wolf of Wall Street
           </h1>
-          <p className="text-xl text-bff-200">{es ? 'Toma un dispositivo y únete con el código del juego' : 'Grab a device and join with the game code'}</p>
+          <p className="text-xl text-bff-200">{zh ? '拿起一台设备，用游戏代码加入' : es ? 'Toma un dispositivo y únete con el código del juego' : 'Grab a device and join with the game code'}</p>
           <p className="font-display text-7xl font-bold tracking-widest sm:text-8xl md:text-9xl">
             {session.code}
           </p>
@@ -216,13 +225,15 @@ export default function WolfHost() {
           <div className="w-full">
             <p className="mb-3 font-display text-2xl font-bold text-bff-100">
               {players.length}{' '}
-              {es
-                ? players.length === 1
-                  ? 'inversionista en el piso'
-                  : 'inversionistas en el piso'
-                : players.length === 1
-                  ? 'trader on the floor'
-                  : 'traders on the floor'}
+              {zh
+                ? '位投资者在场'
+                : es
+                  ? players.length === 1
+                    ? 'inversionista en el piso'
+                    : 'inversionistas en el piso'
+                  : players.length === 1
+                    ? 'trader on the floor'
+                    : 'traders on the floor'}
             </p>
             <div className="mx-auto flex max-w-3xl flex-wrap justify-center gap-2">
               {players.map((p) => (
@@ -234,12 +245,12 @@ export default function WolfHost() {
                 </span>
               ))}
               {players.length === 0 && (
-                <span className="text-lg text-bff-300">{es ? 'Esperando a que se una el primer inversionista…' : 'Waiting for the first trader to join…'}</span>
+                <span className="text-lg text-bff-300">{zh ? '正在等待第一位投资者加入…' : es ? 'Esperando a que se una el primer inversionista…' : 'Waiting for the first trader to join…'}</span>
               )}
             </div>
           </div>
           <button className={BIG_BUTTON} onClick={() => setStage(1)}>
-            {es ? 'Comenzar el juego' : 'Start the game'} <span aria-hidden="true">🔔</span>
+            {zh ? '开始游戏' : es ? 'Comenzar el juego' : 'Start the game'} <span aria-hidden="true">🔔</span>
           </button>
         </div>
       )}
@@ -248,7 +259,7 @@ export default function WolfHost() {
       {stage >= 1 && stage <= 3 && (
         <div className="space-y-6 pt-2">
           <h1 className="font-display text-4xl font-bold sm:text-5xl">
-            <span aria-hidden="true">{STAGE_TITLES[stage].emoji}</span> {es ? STAGE_TITLES[stage].titleEs : STAGE_TITLES[stage].title}
+            <span aria-hidden="true">{STAGE_TITLES[stage].emoji}</span> {zh ? STAGE_TITLES[stage].titleZh : es ? STAGE_TITLES[stage].titleEs : STAGE_TITLES[stage].title}
           </h1>
           <div className="grid gap-6 lg:grid-cols-[1fr_minmax(300px,360px)]">
             <div className="space-y-6">
@@ -256,17 +267,17 @@ export default function WolfHost() {
                 <h2 className="mb-4 font-display text-lg font-bold uppercase tracking-wide text-bff-200">
                   {stage === 1 ? (
                     <>
-                      <span aria-hidden="true">🔍</span> {es ? 'Información del mercado' : 'Market information'}
+                      <span aria-hidden="true">🔍</span> {zh ? '市场信息' : es ? 'Información del mercado' : 'Market information'}
                     </>
                   ) : (
                     <>
-                      <span aria-hidden="true">📰</span> {es ? 'Última hora' : 'Breaking news'}
+                      <span aria-hidden="true">📰</span> {zh ? '突发新闻' : es ? 'Última hora' : 'Breaking news'}
                     </>
                   )}
                 </h2>
                 <ul className="space-y-3">
                   {stage === 1
-                    ? (es ? MARKET_HINTS_ES : MARKET_HINTS).map((h) => (
+                    ? (zh ? MARKET_HINTS_ZH : es ? MARKET_HINTS_ES : MARKET_HINTS).map((h) => (
                         <li key={h} className="text-2xl font-semibold leading-snug">
                           {h}
                         </li>
@@ -275,16 +286,16 @@ export default function WolfHost() {
                         <li key={n.headline} className="text-2xl font-semibold leading-snug">
                           <span aria-hidden="true">{n.direction === 'up' ? '📈' : '📉'}</span>{' '}
                           <span className="sr-only">
-                            {n.direction === 'up' ? (es ? 'Buenas noticias: ' : 'Good news: ') : (es ? 'Malas noticias: ' : 'Bad news: ')}
+                            {n.direction === 'up' ? (zh ? '好消息：' : es ? 'Buenas noticias: ' : 'Good news: ') : (zh ? '坏消息：' : es ? 'Malas noticias: ' : 'Bad news: ')}
                           </span>
-                          {es ? n.headlineEs : n.headline}
+                          {zh ? n.headlineZh : es ? n.headlineEs : n.headline}
                         </li>
                       ))}
                 </ul>
               </div>
               <div className="rounded-2xl bg-white/10 p-6">
                 <h2 className="mb-4 font-display text-lg font-bold uppercase tracking-wide text-bff-200">
-                  <span aria-hidden="true">💹</span> {es ? 'Precios' : 'Prices'}
+                  <span aria-hidden="true">💹</span> {zh ? '价格' : es ? 'Precios' : 'Prices'}
                 </h2>
                 <div className="grid gap-x-8 gap-y-1 sm:grid-cols-2">
                   {COMPANIES.map((c) => {
@@ -316,17 +327,23 @@ export default function WolfHost() {
                                 {change > 0 ? `▲ +${change}` : change < 0 ? `▼ ${change}` : '· flat'}
                               </span>
                               <span className="sr-only">
-                                {es
+                                {zh
                                   ? change > 0
-                                    ? `sube ${change}`
+                                    ? `涨 ${change}`
                                     : change < 0
-                                      ? `baja ${Math.abs(change)}`
-                                      : 'sin cambios'
-                                  : change > 0
-                                    ? `up ${change}`
-                                    : change < 0
-                                      ? `down ${Math.abs(change)}`
-                                      : 'no change'}
+                                      ? `跌 ${Math.abs(change)}`
+                                      : '无变化'
+                                  : es
+                                    ? change > 0
+                                      ? `sube ${change}`
+                                      : change < 0
+                                        ? `baja ${Math.abs(change)}`
+                                        : 'sin cambios'
+                                    : change > 0
+                                      ? `up ${change}`
+                                      : change < 0
+                                        ? `down ${Math.abs(change)}`
+                                        : 'no change'}
                               </span>
                             </span>
                           )}
@@ -339,7 +356,7 @@ export default function WolfHost() {
             </div>
             <div className="h-fit rounded-2xl bg-white/10 p-6">
               <h2 className="mb-4 font-display text-lg font-bold uppercase tracking-wide text-bff-200">
-                <span aria-hidden="true">🏆</span> {es ? 'Tabla de posiciones' : 'Leaderboard'}
+                <span aria-hidden="true">🏆</span> {zh ? '排行榜' : es ? 'Tabla de posiciones' : 'Leaderboard'}
               </h2>
               <ol className="space-y-2.5">
                 {standings.map((p, i) => (
@@ -352,18 +369,20 @@ export default function WolfHost() {
                     </span>
                   </li>
                 ))}
-                {standings.length === 0 && <li className="text-lg text-bff-300">{es ? 'Aún no hay inversionistas…' : 'No traders yet…'}</li>}
+                {standings.length === 0 && <li className="text-lg text-bff-300">{zh ? '还没有投资者…' : es ? 'Aún no hay inversionistas…' : 'No traders yet…'}</li>}
               </ol>
             </div>
           </div>
           <ControlBar>
             <p className="mr-auto hidden text-bff-300 sm:block">
-              {es
-                ? 'Cada quien negocia en su propio dispositivo — avanza cuando la sala esté lista.'
-                : 'Everyone trades on their own device — advance when the room is ready.'}
+              {zh
+                ? '每个人都在自己的设备上交易——等大家准备好了再推进。'
+                : es
+                  ? 'Cada quien negocia en su propio dispositivo — avanza cuando la sala esté lista.'
+                  : 'Everyone trades on their own device — advance when the room is ready.'}
             </p>
             <button className={BIG_BUTTON} onClick={() => setStage(stage + 1)}>
-              {es ? ADVANCE_LABELS[stage].labelEs : ADVANCE_LABELS[stage].label}
+              {zh ? ADVANCE_LABELS[stage].labelZh : es ? ADVANCE_LABELS[stage].labelEs : ADVANCE_LABELS[stage].label}
               {ADVANCE_LABELS[stage].emoji && (
                 <>
                   {' '}
@@ -379,13 +398,15 @@ export default function WolfHost() {
       {stage === 4 && (
         <div className="space-y-6 pt-2">
           <h1 className="font-display text-4xl font-bold sm:text-5xl">
-            <span aria-hidden="true">🔒</span> {es ? 'Campana de cierre — ya están los resultados' : 'Closing Bell — the results are in'}
+            <span aria-hidden="true">🔒</span> {zh ? '收盘钟声——结果揭晓' : es ? 'Campana de cierre — ya están los resultados' : 'Closing Bell — the results are in'}
           </h1>
           {session.reveal_index === 0 && (
             <p className="text-2xl text-bff-200">
-              {es
-                ? 'Crea el suspenso… ¡revela las empresas una por una!'
-                : 'Build the suspense… reveal the companies one at a time!'}
+              {zh
+                ? '营造悬念……一家一家地揭晓这些公司吧！'
+                : es
+                  ? 'Crea el suspenso… ¡revela las empresas una por una!'
+                  : 'Build the suspense… reveal the companies one at a time!'}
             </p>
           )}
           <div className="space-y-3">
@@ -404,7 +425,7 @@ export default function WolfHost() {
                       {c.name}{' '}
                       <span className="text-lg font-semibold text-bff-300">{c.ticker}</span>
                     </p>
-                    <p className="mt-1 text-lg text-bff-100">{es ? c.summaryEs : c.summary}</p>
+                    <p className="mt-1 text-lg text-bff-100">{zh ? c.summaryZh : es ? c.summaryEs : c.summary}</p>
                   </div>
                   <p
                     className={`whitespace-nowrap font-display text-3xl font-bold ${
@@ -415,11 +436,15 @@ export default function WolfHost() {
                     <span className="text-xl">
                       <span aria-hidden="true">({change >= 0 ? '+' : ''}{change})</span>
                       <span className="sr-only">
-                        {es
+                        {zh
                           ? change >= 0
-                            ? `sube $${change} desde la apertura`
-                            : `baja $${Math.abs(change)} desde la apertura`
-                          : `${change >= 0 ? `up $${change}` : `down $${Math.abs(change)}`} from the open`}
+                            ? `比开盘涨了 $${change}`
+                            : `比开盘跌了 $${Math.abs(change)}`
+                          : es
+                            ? change >= 0
+                              ? `sube $${change} desde la apertura`
+                              : `baja $${Math.abs(change)} desde la apertura`
+                            : `${change >= 0 ? `up $${change}` : `down $${Math.abs(change)}`} from the open`}
                       </span>
                     </span>
                   </p>
@@ -430,11 +455,11 @@ export default function WolfHost() {
           <ControlBar>
             {session.reveal_index < COMPANIES.length ? (
               <button className={BIG_BUTTON} onClick={revealNext}>
-                {es ? 'Revelar la siguiente empresa →' : 'Reveal next company →'}
+                {zh ? '揭晓下一家公司 →' : es ? 'Revelar la siguiente empresa →' : 'Reveal next company →'}
               </button>
             ) : (
               <button className={BIG_BUTTON} onClick={() => setStage(5)}>
-                {es ? 'Mostrar la tabla final' : 'Show final leaderboard'} <span aria-hidden="true">🏆</span>
+                {zh ? '显示最终排行榜' : es ? 'Mostrar la tabla final' : 'Show final leaderboard'} <span aria-hidden="true">🏆</span>
               </button>
             )}
           </ControlBar>
@@ -445,7 +470,7 @@ export default function WolfHost() {
       {stage === 5 && (
         <div className="flex flex-col items-center gap-10 pt-6 text-center">
           <h1 className="font-display text-5xl font-bold sm:text-6xl">
-            <span aria-hidden="true">🏆</span> {es ? 'Tabla de posiciones final' : 'Final Leaderboard'}
+            <span aria-hidden="true">🏆</span> {zh ? '最终排行榜' : es ? 'Tabla de posiciones final' : 'Final Leaderboard'}
           </h1>
           <div className="grid w-full max-w-4xl gap-4 sm:grid-cols-3">
             {standings.slice(0, 3).map((p, i) => (
@@ -461,7 +486,7 @@ export default function WolfHost() {
               >
                 <p className="text-6xl" aria-hidden="true">{i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉'}</p>
                 <p className="mt-3 break-words font-display text-3xl font-bold">
-                  <span className="sr-only">{es ? `puesto ${i + 1}: ` : `${i + 1}${['st', 'nd', 'rd'][i] ?? 'th'} place: `}</span>
+                  <span className="sr-only">{zh ? `第 ${i + 1} 名：` : es ? `puesto ${i + 1}: ` : `${i + 1}${['st', 'nd', 'rd'][i] ?? 'th'} place: `}</span>
                   {p.nickname}
                 </p>
                 <p className="mt-1 font-display text-2xl font-bold text-bff-100">
@@ -471,7 +496,7 @@ export default function WolfHost() {
             ))}
           </div>
           {standings.length === 0 && (
-            <p className="text-2xl text-bff-200">{es ? 'No hubo inversionistas esta ronda — ¡el mercado estuvo tranquilo!' : 'No traders this round — the market was quiet!'}</p>
+            <p className="text-2xl text-bff-200">{zh ? '这一轮没有投资者——市场一片冷清！' : es ? 'No hubo inversionistas esta ronda — ¡el mercado estuvo tranquilo!' : 'No traders this round — the market was quiet!'}</p>
           )}
           {standings.length > 3 && (
             <ol className="w-full max-w-xl space-y-2">
@@ -490,10 +515,10 @@ export default function WolfHost() {
           )}
           <button className={BIG_BUTTON} onClick={playAgain} disabled={creating}>
             {creating ? (
-              es ? 'Preparando…' : 'Setting up…'
+              zh ? '正在准备…' : es ? 'Preparando…' : 'Setting up…'
             ) : (
               <>
-                {es ? 'Jugar otra vez con un juego nuevo' : 'Play again with a new game'} <span aria-hidden="true">🔁</span>
+                {zh ? '开一局新游戏再玩一次' : es ? 'Jugar otra vez con un juego nuevo' : 'Play again with a new game'} <span aria-hidden="true">🔁</span>
               </>
             )}
           </button>

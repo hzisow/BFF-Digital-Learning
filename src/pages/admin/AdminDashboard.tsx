@@ -23,19 +23,21 @@ import {
   type ProfileRow,
 } from './api'
 
-function displayName(user: User, es: boolean): string {
+function displayName(user: User, zh: boolean, es: boolean): string {
   const name: unknown = user.user_metadata?.full_name
   if (typeof name === 'string' && name.trim()) return name.trim()
-  return user.email ?? (es ? 'miembro del equipo BFF' : 'BFF team member')
+  return user.email ?? (zh ? 'BFF 团队成员' : es ? 'miembro del equipo BFF' : 'BFF team member')
 }
 
 function ClassroomCard({
   classroom,
   count,
+  zh,
   es,
 }: {
   classroom: Classroom
   count: number
+  zh: boolean
   es: boolean
 }) {
   const { copied, copy } = useCopy()
@@ -46,13 +48,13 @@ function ClassroomCard({
           {classroom.name}
         </h3>
         <p className="text-sm text-slate-500">
-          {classroom.school ?? (es ? 'Sin escuela indicada' : 'No school listed')}
+          {classroom.school ?? (zh ? '未填写学校' : es ? 'Sin escuela indicada' : 'No school listed')}
         </p>
       </div>
       <div className="flex items-center gap-2">
         <span
           className="rounded-xl bg-bff-50 px-4 py-2 font-mono text-2xl font-bold tracking-[0.25em] text-bff-700"
-          aria-label={es ? `Código de clase ${classroom.code}` : `Class code ${classroom.code}`}
+          aria-label={zh ? `班级代码 ${classroom.code}` : es ? `Código de clase ${classroom.code}` : `Class code ${classroom.code}`}
         >
           {classroom.code}
         </span>
@@ -62,27 +64,33 @@ function ClassroomCard({
           onClick={() => copy(classroom.code)}
           aria-label={
             copied
-              ? es
-                ? `Código de clase ${classroom.code} copiado`
-                : `Class code ${classroom.code} copied`
-              : es
-                ? `Copiar código de clase ${classroom.code}`
-                : `Copy class code ${classroom.code}`
+              ? zh
+                ? `班级代码 ${classroom.code} 已复制`
+                : es
+                  ? `Código de clase ${classroom.code} copiado`
+                  : `Class code ${classroom.code} copied`
+              : zh
+                ? `复制班级代码 ${classroom.code}`
+                : es
+                  ? `Copiar código de clase ${classroom.code}`
+                  : `Copy class code ${classroom.code}`
           }
         >
-          <span aria-hidden="true">{copied ? (es ? '✓ Copiado' : '✓ Copied') : es ? 'Copiar' : 'Copy'}</span>
+          <span aria-hidden="true">{copied ? (zh ? '✓ 已复制' : es ? '✓ Copiado' : '✓ Copied') : zh ? '复制' : es ? 'Copiar' : 'Copy'}</span>
         </button>
         <span role="status" className="sr-only">
-          {copied ? (es ? `Código de clase ${classroom.code} copiado` : `Class code ${classroom.code} copied`) : ''}
+          {copied ? (zh ? `班级代码 ${classroom.code} 已复制` : es ? `Código de clase ${classroom.code} copiado` : `Class code ${classroom.code} copied`) : ''}
         </span>
       </div>
       <p className="text-sm text-slate-600">
-        {es
-          ? `${count} ${count === 1 ? 'estudiante inscrito' : 'estudiantes inscritos'}`
-          : `${count} student${count === 1 ? '' : 's'} joined`}
+        {zh
+          ? `${count} 名学生已加入`
+          : es
+            ? `${count} ${count === 1 ? 'estudiante inscrito' : 'estudiantes inscritos'}`
+            : `${count} student${count === 1 ? '' : 's'} joined`}
       </p>
       <Link to={`/admin/class/${classroom.id}`} className="btn-secondary mt-auto">
-        {es ? 'Abrir clase →' : 'Open class →'}
+        {zh ? '打开班级 →' : es ? 'Abrir clase →' : 'Open class →'}
       </Link>
     </div>
   )
@@ -92,6 +100,7 @@ export default function AdminDashboard() {
   const { adminUser, adminReady } = useAdmin()
   const { lang } = useLang()
   const es = lang === 'es'
+  const zh = lang === 'zh'
   const navigate = useNavigate()
   const uid = adminUser?.id ?? null
 
@@ -158,7 +167,7 @@ export default function AdminDashboard() {
   if (!adminReady) {
     return (
       <div role="status" className="px-4 py-16 text-center text-slate-500">
-        {es ? 'Cargando…' : 'Loading…'}
+        {zh ? '加载中…' : es ? 'Cargando…' : 'Loading…'}
       </div>
     )
   }
@@ -190,7 +199,7 @@ export default function AdminDashboard() {
   if (approved === null) {
     return (
       <div role="status" className="px-4 py-24 text-center text-slate-500">
-        {es ? 'Verificando tu acceso…' : 'Checking your access…'}
+        {zh ? '正在验证您的访问权限…' : es ? 'Verificando tu acceso…' : 'Checking your access…'}
       </div>
     )
   }
@@ -204,27 +213,29 @@ export default function AdminDashboard() {
             🔒
           </div>
           <h1 className="mt-4 font-display text-2xl font-bold text-slate-900">
-            {es ? 'Esperando la aprobación del administrador' : 'Waiting for admin approval'}
+            {zh ? '正在等待管理员审批' : es ? 'Esperando la aprobación del administrador' : 'Waiting for admin approval'}
           </h1>
           <p className="mt-3 leading-relaxed text-slate-600">
-            {es ? 'Has iniciado sesión como ' : "You're signed in as "}
+            {zh ? '您已登录为 ' : es ? 'Has iniciado sesión como ' : "You're signed in as "}
             <span className="font-semibold">{adminUser.email}</span>.
-            {es
-              ? ' Un administrador de BFF debe aprobar tu cuenta antes de que puedas crear aulas y organizar juegos. Entrarás en cuanto lo haga; solo vuelve a comprobarlo.'
-              : ' A BFF administrator needs to approve your account before you can create classrooms and host games. You\'ll get in as soon as they do — just check back.'}
+            {zh
+              ? ' BFF 管理员需要先审批您的账户，之后您才能创建班级和主持游戏。审批通过后您即可进入——请稍后再回来查看。'
+              : es
+                ? ' Un administrador de BFF debe aprobar tu cuenta antes de que puedas crear aulas y organizar juegos. Entrarás en cuanto lo haga; solo vuelve a comprobarlo.'
+                : ' A BFF administrator needs to approve your account before you can create classrooms and host games. You\'ll get in as soon as they do — just check back.'}
           </p>
           <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
             <button type="button" className="btn-primary" onClick={() => void load()}>
-              <span aria-hidden="true">↻</span> {es ? 'Comprobar de nuevo' : 'Check again'}
+              <span aria-hidden="true">↻</span> {zh ? '重新检查' : es ? 'Comprobar de nuevo' : 'Check again'}
             </button>
             <button type="button" className="btn-ghost" onClick={() => void handleSignOut()}>
-              {es ? 'Cerrar sesión' : 'Sign out'}
+              {zh ? '退出登录' : es ? 'Cerrar sesión' : 'Sign out'}
             </button>
           </div>
           <p className="mt-6 text-xs text-slate-400">
-            {es ? '¿Eres estudiante? No necesitas una cuenta, solo ' : "Are you a student? You don't need an account — just "}
+            {zh ? '您是学生吗？无需账户，只需' : es ? '¿Eres estudiante? No necesitas una cuenta, solo ' : "Are you a student? You don't need an account — just "}
             <Link to="/join" className="font-semibold text-bff-700 hover:underline">
-              {es ? 'únete con tu código de clase' : 'join with your class code'}
+              {zh ? '用班级代码加入' : es ? 'únete con tu código de clase' : 'join with your class code'}
             </Link>
             .
           </p>
@@ -238,20 +249,22 @@ export default function AdminDashboard() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl font-bold text-slate-900">
-            {es ? 'Hola, ' : 'Hey, '}{displayName(adminUser, es)} <span aria-hidden="true">👋</span>
+            {zh ? '您好，' : es ? 'Hola, ' : 'Hey, '}{displayName(adminUser, zh, es)} <span aria-hidden="true">👋</span>
           </h1>
           <p className="mt-1 text-slate-600">
-            {es
-              ? 'Tu panel de mentor: aulas, tareas y juegos en vivo.'
-              : 'Your mentor dashboard — classrooms, assignments, and live games.'}
+            {zh
+              ? '您的导师仪表板——班级、作业和实时游戏。'
+              : es
+                ? 'Tu panel de mentor: aulas, tareas y juegos en vivo.'
+                : 'Your mentor dashboard — classrooms, assignments, and live games.'}
           </p>
         </div>
         <div className="flex items-center gap-2">
           <Link to="/account" className="btn-ghost">
-            {es ? 'Cuenta' : 'Account'}
+            {zh ? '账户' : es ? 'Cuenta' : 'Account'}
           </Link>
           <button type="button" className="btn-ghost" onClick={() => void handleSignOut()}>
-            {es ? 'Cerrar sesión' : 'Sign out'}
+            {zh ? '退出登录' : es ? 'Cerrar sesión' : 'Sign out'}
           </button>
         </div>
       </div>
@@ -261,12 +274,14 @@ export default function AdminDashboard() {
         <section className="mt-8">
           <div className="card border-amber-200 bg-amber-50">
             <h2 className="font-display text-lg font-bold text-amber-900">
-              <span aria-hidden="true">🔔</span> {es ? 'Aprobaciones de equipo pendientes' : 'Pending team approvals'} ({pending.length})
+              <span aria-hidden="true">🔔</span> {zh ? '待处理的团队审批' : es ? 'Aprobaciones de equipo pendientes' : 'Pending team approvals'} ({pending.length})
             </h2>
             <p className="mt-1 text-sm text-amber-800">
-              {es
-                ? 'Estas personas iniciaron sesión y esperan ser aprobadas como miembros del equipo de BFF.'
-                : 'These people signed in and are waiting to be approved as BFF team members.'}
+              {zh
+                ? '这些人已登录，正在等待被批准为 BFF 团队成员。'
+                : es
+                  ? 'Estas personas iniciaron sesión y esperan ser aprobadas como miembros del equipo de BFF.'
+                  : 'These people signed in and are waiting to be approved as BFF team members.'}
             </p>
             <ul className="mt-4 space-y-2">
               {pending.map((p) => (
@@ -280,7 +295,7 @@ export default function AdminDashboard() {
                     </p>
                     <p className="truncate text-sm text-slate-600">
                       {p.email}
-                      {p.chapter && <> · {p.chapter}</>} · {es ? 'solicitado el' : 'requested'} {formatDate(p.created_at)}
+                      {p.chapter && <> · {p.chapter}</>} · {zh ? '申请于' : es ? 'solicitado el' : 'requested'} {formatDate(p.created_at)}
                     </p>
                   </div>
                   <button
@@ -290,7 +305,7 @@ export default function AdminDashboard() {
                     disabled={approvingId === p.id}
                     aria-busy={approvingId === p.id}
                   >
-                    {approvingId === p.id ? (es ? 'Aprobando…' : 'Approving…') : es ? 'Aprobar' : 'Approve'}
+                    {approvingId === p.id ? (zh ? '审批中…' : es ? 'Aprobando…' : 'Approving…') : zh ? '批准' : es ? 'Aprobar' : 'Approve'}
                   </button>
                 </li>
               ))}
@@ -303,7 +318,7 @@ export default function AdminDashboard() {
       <section className="mt-10">
         <div className="flex items-center justify-between gap-4">
           <h2 className="font-display text-xl font-bold text-slate-900">
-            {es ? 'Tus aulas' : 'Your classrooms'}
+            {zh ? '您的班级' : es ? 'Tus aulas' : 'Your classrooms'}
           </h2>
           <button
             type="button"
@@ -311,7 +326,7 @@ export default function AdminDashboard() {
             onClick={() => void load()}
             disabled={loading}
           >
-            <span aria-hidden="true">↻</span> {es ? 'Actualizar' : 'Refresh'}
+            <span aria-hidden="true">↻</span> {zh ? '刷新' : es ? 'Actualizar' : 'Refresh'}
           </button>
         </div>
 
@@ -320,7 +335,7 @@ export default function AdminDashboard() {
             role="alert"
             className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
           >
-            {es ? 'No se pudieron cargar las aulas: ' : 'Could not load classrooms: '}{error}
+            {zh ? '无法加载班级：' : es ? 'No se pudieron cargar las aulas: ' : 'Could not load classrooms: '}{error}
           </p>
         )}
 
@@ -328,7 +343,7 @@ export default function AdminDashboard() {
           <div
             className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
             role="status"
-            aria-label={es ? 'Cargando tus aulas…' : 'Loading your classrooms…'}
+            aria-label={zh ? '正在加载您的班级…' : es ? 'Cargando tus aulas…' : 'Loading your classrooms…'}
           >
             <SkeletonCard />
             <SkeletonCard />
@@ -337,7 +352,7 @@ export default function AdminDashboard() {
         ) : (
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {classrooms.map((c) => (
-              <ClassroomCard key={c.id} classroom={c} count={counts[c.id] ?? 0} es={es} />
+              <ClassroomCard key={c.id} classroom={c} count={counts[c.id] ?? 0} zh={zh} es={es} />
             ))}
 
             {classrooms.length === 0 && !error && (
@@ -346,12 +361,14 @@ export default function AdminDashboard() {
                   🏫
                 </div>
                 <p className="mt-2 font-display font-semibold text-slate-700">
-                  {es ? 'Aún no hay aulas' : 'No classrooms yet'}
+                  {zh ? '还没有班级' : es ? 'Aún no hay aulas' : 'No classrooms yet'}
                 </p>
                 <p className="mt-1 text-sm text-slate-500">
-                  {es
-                    ? 'Crea tu primera clase → comparte su código de 6 letras → los estudiantes se unen en segundos, sin correo electrónico.'
-                    : 'Create your first class → share its 6-letter code → students join in seconds, no email needed.'}
+                  {zh
+                    ? '创建您的第一个班级 → 分享其 6 位字母代码 → 学生几秒内即可加入，无需电子邮箱。'
+                    : es
+                      ? 'Crea tu primera clase → comparte su código de 6 letras → los estudiantes se unen en segundos, sin correo electrónico.'
+                      : 'Create your first class → share its 6-letter code → students join in seconds, no email needed.'}
                 </p>
               </div>
             )}
@@ -362,31 +379,31 @@ export default function AdminDashboard() {
               className="card flex flex-col gap-3 border-2 border-dashed border-bff-200 bg-bff-50/40"
             >
               <h3 className="font-display text-lg font-bold text-slate-900">
-                <span aria-hidden="true">＋</span> {es ? 'Nueva aula' : 'New classroom'}
+                <span aria-hidden="true">＋</span> {zh ? '新建班级' : es ? 'Nueva aula' : 'New classroom'}
               </h3>
               <label className="block">
                 <span className="mb-1 block text-sm font-semibold text-slate-700">
-                  {es ? 'Nombre de la clase' : 'Class name'}<span className="text-red-500"> *</span>
+                  {zh ? '班级名称' : es ? 'Nombre de la clase' : 'Class name'}<span className="text-red-500"> *</span>
                 </span>
                 <input
                   className="input"
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder={es ? 'Periodo 3 — Educación financiera' : 'Period 3 — Financial Literacy'}
+                  placeholder={zh ? '第 3 节课 — 财商教育' : es ? 'Periodo 3 — Educación financiera' : 'Period 3 — Financial Literacy'}
                   required
                 />
               </label>
               <label className="block">
                 <span className="mb-1 block text-sm font-semibold text-slate-700">
-                  {es ? 'Escuela' : 'School'} <span className="font-normal text-slate-500">{es ? '(opcional)' : '(optional)'}</span>
+                  {zh ? '学校' : es ? 'Escuela' : 'School'} <span className="font-normal text-slate-500">{zh ? '（可选）' : es ? '(opcional)' : '(optional)'}</span>
                 </span>
                 <input
                   className="input"
                   type="text"
                   value={school}
                   onChange={(e) => setSchool(e.target.value)}
-                  placeholder={es ? 'Escuela Secundaria Lincoln' : 'Lincoln Middle School'}
+                  placeholder={zh ? '林肯中学' : es ? 'Escuela Secundaria Lincoln' : 'Lincoln Middle School'}
                 />
               </label>
               {createError && (
@@ -402,7 +419,7 @@ export default function AdminDashboard() {
                 className="btn-primary mt-auto"
                 disabled={creating || !name.trim()}
               >
-                {creating ? (es ? 'Creando…' : 'Creating…') : es ? 'Crear aula' : 'Create classroom'}
+                {creating ? (zh ? '创建中…' : es ? 'Creando…' : 'Creating…') : zh ? '创建班级' : es ? 'Crear aula' : 'Create classroom'}
               </button>
             </form>
           </div>
@@ -411,11 +428,13 @@ export default function AdminDashboard() {
 
       {/* ---------- Quick host (any game, no classroom needed) ---------- */}
       <section className="mt-10">
-        <h2 className="font-display text-xl font-bold text-slate-900">{es ? 'Juego en vivo' : 'Live game'}</h2>
+        <h2 className="font-display text-xl font-bold text-slate-900">{zh ? '实时游戏' : es ? 'Juego en vivo' : 'Live game'}</h2>
         <p className="mt-1 text-sm text-slate-600">
-          {es
-            ? 'Inicia un juego en vivo ahora mismo, sin necesidad de un aula. Los jugadores se unen con el código de la pantalla grande.'
-            : 'Start a live game right now — no classroom needed. Players join with the code on the big screen.'}
+          {zh
+            ? '立即开始一场实时游戏——无需班级。玩家用大屏幕上显示的代码加入。'
+            : es
+              ? 'Inicia un juego en vivo ahora mismo, sin necesidad de un aula. Los jugadores se unen con el código de la pantalla grande.'
+              : 'Start a live game right now — no classroom needed. Players join with the code on the big screen.'}
         </p>
         <div className="mt-4">
           <HostLauncher classroomId={null} />

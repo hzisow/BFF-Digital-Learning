@@ -26,6 +26,7 @@ export default function HostLauncher({ classroomId }: { classroomId: string | nu
   const navigate = useNavigate()
   const { lang } = useLang()
   const es = lang === 'es'
+  const zh = lang === 'zh'
   const [choice, setChoice] = useState('wolf')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -65,17 +66,19 @@ export default function HostLauncher({ classroomId }: { classroomId: string | nu
   return (
     <div className="card border-bff-200 bg-bff-50/50">
       <h3 className="font-display text-lg font-bold text-slate-900">
-        <span aria-hidden="true">📡</span> {es ? 'Organiza un juego en vivo' : 'Host a live game'}
+        <span aria-hidden="true">📡</span> {zh ? '主持一场实时游戏' : es ? 'Organiza un juego en vivo' : 'Host a live game'}
       </h3>
       <p className="mt-1 text-sm text-slate-600">
-        {es
-          ? 'Muestra la pantalla del anfitrión en el proyector; los estudiantes se unen con el código que aparece desde sus propios dispositivos.'
-          : 'Put the host screen on the projector; students join with the code it shows on their own devices.'}
+        {zh
+          ? '将主持人屏幕投放到投影仪上；学生用屏幕上显示的代码在各自设备上加入。'
+          : es
+            ? 'Muestra la pantalla del anfitrión en el proyector; los estudiantes se unen con el código que aparece desde sus propios dispositivos.'
+            : 'Put the host screen on the projector; students join with the code it shows on their own devices.'}
       </p>
 
       <div className="mt-4 flex flex-col gap-3 sm:flex-row">
         <label htmlFor="host-choice" className="sr-only">
-          {es ? 'Elige un juego para organizar' : 'Choose a game to host'}
+          {zh ? '选择要主持的游戏' : es ? 'Elige un juego para organizar' : 'Choose a game to host'}
         </label>
         <select
           id="host-choice"
@@ -84,15 +87,15 @@ export default function HostLauncher({ classroomId }: { classroomId: string | nu
           onChange={(e) => setChoice(e.target.value)}
           disabled={busy}
         >
-          <option value="wolf">🐺 {es ? 'Wolf of Wall Street (mercado en vivo)' : 'Wolf of Wall Street (live market)'}</option>
-          <optgroup label={es ? 'Quiz en vivo — elige una lección' : 'Live quiz — pick a lesson'}>
+          <option value="wolf">🐺 {zh ? 'Wolf of Wall Street（实时市场）' : es ? 'Wolf of Wall Street (mercado en vivo)' : 'Wolf of Wall Street (live market)'}</option>
+          <optgroup label={zh ? '实时测验 — 选择一节课' : es ? 'Quiz en vivo — elige una lección' : 'Live quiz — pick a lesson'}>
             {lessons.map((l) => (
               <option key={l.slug} value={`quiz:${l.slug}`}>
-                📝 {es ? 'Quiz' : 'Quiz'}: {l.title}
+                📝 {zh ? '测验：' : es ? 'Quiz: ' : 'Quiz: '}{l.title}
               </option>
             ))}
           </optgroup>
-          <optgroup label={es ? 'Reto en equipo (tabla de posiciones compartida)' : 'Co-play challenge (shared leaderboard)'}>
+          <optgroup label={zh ? '协作挑战（共享排行榜）' : es ? 'Reto en equipo (tabla de posiciones compartida)' : 'Co-play challenge (shared leaderboard)'}>
             {coplay.map((a) => (
               <option key={a.slug} value={`coplay:${a.slug}`}>
                 {a.emoji} {a.title}
@@ -101,7 +104,7 @@ export default function HostLauncher({ classroomId }: { classroomId: string | nu
           </optgroup>
         </select>
         <button type="button" className="btn-primary shrink-0" onClick={() => void host()} disabled={busy}>
-          {busy ? (es ? 'Iniciando…' : 'Starting…') : es ? 'Organizar →' : 'Host it →'}
+          {busy ? (zh ? '开始中…' : es ? 'Iniciando…' : 'Starting…') : zh ? '开始主持 →' : es ? 'Organizar →' : 'Host it →'}
         </button>
       </div>
 

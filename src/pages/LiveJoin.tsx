@@ -11,6 +11,7 @@ export default function LiveJoin() {
   const navigate = useNavigate()
   const { lang } = useLang()
   const es = lang === 'es'
+  const zh = lang === 'zh'
   const [code, setCode] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -24,9 +25,11 @@ export default function LiveJoin() {
       const found = await findLiveSession(code)
       if (!found) {
         setError(
-          es
-            ? 'No hay ningún juego en vivo con ese código ahora mismo — ¡verifícalo con tu anfitrión!'
-            : 'No live game with that code right now — double-check it with your host!',
+          zh
+            ? '现在没有使用这个代码的实时游戏——找主持人再核对一下吧！'
+            : es
+              ? 'No hay ningún juego en vivo con ese código ahora mismo — ¡verifícalo con tu anfitrión!'
+              : 'No live game with that code right now — double-check it with your host!',
         )
         return
       }
@@ -37,9 +40,11 @@ export default function LiveJoin() {
       setError(
         err instanceof Error
           ? err.message
-          : es
-            ? 'Algo salió mal — ¡inténtalo de nuevo!'
-            : 'Something went wrong — try again!',
+          : zh
+            ? '出了点问题——再试一次吧！'
+            : es
+              ? 'Algo salió mal — ¡inténtalo de nuevo!'
+              : 'Something went wrong — try again!',
       )
     } finally {
       setBusy(false)
@@ -52,26 +57,30 @@ export default function LiveJoin() {
         <div className="text-center">
           <p className="text-5xl" aria-hidden="true">🎮</p>
           <h1 className="mt-4 font-display text-2xl font-bold text-slate-900">
-            {es ? 'Únete a un juego en vivo' : 'Join a live game'}
+            {zh ? '加入实时游戏' : es ? 'Únete a un juego en vivo' : 'Join a live game'}
           </h1>
           <p className="mt-2 text-sm text-slate-600">
-            {es
-              ? 'Tu mentor está organizando un juego en la pantalla grande — escribe el código que muestra para entrar.'
-              : 'Your mentor is hosting a game on the big screen — type the code they show to jump in.'}
+            {zh
+              ? '你的导师正在大屏幕上主持一个游戏——输入屏幕上显示的代码就能加入。'
+              : es
+                ? 'Tu mentor está organizando un juego en la pantalla grande — escribe el código que muestra para entrar.'
+                : 'Your mentor is hosting a game on the big screen — type the code they show to jump in.'}
           </p>
         </div>
 
         {!BACKEND_ENABLED ? (
           <p role="status" className="mt-6 rounded-xl bg-amber-50 px-4 py-3 text-center text-sm text-amber-700">
-            {es
-              ? '¡Los juegos en vivo necesitan que el sistema de la clase esté conectado. Pregúntale a tu mentor o explora todo por tu cuenta!'
-              : 'Live games need the class backend connected. Ask your mentor, or explore everything solo!'}
+            {zh
+              ? '实时游戏需要连接班级后台。问问你的导师，或者自己先把所有内容探索一遍吧！'
+              : es
+                ? '¡Los juegos en vivo necesitan que el sistema de la clase esté conectado. Pregúntale a tu mentor o explora todo por tu cuenta!'
+                : 'Live games need the class backend connected. Ask your mentor, or explore everything solo!'}
           </p>
         ) : (
           <form onSubmit={handleSubmit} className="mt-8 space-y-5">
             <div>
               <label htmlFor="game-code" className="font-display text-sm font-semibold text-slate-700">
-                {es ? 'Código del juego' : 'Game code'}
+                {zh ? '游戏代码' : es ? 'Código del juego' : 'Game code'}
               </label>
               <input
                 id="game-code"
@@ -101,18 +110,18 @@ export default function LiveJoin() {
               aria-busy={busy}
             >
               {busy ? (
-                es ? 'Buscando tu juego…' : 'Finding your game…'
+                zh ? '正在查找你的游戏…' : es ? 'Buscando tu juego…' : 'Finding your game…'
               ) : (
-                <>{es ? 'Unirse al juego' : 'Join game'} <span aria-hidden="true">🚀</span></>
+                <>{zh ? '加入游戏' : es ? 'Unirse al juego' : 'Join game'} <span aria-hidden="true">🚀</span></>
               )}
             </button>
           </form>
         )}
 
         <p className="mt-6 text-center text-xs text-slate-500">
-          {es ? '¿No tienes código del juego? ' : 'No game code? '}
+          {zh ? '没有游戏代码？ ' : es ? '¿No tienes código del juego? ' : 'No game code? '}
           <Link to="/activities" className="font-semibold text-bff-700 hover:text-bff-800">
-            {es ? 'Juega cualquier juego por tu cuenta' : 'Play any game solo'}
+            {zh ? '自己玩任意一个游戏' : es ? 'Juega cualquier juego por tu cuenta' : 'Play any game solo'}
           </Link>
           .
         </p>

@@ -22,6 +22,7 @@ export interface Quest {
   emoji: string
   en: string
   es: string
+  zh: string
   done: boolean
 }
 
@@ -44,6 +45,7 @@ export function dailyQuests(progress: Record<string, ActivityProgress>): Quest[]
       emoji: '☀️',
       en: 'Warm up — do any activity',
       es: 'Calienta — haz cualquier actividad',
+      zh: '热身——做任意一个活动',
       done: anyToday,
     },
     {
@@ -51,6 +53,7 @@ export function dailyQuests(progress: Record<string, ActivityProgress>): Quest[]
       emoji: '📘',
       en: 'Finish a lesson today',
       es: 'Termina una lección hoy',
+      zh: '今天完成一节课',
       done: lessonToday,
     },
     {
@@ -58,6 +61,7 @@ export function dailyQuests(progress: Record<string, ActivityProgress>): Quest[]
       emoji: '🎯',
       en: 'Score 90+ on anything',
       es: 'Consigue 90+ en algo',
+      zh: '任意项目拿到 90 分以上',
       done: aceToday,
     },
   ]

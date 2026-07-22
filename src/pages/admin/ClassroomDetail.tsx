@@ -27,12 +27,12 @@ import {
   type StudentRow,
 } from './api'
 
-function ProgressChip({ row, es }: { row: ProgressRow | undefined; es: boolean }) {
+function ProgressChip({ row, zh, es }: { row: ProgressRow | undefined; zh: boolean; es: boolean }) {
   if (!row) {
     return (
       <span className="chip bg-slate-100 text-slate-600">
         <span aria-hidden="true">—</span>
-        <span className="sr-only">{es ? 'Sin comenzar' : 'Not started'}</span>
+        <span className="sr-only">{zh ? '未开始' : es ? 'Sin comenzar' : 'Not started'}</span>
       </span>
     )
   }
@@ -41,14 +41,14 @@ function ProgressChip({ row, es }: { row: ProgressRow | undefined; es: boolean }
       <span className="chip bg-green-100 text-green-700">
         <span aria-hidden="true">✓{row.score != null ? ` ${row.score}` : ''}</span>
         <span className="sr-only">
-          {es ? 'Completado' : 'Completed'}{row.score != null ? `${es ? ', puntuación ' : ', score '}${row.score}` : ''}
+          {zh ? '已完成' : es ? 'Completado' : 'Completed'}{row.score != null ? `${zh ? '，得分 ' : es ? ', puntuación ' : ', score '}${row.score}` : ''}
         </span>
       </span>
     )
   }
   return (
     <span className="chip bg-amber-100 text-amber-700">
-      <span aria-hidden="true">●</span> {es ? 'comenzado' : 'started'}
+      <span aria-hidden="true">●</span> {zh ? '进行中' : es ? 'comenzado' : 'started'}
     </span>
   )
 }
@@ -58,6 +58,7 @@ export default function ClassroomDetail() {
   const { adminUser, adminReady } = useAdmin()
   const { lang } = useLang()
   const es = lang === 'es'
+  const zh = lang === 'zh'
   const { toast } = useToast()
   const navigate = useNavigate()
   const uid = adminUser?.id ?? null
@@ -111,7 +112,7 @@ export default function ClassroomDetail() {
   if (!adminReady) {
     return (
       <div role="status" className="px-4 py-16 text-center text-slate-500">
-        {es ? 'Cargando…' : 'Loading…'}
+        {zh ? '加载中…' : es ? 'Cargando…' : 'Loading…'}
       </div>
     )
   }
@@ -125,15 +126,17 @@ export default function ClassroomDetail() {
             🔍
           </div>
           <h1 className="mt-3 font-display text-2xl font-bold text-slate-900">
-            {es ? 'Aula no encontrada' : 'Classroom not found'}
+            {zh ? '未找到班级' : es ? 'Aula no encontrada' : 'Classroom not found'}
           </h1>
           <p className="mt-2 text-slate-600">
-            {es
-              ? 'Esta clase no existe, fue archivada o pertenece a otro mentor.'
-              : "This class doesn't exist, was archived, or belongs to another mentor."}
+            {zh
+              ? '该班级不存在、已归档，或属于其他导师。'
+              : es
+                ? 'Esta clase no existe, fue archivada o pertenece a otro mentor.'
+                : "This class doesn't exist, was archived, or belongs to another mentor."}
           </p>
           <Link to="/admin" className="btn-secondary mt-6">
-            {es ? '← Volver al panel' : '← Back to dashboard'}
+            {zh ? '← 返回仪表板' : es ? '← Volver al panel' : '← Back to dashboard'}
           </Link>
         </div>
       </div>
@@ -143,7 +146,7 @@ export default function ClassroomDetail() {
   if (loading && !classroom) {
     return (
       <div role="status" className="px-4 py-16 text-center text-slate-500">
-        {es ? 'Cargando la clase…' : 'Loading class…'}
+        {zh ? '正在加载班级…' : es ? 'Cargando la clase…' : 'Loading class…'}
       </div>
     )
   }
@@ -155,14 +158,14 @@ export default function ClassroomDetail() {
           role="alert"
           className="rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
         >
-          {es ? 'No se pudo cargar esta clase' : 'Could not load this class'}{error ? `: ${error}` : '.'}
+          {zh ? '无法加载该班级' : es ? 'No se pudo cargar esta clase' : 'Could not load this class'}{error ? `: ${error}` : '.'}
         </p>
         <div className="mt-4 flex gap-3">
           <button type="button" className="btn-primary" onClick={() => void load()}>
-            {es ? 'Intentar de nuevo' : 'Try again'}
+            {zh ? '重试' : es ? 'Intentar de nuevo' : 'Try again'}
           </button>
           <Link to="/admin" className="btn-ghost">
-            {es ? '← Panel' : '← Dashboard'}
+            {zh ? '← 仪表板' : es ? '← Panel' : '← Dashboard'}
           </Link>
         </div>
       </div>
@@ -172,9 +175,11 @@ export default function ClassroomDetail() {
   async function handleArchive() {
     if (!classroom) return
     const ok = window.confirm(
-      es
-        ? `¿Archivar "${classroom.name}"? Desaparecerá de tu panel y los estudiantes ya no podrán unirse con su código.`
-        : `Archive "${classroom.name}"? It will disappear from your dashboard and students can no longer join with its code.`,
+      zh
+        ? `确定归档“${classroom.name}”吗？它将从您的仪表板中消失，学生也将无法再用其代码加入。`
+        : es
+          ? `¿Archivar "${classroom.name}"? Desaparecerá de tu panel y los estudiantes ya no podrán unirse con su código.`
+          : `Archive "${classroom.name}"? It will disappear from your dashboard and students can no longer join with its code.`,
     )
     if (!ok) return
     setArchiving(true)
@@ -215,9 +220,11 @@ export default function ClassroomDetail() {
   async function handleUnassign(assignment: AssignmentRow) {
     const meta = getActivity(assignment.activity_slug)
     const ok = window.confirm(
-      es
-        ? `¿Quitar "${meta?.title ?? assignment.activity_slug}" de esta clase? El progreso de los estudiantes se conserva.`
-        : `Remove "${meta?.title ?? assignment.activity_slug}" from this class? Student progress is kept.`,
+      zh
+        ? `确定从本班移除“${meta?.title ?? assignment.activity_slug}”吗？学生的进度将会保留。`
+        : es
+          ? `¿Quitar "${meta?.title ?? assignment.activity_slug}" de esta clase? El progreso de los estudiantes se conserva.`
+          : `Remove "${meta?.title ?? assignment.activity_slug}" from this class? Student progress is kept.`,
     )
     if (!ok) return
     try {
@@ -289,10 +296,10 @@ export default function ClassroomDetail() {
   function handleExportCsv() {
     if (!classroom) return
     const header = [
-      es ? 'Estudiante' : 'Student',
-      es ? 'Se unió' : 'Joined',
-      es ? 'Completadas' : 'Completed',
-      es ? 'Puntuación media' : 'Avg score',
+      zh ? '学生' : es ? 'Estudiante' : 'Student',
+      zh ? '加入时间' : es ? 'Se unió' : 'Joined',
+      zh ? '完成数' : es ? 'Completadas' : 'Completed',
+      zh ? '平均分' : es ? 'Puntuación media' : 'Avg score',
       ...assignments.map((a) => getActivity(a.activity_slug)?.title ?? a.activity_slug),
     ]
     const rows = students.map((s) => {
@@ -307,14 +314,16 @@ export default function ClassroomDetail() {
         scores.length > 0 ? Math.round(scores.reduce((x, n) => x + n, 0) / scores.length) : ''
       const cells = assignments.map((a) => {
         const row = byActivity?.get(a.activity_slug)
-        if (!row) return es ? 'Sin comenzar' : 'Not started'
+        if (!row) return zh ? '未开始' : es ? 'Sin comenzar' : 'Not started'
         if (row.status === 'completed')
           return row.score != null
-            ? `${es ? 'Completado' : 'Completed'} (${row.score})`
-            : es
-              ? 'Completado'
-              : 'Completed'
-        return es ? 'Comenzado' : 'Started'
+            ? `${zh ? '已完成' : es ? 'Completado' : 'Completed'} (${row.score})`
+            : zh
+              ? '已完成'
+              : es
+                ? 'Completado'
+                : 'Completed'
+        return zh ? '进行中' : es ? 'Comenzado' : 'Started'
       })
       return [
         s.nickname,
@@ -334,7 +343,7 @@ export default function ClassroomDetail() {
     <div className="mx-auto max-w-6xl px-4 py-10">
       {/* ---------- Header ---------- */}
       <Link to="/admin" className="text-sm font-semibold text-bff-700 hover:text-bff-800">
-        <span aria-hidden="true">←</span> {es ? 'Todas las aulas' : 'All classrooms'}
+        <span aria-hidden="true">←</span> {zh ? '所有班级' : es ? 'Todas las aulas' : 'All classrooms'}
       </Link>
       <div className="mt-3 flex flex-wrap items-start justify-between gap-4">
         <div>
@@ -342,17 +351,19 @@ export default function ClassroomDetail() {
             {classroom.name}
           </h1>
           <p className="mt-1 text-slate-600">
-            {classroom.school ?? (es ? 'Sin escuela indicada' : 'No school listed')} · {students.length}{' '}
-            {es
-              ? students.length === 1
-                ? 'estudiante'
-                : 'estudiantes'
-              : `student${students.length === 1 ? '' : 's'}`}
+            {classroom.school ?? (zh ? '未填写学校' : es ? 'Sin escuela indicada' : 'No school listed')} · {students.length}{' '}
+            {zh
+              ? '名学生'
+              : es
+                ? students.length === 1
+                  ? 'estudiante'
+                  : 'estudiantes'
+                : `student${students.length === 1 ? '' : 's'}`}
           </p>
           <div className="mt-3 flex items-center gap-2">
             <span
               className="rounded-xl bg-bff-50 px-5 py-2 font-mono text-3xl font-bold tracking-[0.25em] text-bff-700"
-              aria-label={es ? `Código de clase ${classroom.code}` : `Class code ${classroom.code}`}
+              aria-label={zh ? `班级代码 ${classroom.code}` : es ? `Código de clase ${classroom.code}` : `Class code ${classroom.code}`}
             >
               {classroom.code}
             </span>
@@ -362,15 +373,19 @@ export default function ClassroomDetail() {
               onClick={() => copy(classroom.code)}
               aria-label={
                 copied
-                  ? es
-                    ? `Código de clase ${classroom.code} copiado`
-                    : `Class code ${classroom.code} copied`
-                  : es
-                    ? `Copiar código de clase ${classroom.code}`
-                    : `Copy class code ${classroom.code}`
+                  ? zh
+                    ? `班级代码 ${classroom.code} 已复制`
+                    : es
+                      ? `Código de clase ${classroom.code} copiado`
+                      : `Class code ${classroom.code} copied`
+                  : zh
+                    ? `复制班级代码 ${classroom.code}`
+                    : es
+                      ? `Copiar código de clase ${classroom.code}`
+                      : `Copy class code ${classroom.code}`
               }
             >
-              <span aria-hidden="true">{copied ? (es ? '✓ Copiado' : '✓ Copied') : es ? 'Copiar' : 'Copy'}</span>
+              <span aria-hidden="true">{copied ? (zh ? '✓ 已复制' : es ? '✓ Copiado' : '✓ Copied') : zh ? '复制' : es ? 'Copiar' : 'Copy'}</span>
             </button>
             <button
               type="button"
@@ -378,13 +393,13 @@ export default function ClassroomDetail() {
               onClick={() => {
                 const link = `${window.location.href.split('#')[0]}#/join?code=${classroom.code}`
                 void navigator.clipboard?.writeText(link)
-                toast(es ? '¡Enlace para unirse copiado!' : 'Join link copied!', 'success')
+                toast(zh ? '加入链接已复制！' : es ? '¡Enlace para unirse copiado!' : 'Join link copied!', 'success')
               }}
             >
-              <span aria-hidden="true">🔗</span> {es ? 'Copiar enlace' : 'Copy join link'}
+              <span aria-hidden="true">🔗</span> {zh ? '复制加入链接' : es ? 'Copiar enlace' : 'Copy join link'}
             </button>
             <span role="status" className="sr-only">
-              {copied ? (es ? `Código de clase ${classroom.code} copiado` : `Class code ${classroom.code} copied`) : ''}
+              {copied ? (zh ? `班级代码 ${classroom.code} 已复制` : es ? `Código de clase ${classroom.code} copiado` : `Class code ${classroom.code} copied`) : ''}
             </span>
           </div>
         </div>
@@ -395,7 +410,7 @@ export default function ClassroomDetail() {
             onClick={() => void load()}
             disabled={loading}
           >
-            <span aria-hidden="true">↻</span> {loading ? (es ? 'Actualizando…' : 'Refreshing…') : es ? 'Actualizar' : 'Refresh'}
+            <span aria-hidden="true">↻</span> {loading ? (zh ? '刷新中…' : es ? 'Actualizando…' : 'Refreshing…') : zh ? '刷新' : es ? 'Actualizar' : 'Refresh'}
           </button>
           <button
             type="button"
@@ -403,7 +418,7 @@ export default function ClassroomDetail() {
             onClick={() => void handleArchive()}
             disabled={archiving}
           >
-            {archiving ? (es ? 'Archivando…' : 'Archiving…') : es ? 'Archivar clase' : 'Archive class'}
+            {archiving ? (zh ? '归档中…' : es ? 'Archivando…' : 'Archiving…') : zh ? '归档班级' : es ? 'Archivar clase' : 'Archive class'}
           </button>
         </div>
       </div>
@@ -421,14 +436,16 @@ export default function ClassroomDetail() {
         {/* ---------- Assignments ---------- */}
         <section>
           <h2 className="font-display text-xl font-bold text-slate-900">
-            {es ? 'Tareas' : 'Assignments'}
+            {zh ? '作业' : es ? 'Tareas' : 'Assignments'}
           </h2>
 
           {assignments.length === 0 ? (
             <p className="card mt-4 text-sm text-slate-500">
-              {es
-                ? 'Aún no hay nada asignado: elige una actividad abajo y aparecerá en la página de inicio de cada estudiante.'
-                : "Nothing assigned yet — pick an activity below and it will show up on every student's home page."}
+              {zh
+                ? '还没有布置任何内容——在下方选择一个活动，它就会显示在每位学生的主页上。'
+                : es
+                  ? 'Aún no hay nada asignado: elige una actividad abajo y aparecerá en la página de inicio de cada estudiante.'
+                  : "Nothing assigned yet — pick an activity below and it will show up on every student's home page."}
             </p>
           ) : (
             <ul className="mt-4 flex flex-col gap-3">
@@ -446,7 +463,7 @@ export default function ClassroomDetail() {
                       {a.note && <p className="text-sm text-slate-600">{a.note}</p>}
                       {a.due_at && (
                         <p className="mt-0.5 text-xs font-semibold text-bff-700">
-                          {es ? 'Fecha límite ' : 'Due '}{formatDate(a.due_at)}
+                          {zh ? '截止 ' : es ? 'Fecha límite ' : 'Due '}{formatDate(a.due_at)}
                         </p>
                       )}
                     </div>
@@ -454,7 +471,7 @@ export default function ClassroomDetail() {
                       type="button"
                       className="btn-ghost px-2 py-1 text-sm text-slate-500 hover:text-red-600"
                       onClick={() => void handleUnassign(a)}
-                      aria-label={es ? `Quitar la tarea ${meta?.title ?? a.activity_slug}` : `Remove assignment ${meta?.title ?? a.activity_slug}`}
+                      aria-label={zh ? `移除作业 ${meta?.title ?? a.activity_slug}` : es ? `Quitar la tarea ${meta?.title ?? a.activity_slug}` : `Remove assignment ${meta?.title ?? a.activity_slug}`}
                     >
                       <span aria-hidden="true">✕</span>
                     </button>
@@ -470,17 +487,17 @@ export default function ClassroomDetail() {
             className="card mt-4 flex flex-col gap-3 border-2 border-dashed border-bff-200 bg-bff-50/40"
           >
             <h3 className="font-display font-bold text-slate-900">
-              {es ? 'Asignar una actividad' : 'Assign an activity'}
+              {zh ? '布置一项活动' : es ? 'Asignar una actividad' : 'Assign an activity'}
             </h3>
             {unassigned.length === 0 ? (
               <p className="text-sm text-slate-500">
-                {es ? 'Todas las actividades ya están asignadas. ¡Genial! 🎉' : 'Every activity is already assigned — nice! 🎉'}
+                {zh ? '所有活动都已布置——太棒了！🎉' : es ? 'Todas las actividades ya están asignadas. ¡Genial! 🎉' : 'Every activity is already assigned — nice! 🎉'}
               </p>
             ) : (
               <>
                 <label className="block">
                   <span className="mb-1 block text-sm font-semibold text-slate-700">
-                    {es ? 'Actividad' : 'Activity'}<span className="text-red-500"> *</span>
+                    {zh ? '活动' : es ? 'Actividad' : 'Activity'}<span className="text-red-500"> *</span>
                   </span>
                   <select
                     className="input"
@@ -489,10 +506,10 @@ export default function ClassroomDetail() {
                     required
                   >
                     <option value="" disabled>
-                      {es ? 'Elige una actividad…' : 'Choose an activity…'}
+                      {zh ? '选择一项活动…' : es ? 'Elige una actividad…' : 'Choose an activity…'}
                     </option>
                   {unassignedLessons.length > 0 && (
-                    <optgroup label={es ? 'Lecciones' : 'Lessons'}>
+                    <optgroup label={zh ? '课程' : es ? 'Lecciones' : 'Lessons'}>
                       {unassignedLessons.map((a) => (
                         <option key={a.slug} value={a.slug}>
                           {a.emoji} {a.title}
@@ -501,7 +518,7 @@ export default function ClassroomDetail() {
                     </optgroup>
                   )}
                   {unassignedOther.length > 0 && (
-                    <optgroup label={es ? 'Juegos y retos' : 'Games & Challenges'}>
+                    <optgroup label={zh ? '游戏与挑战' : es ? 'Juegos y retos' : 'Games & Challenges'}>
                       {unassignedOther.map((a) => (
                         <option key={a.slug} value={a.slug}>
                           {a.emoji} {a.title}
@@ -513,20 +530,20 @@ export default function ClassroomDetail() {
                 </label>
                 <label className="block">
                   <span className="mb-1 block text-sm font-semibold text-slate-700">
-                    {es ? 'Nota para los estudiantes' : 'Note for students'}{' '}
-                    <span className="font-normal text-slate-500">{es ? '(opcional)' : '(optional)'}</span>
+                    {zh ? '给学生的备注' : es ? 'Nota para los estudiantes' : 'Note for students'}{' '}
+                    <span className="font-normal text-slate-500">{zh ? '（可选）' : es ? '(opcional)' : '(optional)'}</span>
                   </span>
                   <input
                     className="input"
                     type="text"
                     value={note}
                     onChange={(e) => setNote(e.target.value)}
-                    placeholder={es ? 'p. ej. Termínalo antes de la clase del viernes' : "e.g. Finish before Friday's class"}
+                    placeholder={zh ? '例如 在周五上课前完成' : es ? 'p. ej. Termínalo antes de la clase del viernes' : "e.g. Finish before Friday's class"}
                   />
                 </label>
                 <label className="block">
                   <span className="mb-1 block text-sm font-semibold text-slate-700">
-                    {es ? 'Fecha límite' : 'Due date'} <span className="font-normal text-slate-500">{es ? '(opcional)' : '(optional)'}</span>
+                    {zh ? '截止日期' : es ? 'Fecha límite' : 'Due date'} <span className="font-normal text-slate-500">{zh ? '（可选）' : es ? '(opcional)' : '(optional)'}</span>
                   </span>
                   <input
                     className="input"
@@ -548,7 +565,7 @@ export default function ClassroomDetail() {
                   className="btn-primary"
                   disabled={assigning || !slug}
                 >
-                  {assigning ? (es ? 'Asignando…' : 'Assigning…') : es ? 'Asignar' : 'Assign'}
+                  {assigning ? (zh ? '布置中…' : es ? 'Asignando…' : 'Assigning…') : zh ? '布置' : es ? 'Asignar' : 'Assign'}
                 </button>
               </>
             )}
@@ -557,7 +574,7 @@ export default function ClassroomDetail() {
 
         {/* ---------- Live game ---------- */}
         <section>
-          <h2 className="font-display text-xl font-bold text-slate-900">{es ? 'Juego en vivo' : 'Live game'}</h2>
+          <h2 className="font-display text-xl font-bold text-slate-900">{zh ? '实时游戏' : es ? 'Juego en vivo' : 'Live game'}</h2>
           <div className="mt-4">
             <HostLauncher classroomId={classroom.id} />
           </div>
@@ -568,7 +585,7 @@ export default function ClassroomDetail() {
       <section className="mt-12">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="font-display text-xl font-bold text-slate-900">
-            {es ? 'Estudiantes y progreso' : 'Students & progress'}
+            {zh ? '学生与进度' : es ? 'Estudiantes y progreso' : 'Students & progress'}
           </h2>
           {students.length > 0 && (
             <button
@@ -576,7 +593,7 @@ export default function ClassroomDetail() {
               className="btn-secondary text-sm"
               onClick={handleExportCsv}
             >
-              <span aria-hidden="true">⬇</span> {es ? 'Exportar CSV' : 'Export CSV'}
+              <span aria-hidden="true">⬇</span> {zh ? '导出 CSV' : es ? 'Exportar CSV' : 'Export CSV'}
             </button>
           )}
         </div>
@@ -586,7 +603,7 @@ export default function ClassroomDetail() {
           <dl className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
             <div className="card p-4">
               <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                {es ? 'Estudiantes' : 'Students'}
+                {zh ? '学生' : es ? 'Estudiantes' : 'Students'}
               </dt>
               <dd className="mt-1 font-display text-2xl font-bold text-slate-900">
                 {students.length}
@@ -594,7 +611,7 @@ export default function ClassroomDetail() {
             </div>
             <div className="card p-4">
               <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                {es ? 'Activos esta semana' : 'Active this week'}
+                {zh ? '本周活跃' : es ? 'Activos esta semana' : 'Active this week'}
               </dt>
               <dd className="mt-1 font-display text-2xl font-bold text-slate-900">
                 {activeStudentIds.size}
@@ -605,7 +622,7 @@ export default function ClassroomDetail() {
             </div>
             <div className="card p-4">
               <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                {es ? 'Finalización' : 'Completion'}
+                {zh ? '完成率' : es ? 'Finalización' : 'Completion'}
               </dt>
               <dd className="mt-1 font-display text-2xl font-bold text-slate-900">
                 {assignments.length === 0 ? '—' : `${completionPct}%`}
@@ -613,7 +630,7 @@ export default function ClassroomDetail() {
             </div>
             <div className="card p-4">
               <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                {es ? 'Puntuación media de la clase' : 'Class avg score'}
+                {zh ? '班级平均分' : es ? 'Puntuación media de la clase' : 'Class avg score'}
               </dt>
               <dd className="mt-1 font-display text-2xl font-bold text-slate-900">
                 {classAvg == null ? '—' : classAvg}
@@ -628,16 +645,18 @@ export default function ClassroomDetail() {
               🎒
             </div>
             <p className="mt-2 font-display font-semibold text-slate-700">
-              {es ? 'Aún no hay estudiantes' : 'No students yet'}
+              {zh ? '还没有学生' : es ? 'Aún no hay estudiantes' : 'No students yet'}
             </p>
             <p className="mx-auto mt-1 max-w-md text-sm text-slate-500">
-              {es ? 'Comparte el código de clase ' : 'Share the class code '}
+              {zh ? '分享班级代码 ' : es ? 'Comparte el código de clase ' : 'Share the class code '}
               <span className="font-mono font-bold tracking-widest text-bff-700">
                 {classroom.code}
               </span>{' '}
-              {es
-                ? '— los estudiantes entran en este sitio → Unirse a la clase, solo con un apodo. Sin correo electrónico.'
-                : '— students join at this site → Join Class, with just a nickname. No email needed.'}
+              {zh
+                ? '——学生在本网站上点击「加入班级」，只需一个昵称即可加入。无需电子邮箱。'
+                : es
+                  ? '— los estudiantes entran en este sitio → Unirse a la clase, solo con un apodo. Sin correo electrónico.'
+                  : '— students join at this site → Join Class, with just a nickname. No email needed.'}
             </p>
           </div>
         ) : (
@@ -645,17 +664,19 @@ export default function ClassroomDetail() {
             <div className="card mt-4 overflow-x-auto p-0">
               <table className="w-full min-w-max text-left text-sm">
                 <caption className="sr-only">
-                  {es
-                    ? `Estudiantes de ${classroom.name} y su progreso en cada actividad asignada`
-                    : `Students in ${classroom.name} and their progress on each assigned activity`}
+                  {zh
+                    ? `${classroom.name} 的学生及其在每项已布置活动上的进度`
+                    : es
+                      ? `Estudiantes de ${classroom.name} y su progreso en cada actividad asignada`
+                      : `Students in ${classroom.name} and their progress on each assigned activity`}
                 </caption>
                 <thead>
                   <tr className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
                     <th scope="col" className="px-4 py-3 font-semibold">
-                      {es ? 'Estudiante' : 'Student'}
+                      {zh ? '学生' : es ? 'Estudiante' : 'Student'}
                     </th>
                     <th scope="col" className="px-4 py-3 font-semibold">
-                      {es ? 'Se unió' : 'Joined'}
+                      {zh ? '加入时间' : es ? 'Se unió' : 'Joined'}
                     </th>
                     {assignments.map((a) => {
                       const meta = getActivity(a.activity_slug)
@@ -688,7 +709,7 @@ export default function ClassroomDetail() {
                         </td>
                         {assignments.map((a) => (
                           <td key={a.id} className="px-4 py-3">
-                            <ProgressChip row={byActivity?.get(a.activity_slug)} es={es} />
+                            <ProgressChip row={byActivity?.get(a.activity_slug)} zh={zh} es={es} />
                           </td>
                         ))}
                       </tr>
@@ -699,9 +720,11 @@ export default function ClassroomDetail() {
             </div>
             {assignments.length === 0 && (
               <p className="mt-2 text-sm text-slate-500">
-                {es
-                  ? 'Asigna una actividad arriba para empezar a seguir el progreso aquí.'
-                  : 'Assign an activity above to start tracking progress here.'}
+                {zh
+                  ? '在上方布置一项活动，即可在此开始追踪进度。'
+                  : es
+                    ? 'Asigna una actividad arriba para empezar a seguir el progreso aquí.'
+                    : 'Assign an activity above to start tracking progress here.'}
               </p>
             )}
 
@@ -717,8 +740,8 @@ export default function ClassroomDetail() {
                           {sm.title}
                         </p>
                         <p className="whitespace-nowrap text-xs text-slate-500">
-                          {sm.completed}/{sm.total} {es ? 'completadas' : 'completed'}
-                          {sm.avg != null && (es ? `, puntuación media ${sm.avg}` : `, avg score ${sm.avg}`)}
+                          {sm.completed}/{sm.total} {zh ? '已完成' : es ? 'completadas' : 'completed'}
+                          {sm.avg != null && (zh ? `，平均分 ${sm.avg}` : es ? `, puntuación media ${sm.avg}` : `, avg score ${sm.avg}`)}
                         </p>
                       </div>
                       <div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-100">

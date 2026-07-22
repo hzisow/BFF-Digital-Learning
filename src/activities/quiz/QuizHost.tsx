@@ -57,7 +57,15 @@ function ControlBar({ children }: { children: ReactNode }) {
 }
 
 /** Purely visual 20-second countdown ring — the host stays in control. */
-function CountdownRing({ startedAt, es }: { startedAt: string | null; es: boolean }) {
+function CountdownRing({
+  startedAt,
+  zh,
+  es,
+}: {
+  startedAt: string | null
+  zh: boolean
+  es: boolean
+}) {
   const [now, setNow] = useState(() => Date.now())
   useEffect(() => {
     const timer = window.setInterval(() => setNow(Date.now()), 200)
@@ -96,7 +104,11 @@ function CountdownRing({ startedAt, es }: { startedAt: string | null; es: boolea
       <span className="absolute inset-0 flex items-center justify-center font-display text-2xl font-bold">
         {Math.ceil(remaining)}
         <span className="sr-only">
-          {es ? ' segundos restantes en el temporizador' : ' seconds left on the visual timer'}
+          {zh
+            ? ' 秒，计时器剩余时间'
+            : es
+              ? ' segundos restantes en el temporizador'
+              : ' seconds left on the visual timer'}
         </span>
       </span>
     </div>
@@ -108,6 +120,7 @@ export default function QuizHost() {
   const { adminUser, adminReady } = useAdmin()
   const { lang } = useLang()
   const es = lang === 'es'
+  const zh = lang === 'zh'
 
   const [session, setSession] = useState<QuizSession | null>(null)
   const [players, setPlayers] = useState<QuizPlayer[]>([])
@@ -130,9 +143,11 @@ export default function QuizHost() {
           setError(
             err instanceof Error
               ? err.message
-              : es
-                ? 'No se pudo cargar el quiz.'
-                : 'Could not load the quiz.',
+              : zh
+                ? '无法加载测验。'
+                : es
+                  ? 'No se pudo cargar el quiz.'
+                  : 'Could not load the quiz.',
           )
       })
     const refresh = () => {
@@ -179,19 +194,23 @@ export default function QuizHost() {
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
           <p className="text-4xl" aria-hidden="true">🖥️</p>
           <h1 className="font-display text-xl font-bold text-slate-900">
-            {es ? 'Pantalla del anfitrión del quiz' : 'Quiz host screen'}
+            {zh ? '测验主持人屏幕' : es ? 'Pantalla del anfitrión del quiz' : 'Quiz host screen'}
           </h1>
           <p className="text-sm text-slate-600">
             {!BACKEND_ENABLED
-              ? es
-                ? 'Los quiz en vivo se activan cuando se conecta el servidor de la clase.'
-                : 'Live quizzes unlock when the class backend is connected.'
-              : es
-                ? 'Presentar quiz en vivo es solo para mentores de BFF con sesión iniciada. Ve a la página del equipo para iniciar sesión.'
-                : 'Hosting live quizzes is for signed-in BFF mentors. Head over to the team page to sign in.'}
+              ? zh
+                ? '实时测验会在班级后台连接后开启。'
+                : es
+                  ? 'Los quiz en vivo se activan cuando se conecta el servidor de la clase.'
+                  : 'Live quizzes unlock when the class backend is connected.'
+              : zh
+                ? '主持实时测验仅限已登录的 BFF 导师使用。请前往团队页面登录。'
+                : es
+                  ? 'Presentar quiz en vivo es solo para mentores de BFF con sesión iniciada. Ve a la página del equipo para iniciar sesión.'
+                  : 'Hosting live quizzes is for signed-in BFF mentors. Head over to the team page to sign in.'}
           </p>
           <Link to="/team" className="btn-primary">
-            {es ? 'Ir a la página del equipo' : 'Go to the team page'}
+            {zh ? '前往团队页面' : es ? 'Ir a la página del equipo' : 'Go to the team page'}
           </Link>
         </div>
       </HostShell>
@@ -204,11 +223,11 @@ export default function QuizHost() {
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
           <p className="text-4xl" aria-hidden="true">🤔</p>
           <h1 className="font-display text-xl font-bold text-slate-900">
-            {es ? 'No se pudo cargar el quiz' : 'Could not load the quiz'}
+            {zh ? '无法加载测验' : es ? 'No se pudo cargar el quiz' : 'Could not load the quiz'}
           </h1>
           <p className="text-sm text-slate-600">{error}</p>
           <Link to="/activities" className="btn-primary">
-            {es ? 'Volver a las actividades' : 'Back to activities'}
+            {zh ? '返回活动' : es ? 'Volver a las actividades' : 'Back to activities'}
           </Link>
         </div>
       </HostShell>
@@ -219,7 +238,7 @@ export default function QuizHost() {
     return (
       <HostShell>
         <p className="mt-32 text-center font-display text-2xl font-semibold text-bff-200">
-          {es ? 'Preparando el quiz…' : 'Warming up the quiz…'}
+          {zh ? '正在准备测验……' : es ? 'Preparando el quiz…' : 'Warming up the quiz…'}
         </p>
       </HostShell>
     )
@@ -232,10 +251,18 @@ export default function QuizHost() {
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
           <p className="text-4xl" aria-hidden="true">📚</p>
           <h1 className="font-display text-xl font-bold text-slate-900">
-            {es ? 'Esa lección no está disponible' : 'That lesson is not available'}
+            {zh
+              ? '这节课暂时无法使用'
+              : es
+                ? 'Esa lección no está disponible'
+                : 'That lesson is not available'}
           </h1>
           <p className="text-sm text-slate-600">
-            {es ? (
+            {zh ? (
+              <>
+                这个测验指向的课程（{session.lesson_slug}）没有任何题目。请从当前的课程重新开始一个测验。
+              </>
+            ) : es ? (
               <>
                 Este quiz apunta a una lección ({session.lesson_slug}) sin preguntas. Inicia un
                 nuevo quiz desde una lección actual.
@@ -248,7 +275,7 @@ export default function QuizHost() {
             )}
           </p>
           <Link to="/activities" className="btn-primary">
-            {es ? 'Volver a las actividades' : 'Back to activities'}
+            {zh ? '返回活动' : es ? 'Volver a las actividades' : 'Back to activities'}
           </Link>
         </div>
       </HostShell>
@@ -271,12 +298,14 @@ export default function QuizHost() {
         <div className="flex flex-col items-center gap-8 pt-8 text-center">
           <h1 className="font-display text-4xl font-bold sm:text-5xl">
             <span aria-hidden="true">{lesson.emoji}</span>{' '}
-            {es ? 'Quiz en vivo' : 'Live Quiz'} — {lesson.title}
+            {zh ? '实时测验' : es ? 'Quiz en vivo' : 'Live Quiz'} — {lesson.title}
           </h1>
           <p className="text-xl text-bff-200">
-            {es
-              ? 'Ve al sitio → Actividades → Quiz en vivo, luego ingresa este código'
-              : 'Go to the site → Activities → Live Quiz, then enter this code'}
+            {zh
+              ? '打开网站 → 活动 → 实时测验，然后输入这个代码'
+              : es
+                ? 'Ve al sitio → Actividades → Quiz en vivo, luego ingresa este código'
+                : 'Go to the site → Activities → Live Quiz, then enter this code'}
           </p>
           <p className="font-display text-7xl font-bold tracking-widest sm:text-8xl md:text-9xl">
             {session.code}
@@ -286,9 +315,11 @@ export default function QuizHost() {
           </p>
           <div className="w-full">
             <p className="mb-3 font-display text-2xl font-bold text-bff-100" aria-live="polite">
-              {es
-                ? `${players.length} ${players.length === 1 ? 'jugador' : 'jugadores'} dentro`
-                : `${players.length} ${players.length === 1 ? 'player' : 'players'} in`}
+              {zh
+                ? `${players.length} 人已加入`
+                : es
+                  ? `${players.length} ${players.length === 1 ? 'jugador' : 'jugadores'} dentro`
+                  : `${players.length} ${players.length === 1 ? 'player' : 'players'} in`}
             </p>
             <div className="mx-auto flex max-w-3xl flex-wrap justify-center gap-2">
               {players.map((p) => (
@@ -301,15 +332,17 @@ export default function QuizHost() {
               ))}
               {players.length === 0 && (
                 <span className="text-lg text-bff-300">
-                  {es
-                    ? 'Esperando a que se una el primer jugador…'
-                    : 'Waiting for the first player to join…'}
+                  {zh
+                    ? '正在等待第一位玩家加入……'
+                    : es
+                      ? 'Esperando a que se una el primer jugador…'
+                      : 'Waiting for the first player to join…'}
                 </span>
               )}
             </div>
           </div>
           <button className={BIG_BUTTON} onClick={() => startQuestion(0)}>
-            {es ? 'Empezar quiz' : 'Start quiz'} <span aria-hidden="true">🚀</span>
+            {zh ? '开始测验' : es ? 'Empezar quiz' : 'Start quiz'} <span aria-hidden="true">🚀</span>
           </button>
         </div>
       )}
@@ -319,22 +352,32 @@ export default function QuizHost() {
         <div className="space-y-6 pt-2">
           <div className="flex items-center justify-between gap-6">
             <p className="font-display text-xl font-bold uppercase tracking-wide text-bff-200">
-              {es ? `Pregunta ${qIndex + 1} de ${total}` : `Question ${qIndex + 1} of ${total}`}
+              {zh
+                ? `第 ${qIndex + 1} 题，共 ${total} 题`
+                : es
+                  ? `Pregunta ${qIndex + 1} de ${total}`
+                  : `Question ${qIndex + 1} of ${total}`}
             </p>
             <div className="flex items-center gap-5">
               <p className="font-display text-2xl font-bold text-bff-100" aria-live="polite">
-                {es
-                  ? `${answeredCount} de ${players.length} respondieron`
-                  : `${answeredCount} of ${players.length} answered`}
+                {zh
+                  ? `${players.length} 人中已有 ${answeredCount} 人作答`
+                  : es
+                    ? `${answeredCount} de ${players.length} respondieron`
+                    : `${answeredCount} of ${players.length} answered`}
               </p>
-              <CountdownRing startedAt={session.question_started_at} es={es} />
+              <CountdownRing startedAt={session.question_started_at} zh={zh} es={es} />
             </div>
           </div>
           <h1 className="font-display text-4xl font-bold leading-tight sm:text-5xl">
             {q.question}
           </h1>
           <p className="text-xl text-bff-200">
-            {es ? '¡Responde en tu propio dispositivo!' : 'Answer on your own device!'}
+            {zh
+              ? '在你自己的设备上作答吧！'
+              : es
+                ? '¡Responde en tu propio dispositivo!'
+                : 'Answer on your own device!'}
           </p>
           <div className="grid gap-4 sm:grid-cols-2">
             {q.options.map((opt, i) => (
@@ -351,12 +394,15 @@ export default function QuizHost() {
           </div>
           <ControlBar>
             <p className="mr-auto hidden text-bff-300 sm:block">
-              {es
-                ? 'El temporizador es solo para dar emoción; revela cuando la clase esté lista.'
-                : 'The timer is just for hype — reveal whenever the room is ready.'}
+              {zh
+                ? '计时器只是为了营造气氛——等大家准备好了再揭晓答案吧。'
+                : es
+                  ? 'El temporizador es solo para dar emoción; revela cuando la clase esté lista.'
+                  : 'The timer is just for hype — reveal whenever the room is ready.'}
             </p>
             <button className={BIG_BUTTON} onClick={() => patchSession({ state: 'reveal' })}>
-              {es ? 'Revelar respuesta' : 'Reveal answer'} <span aria-hidden="true">👀</span>
+              {zh ? '揭晓答案' : es ? 'Revelar respuesta' : 'Reveal answer'}{' '}
+              <span aria-hidden="true">👀</span>
             </button>
           </ControlBar>
         </div>
@@ -366,9 +412,11 @@ export default function QuizHost() {
       {session.state === 'reveal' && (
         <div className="space-y-6 pt-2">
           <p className="font-display text-xl font-bold uppercase tracking-wide text-bff-200">
-            {es
-              ? `Pregunta ${qIndex + 1} de ${total} — la respuesta es…`
-              : `Question ${qIndex + 1} of ${total} — the answer is…`}
+            {zh
+              ? `第 ${qIndex + 1} 题，共 ${total} 题 —— 答案是……`
+              : es
+                ? `Pregunta ${qIndex + 1} de ${total} — la respuesta es…`
+                : `Question ${qIndex + 1} of ${total} — the answer is…`}
           </p>
           <h1 className="font-display text-4xl font-bold leading-tight sm:text-5xl">
             {q.question}
@@ -393,7 +441,7 @@ export default function QuizHost() {
                         {' '}
                         <span aria-hidden="true">✔️</span>
                         <span className="sr-only">
-                          {es ? ' — respuesta correcta' : ' — correct answer'}
+                          {zh ? ' —— 正确答案' : es ? ' — respuesta correcta' : ' — correct answer'}
                         </span>
                       </>
                     )}
@@ -405,13 +453,14 @@ export default function QuizHost() {
           <div className="grid gap-6 lg:grid-cols-[1fr_minmax(300px,360px)]">
             <div className="rounded-2xl bg-white/10 p-6">
               <h2 className="mb-3 font-display text-lg font-bold uppercase tracking-wide text-bff-200">
-                <span aria-hidden="true">💡</span> {es ? 'Por qué' : 'Why'}
+                <span aria-hidden="true">💡</span> {zh ? '为什么' : es ? 'Por qué' : 'Why'}
               </h2>
               <p className="text-2xl font-semibold leading-snug">{q.explanation}</p>
             </div>
             <div className="h-fit rounded-2xl bg-white/10 p-6">
               <h2 className="mb-4 font-display text-lg font-bold uppercase tracking-wide text-bff-200">
-                <span aria-hidden="true">🏆</span> {es ? 'Tabla de posiciones' : 'Leaderboard'}
+                <span aria-hidden="true">🏆</span>{' '}
+                {zh ? '排行榜' : es ? 'Tabla de posiciones' : 'Leaderboard'}
               </h2>
               <ol className="space-y-2.5">
                 {standings.slice(0, 5).map((p, i) => (
@@ -421,20 +470,22 @@ export default function QuizHost() {
                         {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`}
                       </span>
                       <span className="sr-only">
-                        {es
-                          ? `puesto ${i + 1}: `
-                          : `${i + 1}${['st', 'nd', 'rd'][i] ?? 'th'} place: `}
+                        {zh
+                          ? `第 ${i + 1} 名：`
+                          : es
+                            ? `puesto ${i + 1}: `
+                            : `${i + 1}${['st', 'nd', 'rd'][i] ?? 'th'} place: `}
                       </span>{' '}
                       {p.nickname}
                     </span>
                     <span className="whitespace-nowrap font-display font-bold text-bff-100">
-                      {p.score.toLocaleString()} pts
+                      {p.score.toLocaleString()} {zh ? '分' : 'pts'}
                     </span>
                   </li>
                 ))}
                 {standings.length === 0 && (
                   <li className="text-lg text-bff-300">
-                    {es ? 'Aún no hay jugadores…' : 'No players yet…'}
+                    {zh ? '还没有玩家……' : es ? 'Aún no hay jugadores…' : 'No players yet…'}
                   </li>
                 )}
               </ol>
@@ -443,11 +494,12 @@ export default function QuizHost() {
           <ControlBar>
             {lastQuestion ? (
               <button className={BIG_BUTTON} onClick={() => patchSession({ state: 'done' })}>
-                {es ? 'Resultados finales' : 'Final results'} <span aria-hidden="true">🏁</span>
+                {zh ? '最终结果' : es ? 'Resultados finales' : 'Final results'}{' '}
+                <span aria-hidden="true">🏁</span>
               </button>
             ) : (
               <button className={BIG_BUTTON} onClick={() => startQuestion(qIndex + 1)}>
-                {es ? 'Siguiente pregunta →' : 'Next question →'}
+                {zh ? '下一题 →' : es ? 'Siguiente pregunta →' : 'Next question →'}
               </button>
             )}
           </ControlBar>
@@ -458,7 +510,8 @@ export default function QuizHost() {
       {session.state === 'done' && (
         <div className="flex flex-col items-center gap-10 pt-6 text-center">
           <h1 className="font-display text-5xl font-bold sm:text-6xl">
-            <span aria-hidden="true">🏆</span> {es ? 'Resultados finales' : 'Final Results'}
+            <span aria-hidden="true">🏆</span>{' '}
+            {zh ? '最终结果' : es ? 'Resultados finales' : 'Final Results'}
           </h1>
           <div className="grid w-full max-w-4xl gap-4 sm:grid-cols-3">
             {standings.slice(0, 3).map((p, i) => (
@@ -475,23 +528,27 @@ export default function QuizHost() {
                 <p className="text-6xl" aria-hidden="true">{i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉'}</p>
                 <p className="mt-3 break-words font-display text-3xl font-bold">
                   <span className="sr-only">
-                    {es
-                      ? `puesto ${i + 1}: `
-                      : `${i + 1}${['st', 'nd', 'rd'][i] ?? 'th'} place: `}
+                    {zh
+                      ? `第 ${i + 1} 名：`
+                      : es
+                        ? `puesto ${i + 1}: `
+                        : `${i + 1}${['st', 'nd', 'rd'][i] ?? 'th'} place: `}
                   </span>
                   {p.nickname}
                 </p>
                 <p className="mt-1 font-display text-2xl font-bold text-bff-100">
-                  {p.score.toLocaleString()} pts
+                  {p.score.toLocaleString()} {zh ? '分' : 'pts'}
                 </p>
               </div>
             ))}
           </div>
           {standings.length === 0 && (
             <p className="text-2xl text-bff-200">
-              {es
-                ? 'Nadie jugó esta ronda; ¡qué salón tan callado!'
-                : 'Nobody played this round — quiet classroom!'}
+              {zh
+                ? '这一轮没有人参与——好安静的教室！'
+                : es
+                  ? 'Nadie jugó esta ronda; ¡qué salón tan callado!'
+                  : 'Nobody played this round — quiet classroom!'}
             </p>
           )}
           {standings.length > 3 && (
@@ -505,14 +562,14 @@ export default function QuizHost() {
                     {i + 4}. {p.nickname}
                   </span>
                   <span className="font-display font-bold text-bff-100">
-                    {p.score.toLocaleString()} pts
+                    {p.score.toLocaleString()} {zh ? '分' : 'pts'}
                   </span>
                 </li>
               ))}
             </ol>
           )}
           <p className="text-xl text-bff-200">
-            {es ? '¡Excelente quiz, todos!' : 'Great quizzing, everyone!'}{' '}
+            {zh ? '大家答得都很棒！' : es ? '¡Excelente quiz, todos!' : 'Great quizzing, everyone!'}{' '}
             <span aria-hidden="true">🎉</span>
           </p>
         </div>

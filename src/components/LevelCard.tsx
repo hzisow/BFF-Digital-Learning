@@ -7,6 +7,7 @@ import { useLang } from '../lib/i18n'
 export default function LevelCard({ xp }: { xp: number }) {
   const { lang } = useLang()
   const es = lang === 'es'
+  const zh = lang === 'zh'
   const info = levelInfo(xp)
 
   return (
@@ -18,7 +19,7 @@ export default function LevelCard({ xp }: { xp: number }) {
           </span>
           <div>
             <p className="font-display text-xs font-semibold uppercase tracking-wide text-bff-100">
-              {es ? 'Nivel' : 'Level'} {info.level} · {info.tier.name}
+              {zh ? '等级' : es ? 'Nivel' : 'Level'} {info.level} · {info.tier.name}
             </p>
             <p className="font-display text-2xl font-extrabold">
               {xp.toLocaleString()} XP
@@ -27,7 +28,7 @@ export default function LevelCard({ xp }: { xp: number }) {
         </div>
         {info.next && (
           <p className="text-right text-xs font-semibold text-bff-100">
-            {info.toNext.toLocaleString()} XP {es ? 'para' : 'to'}
+            {info.toNext.toLocaleString()} XP {zh ? '即可升到' : es ? 'para' : 'to'}
             <br />
             {info.next.emoji} {info.next.name}
           </p>
@@ -41,7 +42,7 @@ export default function LevelCard({ xp }: { xp: number }) {
           aria-valuenow={info.pct}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-label={es ? 'Progreso al siguiente nivel' : 'Progress to next level'}
+          aria-label={zh ? '升级进度' : es ? 'Progreso al siguiente nivel' : 'Progress to next level'}
         >
           <div
             className="h-full rounded-full bg-white transition-all"
@@ -50,7 +51,7 @@ export default function LevelCard({ xp }: { xp: number }) {
         </div>
       ) : (
         <p className="mt-4 font-display text-sm font-semibold text-bff-50">
-          <span aria-hidden="true">👑</span> {es ? '¡Nivel máximo alcanzado!' : 'Max rank reached!'}
+          <span aria-hidden="true">👑</span> {zh ? '已达到最高等级！' : es ? '¡Nivel máximo alcanzado!' : 'Max rank reached!'}
         </p>
       )}
     </div>

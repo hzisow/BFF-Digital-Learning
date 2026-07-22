@@ -20,8 +20,10 @@ import { dailyQuests } from '../lib/quests'
 interface WeekTheme {
   name: string
   nameEs: string
+  nameZh: string
   blurb: string
   blurbEs: string
+  blurbZh: string
   banner: string // gradient classes
   nodeBg: string
   nodeShadow: string
@@ -34,8 +36,10 @@ const WEEK_THEMES: Record<number, WeekTheme> = {
   1: {
     name: 'Money In, Money Out',
     nameEs: 'Dinero que entra, dinero que sale',
+    nameZh: '钱进，钱出',
     blurb: 'Where money comes from — and where yours goes.',
     blurbEs: 'De dónde viene el dinero — y a dónde se va el tuyo.',
+    blurbZh: '钱从哪里来——你的钱又去了哪里。',
     banner: 'from-bff-500 to-bff-700',
     nodeBg: 'bg-bff-500',
     nodeShadow: 'shadow-[0_5px_0_#036092]',
@@ -46,8 +50,10 @@ const WEEK_THEMES: Record<number, WeekTheme> = {
   2: {
     name: 'Make It Grow',
     nameEs: 'Hazlo crecer',
+    nameZh: '让钱增长',
     blurb: 'Growing your money and borrowing without the traps.',
     blurbEs: 'Haz crecer tu dinero y pide prestado sin caer en trampas.',
+    blurbZh: '让你的钱增长，借钱也不落入陷阱。',
     banner: 'from-emerald-500 to-emerald-700',
     nodeBg: 'bg-emerald-500',
     nodeShadow: 'shadow-[0_5px_0_#047857]',
@@ -58,8 +64,10 @@ const WEEK_THEMES: Record<number, WeekTheme> = {
   3: {
     name: 'Play It Smart',
     nameEs: 'Juega con inteligencia',
+    nameZh: '玩得聪明',
     blurb: 'Protecting yourself and making smarter choices.',
     blurbEs: 'Protégete y toma decisiones más inteligentes.',
+    blurbZh: '保护好自己，做出更聪明的选择。',
     banner: 'from-amber-500 to-orange-600',
     nodeBg: 'bg-amber-500',
     nodeShadow: 'shadow-[0_5px_0_#b45309]',
@@ -70,8 +78,10 @@ const WEEK_THEMES: Record<number, WeekTheme> = {
   4: {
     name: 'Plan & Protect',
     nameEs: 'Planea y protege',
+    nameZh: '规划与保护',
     blurb: 'Planning ahead and outsmarting the scammers.',
     blurbEs: 'Planifica tu futuro y gánale a los estafadores.',
+    blurbZh: '提前规划，智胜骗子。',
     banner: 'from-violet-500 to-violet-700',
     nodeBg: 'bg-violet-500',
     nodeShadow: 'shadow-[0_5px_0_#6d28d9]',
@@ -184,6 +194,7 @@ export default function LessonsIndex() {
   const progress = useMemo(() => loadLocalProgress(), [])
   const { lang } = useLang()
   const es = lang === 'es'
+  const zh = lang === 'zh'
   const streak = useMemo(() => getStreak(), [])
   const level = useMemo(() => levelInfo(totalXp(progress)), [progress])
   const quests = useMemo(() => dailyQuests(progress), [progress])
@@ -204,7 +215,8 @@ export default function LessonsIndex() {
   }, [progress])
   /** Lesson title in the active language (falls back to English). */
   const lessonTitle = (meta: ActivityMeta) =>
-    (es ? getLesson(meta.slug)?.es?.title : undefined) ?? meta.title
+    (zh ? getLesson(meta.slug)?.zh?.title : es ? getLesson(meta.slug)?.es?.title : undefined) ??
+    meta.title
   const [jumpTarget, setJumpTarget] = useState<ActivityMeta | null>(null)
   const jumpDialogRef = useRef<HTMLDivElement>(null)
   const jumpTriggerRef = useRef<HTMLElement | null>(null)
@@ -282,34 +294,40 @@ export default function LessonsIndex() {
       {/* Header */}
       <div className="text-center">
         <p className="chip mx-auto bg-bff-50 text-bff-700">
-          <span aria-hidden="true">📚</span> {es ? 'El plan de estudios' : 'The curriculum'}
+          <span aria-hidden="true">📚</span> {zh ? '课程大纲' : es ? 'El plan de estudios' : 'The curriculum'}
         </p>
         <h1 className="mt-3 font-display text-4xl font-extrabold text-slate-900">BFF Academy</h1>
         <p className="mx-auto mt-3 max-w-xl leading-relaxed text-slate-600">
-          {es
+          {zh
+            ? '4 周，8 节课，每节约 20 分钟。沿着路径走——完成一节课就能解锁下一站，并在终点赢得奖杯。'
+            : es
             ? '4 semanas, 8 lecciones, ~20 minutos cada una. Sigue la ruta: termina una lección para desbloquear la siguiente parada y gana el trofeo al final.'
             : '4 weeks, 8 lessons, ~20 minutes each. Follow the path — finish a lesson to unlock the next stop and claim the trophy at the end.'}
         </p>
         <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
           <span className="chip bg-bff-100 text-bff-800">
             <span aria-hidden="true">{level.tier.emoji}</span>{' '}
-            {es ? 'Nivel' : 'Level'} {level.level} · {level.tier.name}
+            {zh ? '等级' : es ? 'Nivel' : 'Level'} {level.level} · {level.tier.name}
           </span>
           {(streak.current > 0 || missedCount > 0) && (
             <>
             {streak.current > 0 && (
               <span className="chip bg-orange-100 text-orange-700">
                 <span aria-hidden="true">🔥</span>{' '}
-                {es
+                {zh
+                  ? `连续 ${streak.current} 天`
+                  : es
                   ? `Racha de ${streak.current} ${streak.current === 1 ? 'día' : 'días'}`
                   : `${streak.current}-day streak`}
-                {!streak.activeToday && (es ? ' — ¡practica hoy!' : ' — practice today!')}
+                {!streak.activeToday && (zh ? '——今天来练习吧！' : es ? ' — ¡practica hoy!' : ' — practice today!')}
               </span>
             )}
             {missedCount > 0 && (
               <Link to="/practice" className="chip bg-bff-100 text-bff-800 hover:bg-bff-200">
                 <span aria-hidden="true">🔁</span>{' '}
-                {es
+                {zh
+                  ? `复习 ${missedCount} 道做错的题`
+                  : es
                   ? `Repasar ${missedCount} ${missedCount === 1 ? 'pregunta fallada' : 'preguntas falladas'}`
                   : `Review ${missedCount} missed ${missedCount === 1 ? 'question' : 'questions'}`}
               </Link>
@@ -322,10 +340,10 @@ export default function LessonsIndex() {
         <div className="mx-auto mt-5 max-w-md rounded-2xl border border-slate-200 bg-white p-4 text-left">
           <div className="flex items-center justify-between gap-2">
             <p className="font-display text-sm font-bold text-slate-900">
-              <span aria-hidden="true">📅</span> {es ? 'Misiones de hoy' : "Today's quests"}
+              <span aria-hidden="true">📅</span> {zh ? '今日任务' : es ? 'Misiones de hoy' : "Today's quests"}
             </p>
             <span className="text-xs font-semibold text-slate-500">
-              {questsDone}/{quests.length} {es ? 'hechas' : 'done'}
+              {questsDone}/{quests.length} {zh ? '完成' : es ? 'hechas' : 'done'}
             </span>
           </div>
           <ul className="mt-3 space-y-1.5">
@@ -340,16 +358,16 @@ export default function LessonsIndex() {
                   ✓
                 </span>
                 <span className={q.done ? 'text-slate-400 line-through' : 'text-slate-700'}>
-                  <span aria-hidden="true">{q.emoji}</span> {es ? q.es : q.en}
+                  <span aria-hidden="true">{q.emoji}</span> {zh ? q.zh : es ? q.es : q.en}
                 </span>
-                <span className="sr-only">{q.done ? (es ? 'completada' : 'done') : (es ? 'pendiente' : 'not done')}</span>
+                <span className="sr-only">{q.done ? (zh ? '已完成' : es ? 'completada' : 'done') : (zh ? '未完成' : es ? 'pendiente' : 'not done')}</span>
               </li>
             ))}
           </ul>
           {questsDone === quests.length && (
             <p className="mt-3 rounded-lg bg-green-50 px-3 py-2 text-center text-xs font-semibold text-green-700">
               <span aria-hidden="true">🎉</span>{' '}
-              {es ? '¡Todas las misiones de hoy completadas!' : "All of today's quests complete!"}
+              {zh ? '今日任务全部完成！' : es ? '¡Todas las misiones de hoy completadas!' : "All of today's quests complete!"}
             </p>
           )}
         </div>
@@ -374,16 +392,16 @@ export default function LessonsIndex() {
         </div>
         {allDone ? (
           <p className="mt-4 font-display text-lg font-bold text-bff-700">
-            {es ? '¡Curso completado — leyenda!' : 'Course complete — you legend!'}{' '}
+            {zh ? '课程完成——你太棒了！' : es ? '¡Curso completado — leyenda!' : 'Course complete — you legend!'}{' '}
             <span aria-hidden="true">🏆</span>
             <Link to="/certificate" className="btn-primary mt-3 flex sm:ml-3 sm:mt-0 sm:inline-flex">
-              {es ? 'Obtener mi certificado' : 'Get my certificate'} <span aria-hidden="true">📜</span>
+              {zh ? '领取我的证书' : es ? 'Obtener mi certificado' : 'Get my certificate'} <span aria-hidden="true">📜</span>
             </Link>
           </p>
         ) : (
           current && (
             <Link to={current.path} className="btn-primary mt-5 inline-flex">
-              {doneCount === 0 ? (es ? 'Empezar Día 1' : 'Start Day 1') : es ? 'Continuar' : 'Continue'}:{' '}
+              {doneCount === 0 ? (zh ? '开始第 1 天' : es ? 'Empezar Día 1' : 'Start Day 1') : zh ? '继续' : es ? 'Continuar' : 'Continue'}:{' '}
               <span aria-hidden="true">{current.emoji}</span> {lessonTitle(current)}{' '}
               <span aria-hidden="true">→</span>
             </Link>
@@ -409,12 +427,12 @@ export default function LessonsIndex() {
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <p className="text-xs font-bold uppercase tracking-widest text-white/90">
-                      {es ? 'Semana' : 'Week'} {week}
+                      {zh ? `第 ${week} 周` : <>{es ? 'Semana' : 'Week'} {week}</>}
                     </p>
                     <h2 className="font-display text-xl font-extrabold">
-                      {es ? theme.nameEs : theme.name}
+                      {zh ? theme.nameZh : es ? theme.nameEs : theme.name}
                     </h2>
-                    <p className="mt-1 text-sm text-white/90">{es ? theme.blurbEs : theme.blurb}</p>
+                    <p className="mt-1 text-sm text-white/90">{zh ? theme.blurbZh : es ? theme.blurbEs : theme.blurb}</p>
                   </div>
                   <span className="shrink-0 rounded-full bg-white/20 px-3 py-1 text-sm font-bold">
                     {weekDone}/{weekLessons.length}
@@ -445,16 +463,22 @@ export default function LessonsIndex() {
                   const label =
                     node.kind === 'trophy'
                       ? allDone
-                        ? es
+                        ? zh
+                          ? '课程完成！'
+                          : es
                           ? '¡Curso completado!'
                           : 'Course complete!'
-                        : es
+                        : zh
+                          ? '完成所有课程'
+                          : es
                           ? 'Termina todas las lecciones'
                           : 'Finish every lesson'
                       : lessonTitle(node.meta!)
                   const sub =
                     node.kind === 'lesson'
-                      ? `${es ? 'Día' : 'Day'} ${node.meta!.sortKey % 10} · ${node.meta!.durationMin} min`
+                      ? zh
+                        ? `第 ${node.meta!.sortKey % 10} 天 · ${node.meta!.durationMin} 分钟`
+                        : `${es ? 'Día' : 'Day'} ${node.meta!.sortKey % 10} · ${node.meta!.durationMin} min`
                       : ''
 
                   const circle = <NodeCircle node={node} theme={theme} />
@@ -490,7 +514,7 @@ export default function LessonsIndex() {
                         node.state === 'done' ? (
                           <Link
                             to="/certificate"
-                            aria-label={es ? 'Ver mi certificado' : 'View my certificate'}
+                            aria-label={zh ? '查看我的证书' : es ? 'Ver mi certificado' : 'View my certificate'}
                           >
                             {circle}
                           </Link>
@@ -551,10 +575,12 @@ export default function LessonsIndex() {
       {/* Bonus electives — off the core 4-week path, self-paced deep dives */}
       <section className="mt-16">
         <h2 className="font-display text-2xl font-bold text-slate-900">
-          <span aria-hidden="true">✨</span> {es ? 'Unidades extra' : 'Bonus electives'}
+          <span aria-hidden="true">✨</span> {zh ? '额外选修单元' : es ? 'Unidades extra' : 'Bonus electives'}
         </h2>
         <p className="mt-2 max-w-2xl text-slate-600">
-          {es
+          {zh
+            ? '五个额外的深入单元，随时都能探索——它们不在 4 周路径内，但仍会计入你的进度和连续记录。'
+            : es
             ? 'Cinco temas extra para profundizar cuando quieras — no son parte de las 4 semanas, pero cuentan para tu progreso y racha.'
             : "Five extra deep-dives to explore anytime — they're off the 4-week path, but still count toward your progress and streak."}
         </p>
@@ -578,11 +604,15 @@ export default function LessonsIndex() {
                   <p className="mt-2 text-xs font-semibold text-slate-500">
                     ⏱️ ~{meta.durationMin} min
                     {p?.status === 'completed'
-                      ? es
+                      ? zh
+                        ? ' · 已完成！🎉'
+                        : es
                         ? ' · ¡completado! 🎉'
                         : ' · done! 🎉'
                       : p?.status === 'started'
-                        ? es
+                        ? zh
+                          ? ' · 进行中'
+                          : es
                           ? ' · en progreso'
                           : ' · in progress'
                         : ''}
@@ -627,7 +657,7 @@ export default function LessonsIndex() {
           >
             <p className="text-5xl" aria-hidden="true">{jumpTarget.emoji}</p>
             <h3 id="jump-dialog-title" className="mt-3 font-display text-xl font-bold text-slate-900">
-              {es ? `¿Saltando a ${lessonTitle(jumpTarget)}?` : `Jumping ahead to ${lessonTitle(jumpTarget)}?`}
+              {zh ? `即将跳到 ${lessonTitle(jumpTarget)}？` : es ? `¿Saltando a ${lessonTitle(jumpTarget)}?` : `Jumping ahead to ${lessonTitle(jumpTarget)}?`}
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-slate-600">
               This stop comes later on the path. If your mentor assigned it — or you're just

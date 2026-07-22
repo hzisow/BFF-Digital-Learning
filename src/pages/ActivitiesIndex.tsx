@@ -8,14 +8,16 @@ import { loadLocalProgress } from '../lib/progress'
 function ProgressChip({
   progress,
   es,
+  zh,
 }: {
   progress: ActivityProgress | undefined
   es: boolean
+  zh: boolean
 }) {
   if (progress?.status === 'completed') {
     return (
       <span className="chip bg-green-100 text-green-700">
-        <span aria-hidden="true">✓</span> {es ? 'Completado' : 'Completed'}
+        <span aria-hidden="true">✓</span> {zh ? '已完成' : es ? 'Completado' : 'Completed'}
         {progress.score != null ? ` · ${Math.round(progress.score)}%` : ''}
       </span>
     )
@@ -23,13 +25,13 @@ function ProgressChip({
   if (progress?.status === 'started') {
     return (
       <span className="chip bg-amber-100 text-amber-700">
-        {es ? 'En progreso' : 'In progress'}
+        {zh ? '进行中' : es ? 'En progreso' : 'In progress'}
       </span>
     )
   }
   return (
     <span className="chip bg-slate-100 text-slate-600">
-      {es ? 'Sin empezar' : 'Not started'}
+      {zh ? '未开始' : es ? 'Sin empezar' : 'Not started'}
     </span>
   )
 }
@@ -37,6 +39,7 @@ function ProgressChip({
 export default function ActivitiesIndex() {
   const { lang } = useLang()
   const es = lang === 'es'
+  const zh = lang === 'zh'
   const progress = useMemo(() => loadLocalProgress(), [])
   const activities = useMemo(
     () =>
@@ -50,15 +53,17 @@ export default function ActivitiesIndex() {
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="max-w-2xl">
         <p className="chip bg-bff-50 text-bff-700">
-          <span aria-hidden="true">🎮</span> {es ? 'Aprender, pero divertido' : 'Learning, but fun'}
+          <span aria-hidden="true">🎮</span> {zh ? '学习，但很好玩' : es ? 'Aprender, pero divertido' : 'Learning, but fun'}
         </p>
         <h1 className="mt-4 font-display text-4xl font-extrabold text-slate-900">
-          {es ? 'Juegos y Desafíos' : 'Games & Challenges'}
+          {zh ? '游戏与挑战' : es ? 'Juegos y Desafíos' : 'Games & Challenges'}
         </h1>
         <p className="mt-4 leading-relaxed text-slate-600">
-          {es
-            ? 'Estos son exactamente los juegos y desafíos que los mentores de BFF hacen en vivo durante las visitas escolares — los favoritos de la clase. Ahora puedes jugarlos cuando quieras: practica una simulación antes de clase, arregla cuentas con un amigo, o simplemente comprueba si puedes ganarle al mercado.'
-            : 'These are the exact games and challenges BFF mentors run live during school visits — the class favorites. Now you can play them anytime: practice a simulation before class, settle a score with a friend, or just see if you can beat the market.'}
+          {zh
+            ? '这些正是 BFF 导师在学校访问时现场带的游戏和挑战——全班的最爱。现在你随时都能玩：上课前练一把模拟，跟朋友一决高下，或者干脆看看你能不能跑赢市场。'
+            : es
+              ? 'Estos son exactamente los juegos y desafíos que los mentores de BFF hacen en vivo durante las visitas escolares — los favoritos de la clase. Ahora puedes jugarlos cuando quieras: practica una simulación antes de clase, arregla cuentas con un amigo, o simplemente comprueba si puedes ganarle al mercado.'
+              : 'These are the exact games and challenges BFF mentors run live during school visits — the class favorites. Now you can play them anytime: practice a simulation before class, settle a score with a friend, or just see if you can beat the market.'}
         </p>
       </div>
 
@@ -86,7 +91,7 @@ export default function ActivitiesIndex() {
                 <span className="text-xs font-semibold text-slate-500">
                   <span aria-hidden="true">⏱️</span> ~{a.durationMin} min
                 </span>
-                <ProgressChip progress={p} es={es} />
+                <ProgressChip progress={p} es={es} zh={zh} />
               </div>
             </Link>
           )

@@ -19,6 +19,7 @@ interface PracticeItem {
 export default function PracticePage() {
   const { lang } = useLang()
   const es = lang === 'es'
+  const zh = lang === 'zh'
 
   const deck = useMemo<PracticeItem[]>(() => {
     const progress = loadLocalProgress()
@@ -54,15 +55,17 @@ export default function PracticePage() {
       <div className="mx-auto max-w-xl px-4 py-20 text-center">
         <p className="text-6xl" aria-hidden="true">🌟</p>
         <h1 className="mt-6 font-display text-3xl font-bold text-slate-900">
-          {es ? '¡Nada que repasar!' : 'Nothing to review!'}
+          {zh ? '没有需要复习的内容！' : es ? '¡Nada que repasar!' : 'Nothing to review!'}
         </h1>
         <p className="mt-3 leading-relaxed text-slate-600">
-          {es
-            ? 'No tienes preguntas falladas pendientes. Termina más lecciones (o saca todo perfecto) y aquí aparecerá tu repaso personalizado.'
-            : "You have no missed questions waiting. Finish more lessons (or ace them all) and your personalized review will appear here."}
+          {zh
+            ? '你没有待复习的错题。多完成几节课（或者全部答对），你的专属复习就会出现在这里。'
+            : es
+              ? 'No tienes preguntas falladas pendientes. Termina más lecciones (o saca todo perfecto) y aquí aparecerá tu repaso personalizado.'
+              : "You have no missed questions waiting. Finish more lessons (or ace them all) and your personalized review will appear here."}
         </p>
         <Link to="/lessons" className="btn-primary mt-8 inline-flex">
-          {es ? 'Ir a las lecciones' : 'Go to lessons'} <span aria-hidden="true">→</span>
+          {zh ? '去上课' : es ? 'Ir a las lecciones' : 'Go to lessons'} <span aria-hidden="true">→</span>
         </Link>
       </div>
     )
@@ -75,18 +78,22 @@ export default function PracticePage() {
         <div className="animate-pop-in rounded-3xl bg-gradient-to-br from-bff-600 to-bff-800 p-8 text-white shadow-lg">
           <p className="text-5xl" aria-hidden="true">{pct >= 80 ? '🎉' : '💪'}</p>
           <h1 className="mt-4 font-display text-3xl font-extrabold">
-            {es ? 'Repaso completado' : 'Review complete'}: {pct}%
+            {zh ? '复习完成' : es ? 'Repaso completado' : 'Review complete'}: {pct}%
           </h1>
           <p role="status" className="mt-2 text-bff-100">
-            {es
-              ? `Acertaste ${correctCount} de ${deck.length} preguntas que antes habías fallado.`
-              : `You got ${correctCount} of ${deck.length} previously-missed questions right.`}
+            {zh
+              ? `你把之前答错的 ${deck.length} 道题中的 ${correctCount} 道答对了。`
+              : es
+                ? `Acertaste ${correctCount} de ${deck.length} preguntas que antes habías fallado.`
+                : `You got ${correctCount} of ${deck.length} previously-missed questions right.`}
           </p>
         </div>
         <p className="mt-6 text-sm text-slate-600">
-          {es
-            ? 'Para quitarlas de tu repaso para siempre, repite el examen de la lección y contéstalas bien. 😉'
-            : 'To clear them from your review for good, retake the lesson quiz and nail them. 😉'}
+          {zh
+            ? '想把它们从复习里彻底清掉，就重做一遍课程测验、把它们答对吧。😉'
+            : es
+              ? 'Para quitarlas de tu repaso para siempre, repite el examen de la lección y contéstalas bien. 😉'
+              : 'To clear them from your review for good, retake the lesson quiz and nail them. 😉'}
         </p>
         <div className="mt-8 flex justify-center gap-3">
           <button
@@ -98,10 +105,10 @@ export default function PracticePage() {
               setCorrectCount(0)
             }}
           >
-            {es ? 'Repasar otra vez' : 'Review again'} <span aria-hidden="true">🔄</span>
+            {zh ? '再复习一遍' : es ? 'Repasar otra vez' : 'Review again'} <span aria-hidden="true">🔄</span>
           </button>
           <Link to="/lessons" className="btn-primary">
-            {es ? 'Volver a la ruta' : 'Back to the path'}
+            {zh ? '返回学习路径' : es ? 'Volver a la ruta' : 'Back to the path'}
           </Link>
         </div>
       </div>
@@ -127,9 +134,11 @@ export default function PracticePage() {
       <div className="flex items-center justify-between gap-3">
         <p className="chip bg-bff-100 text-bff-800">
           <span aria-hidden="true">🔁</span>{' '}
-          {es
-            ? `Repaso · ${step + 1} de ${deck.length}`
-            : `Practice · ${step + 1} of ${deck.length}`}
+          {zh
+            ? `复习 · 第 ${step + 1} / ${deck.length} 题`
+            : es
+              ? `Repaso · ${step + 1} de ${deck.length}`
+              : `Practice · ${step + 1} of ${deck.length}`}
         </p>
         <p className="text-xs font-semibold text-slate-500">
           <span aria-hidden="true">{item.lessonEmoji}</span> {item.lessonTitle}
@@ -171,12 +180,16 @@ export default function PracticePage() {
         >
           <p className={`font-display font-bold ${gotIt ? 'text-green-800' : 'text-amber-800'}`}>
             {gotIt
-              ? es
-                ? '¡Ahora sí! ✅'
-                : 'Got it this time! ✅'
-              : es
-                ? `Todavía no — la respuesta es “${q.options[q.answerIndex]}”`
-                : `Not yet — the answer is “${q.options[q.answerIndex]}”`}
+              ? zh
+                ? '这次答对了！✅'
+                : es
+                  ? '¡Ahora sí! ✅'
+                  : 'Got it this time! ✅'
+              : zh
+                ? `还没对——正确答案是“${q.options[q.answerIndex]}”`
+                : es
+                  ? `Todavía no — la respuesta es “${q.options[q.answerIndex]}”`
+                  : `Not yet — the answer is “${q.options[q.answerIndex]}”`}
           </p>
           <p className={`mt-2 text-sm leading-relaxed ${gotIt ? 'text-green-800' : 'text-amber-800'}`}>
             {q.explanation}
@@ -190,12 +203,16 @@ export default function PracticePage() {
             }}
           >
             {step + 1 < deck.length
-              ? es
-                ? 'Siguiente'
-                : 'Next'
-              : es
-                ? 'Ver resultado'
-                : 'See results'}{' '}
+              ? zh
+                ? '下一题'
+                : es
+                  ? 'Siguiente'
+                  : 'Next'
+              : zh
+                ? '查看结果'
+                : es
+                  ? 'Ver resultado'
+                  : 'See results'}{' '}
             <span aria-hidden="true">→</span>
           </button>
         </div>

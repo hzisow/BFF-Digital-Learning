@@ -21,32 +21,34 @@ interface AssignmentRow {
 function ProgressChip({
   progress,
   es,
+  zh,
 }: {
   progress: ActivityProgress | undefined
   es: boolean
+  zh: boolean
 }) {
   if (progress?.status === 'completed') {
     return (
       <span className="chip bg-green-100 text-green-700">
-        <span aria-hidden="true">✓</span> {es ? 'Completado' : 'Completed'}
+        <span aria-hidden="true">✓</span> {zh ? '已完成' : es ? 'Completado' : 'Completed'}
         {progress.score != null ? ` · ${Math.round(progress.score)}%` : ''}
       </span>
     )
   }
   if (progress?.status === 'started') {
     return (
-      <span className="chip bg-amber-100 text-amber-700">{es ? 'En progreso' : 'In progress'}</span>
+      <span className="chip bg-amber-100 text-amber-700">{zh ? '进行中' : es ? 'En progreso' : 'In progress'}</span>
     )
   }
   return (
-    <span className="chip bg-slate-100 text-slate-600">{es ? 'Sin empezar' : 'Not started'}</span>
+    <span className="chip bg-slate-100 text-slate-600">{zh ? '未开始' : es ? 'Sin empezar' : 'Not started'}</span>
   )
 }
 
-function formatDue(dueAt: string, es: boolean): string {
+function formatDue(dueAt: string, es: boolean, zh: boolean): string {
   const due = new Date(dueAt)
   if (Number.isNaN(due.getTime())) return dueAt
-  return due.toLocaleDateString(es ? 'es' : undefined, {
+  return due.toLocaleDateString(zh ? 'zh-CN' : es ? 'es' : undefined, {
     weekday: 'short',
     month: 'short',
     day: 'numeric',
@@ -58,6 +60,7 @@ export default function StudentHome() {
   const navigate = useNavigate()
   const { lang } = useLang()
   const es = lang === 'es'
+  const zh = lang === 'zh'
   const progress = useMemo(() => loadLocalProgress(), [])
 
   // null = loading; [] = loaded and empty (or backend disabled).
@@ -98,7 +101,9 @@ export default function StudentHome() {
       if (cancelled) return
       if (error) {
         setLoadError(
-          es
+          zh
+            ? '现在没能加载你的作业——先看看下面的课程吧！'
+            : es
             ? 'No pudimos cargar tus tareas ahora mismo — ¡mejor revisa las lecciones de abajo!'
             : 'Could not load your assignments right now — pull up the lessons below instead!',
         )
@@ -126,7 +131,9 @@ export default function StudentHome() {
 
   function handleLeave() {
     const sure = window.confirm(
-      es
+      zh
+        ? '要离开这个班级吗？你的进度仍会保存在这台设备上，但重新加入时需要班级代码。'
+        : es
         ? '¿Salir de esta clase? Tu progreso se queda guardado en este dispositivo, pero necesitarás el código de clase para volver a entrar.'
         : 'Leave this class? Your progress stays saved on this device, but you will need the class code to rejoin.',
     )
@@ -142,10 +149,15 @@ export default function StudentHome() {
         <div className="card animate-pop-in text-center">
           <p className="text-5xl" aria-hidden="true">🔒</p>
           <h1 className="mt-4 font-display text-2xl font-bold text-slate-900">
-            {es ? 'Esta clase está cerrada' : 'This class is closed'}
+            {zh ? '这个班级已关闭' : es ? 'Esta clase está cerrada' : 'This class is closed'}
           </h1>
           <p className="mt-3 leading-relaxed text-slate-600">
-            {es ? (
+            {zh ? (
+              <>
+                你的导师关闭了 <span className="font-semibold">{student.classroomName}</span>
+                ，所以它已不再活跃。你的进度仍然保存着——而且每一节课、每个游戏和挑战都依然开放，你可以自己去探索。
+              </>
+            ) : es ? (
               <>
                 Tu mentor cerró <span className="font-semibold">{student.classroomName}</span>, así
                 que ya no está activa. Tu progreso sigue guardado — y cada lección, juego y desafío
@@ -161,7 +173,7 @@ export default function StudentHome() {
           </p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Link to="/lessons" className="btn-primary">
-              {es ? 'Seguir aprendiendo' : 'Keep learning'} <span aria-hidden="true">📚</span>
+              {zh ? '继续学习' : es ? 'Seguir aprendiendo' : 'Keep learning'} <span aria-hidden="true">📚</span>
             </Link>
             <button
               type="button"
@@ -171,7 +183,7 @@ export default function StudentHome() {
               }}
               className="btn-secondary"
             >
-              {es ? 'Unirse a otra clase' : 'Join a different class'}
+              {zh ? '加入其他班级' : es ? 'Unirse a otra clase' : 'Join a different class'}
             </button>
           </div>
         </div>
@@ -185,19 +197,19 @@ export default function StudentHome() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl font-extrabold text-slate-900 sm:text-4xl">
-            {es ? '¡Hola' : 'Hey'} {student.nickname}! <span aria-hidden="true">👋</span>
+            {zh ? '你好' : es ? '¡Hola' : 'Hey'} {student.nickname}! <span aria-hidden="true">👋</span>
           </h1>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <span className="chip bg-bff-100 text-bff-800">
               <span aria-hidden="true">🏫</span> {student.classroomName}
             </span>
             <span className="chip bg-slate-100 text-slate-600">
-              {es ? 'Código' : 'Code'}: {student.classCode}
+              {zh ? '代码' : es ? 'Código' : 'Code'}: {student.classCode}
             </span>
           </div>
         </div>
         <button type="button" onClick={handleLeave} className="btn-ghost text-sm">
-          {es ? 'Salir de la clase' : 'Leave class'}
+          {zh ? '离开班级' : es ? 'Salir de la clase' : 'Leave class'}
         </button>
       </div>
 
@@ -207,10 +219,14 @@ export default function StudentHome() {
         <div className="flex items-center rounded-2xl border border-slate-200 bg-white px-6 py-4">
           <p className="font-display font-semibold text-slate-700">
             {completedCount > 0
-              ? es
+              ? zh
+                ? `你已经完成了 ${completedCount} / ${allActivities.length} 个活动 🎉`
+                : es
                 ? `Has completado ${completedCount} de ${allActivities.length} actividades 🎉`
                 : `You've completed ${completedCount} of ${allActivities.length} activities 🎉`
-              : es
+              : zh
+                ? `${allActivities.length} 个活动在等着你——一起把第一个搞定吧！💪`
+                : es
                 ? `${allActivities.length} actividades te esperan — ¡vamos a completar la primera! 💪`
                 : `${allActivities.length} activities are waiting for you — let's get that first one done! 💪`}
           </p>
@@ -226,10 +242,14 @@ export default function StudentHome() {
           <div>
             <p className="text-xs font-semibold uppercase tracking-wide text-bff-600">
               {resume.inProgress
-                ? es
+                ? zh
+                  ? '从上次离开的地方继续'
+                  : es
                   ? 'Continúa donde lo dejaste'
                   : 'Continue where you left off'
-                : es
+                : zh
+                  ? '你的下一节课'
+                  : es
                   ? 'Tu próxima lección'
                   : 'Your next lesson'}
             </p>
@@ -241,7 +261,7 @@ export default function StudentHome() {
             </p>
           </div>
           <span className="btn-primary shrink-0 px-4 py-2 text-sm">
-            {resume.inProgress ? (es ? 'Continuar' : 'Continue') : es ? 'Empezar' : 'Start'}{' '}
+            {resume.inProgress ? (zh ? '继续' : es ? 'Continuar' : 'Continue') : zh ? '开始' : es ? 'Empezar' : 'Start'}{' '}
             <span aria-hidden="true">→</span>
           </span>
         </Link>
@@ -257,7 +277,7 @@ export default function StudentHome() {
       {/* Assigned work */}
       <section className="mt-10">
         <h2 className="font-display text-xl font-bold text-slate-900">
-          {es ? 'Tus tareas asignadas' : 'Your assigned work'}
+          {zh ? '你的作业' : es ? 'Tus tareas asignadas' : 'Your assigned work'}
         </h2>
         {loadError && (
           <p
@@ -271,7 +291,7 @@ export default function StudentHome() {
           <div
             className="mt-4 grid gap-4 sm:grid-cols-2"
             role="status"
-            aria-label={es ? 'Cargando tus tareas…' : 'Loading your assignments…'}
+            aria-label={zh ? '正在加载你的作业……' : es ? 'Cargando tus tareas…' : 'Loading your assignments…'}
           >
             <SkeletonCard />
             <SkeletonCard />
@@ -281,10 +301,12 @@ export default function StudentHome() {
             <div className="card mt-4 text-center">
               <p className="text-3xl" aria-hidden="true">🏖️</p>
               <p className="mt-2 font-display font-semibold text-slate-700">
-                {es ? 'Nada asignado todavía — ¡explora abajo!' : 'Nothing assigned yet — explore below!'}
+                {zh ? '目前还没有布置作业——去下面探索吧！' : es ? 'Nada asignado todavía — ¡explora abajo!' : 'Nothing assigned yet — explore below!'}
               </p>
               <p className="mt-1 text-sm text-slate-500">
-                {es
+                {zh
+                  ? '随着你的班级学习 BFF Academy，你的导师会在这里发布课程和游戏。'
+                  : es
                   ? 'Tu mentor publicará lecciones y juegos aquí a medida que tu clase avance por BFF Academy.'
                   : 'Your mentor will post lessons and games here as your class works through BFF Academy.'}
               </p>
@@ -309,20 +331,22 @@ export default function StudentHome() {
                         </p>
                       </div>
                     </div>
-                    <ProgressChip progress={p} es={es} />
+                    <ProgressChip progress={p} es={es} zh={zh} />
                   </div>
                   {asg.note && (
                     <p className="mt-3 rounded-xl bg-bff-50 px-4 py-3 text-sm text-bff-900">
                       <span aria-hidden="true">💬</span>{' '}
-                      <span className="font-semibold">{es ? 'De tu mentor:' : 'From your mentor:'}</span> {asg.note}
+                      <span className="font-semibold">{zh ? '来自你的导师：' : es ? 'De tu mentor:' : 'From your mentor:'}</span> {asg.note}
                     </p>
                   )}
                   <div className="mt-4 flex items-center justify-between gap-2">
                     <span className="text-xs font-semibold text-slate-500">
                       {asg.due_at ? (
                         <>
-                          <span aria-hidden="true">📅</span> {es ? 'Entrega' : 'Due'} {formatDue(asg.due_at, es)}
+                          <span aria-hidden="true">📅</span> {zh ? '截止' : es ? 'Entrega' : 'Due'} {formatDue(asg.due_at, es, zh)}
                         </>
+                      ) : zh ? (
+                        '没有截止日期'
                       ) : es ? (
                         'Sin fecha de entrega'
                       ) : (
@@ -331,14 +355,20 @@ export default function StudentHome() {
                     </span>
                     <Link to={activity.path} className="btn-primary px-4 py-2 text-sm">
                       {p?.status === 'completed'
-                        ? es
+                        ? zh
+                          ? '再玩一次'
+                          : es
                           ? 'Jugar de nuevo'
                           : 'Play again'
                         : p?.status === 'started'
-                          ? es
+                          ? zh
+                            ? '继续'
+                            : es
                             ? 'Continuar'
                             : 'Continue'
-                          : es
+                          : zh
+                            ? '开始'
+                            : es
                             ? 'Empezar'
                             : 'Start'}{' '}
                       <span aria-hidden="true">→</span>
@@ -354,10 +384,12 @@ export default function StudentHome() {
       {/* Keep learning */}
       <section className="mt-12">
         <h2 className="font-display text-xl font-bold text-slate-900">
-          {es ? 'Seguir aprendiendo' : 'Keep learning'}
+          {zh ? '继续学习' : es ? 'Seguir aprendiendo' : 'Keep learning'}
         </h2>
         <p className="mt-1 text-sm text-slate-500">
-          {es
+          {zh
+            ? 'BFF Classroom 里的一切都向你开放——无论是否被布置。'
+            : es
             ? 'Todo en BFF Classroom está disponible para ti — asignado o no.'
             : 'Everything in BFF Classroom is open to you — assigned or not.'}
         </p>
@@ -382,7 +414,7 @@ export default function StudentHome() {
                   <span className="text-xs font-semibold text-slate-500">
                     <span aria-hidden="true">⏱️</span> ~{a.durationMin} min
                   </span>
-                  <ProgressChip progress={p} es={es} />
+                  <ProgressChip progress={p} es={es} zh={zh} />
                 </div>
               </Link>
             )

@@ -82,15 +82,16 @@ function MultipleChoice({
 }) {
   const { lang } = useLang()
   const es = lang === 'es'
+  const zh = lang === 'zh'
   const gotIt = state.chosen === answerIndex
   const questionId = useMemo(() => `mc-question-${(mcCounter += 1)}`, [])
 
   function optionStateLabel(i: number): string | undefined {
     if (!state.revealed) return undefined
     if (i === answerIndex)
-      return `${options[i]}, ${es ? 'respuesta correcta' : 'correct answer'}`
+      return `${options[i]}，${zh ? '正确答案' : es ? 'respuesta correcta' : 'correct answer'}`
     if (i === state.chosen)
-      return `${options[i]}, ${es ? 'tu respuesta, incorrecta' : 'your answer, incorrect'}`
+      return `${options[i]}，${zh ? '你的答案，错误' : es ? 'tu respuesta, incorrecta' : 'your answer, incorrect'}`
     return undefined
   }
 
@@ -127,7 +128,7 @@ function MultipleChoice({
           role="status"
           className="mt-4 rounded-xl bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-700"
         >
-          {es ? 'Casi — ¡inténtalo una vez más!' : 'Not quite — take one more shot!'}{' '}
+          {zh ? '还差一点——再试一次！' : es ? 'Casi — ¡inténtalo una vez más!' : 'Not quite — take one more shot!'}{' '}
           <span aria-hidden="true">🎯</span>
         </p>
       )}
@@ -143,8 +144,10 @@ function MultipleChoice({
           >
             {gotIt ? (
               <>
-                {es ? '¡Perfecto!' : 'Nailed it!'} <span aria-hidden="true">✅</span>
+                {zh ? '答对了！' : es ? '¡Perfecto!' : 'Nailed it!'} <span aria-hidden="true">✅</span>
               </>
+            ) : zh ? (
+              `不错的尝试！正确答案是“${options[answerIndex]}”`
             ) : es ? (
               `¡Buen intento! La respuesta es “${options[answerIndex]}”`
             ) : (
@@ -443,25 +446,34 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
 
   if (phase === 'results') {
     const es = lang === 'es'
+    const zh = lang === 'zh'
     const total = loc.quiz.length
     const correct = loc.quiz.filter((q, i) => quizAnswers[i]?.chosen === q.answerIndex).length
     const pct = total > 0 ? Math.round((correct / total) * 100) : 100
     const tier =
       pct === 100
-        ? es
-          ? '¡Puntaje perfecto — eres oficialmente un master del dinero! 🏆'
-          : 'Perfect score — you are officially a money master! 🏆'
+        ? zh
+          ? '满分——你正式成为理财高手了！🏆'
+          : es
+            ? '¡Puntaje perfecto — eres oficialmente un master del dinero! 🏆'
+            : 'Perfect score — you are officially a money master! 🏆'
         : pct >= 80
-          ? es
-            ? '¡Increíble — de verdad sabes de esto! 🌟'
-            : 'Amazing work — you really know your stuff! 🌟'
-          : pct >= 60
-            ? es
-              ? '¡Bien hecho! Un repaso rápido y lo dominas. 💪'
-              : 'Nice job! One quick review and you will have it down. 💪'
+          ? zh
+            ? '太棒了——你是真的懂这些！🌟'
             : es
-              ? '¡Buen esfuerzo! Repasa la lección y repite el examen — tú puedes. 🚀'
-              : 'Good effort! Skim the lesson again and retake the quiz — you have got this. 🚀'
+              ? '¡Increíble — de verdad sabes de esto! 🌟'
+              : 'Amazing work — you really know your stuff! 🌟'
+          : pct >= 60
+            ? zh
+              ? '做得不错！快速复习一下你就全掌握了。💪'
+              : es
+                ? '¡Bien hecho! Un repaso rápido y lo dominas. 💪'
+                : 'Nice job! One quick review and you will have it down. 💪'
+            : zh
+              ? '很努力了！再把这节课过一遍、重做测验——你可以的。🚀'
+              : es
+                ? '¡Buen esfuerzo! Repasa la lección y repite el examen — tú puedes. 🚀'
+                : 'Good effort! Skim the lesson again and retake the quiz — you have got this. 🚀'
 
     return (
       <div className="mx-auto max-w-2xl px-4 py-12">
@@ -472,9 +484,11 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
           </h1>
           <div role="status">
             <p className="mt-2 text-bff-100">
-              {es
-                ? `Acertaste ${correct} de ${total} preguntas al primer intento.`
-                : `You got ${correct} of ${total} questions right on the first try.`}
+              {zh
+                ? `你在第一次尝试就答对了 ${total} 道题中的 ${correct} 道。`
+                : es
+                  ? `Acertaste ${correct} de ${total} preguntas al primer intento.`
+                  : `You got ${correct} of ${total} questions right on the first try.`}
             </p>
             <p className="mt-4 font-display text-lg font-semibold">{tier}</p>
           </div>

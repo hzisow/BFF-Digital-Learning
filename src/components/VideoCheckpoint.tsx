@@ -81,6 +81,7 @@ function QuestionCard({
   onAnswered,
   onContinue,
   compact,
+  zh,
   es,
 }: {
   q: VideoQuestion
@@ -89,6 +90,7 @@ function QuestionCard({
   onAnswered: () => void
   onContinue: () => void
   compact?: boolean
+  zh: boolean
   es: boolean
 }) {
   const [chosen, setChosen] = useState<number | null>(null)
@@ -105,11 +107,17 @@ function QuestionCard({
   function optionStateLabel(i: number): string | undefined {
     if (!revealed) return undefined
     if (i === q.answerIndex)
-      return es ? `${q.options[i]}, respuesta correcta` : `${q.options[i]}, correct answer`
+      return zh
+        ? `${q.options[i]}，正确答案`
+        : es
+          ? `${q.options[i]}, respuesta correcta`
+          : `${q.options[i]}, correct answer`
     if (i === chosen)
-      return es
-        ? `${q.options[i]}, tu respuesta, incorrecta`
-        : `${q.options[i]}, your answer, incorrect`
+      return zh
+        ? `${q.options[i]}，你的答案，错误`
+        : es
+          ? `${q.options[i]}, tu respuesta, incorrecta`
+          : `${q.options[i]}, your answer, incorrect`
     return undefined
   }
 
@@ -117,9 +125,11 @@ function QuestionCard({
     <div className={`w-full ${compact ? '' : 'card'} text-left`}>
       <p className="text-xs font-bold uppercase tracking-wide text-bff-700">
         <span aria-hidden="true">⏸️</span>{' '}
-        {es
-          ? `Control del video · ${index + 1} de ${total}`
-          : `Video check · ${index + 1} of ${total}`}
+        {zh
+          ? `视频检查 · 第 ${index + 1} / ${total} 题`
+          : es
+            ? `Control del video · ${index + 1} de ${total}`
+            : `Video check · ${index + 1} of ${total}`}
       </p>
       <p id={questionId} className="mt-2 font-display font-bold leading-snug text-slate-900">
         {q.question}
@@ -161,8 +171,10 @@ function QuestionCard({
           <span className="font-bold">
             {gotIt ? (
               <>
-                {es ? '¡Perfecto!' : 'Nailed it!'} <span aria-hidden="true">✅</span>{' '}
+                {zh ? '答对了！' : es ? '¡Perfecto!' : 'Nailed it!'} <span aria-hidden="true">✅</span>{' '}
               </>
+            ) : zh ? (
+              '不错的尝试！'
             ) : es ? (
               '¡Buen intento! '
             ) : (
@@ -175,12 +187,16 @@ function QuestionCard({
       {revealed && (
         <button type="button" onClick={onContinue} className="btn-primary mt-4 w-full">
           {index + 1 < total
-            ? es
-              ? 'Seguir viendo'
-              : 'Keep watching'
-            : es
-              ? 'Continuar'
-              : 'Continue'}{' '}
+            ? zh
+              ? '继续观看'
+              : es
+                ? 'Seguir viendo'
+                : 'Keep watching'
+            : zh
+              ? '继续'
+              : es
+                ? 'Continuar'
+                : 'Continue'}{' '}
           <span aria-hidden="true">▶</span>
         </button>
       )}
@@ -194,11 +210,13 @@ function FallbackQuestions({
   videoId,
   questions,
   onAllAnswered,
+  zh,
   es,
 }: {
   videoId: string
   questions: VideoQuestion[]
   onAllAnswered: () => void
+  zh: boolean
   es: boolean
 }) {
   const [step, setStep] = useState(0)
@@ -212,10 +230,23 @@ function FallbackQuestions({
     <div className="space-y-4">
       <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
         <p className="font-bold">
-          <span aria-hidden="true">📺</span> {es ? '¿No carga el video?' : 'Video not loading?'}
+          <span aria-hidden="true">📺</span> {zh ? '视频无法加载？' : es ? '¿No carga el video?' : 'Video not loading?'}
         </p>
         <p className="mt-1">
-          {es ? (
+          {zh ? (
+            <>
+              有些学校网络会屏蔽 YouTube。你可以{' '}
+              <a
+                href={`https://youtu.be/${videoId}`}
+                target="_blank"
+                rel="noreferrer"
+                className="font-semibold underline"
+              >
+                在新标签页中打开视频
+              </a>
+              ——或者直接回答下面的视频问题以继续。
+            </>
+          ) : es ? (
             <>
               Algunas redes escolares bloquean YouTube. Puedes{' '}
               <a
@@ -249,7 +280,7 @@ function FallbackQuestions({
           role="status"
           className="rounded-2xl bg-green-50 p-4 text-center text-sm font-bold text-green-700"
         >
-          {es ? '¡Listos todos los controles del video, sigue adelante!' : 'All video checks done — keep going!'}{' '}
+          {zh ? '所有视频检查都完成了，继续前进吧！' : es ? '¡Listos todos los controles del video, sigue adelante!' : 'All video checks done — keep going!'}{' '}
           <span aria-hidden="true">🎉</span>
         </p>
       ) : (
@@ -260,6 +291,7 @@ function FallbackQuestions({
           total={questions.length}
           onAnswered={() => {}}
           onContinue={() => setStep(step + 1)}
+          zh={zh}
           es={es}
         />
       )}
@@ -280,6 +312,7 @@ export default function VideoCheckpoint({
 }) {
   const { lang } = useLang()
   const es = lang === 'es'
+  const zh = lang === 'zh'
   const hostRef = useRef<HTMLDivElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
   const playerRef = useRef<YTPlayer | null>(null)
@@ -402,6 +435,7 @@ export default function VideoCheckpoint({
       <FallbackQuestions
         videoId={videoId}
         questions={sorted}
+        zh={zh}
         es={es}
         onAllAnswered={() => {
           if (!doneFiredRef.current) {
@@ -436,7 +470,7 @@ export default function VideoCheckpoint({
         </div>
         {!ready && (
           <div className="absolute inset-0 flex items-center justify-center text-sm font-semibold text-white/70">
-            {es ? 'Cargando video…' : 'Loading video…'}
+            {zh ? '正在加载视频…' : es ? 'Cargando video…' : 'Loading video…'}
           </div>
         )}
         {active != null && (
@@ -444,9 +478,11 @@ export default function VideoCheckpoint({
             role="dialog"
             aria-modal="true"
             aria-label={
-              es
-                ? 'Pregunta del video — responde para seguir viendo'
-                : 'Video question — answer to keep watching'
+              zh
+                ? '视频问题——回答后继续观看'
+                : es
+                  ? 'Pregunta del video — responde para seguir viendo'
+                  : 'Video question — answer to keep watching'
             }
             className="absolute inset-0 z-10 flex items-stretch justify-end"
           >
@@ -458,7 +494,7 @@ export default function VideoCheckpoint({
             {/* "Paused" pill sits over the still-visible video */}
             <div className="absolute left-3 top-3 flex items-center gap-1.5 rounded-full bg-slate-950/70 px-3 py-1 text-xs font-bold text-white backdrop-blur">
               <span className="text-sm" aria-hidden="true">⏸️</span>{' '}
-              {es ? 'En pausa para una pregunta' : 'Paused for a question'}
+              {zh ? '已暂停以回答问题' : es ? 'En pausa para una pregunta' : 'Paused for a question'}
             </div>
             {/* Question slides in from the right (bottom on small screens) */}
             <div
@@ -473,6 +509,7 @@ export default function VideoCheckpoint({
                   index={active}
                   total={sorted.length}
                   compact
+                  zh={zh}
                   es={es}
                   onAnswered={() =>
                     setAnswered((prev) => prev.map((a, i) => (i === active ? true : a)))
@@ -489,7 +526,7 @@ export default function VideoCheckpoint({
       <div className="mt-3">
         <div
           role="progressbar"
-          aria-label={es ? 'Progreso del video' : 'Video watch progress'}
+          aria-label={zh ? '视频观看进度' : es ? 'Progreso del video' : 'Video watch progress'}
           aria-valuenow={Math.round(watchedPct)}
           aria-valuemin={0}
           aria-valuemax={100}
@@ -519,19 +556,21 @@ export default function VideoCheckpoint({
         >
           <span>
             {sorted.filter((_, i) => answered[i]).length}/{sorted.length}{' '}
-            {es ? 'preguntas respondidas' : 'questions answered'}
+            {zh ? '道问题已回答' : es ? 'preguntas respondidas' : 'questions answered'}
           </span>
           {watchDone ? (
             <span className="text-green-700">
-              {es ? '¡Listos todos los controles, continúa abajo!' : 'All checks done — continue below!'}{' '}
+              {zh ? '所有检查都完成了，请在下方继续！' : es ? '¡Listos todos los controles, continúa abajo!' : 'All checks done — continue below!'}{' '}
               <span aria-hidden="true">✅</span>
             </span>
           ) : (
             <span>
               <span aria-hidden="true">⚡</span>{' '}
-              {es
-                ? 'El video se pausa para hacerte preguntas; ¡no adelantes!'
-                : 'The video pauses to quiz you — no skipping ahead!'}
+              {zh
+                ? '视频会暂停来考考你——不要快进哦！'
+                : es
+                  ? 'El video se pausa para hacerte preguntas; ¡no adelantes!'
+                  : 'The video pauses to quiz you — no skipping ahead!'}
             </span>
           )}
         </div>

@@ -70,6 +70,7 @@ export default function GoogleSignInButton({
   const [loading, setLoading] = useState(true)
   const { lang } = useLang()
   const es = lang === 'es'
+  const zh = lang === 'zh'
 
   useEffect(() => {
     if (!GOOGLE_CLIENT_ID || !supabase) {
@@ -136,7 +137,7 @@ export default function GoogleSignInButton({
       <div ref={holderRef} className="flex min-h-[44px] justify-center" />
       {loading && (
         <p className="text-center text-xs text-slate-400">
-          {es ? 'Cargando el inicio de sesión con Google…' : 'Loading Google sign-in…'}
+          {zh ? '正在加载 Google 登录…' : es ? 'Cargando el inicio de sesión con Google…' : 'Loading Google sign-in…'}
         </p>
       )}
     </div>

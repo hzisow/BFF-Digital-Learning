@@ -19,6 +19,7 @@ export default function ClassLeaderboard({
 }) {
   const { lang } = useLang()
   const es = lang === 'es'
+  const zh = lang === 'zh'
   const [rows, setRows] = useState<LeaderboardRow[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -29,11 +30,11 @@ export default function ClassLeaderboard({
     try {
       setRows(await fetchLeaderboard(classroomId))
     } catch {
-      setError(es ? 'No se pudo cargar la tabla.' : 'Could not load the leaderboard.')
+      setError(zh ? '无法加载排行榜。' : es ? 'No se pudo cargar la tabla.' : 'Could not load the leaderboard.')
     } finally {
       setLoading(false)
     }
-  }, [classroomId, es])
+  }, [classroomId, es, zh])
 
   useEffect(() => {
     void load()
@@ -43,7 +44,7 @@ export default function ClassLeaderboard({
     <div className="card">
       <div className="flex items-center justify-between gap-3">
         <h2 className="font-display text-lg font-bold text-slate-900">
-          <span aria-hidden="true">🏅</span> {es ? 'Tabla de la clase' : 'Class leaderboard'}
+          <span aria-hidden="true">🏅</span> {zh ? '班级排行榜' : es ? 'Tabla de la clase' : 'Class leaderboard'}
         </h2>
         <button
           type="button"
@@ -51,7 +52,7 @@ export default function ClassLeaderboard({
           onClick={() => void load()}
           disabled={loading}
         >
-          <span aria-hidden="true">↻</span> {es ? 'Actualizar' : 'Refresh'}
+          <span aria-hidden="true">↻</span> {zh ? '刷新' : es ? 'Actualizar' : 'Refresh'}
         </button>
       </div>
 
@@ -62,16 +63,18 @@ export default function ClassLeaderboard({
       )}
 
       {loading && rows.length === 0 ? (
-        <div className="mt-4 space-y-3" role="status" aria-label={es ? 'Cargando…' : 'Loading…'}>
+        <div className="mt-4 space-y-3" role="status" aria-label={zh ? '加载中…' : es ? 'Cargando…' : 'Loading…'}>
           <SkeletonRow />
           <SkeletonRow />
           <SkeletonRow />
         </div>
       ) : rows.length === 0 ? (
         <p className="mt-4 text-sm text-slate-500">
-          {es
-            ? '¡Aún no hay puntos! Completa una actividad para aparecer aquí.'
-            : 'No points yet — finish an activity to land on the board!'}
+          {zh
+            ? '还没有积分！完成一个活动就能登上榜单。'
+            : es
+              ? '¡Aún no hay puntos! Completa una actividad para aparecer aquí.'
+              : 'No points yet — finish an activity to land on the board!'}
         </p>
       ) : (
         <ol className="mt-4 space-y-1.5">
@@ -95,7 +98,7 @@ export default function ClassLeaderboard({
                   {r.nickname}
                   {isMe && (
                     <span className="ml-1.5 text-xs font-semibold text-bff-600">
-                      ({es ? 'tú' : 'you'})
+                      ({zh ? '你' : es ? 'tú' : 'you'})
                     </span>
                   )}
                   <span className="ml-2 text-xs font-normal text-slate-400">

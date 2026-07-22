@@ -31,12 +31,14 @@ function optionLetter(i: number): string {
   return String.fromCharCode(65 + i)
 }
 
-function errorMessage(err: unknown, es: boolean): string {
+function errorMessage(err: unknown, zh: boolean, es: boolean): string {
   return err instanceof Error
     ? err.message
-    : es
-      ? 'Algo salió mal. ¡Inténtalo de nuevo!'
-      : 'Something went wrong. Try again!'
+    : zh
+      ? '出错了，再试一次吧！'
+      : es
+        ? 'Algo salió mal. ¡Inténtalo de nuevo!'
+        : 'Something went wrong. Try again!'
 }
 
 function Shell({ code, children }: { code: string; children: ReactNode }) {
@@ -61,6 +63,7 @@ export default function QuizPlay() {
   const { student } = useStudent()
   const { lang } = useLang()
   const es = lang === 'es'
+  const zh = lang === 'zh'
 
   const [session, setSession] = useState<QuizSession | null>(null)
   const [loadError, setLoadError] = useState<string | null>(null)
@@ -83,7 +86,7 @@ export default function QuizPlay() {
     fetchedRef.current = true
     getQuizSessionByCode(code)
       .then(setSession)
-      .catch((err) => setLoadError(errorMessage(err, es)))
+      .catch((err) => setLoadError(errorMessage(err, zh, es)))
   }, [code])
 
   // Once joined: live session updates (state / question) + player refreshes.
@@ -118,7 +121,7 @@ export default function QuizPlay() {
     if (!session || joinRef.current) return
     const nick = nickname.trim()
     if (!nick) {
-      setJoinError(es ? '¡Primero elige un apodo!' : 'Pick a nickname first!')
+      setJoinError(zh ? '先取一个昵称吧！' : es ? '¡Primero elige un apodo!' : 'Pick a nickname first!')
       return
     }
     joinRef.current = true
@@ -131,7 +134,7 @@ export default function QuizPlay() {
       setAnswers(p.answers ?? {})
     } catch (err) {
       joinRef.current = false
-      setJoinError(errorMessage(err, es))
+      setJoinError(errorMessage(err, zh, es))
     } finally {
       setJoining(false)
     }
@@ -169,15 +172,21 @@ export default function QuizPlay() {
         <div className="card mx-auto mt-10 max-w-md space-y-3 text-center">
           <p className="text-4xl" aria-hidden="true">🔌</p>
           <h1 className="font-display text-xl font-bold text-slate-900">
-            {es ? 'Los quiz en vivo aún no están conectados' : 'Live quizzes are not connected yet'}
+            {zh
+              ? '实时测验还没有连接'
+              : es
+                ? 'Los quiz en vivo aún no están conectados'
+                : 'Live quizzes are not connected yet'}
           </h1>
           <p className="text-sm text-slate-600">
-            {es
-              ? 'Los quiz en vivo se activan cuando se conecta el servidor de la clase; ¡las lecciones siguen funcionando por tu cuenta!'
-              : 'Live quizzes unlock when the class backend is connected — the lessons still work solo!'}
+            {zh
+              ? '实时测验会在班级后台连接后开启——课程还是可以自己单独学习哦！'
+              : es
+                ? 'Los quiz en vivo se activan cuando se conecta el servidor de la clase; ¡las lecciones siguen funcionando por tu cuenta!'
+                : 'Live quizzes unlock when the class backend is connected — the lessons still work solo!'}
           </p>
           <Link to="/activities" className="btn-primary">
-            {es ? 'Volver a las actividades' : 'Back to activities'}
+            {zh ? '返回活动' : es ? 'Volver a las actividades' : 'Back to activities'}
           </Link>
         </div>
       </Shell>
@@ -190,11 +199,11 @@ export default function QuizPlay() {
         <div className="card mx-auto mt-10 max-w-md space-y-3 text-center">
           <p className="text-4xl" aria-hidden="true">🤔</p>
           <h1 className="font-display text-xl font-bold text-slate-900">
-            {es ? 'Mmm, eso no funcionó' : 'Hmm, that did not work'}
+            {zh ? '嗯，这次没成功' : es ? 'Mmm, eso no funcionó' : 'Hmm, that did not work'}
           </h1>
           <p className="text-sm text-slate-600">{loadError}</p>
           <Link to="/activities" className="btn-primary">
-            {es ? 'Volver a las actividades' : 'Back to activities'}
+            {zh ? '返回活动' : es ? 'Volver a las actividades' : 'Back to activities'}
           </Link>
         </div>
       </Shell>
@@ -205,7 +214,7 @@ export default function QuizPlay() {
     return (
       <Shell code={code}>
         <p className="mt-16 text-center font-display text-lg font-semibold text-slate-500">
-          {es ? 'Buscando tu quiz…' : 'Finding your quiz…'}
+          {zh ? '正在查找你的测验……' : es ? 'Buscando tu quiz…' : 'Finding your quiz…'}
         </p>
       </Shell>
     )
@@ -217,15 +226,17 @@ export default function QuizPlay() {
         <div className="card mx-auto mt-10 max-w-md space-y-3 text-center">
           <p className="text-4xl" aria-hidden="true">📚</p>
           <h1 className="font-display text-xl font-bold text-slate-900">
-            {es ? 'Este quiz no está disponible' : 'This quiz is not available'}
+            {zh ? '这个测验暂时无法使用' : es ? 'Este quiz no está disponible' : 'This quiz is not available'}
           </h1>
           <p className="text-sm text-slate-600">
-            {es
-              ? 'No se encontró la lección de este quiz. Pídele a tu anfitrión que inicie uno nuevo.'
-              : 'The lesson behind this quiz could not be found. Ask your host to start a new one.'}
+            {zh
+              ? '找不到这个测验对应的课程。请让主持人重新开始一个吧。'
+              : es
+                ? 'No se encontró la lección de este quiz. Pídele a tu anfitrión que inicie uno nuevo.'
+                : 'The lesson behind this quiz could not be found. Ask your host to start a new one.'}
           </p>
           <Link to="/activities" className="btn-primary">
-            {es ? 'Volver a las actividades' : 'Back to activities'}
+            {zh ? '返回活动' : es ? 'Volver a las actividades' : 'Back to activities'}
           </Link>
         </div>
       </Shell>
@@ -239,24 +250,26 @@ export default function QuizPlay() {
           <div className="text-center">
             <p className="text-4xl" aria-hidden="true">{lesson.emoji}</p>
             <h1 className="mt-2 font-display text-xl font-bold text-slate-900">
-              {es ? '¡Encontraste el quiz!' : 'You found the quiz!'}
+              {zh ? '你找到测验啦！' : es ? '¡Encontraste el quiz!' : 'You found the quiz!'}
             </h1>
             <p className="mt-1 text-sm text-slate-600">
-              {es
-                ? 'Elige un apodo para que todos sepan quién está en la tabla de posiciones.'
-                : 'Pick a nickname so everyone knows who is on the leaderboard.'}
+              {zh
+                ? '取一个昵称，让大家都知道排行榜上的你是谁。'
+                : es
+                  ? 'Elige un apodo para que todos sepan quién está en la tabla de posiciones.'
+                  : 'Pick a nickname so everyone knows who is on the leaderboard.'}
             </p>
           </div>
           <form className="space-y-3" onSubmit={handleJoin}>
             <label htmlFor="quiz-nickname" className="sr-only">
-              {es ? 'Tu apodo' : 'Your nickname'}
+              {zh ? '你的昵称' : es ? 'Tu apodo' : 'Your nickname'}
             </label>
             <input
               id="quiz-nickname"
               className="input text-center font-display text-lg"
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
-              placeholder={es ? 'Tu apodo' : 'Your nickname'}
+              placeholder={zh ? '你的昵称' : es ? 'Tu apodo' : 'Your nickname'}
               maxLength={24}
               autoFocus
             />
@@ -270,7 +283,17 @@ export default function QuizPlay() {
               className="btn-primary w-full"
               disabled={joining || !nickname.trim()}
             >
-              {es ? (joining ? 'Entrando…' : '¡A jugar!') : joining ? 'Joining…' : "Let's play!"}
+              {zh
+                ? joining
+                  ? '正在加入……'
+                  : '开始玩吧！'
+                : es
+                  ? joining
+                    ? 'Entrando…'
+                    : '¡A jugar!'
+                  : joining
+                    ? 'Joining…'
+                    : "Let's play!"}
             </button>
           </form>
         </div>
@@ -297,12 +320,18 @@ export default function QuizPlay() {
         <div className="card animate-pop-in mt-6 space-y-4 text-center" role="status">
           <p className="text-5xl" aria-hidden="true">🎉</p>
           <h1 className="font-display text-2xl font-bold text-slate-900">
-            {es ? `¡Estás dentro, ${player.nickname}!` : `You're in, ${player.nickname}!`}
+            {zh
+              ? `你加入啦，${player.nickname}！`
+              : es
+                ? `¡Estás dentro, ${player.nickname}!`
+                : `You're in, ${player.nickname}!`}
           </h1>
           <p className="text-slate-600">
-            {es
-              ? 'Mira la pantalla grande; el quiz empieza pronto.'
-              : 'Watch the big screen — the quiz starts soon.'}
+            {zh
+              ? '看大屏幕，测验马上就要开始了。'
+              : es
+                ? 'Mira la pantalla grande; el quiz empieza pronto.'
+                : 'Watch the big screen — the quiz starts soon.'}
           </p>
         </div>
       )}
@@ -312,12 +341,18 @@ export default function QuizPlay() {
         <div className="space-y-4">
           <div>
             <h1 className="font-display text-xl font-bold text-slate-900">
-              {es ? `Pregunta ${qIndex + 1} de ${total}` : `Question ${qIndex + 1} of ${total}`}
+              {zh
+                ? `第 ${qIndex + 1} 题，共 ${total} 题`
+                : es
+                  ? `Pregunta ${qIndex + 1} de ${total}`
+                  : `Question ${qIndex + 1} of ${total}`}
             </h1>
             <p className="text-sm text-slate-500">
-              {es
-                ? 'Las respuestas correctas más rápidas ganan más puntos. ¡Mira la pantalla grande!'
-                : 'Faster correct answers earn more points — watch the big screen!'}
+              {zh
+                ? '答得又快又对能拿到更多分数。看大屏幕吧！'
+                : es
+                  ? 'Las respuestas correctas más rápidas ganan más puntos. ¡Mira la pantalla grande!'
+                  : 'Faster correct answers earn more points — watch the big screen!'}
             </p>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -347,9 +382,9 @@ export default function QuizPlay() {
           <p aria-live="polite" className="text-center">
             {myAnswer !== undefined && (
               <span className="chip bg-bff-50 font-display text-sm text-bff-700">
-                {es ? 'Respuesta confirmada' : 'Answer locked in'}{' '}
+                {zh ? '答案已锁定' : es ? 'Respuesta confirmada' : 'Answer locked in'}{' '}
                 <span aria-hidden="true">🔒</span>{' '}
-                {es ? '¡Mira la pantalla grande!' : 'Watch the big screen!'}
+                {zh ? '看大屏幕吧！' : es ? '¡Mira la pantalla grande!' : 'Watch the big screen!'}
               </span>
             )}
           </p>
@@ -364,27 +399,35 @@ export default function QuizPlay() {
           </p>
           <h1 className="font-display text-2xl font-bold text-slate-900">
             {myAnswer === undefined
-              ? es
-                ? 'El tiempo voló; no respondiste esta ronda'
-                : 'Time flew by — no answer this round'
-              : gotIt
-                ? es
-                  ? `¡Correcto! +${myAnswer.points.toLocaleString()} puntos`
-                  : `Correct! +${myAnswer.points.toLocaleString()} points`
+              ? zh
+                ? '时间到啦，这一轮你没有作答'
                 : es
-                  ? 'Esta vez no'
-                  : 'Not this time'}
+                  ? 'El tiempo voló; no respondiste esta ronda'
+                  : 'Time flew by — no answer this round'
+              : gotIt
+                ? zh
+                  ? `答对了！+${myAnswer.points.toLocaleString()} 分`
+                  : es
+                    ? `¡Correcto! +${myAnswer.points.toLocaleString()} puntos`
+                    : `Correct! +${myAnswer.points.toLocaleString()} points`
+                : zh
+                  ? '这次没答对'
+                  : es
+                    ? 'Esta vez no'
+                    : 'Not this time'}
           </h1>
           <p className="text-slate-600">
-            {es ? 'La respuesta era ' : 'The answer was '}
+            {zh ? '正确答案是 ' : es ? 'La respuesta era ' : 'The answer was '}
             <strong>{optionLetter(q.answerIndex)}</strong>:{' '}
             <strong>{q.options[q.answerIndex]}</strong>
           </p>
           {myRank > 0 && (
             <p className="font-display text-lg font-bold text-bff-700">
-              {es
-                ? `Vas #${myRank} de ${standings.length} con ${myScore.toLocaleString()} puntos`
-                : `You're #${myRank} of ${standings.length} with ${myScore.toLocaleString()} points`}
+              {zh
+                ? `你目前排在第 ${myRank} 名，共 ${standings.length} 人，${myScore.toLocaleString()} 分`
+                : es
+                  ? `Vas #${myRank} de ${standings.length} con ${myScore.toLocaleString()} puntos`
+                  : `You're #${myRank} of ${standings.length} with ${myScore.toLocaleString()} points`}
             </p>
           )}
         </div>
@@ -398,20 +441,24 @@ export default function QuizPlay() {
           </p>
           <div>
             <h1 className="font-display text-2xl font-bold text-slate-900">
-              {es
-                ? `Terminaste #${myRank || standings.length} de ${standings.length}`
-                : `You finished #${myRank || standings.length} of ${standings.length}`}
+              {zh
+                ? `你排在第 ${myRank || standings.length} 名，共 ${standings.length} 人`
+                : es
+                  ? `Terminaste #${myRank || standings.length} de ${standings.length}`
+                  : `You finished #${myRank || standings.length} of ${standings.length}`}
             </h1>
             <p className="mt-1 font-display text-lg font-bold text-bff-700">
-              {es
-                ? `${myScore.toLocaleString()} puntos`
-                : `${myScore.toLocaleString()} points`}
+              {zh
+                ? `${myScore.toLocaleString()} 分`
+                : es
+                  ? `${myScore.toLocaleString()} puntos`
+                  : `${myScore.toLocaleString()} points`}
             </p>
           </div>
           {standings.length > 0 && (
             <div className="mx-auto max-w-sm text-left">
               <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-slate-500">
-                {es ? 'Mejores jugadores' : 'Top players'}
+                {zh ? '最佳玩家' : es ? 'Mejores jugadores' : 'Top players'}
               </p>
               <ol className="space-y-1.5">
                 {standings.slice(0, 5).map((p, i) => (
@@ -428,20 +475,24 @@ export default function QuizPlay() {
                         {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`}
                       </span>
                       <span className="sr-only">
-                        {es
-                          ? `puesto ${i + 1}, `
-                          : `${i + 1}${['st', 'nd', 'rd'][i] ?? 'th'} place, `}
+                        {zh
+                          ? `第 ${i + 1} 名，`
+                          : es
+                            ? `puesto ${i + 1}, `
+                            : `${i + 1}${['st', 'nd', 'rd'][i] ?? 'th'} place, `}
                       </span>{' '}
                       {p.nickname}
                     </span>
-                    <span className="font-display font-bold">{p.score.toLocaleString()} pts</span>
+                    <span className="font-display font-bold">
+                      {p.score.toLocaleString()} {zh ? '分' : 'pts'}
+                    </span>
                   </li>
                 ))}
               </ol>
             </div>
           )}
           <Link to="/activities" className="btn-primary">
-            {es ? 'Más actividades' : 'More activities'}
+            {zh ? '更多活动' : es ? 'Más actividades' : 'More activities'}
           </Link>
         </div>
       )}
