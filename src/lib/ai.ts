@@ -15,7 +15,7 @@ export class AINotConfiguredError extends Error {}
  * Invoke an AI edge function. Throws AINotConfiguredError when the server has no
  * Anthropic key set yet, so the UI can show a friendly "not set up" message.
  */
-export async function invokeAI<T>(fn: string, body: unknown): Promise<T> {
+export async function invokeAI<T>(fn: string, body: Record<string, unknown>): Promise<T> {
   if (!supabase) throw new AINotConfiguredError('AI backend not connected.')
   const { data, error } = await supabase.functions.invoke(fn, { body })
   if (error) {
