@@ -178,6 +178,7 @@ function SectionView({
   onSelect: (i: number) => void
   onVideoDone: () => void
 }) {
+  const { tr } = useLang()
   switch (section.type) {
     case 'intro':
       return (
@@ -213,7 +214,8 @@ function SectionView({
         <div className="animate-slide-up">
           <h2 className="font-display text-2xl font-bold text-slate-900">{section.heading}</h2>
           <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-bff-700">
-            Key terms <span aria-hidden="true">🔑</span>
+            {tr({ en: 'Key terms', es: 'Términos clave', zh: '关键术语' })}{' '}
+            <span aria-hidden="true">🔑</span>
           </p>
           <div className="mt-5 grid gap-4 sm:grid-cols-2">
             {section.terms.map((t) => (
@@ -238,7 +240,7 @@ function SectionView({
     case 'checkpoint':
       return (
         <MultipleChoice
-          kicker="Checkpoint"
+          kicker={tr({ en: 'Checkpoint', es: 'Punto de control', zh: '检查点' })}
           kickerEmoji="🧠"
           question={section.checkpoint.question}
           options={section.checkpoint.options}
@@ -252,7 +254,8 @@ function SectionView({
       return (
         <div className="animate-slide-up">
           <p className="chip bg-red-100 text-red-700">
-            <span aria-hidden="true">🎬</span> Watch & answer
+            <span aria-hidden="true">🎬</span>{' '}
+            {tr({ en: 'Watch & answer', es: 'Mira y responde', zh: '观看并回答' })}
           </p>
           <h2 className="mt-4 font-display text-2xl font-bold text-slate-900">
             {section.heading}
@@ -266,7 +269,9 @@ function SectionView({
               onDone={onVideoDone}
             />
           </div>
-          <p className="mt-3 text-xs text-slate-500">Video: {section.source}</p>
+          <p className="mt-3 text-xs text-slate-500">
+            {tr({ en: 'Video', es: 'Video', zh: '视频' })}: {section.source}
+          </p>
         </div>
       )
   }
@@ -278,7 +283,7 @@ type Phase = 'lesson' | 'quiz' | 'results'
 
 function LessonPlayer({ lesson }: { lesson: Lesson }) {
   const { student } = useStudent()
-  const { lang, t } = useLang()
+  const { lang, t, tr } = useLang()
   const loc = useMemo(() => localizeLesson(lesson, lang), [lesson, lang])
   const [phase, setPhase] = useState<Phase>('lesson')
   const [sectionIndex, setSectionIndex] = useState(0)
@@ -582,7 +587,7 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
           </div>
           <div
             role="progressbar"
-            aria-label={`Lesson progress: ${stepLabel}`}
+            aria-label={`${tr({ en: 'Lesson progress', es: 'Progreso de la lección', zh: '课程进度' })}: ${stepLabel}`}
             aria-valuenow={percent}
             aria-valuemin={0}
             aria-valuemax={100}
@@ -651,6 +656,7 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
 
 export default function LessonPage() {
   const { slug } = useParams<{ slug: string }>()
+  const { tr } = useLang()
   const lesson = slug ? getLesson(slug) : undefined
 
   if (!lesson) {
@@ -658,18 +664,21 @@ export default function LessonPage() {
       <div className="mx-auto max-w-xl px-4 py-24 text-center">
         <p className="text-6xl" aria-hidden="true">🔎</p>
         <h1 className="mt-6 font-display text-3xl font-bold text-slate-900">
-          Lesson not found
+          {tr({ en: 'Lesson not found', es: 'Lección no encontrada', zh: '未找到课程' })}
         </h1>
         <p className="mt-3 text-slate-600">
-          We looked everywhere, but this lesson seems to have left the syllabus. Check the
-          address, or browse the full curriculum.
+          {tr({
+            en: 'We looked everywhere, but this lesson seems to have left the syllabus. Check the address, or browse the full curriculum.',
+            es: 'Buscamos por todas partes, pero esta lección parece haber salido del temario. Revisa la dirección o explora todo el plan de estudios.',
+            zh: '我们到处都找过了，但这节课似乎已经不在课程表里了。请检查网址，或浏览完整课程。',
+          })}
         </p>
         <div className="mt-8 flex justify-center gap-3">
           <Link to="/lessons" className="btn-primary">
-            Browse lessons
+            {tr({ en: 'Browse lessons', es: 'Explorar lecciones', zh: '浏览课程' })}
           </Link>
           <Link to="/" className="btn-ghost">
-            Go home
+            {tr({ en: 'Go home', es: 'Ir al inicio', zh: '回到首页' })}
           </Link>
         </div>
       </div>

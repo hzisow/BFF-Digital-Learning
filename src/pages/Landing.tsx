@@ -191,7 +191,7 @@ export default function Landing() {
                     {description}
                   </p>
                   <p className="mt-4 text-xs font-semibold text-slate-500">
-                    <span aria-hidden="true">⏱️</span> ~{a.durationMin} min
+                    <span aria-hidden="true">⏱️</span> ~{a.durationMin} {zh ? '分钟' : 'min'}
                   </p>
                 </Link>
               )

@@ -229,14 +229,14 @@ export default function Layout() {
         href="#main-content"
         className="sr-only z-50 rounded-lg bg-bff-700 px-4 py-2 font-display font-semibold text-white focus:not-sr-only focus:absolute focus:left-4 focus:top-4"
       >
-        Skip to main content
+        {t('a11y.skip')}
       </a>
       <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4">
           <Link
             to="/"
             className="flex shrink-0 items-center gap-2"
-            aria-label="BFF Classroom home"
+            aria-label={t('a11y.home')}
           >
             <Logo className="h-9" />
             <span className="hidden font-display text-lg font-bold text-bff-800 sm:block">
@@ -245,7 +245,7 @@ export default function Layout() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden items-center gap-1 md:flex" aria-label="Primary">
+          <nav className="hidden items-center gap-1 md:flex" aria-label={t('a11y.primaryNav')}>
             {links}
             <SoundToggle />
             <LangSwitcher />
@@ -294,7 +294,7 @@ export default function Layout() {
         {menuOpen && (
           <nav
             id="mobile-menu"
-            aria-label="Primary"
+            aria-label={t('a11y.primaryNav')}
             className="animate-slide-up border-t border-slate-200 bg-white px-4 py-3 md:hidden"
           >
             <div className="flex flex-col gap-1">
@@ -345,9 +345,7 @@ export default function Layout() {
               <p className="font-display text-sm font-bold text-bff-800">
                 Building Financial Futures of America
               </p>
-              <p className="text-xs text-slate-500">
-                Free financial literacy for every student. 501(c)(3) nonprofit.
-              </p>
+              <p className="text-xs text-slate-500">{t('footer.tagline')}</p>
             </div>
           </div>
           <a

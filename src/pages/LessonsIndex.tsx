@@ -5,7 +5,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ACTIVITIES } from '../lib/activities'
+import { ACTIVITIES, localizeActivity } from '../lib/activities'
 import type { ActivityMeta } from '../lib/activities'
 import { getLesson } from '../content/lessons'
 import { useLang } from '../lib/i18n'
@@ -127,13 +127,20 @@ function connectorPath(count: number, flip: boolean): string {
 
 // ---------- Bits ----------
 
-function Stars({ score }: { score: number | null }) {
+function Stars({ score, lang }: { score: number | null; lang: 'en' | 'es' | 'zh' }) {
   if (score == null) return null
   const n = score >= 90 ? 3 : score >= 70 ? 2 : 1
+  const pct = Math.round(score)
+  const label =
+    lang === 'zh'
+      ? `得分 ${pct}% — 3 颗星中的 ${n} 颗`
+      : lang === 'es'
+        ? `Puntaje ${pct}% — ${n} de 3 estrellas`
+        : `Score ${pct}% — ${n} of 3 stars`
   return (
     <span
       role="img"
-      aria-label={`Score ${Math.round(score)}% — ${n} of 3 stars`}
+      aria-label={label}
       className="mt-0.5 flex justify-center gap-0.5 text-sm leading-none"
     >
       {[0, 1, 2].map((i) => (
@@ -375,7 +382,7 @@ export default function LessonsIndex() {
         <div className="mx-auto mt-5 flex max-w-md items-center gap-3">
           <div
             role="progressbar"
-            aria-label="Course progress"
+            aria-label={zh ? '课程进度' : es ? 'Progreso del curso' : 'Course progress'}
             aria-valuenow={Math.round((doneCount / lessons.length) * 100)}
             aria-valuemin={0}
             aria-valuemax={100}
@@ -496,7 +503,17 @@ export default function LessonsIndex() {
                         <span
                           className={`absolute -top-9 left-1/2 z-10 -translate-x-1/2 animate-float whitespace-nowrap rounded-xl border-2 bg-white px-3 py-1 font-display text-xs font-extrabold uppercase tracking-wide ${theme.border} ${theme.text}`}
                         >
-                          {node.started ? 'Keep going' : 'Start'}
+                          {node.started
+                            ? zh
+                              ? '继续'
+                              : es
+                                ? 'Sigue'
+                                : 'Keep going'
+                            : zh
+                              ? '开始'
+                              : es
+                                ? 'Empezar'
+                                : 'Start'}
                         </span>
                       )}
                       {clickable ? (
@@ -504,8 +521,8 @@ export default function LessonsIndex() {
                           to={node.meta!.path}
                           aria-label={
                             node.state === 'done'
-                              ? `${label}, completed`
-                              : `${label}, current lesson`
+                              ? `${label}${zh ? '，已完成' : es ? ', completada' : ', completed'}`
+                              : `${label}${zh ? '，当前课程' : es ? ', lección actual' : ', current lesson'}`
                           }
                         >
                           {circle}
@@ -524,7 +541,7 @@ export default function LessonsIndex() {
                       ) : (
                         <button
                           type="button"
-                          aria-label={`${label}, locked — opens a confirmation`}
+                          aria-label={`${label}${zh ? '，已锁定 — 打开确认框' : es ? ', bloqueada — abre una confirmación' : ', locked — opens a confirmation'}`}
                           onClick={(e) => {
                             jumpTriggerRef.current = e.currentTarget
                             setJumpTarget(node.meta!)
@@ -560,7 +577,7 @@ export default function LessonsIndex() {
                         </p>
                         {sub && <p className="mt-0.5 text-[10px] font-semibold text-slate-500">{sub}</p>}
                         {node.kind === 'lesson' && node.state === 'done' && (
-                          <Stars score={node.score} />
+                          <Stars score={node.score} lang={lang} />
                         )}
                       </div>
                     </div>
@@ -600,9 +617,11 @@ export default function LessonsIndex() {
                   <h3 className="font-display font-bold text-slate-900 group-hover:text-bff-700">
                     {lessonTitle(meta)}
                   </h3>
-                  <p className="mt-1 text-sm leading-relaxed text-slate-600">{meta.description}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-slate-600">
+                    {localizeActivity(meta, lang).description}
+                  </p>
                   <p className="mt-2 text-xs font-semibold text-slate-500">
-                    ⏱️ ~{meta.durationMin} min
+                    ⏱️ ~{meta.durationMin} {zh ? '分钟' : 'min'}
                     {p?.status === 'completed'
                       ? zh
                         ? ' · 已完成！🎉'
@@ -628,15 +647,19 @@ export default function LessonsIndex() {
       <div className="card mt-16 flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-between sm:text-left">
         <div>
           <p className="font-display font-bold text-slate-900">
-            <span aria-hidden="true">🐺🏠☂️</span> Looking for the games?
+            <span aria-hidden="true">🐺🏠☂️</span>{' '}
+            {zh ? '在找游戏吗？' : es ? '¿Buscas los juegos?' : 'Looking for the games?'}
           </p>
           <p className="mt-1 text-sm text-slate-600">
-            Wolf of Wall Street and Ben's challenges are their own thing — play them anytime,
-            no path required.
+            {zh
+              ? 'Wolf of Wall Street 和 Ben 的挑战自成一体——随时都能玩，不需要跟着路径走。'
+              : es
+                ? 'Wolf of Wall Street y los desafíos de Ben van por su cuenta — juégalos cuando quieras, sin necesidad de la ruta.'
+                : "Wolf of Wall Street and Ben's challenges are their own thing — play them anytime, no path required."}
           </p>
         </div>
         <Link to="/activities" className="btn-secondary shrink-0">
-          Games & Challenges →
+          {zh ? '游戏与挑战 →' : es ? 'Juegos y desafíos →' : 'Games & Challenges →'}
         </Link>
       </div>
 
@@ -660,21 +683,26 @@ export default function LessonsIndex() {
               {zh ? `即将跳到 ${lessonTitle(jumpTarget)}？` : es ? `¿Saltando a ${lessonTitle(jumpTarget)}?` : `Jumping ahead to ${lessonTitle(jumpTarget)}?`}
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-slate-600">
-              This stop comes later on the path. If your mentor assigned it — or you're just
-              curious — go right ahead. The path will be here when you get back!
+              {zh
+                ? '这一站在路径上还比较靠后。如果是你的导师布置的——或者你只是好奇——尽管去吧。等你回来，路径还在这里！'
+                : es
+                  ? 'Esta parada viene más adelante en la ruta. Si tu mentor la asignó — o solo tienes curiosidad — adelante. ¡La ruta seguirá aquí cuando vuelvas!'
+                  : "This stop comes later on the path. If your mentor assigned it — or you're just curious — go right ahead. The path will be here when you get back!"}
             </p>
             <div className="mt-5 flex flex-col gap-2">
               <Link to={jumpTarget.path} className="btn-primary w-full">
-                Start it anyway <span aria-hidden="true">→</span>
+                {zh ? '还是要开始' : es ? 'Empezar de todos modos' : 'Start it anyway'}{' '}
+                <span aria-hidden="true">→</span>
               </Link>
               {current && (
                 <Link to={current.path} className="btn-secondary w-full">
-                  Take me to my next lesson (<span aria-hidden="true">{current.emoji}</span>{' '}
+                  {zh ? '带我去下一课（' : es ? 'Llévame a mi próxima lección (' : 'Take me to my next lesson ('}
+                  <span aria-hidden="true">{current.emoji}</span>{' '}
                   {lessonTitle(current)})
                 </Link>
               )}
               <button type="button" className="btn-ghost" onClick={() => setJumpTarget(null)}>
-                Never mind
+                {zh ? '算了' : es ? 'Déjalo' : 'Never mind'}
               </button>
             </div>
           </div>

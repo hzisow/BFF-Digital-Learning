@@ -31,6 +31,13 @@ const STRINGS: Record<string, Variants> = {
   'nav.myClass': { en: 'My Class', es: 'Mi clase', zh: '我的班级' },
   'nav.team': { en: 'Team', es: 'Equipo', zh: '团队' },
   'nav.dashboard': { en: 'Dashboard', es: 'Panel', zh: '仪表板' },
+  'a11y.skip': {
+    en: 'Skip to main content',
+    es: 'Saltar al contenido principal',
+    zh: '跳到主要内容',
+  },
+  'a11y.home': { en: 'BFF Classroom home', es: 'Inicio de BFF Classroom', zh: 'BFF Classroom 主页' },
+  'a11y.primaryNav': { en: 'Primary', es: 'Principal', zh: '主导航' },
   'footer.tagline': {
     en: 'Free financial literacy for every student. 501(c)(3) nonprofit.',
     es: 'Educación financiera gratuita para cada estudiante. Organización 501(c)(3).',

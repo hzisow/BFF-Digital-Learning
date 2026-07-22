@@ -327,7 +327,7 @@ export default function StudentHome() {
                       <div>
                         <p className="font-display font-bold text-slate-900">{local.title}</p>
                         <p className="text-xs font-semibold text-slate-500">
-                          {kindLabel(activity.kind, lang)} · ~{activity.durationMin} min
+                          {kindLabel(activity.kind, lang)} · ~{activity.durationMin} {zh ? '分钟' : 'min'}
                         </p>
                       </div>
                     </div>
@@ -412,7 +412,7 @@ export default function StudentHome() {
                 </p>
                 <div className="mt-3 flex items-center justify-between gap-2">
                   <span className="text-xs font-semibold text-slate-500">
-                    <span aria-hidden="true">⏱️</span> ~{a.durationMin} min
+                    <span aria-hidden="true">⏱️</span> ~{a.durationMin} {zh ? '分钟' : 'min'}
                   </span>
                   <ProgressChip progress={p} es={es} zh={zh} />
                 </div>
