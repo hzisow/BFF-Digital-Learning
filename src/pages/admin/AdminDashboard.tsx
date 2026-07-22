@@ -8,6 +8,7 @@ import { supabase } from '../../lib/supabase'
 import { useAdmin } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
 import HostLauncher from '../../components/HostLauncher'
+import { SkeletonCard } from '../../components/Skeleton'
 import { BackendOffCard } from './TeamAuth'
 import {
   approveTeamMember,
@@ -324,9 +325,15 @@ export default function AdminDashboard() {
         )}
 
         {loading ? (
-          <p role="status" className="mt-4 text-slate-500">
-            {es ? 'Cargando tus aulas…' : 'Loading your classrooms…'}
-          </p>
+          <div
+            className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+            role="status"
+            aria-label={es ? 'Cargando tus aulas…' : 'Loading your classrooms…'}
+          >
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+          </div>
         ) : (
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {classrooms.map((c) => (

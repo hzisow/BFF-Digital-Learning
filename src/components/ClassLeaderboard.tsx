@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { fetchLeaderboard, type LeaderboardRow } from '../lib/leaderboard'
 import { levelInfo } from '../lib/xp'
 import { useLang } from '../lib/i18n'
+import { SkeletonRow } from './Skeleton'
 
 const MEDALS = ['🥇', '🥈', '🥉']
 
@@ -61,9 +62,11 @@ export default function ClassLeaderboard({
       )}
 
       {loading && rows.length === 0 ? (
-        <p role="status" className="mt-4 text-sm text-slate-500">
-          {es ? 'Cargando…' : 'Loading…'}
-        </p>
+        <div className="mt-4 space-y-3" role="status" aria-label={es ? 'Cargando…' : 'Loading…'}>
+          <SkeletonRow />
+          <SkeletonRow />
+          <SkeletonRow />
+        </div>
       ) : rows.length === 0 ? (
         <p className="mt-4 text-sm text-slate-500">
           {es

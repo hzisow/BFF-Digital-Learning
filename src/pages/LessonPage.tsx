@@ -8,6 +8,8 @@ import { ACTIVITIES } from '../lib/activities'
 import { useLang, localizeLesson } from '../lib/i18n'
 import { saveProgress } from '../lib/progress'
 import { useStudent } from '../lib/session'
+import { playSound } from '../lib/sound'
+import { celebrate } from '../lib/celebrate'
 
 // Plain-text version of a step, for the read-aloud button.
 function sectionText(section: LessonSection): string {
@@ -323,6 +325,7 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
     const correct = loc.quiz.filter((q, i) => answers[i]?.chosen === q.answerIndex).length
     const pct = total > 0 ? Math.round((correct / total) * 100) : 100
     setPhase('results')
+    celebrate(pct === 100 ? 'perfect' : 'complete')
     void saveProgress(studentRef.current, lesson.slug, {
       status: 'completed',
       score: pct,
@@ -376,6 +379,7 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
   function answerCheckpoint(i: number) {
     if (section.type !== 'checkpoint') return
     const answerIndex = section.checkpoint.answerIndex
+    playSound(i === answerIndex ? 'correct' : 'wrong')
     setCheckpointAnswers((prev) => {
       const cur = prev[sectionIndex] ?? EMPTY_ANSWER
       if (cur.revealed) return prev
@@ -389,6 +393,9 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
   }
 
   function answerQuiz(i: number) {
+    if (!quizAnswers[quizIndex]?.revealed) {
+      playSound(i === loc.quiz[quizIndex].answerIndex ? 'correct' : 'wrong')
+    }
     setQuizAnswers((prev) => {
       const cur = prev[quizIndex] ?? EMPTY_ANSWER
       if (cur.revealed) return prev

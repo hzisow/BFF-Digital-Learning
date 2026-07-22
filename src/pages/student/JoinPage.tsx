@@ -1,8 +1,12 @@
-import { useState, type FormEvent } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { BACKEND_ENABLED } from '../../lib/config'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
+
+function cleanCode(raw: string): string {
+  return raw.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6)
+}
 
 function SoloModeCard() {
   const { lang } = useLang()
@@ -35,12 +39,25 @@ function JoinForm() {
   const navigate = useNavigate()
   const { lang } = useLang()
   const es = lang === 'es'
-  const [code, setCode] = useState('')
+  const [params] = useSearchParams()
+  // A shared join link (…/#/join?code=ABC123) pre-fills the code.
+  const prefilledCode = cleanCode(params.get('code') ?? '')
+  const [code, setCode] = useState(prefilledCode)
   const [nickname, setNickname] = useState('')
   const [pin, setPin] = useState('')
   const [confirmPin, setConfirmPin] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
+
+  const codeRef = useRef<HTMLInputElement>(null)
+  const nickRef = useRef<HTMLInputElement>(null)
+  // Focus the first empty field on load: the nickname if the code came prefilled.
+  useEffect(() => {
+    if (prefilledCode.length === 6) nickRef.current?.focus()
+    else codeRef.current?.focus()
+    // Run once on mount.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const pinMismatch = pin.length > 0 && confirmPin.length > 0 && pin !== confirmPin
 
@@ -94,13 +111,12 @@ function JoinForm() {
             {es ? 'Código de clase' : 'Class code'}
           </label>
           <input
+            ref={codeRef}
             id="class-code"
             className="input mt-1.5 text-center font-display text-2xl font-bold uppercase tracking-[0.35em]"
             placeholder="ABC123"
             value={code}
-            onChange={(e) =>
-              setCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6))
-            }
+            onChange={(e) => setCode(cleanCode(e.target.value))}
             maxLength={6}
             autoComplete="off"
             autoCapitalize="characters"
@@ -112,6 +128,7 @@ function JoinForm() {
             {es ? 'Tu apodo' : 'Your nickname'}
           </label>
           <input
+            ref={nickRef}
             id="nickname"
             className="input mt-1.5"
             placeholder={es ? 'p. ej. SavvySam' : 'e.g. SavvySam'}

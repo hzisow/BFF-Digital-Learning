@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { Logo } from './Logo'
 import { useAdmin, useStudent } from '../lib/session'
@@ -6,6 +6,33 @@ import { useLang } from '../lib/i18n'
 import type { Lang } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
 import { totalXp, levelInfo } from '../lib/xp'
+import { titleForPath } from '../lib/pageTitle'
+import { isSoundOn, setSoundOn, playSound } from '../lib/sound'
+import { celebrate } from '../lib/celebrate'
+import { useToast } from './ToastProvider'
+
+const LEVEL_KEY = 'bff_last_level'
+
+function SoundToggle() {
+  const [on, setOn] = useState(() => isSoundOn())
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        const next = !on
+        setSoundOn(next)
+        setOn(next)
+        if (next) playSound('click') // confirm it's audible now
+      }}
+      aria-pressed={on}
+      aria-label={on ? 'Mute sound effects' : 'Turn on sound effects'}
+      title={on ? 'Sound on' : 'Sound off'}
+      className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-800"
+    >
+      <span aria-hidden="true">{on ? '🔊' : '🔇'}</span>
+    </button>
+  )
+}
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `rounded-lg px-3 py-1.5 font-display text-sm font-semibold transition ${
@@ -73,7 +100,8 @@ function LangSwitcher() {
 export default function Layout() {
   const { student } = useStudent()
   const { adminUser } = useAdmin()
-  const { t } = useLang()
+  const { t, lang } = useLang()
+  const { toast } = useToast()
   const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation()
 
@@ -82,8 +110,52 @@ export default function Layout() {
     setMenuOpen(false)
   }, [location.pathname])
 
+  // Keep the browser tab title in sync with the route.
+  useEffect(() => {
+    document.title = titleForPath(location.pathname)
+  }, [location.pathname])
+
   // Recompute XP/level on each navigation so it reflects just-finished work.
   const level = useMemo(() => levelInfo(totalXp(loadLocalProgress())), [location.pathname])
+
+  // Detect a level-up between navigations and celebrate it once.
+  const leveledInit = useRef(false)
+  useEffect(() => {
+    let prev: number | null = null
+    try {
+      const raw = localStorage.getItem(LEVEL_KEY)
+      prev = raw == null ? null : Number(raw)
+    } catch {
+      prev = null
+    }
+    // First run on this device: record the baseline silently, don't celebrate.
+    if (!leveledInit.current && prev == null) {
+      leveledInit.current = true
+      try {
+        localStorage.setItem(LEVEL_KEY, String(level.level))
+      } catch {
+        /* ignore */
+      }
+      return
+    }
+    leveledInit.current = true
+    if (prev != null && level.level > prev) {
+      celebrate('levelup')
+      toast(
+        lang === 'es'
+          ? `¡Subiste de nivel! Ahora eres ${level.tier.name} ${level.tier.emoji}`
+          : `Level up! You're now a ${level.tier.name} ${level.tier.emoji}`,
+        'success',
+      )
+    }
+    if (prev == null || level.level !== prev) {
+      try {
+        localStorage.setItem(LEVEL_KEY, String(level.level))
+      } catch {
+        /* ignore */
+      }
+    }
+  }, [level.level, level.tier.name, level.tier.emoji, lang, toast])
 
   const links = (
     <>
@@ -154,11 +226,13 @@ export default function Layout() {
           {/* Desktop nav */}
           <nav className="hidden items-center gap-1 md:flex" aria-label="Primary">
             {links}
+            <SoundToggle />
             <LangSwitcher />
           </nav>
 
           {/* Mobile: compact language switch + hamburger */}
           <div className="flex items-center gap-2 md:hidden">
+            <SoundToggle />
             <LangSwitcher />
             <button
               type="button"

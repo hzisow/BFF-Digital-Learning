@@ -3,6 +3,7 @@ import { Logo } from '../components/Logo'
 import { getActivity, kindLabel, localizeActivity } from '../lib/activities'
 import type { ActivityMeta } from '../lib/activities'
 import { useLang } from '../lib/i18n'
+import { resumeLesson } from '../lib/resume'
 
 const FEATURED_SLUGS = ['wolf-of-wall-street', 'bens-budget', 'earning-income']
 
@@ -13,6 +14,7 @@ const featured: ActivityMeta[] = FEATURED_SLUGS.map(getActivity).filter(
 export default function Landing() {
   const { lang } = useLang()
   const es = lang === 'es'
+  const resume = resumeLesson()
 
   const STATS = [
     { value: '8', label: es ? 'lecciones interactivas' : 'interactive lessons' },
@@ -79,10 +81,16 @@ export default function Landing() {
               {es ? 'Únete a tu clase' : 'Join your class'} <span aria-hidden="true">🚀</span>
             </Link>
             <Link
-              to="/lessons"
+              to={resume ? resume.path : '/lessons'}
               className="inline-flex w-full items-center justify-center gap-2 rounded-xl border-2 border-white/60 px-7 py-3 font-display font-semibold text-white transition hover:border-white hover:bg-white/10 sm:w-auto"
             >
-              {es ? 'Explora las lecciones' : 'Explore lessons'}
+              {resume
+                ? es
+                  ? 'Continúa donde lo dejaste →'
+                  : 'Continue where you left off →'
+                : es
+                  ? 'Explora las lecciones'
+                  : 'Explore lessons'}
             </Link>
           </div>
         </div>

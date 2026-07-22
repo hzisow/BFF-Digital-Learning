@@ -5,10 +5,12 @@ import { BACKEND_ENABLED } from '../../lib/config'
 import type { ActivityProgress } from '../../lib/progress'
 import { loadLocalProgress } from '../../lib/progress'
 import { totalXp } from '../../lib/xp'
+import { resumeLesson } from '../../lib/resume'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
 import LevelCard from '../../components/LevelCard'
 import ClassLeaderboard from '../../components/ClassLeaderboard'
+import { SkeletonCard } from '../../components/Skeleton'
 
 interface AssignmentRow {
   activity_slug: string
@@ -116,6 +118,7 @@ export default function StudentHome() {
     (a) => progress[a.slug]?.status === 'completed',
   ).length
   const xp = useMemo(() => totalXp(progress), [progress])
+  const resume = useMemo(() => resumeLesson(), [])
 
   if (!student) {
     return <Navigate to="/join" replace />
@@ -214,6 +217,36 @@ export default function StudentHome() {
         </div>
       </div>
 
+      {/* Continue where you left off */}
+      {resume && (
+        <Link
+          to={resume.path}
+          className="mt-6 flex items-center justify-between gap-4 rounded-2xl border border-bff-200 bg-bff-50 px-6 py-4 transition hover:border-bff-300 hover:bg-bff-100"
+        >
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-bff-600">
+              {resume.inProgress
+                ? es
+                  ? 'Continúa donde lo dejaste'
+                  : 'Continue where you left off'
+                : es
+                  ? 'Tu próxima lección'
+                  : 'Your next lesson'}
+            </p>
+            <p className="mt-0.5 font-display text-lg font-bold text-slate-900">
+              {(() => {
+                const meta = getActivity(resume.slug)
+                return meta ? localizeActivity(meta, lang).title : resume.title
+              })()}
+            </p>
+          </div>
+          <span className="btn-primary shrink-0 px-4 py-2 text-sm">
+            {resume.inProgress ? (es ? 'Continuar' : 'Continue') : es ? 'Empezar' : 'Start'}{' '}
+            <span aria-hidden="true">→</span>
+          </span>
+        </Link>
+      )}
+
       {/* Class leaderboard */}
       {BACKEND_ENABLED && classroomId && (
         <section className="mt-8">
@@ -235,9 +268,14 @@ export default function StudentHome() {
           </p>
         )}
         {assignments === null ? (
-          <p role="status" className="mt-4 text-sm text-slate-500">
-            {es ? 'Cargando tus tareas…' : 'Loading your assignments…'}
-          </p>
+          <div
+            className="mt-4 grid gap-4 sm:grid-cols-2"
+            role="status"
+            aria-label={es ? 'Cargando tus tareas…' : 'Loading your assignments…'}
+          >
+            <SkeletonCard />
+            <SkeletonCard />
+          </div>
         ) : assignments.length === 0 ? (
           !loadError && (
             <div className="card mt-4 text-center">

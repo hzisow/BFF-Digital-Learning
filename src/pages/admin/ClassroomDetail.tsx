@@ -9,6 +9,7 @@ import { ACTIVITIES, getActivity } from '../../lib/activities'
 import { toCsv, downloadCsv } from '../../lib/csv'
 import HostLauncher from '../../components/HostLauncher'
 import ClassLeaderboard from '../../components/ClassLeaderboard'
+import { useToast } from '../../components/ToastProvider'
 import { BackendOffCard } from './TeamAuth'
 import {
   addAssignment,
@@ -57,6 +58,7 @@ export default function ClassroomDetail() {
   const { adminUser, adminReady } = useAdmin()
   const { lang } = useLang()
   const es = lang === 'es'
+  const { toast } = useToast()
   const navigate = useNavigate()
   const uid = adminUser?.id ?? null
   const { copied, copy } = useCopy()
@@ -369,6 +371,17 @@ export default function ClassroomDetail() {
               }
             >
               <span aria-hidden="true">{copied ? (es ? '✓ Copiado' : '✓ Copied') : es ? 'Copiar' : 'Copy'}</span>
+            </button>
+            <button
+              type="button"
+              className="btn-ghost text-sm"
+              onClick={() => {
+                const link = `${window.location.href.split('#')[0]}#/join?code=${classroom.code}`
+                void navigator.clipboard?.writeText(link)
+                toast(es ? '¡Enlace para unirse copiado!' : 'Join link copied!', 'success')
+              }}
+            >
+              <span aria-hidden="true">🔗</span> {es ? 'Copiar enlace' : 'Copy join link'}
             </button>
             <span role="status" className="sr-only">
               {copied ? (es ? `Código de clase ${classroom.code} copiado` : `Class code ${classroom.code} copied`) : ''}
