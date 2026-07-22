@@ -69,14 +69,34 @@ function FlagES() {
   )
 }
 
+function FlagCN() {
+  return (
+    <svg viewBox="0 0 20 14" className={flagClass} aria-hidden="true" focusable="false">
+      <rect width="20" height="14" fill="#de2910" />
+      <path fill="#ffde00" d="m3.5 2.2 0.65 2 1.7 0-1.37 1.02 0.52 2-1.5-1.24-1.5 1.24 0.52-2-1.37-1.02 1.7 0z" />
+      <g fill="#ffde00">
+        <circle cx="8" cy="1.6" r="0.5" />
+        <circle cx="9.3" cy="2.8" r="0.5" />
+        <circle cx="9.3" cy="4.5" r="0.5" />
+        <circle cx="8" cy="5.6" r="0.5" />
+      </g>
+    </svg>
+  )
+}
+
 function LangSwitcher() {
   const { lang, setLang } = useLang()
+  const ariaFor: Record<Lang, string> = {
+    en: 'Switch to English',
+    es: 'Cambiar a español',
+    zh: '切换到中文',
+  }
   const opt = (l: Lang, label: string, flag: ReactNode) => (
     <button
       type="button"
       onClick={() => setLang(l)}
       aria-pressed={lang === l}
-      aria-label={l === 'en' ? 'Switch to English' : 'Cambiar a español'}
+      aria-label={ariaFor[l]}
       className={`flex items-center gap-1.5 rounded-md px-2 py-1 font-display text-xs font-bold transition ${
         lang === l ? 'bg-white text-bff-700 shadow-sm' : 'text-slate-600 hover:text-slate-800'
       }`}
@@ -89,10 +109,11 @@ function LangSwitcher() {
     <div
       className="ml-1 flex items-center gap-0.5 rounded-lg bg-slate-100 p-0.5"
       role="group"
-      aria-label="Language / Idioma"
+      aria-label="Language / Idioma / 语言"
     >
       {opt('en', 'EN', <FlagUS />)}
       {opt('es', 'ES', <FlagES />)}
+      {opt('zh', '中', <FlagCN />)}
     </div>
   )
 }

@@ -51,8 +51,9 @@ export interface QuizQuestion {
   explanation: string
 }
 
-/** Spanish variant of a lesson's translatable content. Any field left out
- *  falls back to English (the app shows a small "English only" note then). */
+/** A translated variant of a lesson's content. Any field left out falls back to
+ *  English (the app shows a small "English only" note then). Used for both
+ *  Spanish (es) and Simplified Chinese (zh). */
 export interface LessonTranslation {
   title?: string
   description?: string
@@ -73,4 +74,6 @@ export interface Lesson {
   /** Spanish translation (es). Video sections keep the same videoId/timestamps
    *  with translated question text. */
   es?: LessonTranslation
+  /** Simplified Chinese translation (zh). Same structure as `es`. */
+  zh?: LessonTranslation
 }

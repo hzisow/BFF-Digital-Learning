@@ -177,9 +177,19 @@ const KIND_LABEL_ES: Record<ActivityKind, string> = {
   game: 'Juego',
 }
 
+const KIND_LABEL_ZH: Record<ActivityKind, string> = {
+  lesson: '课程',
+  elective: '选修',
+  challenge: '挑战',
+  game: '游戏',
+}
+
+type ActLang = 'en' | 'es' | 'zh'
+
 /** Localized label for an activity kind. */
-export function kindLabel(kind: ActivityKind, lang: 'en' | 'es'): string {
-  return (lang === 'es' ? KIND_LABEL_ES : KIND_LABEL)[kind]
+export function kindLabel(kind: ActivityKind, lang: ActLang): string {
+  const table = lang === 'es' ? KIND_LABEL_ES : lang === 'zh' ? KIND_LABEL_ZH : KIND_LABEL
+  return table[kind]
 }
 
 // Spanish titles/descriptions for every activity, keyed by slug. Titles that are
@@ -278,15 +288,104 @@ const ACTIVITY_ES: Record<string, { title?: string; description: string }> = {
   },
 }
 
+// Simplified Chinese titles/descriptions, keyed by slug. Proper-noun titles
+// (e.g. "Wolf of Wall Street") intentionally stay in English.
+const ACTIVITY_ZH: Record<string, { title?: string; description: string }> = {
+  'earning-income': {
+    title: '赚取收入',
+    description: '工资单、职业、税收，以及金钱是如何赚来的。',
+  },
+  'spending-budgeting': {
+    title: '消费与预算',
+    description: '需要与想要，以及制定一个真正可行的预算。',
+  },
+  'saving-investing': {
+    title: '储蓄与投资',
+    description: '为什么及早储蓄更有利，以及投资如何让钱增值。',
+  },
+  'credit-debt': {
+    title: '信用与债务',
+    description: '信用评分、借贷，以及远离债务陷阱。',
+  },
+  'risk-insurance': {
+    title: '风险管理与保险',
+    description: '保护你自己和你的钱免受意外冲击。',
+  },
+  'financial-decision-making': {
+    title: '理财决策',
+    description: '用实用的决策工具做出明智的金钱选择。',
+  },
+  'financial-planning': {
+    title: '财务规划',
+    description: '设定目标，为你的财务未来制定计划。',
+  },
+  'consumer-protection': {
+    title: '消费者保护',
+    description: '识别骗局、欺诈，并了解你的权利。',
+  },
+  'wolf-of-wall-street': {
+    description: '用 $1,000 投资 12 家公司，应对突发新闻，在市场中生存。可单人游玩或与全班实时对战。',
+  },
+  'bens-budget': {
+    title: '本的处境',
+    description: '帮助本（中学老师，三个孩子，预算紧张）熬过这个月，同时还能为海滩之旅存钱。',
+  },
+  'bens-insurance': {
+    title: '本的保险难题',
+    description: '本有 $500 用于保险。为他选择保障——然后看看这个月给他一家带来了什么。',
+  },
+  'paystub-detective': {
+    title: '工资单侦探',
+    description: '三张工资单，暗藏错误。在有人损失金钱之前找出每个错误——核对工资很值得。',
+  },
+  'credit-score-sim': {
+    title: '信用评分养成',
+    description: '十个月真实的信用决策。看着你的分数随每个选择上升——或暴跌。',
+  },
+  'scam-spotter': {
+    title: '骗局识别器',
+    description: '八条消息涌入你的收件箱。有些是真的，有些是骗局。你能识别出每个危险信号吗？',
+  },
+  'smart-shopper': {
+    title: '精明购物者',
+    description: '六组正面交锋的优惠，货架标签会骗人。算清账，战胜营销套路。',
+  },
+  'goal-getter': {
+    title: '目标达人',
+    description: '三个储蓄目标，每月 $200，而生活总有意外。明智分配，按时达成每个目标。',
+  },
+  'first-paycheck': {
+    title: '你的第一张工资单',
+    description: '读懂真实工资单：税前与税后、税收、FICA，以及如何发现错误。',
+  },
+  'taxes-deep-dive': {
+    title: '税收深入解析',
+    description: '税收去了哪里，税率档次如何运作，以及为什么会有退税。',
+  },
+  'paying-for-college': {
+    title: '支付大学费用',
+    description: 'FAFSA、助学金、奖学金、贷款，以及如何像专家一样比较录取方案。',
+  },
+  entrepreneurship: {
+    title: '创业与副业',
+    description: '把技能变成收入：定价、利润，以及你的第一份生意。',
+  },
+  'crypto-and-scams': {
+    title: '加密货币与现代金钱陷阱',
+    description: '加密货币、炒作、赌博和“先买后付”——在它们让你破财之前识破陷阱。',
+  },
+}
+
 /** Activity title + description in the active language (English fallback). */
 export function localizeActivity(
   meta: ActivityMeta,
-  lang: 'en' | 'es',
+  lang: ActLang,
 ): { title: string; description: string } {
-  if (lang !== 'es') return { title: meta.title, description: meta.description }
-  const es = ACTIVITY_ES[meta.slug]
+  const table = lang === 'es' ? ACTIVITY_ES : lang === 'zh' ? ACTIVITY_ZH : null
+  if (!table) return { title: meta.title, description: meta.description }
+  const v = table[meta.slug]
   return {
-    title: es?.title ?? meta.title,
-    description: es?.description ?? meta.description,
+    title: v?.title ?? meta.title,
+    description: v?.description ?? meta.description,
   }
 }
