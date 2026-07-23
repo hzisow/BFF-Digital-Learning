@@ -3,6 +3,7 @@
 
 import { useEffect, useState, type FormEvent } from 'react'
 import { Link, Navigate } from 'react-router-dom'
+import { ArrowLeft, Check } from 'lucide-react'
 import { BACKEND_ENABLED } from '../../lib/config'
 import { supabase } from '../../lib/supabase'
 import { useAdmin } from '../../lib/session'
@@ -75,8 +76,8 @@ export default function AccountPage() {
   return (
     <div className="mx-auto max-w-md px-4 py-12">
       <div className="mb-6">
-        <Link to="/admin" className="text-sm font-semibold text-bff-700 hover:underline">
-          <span aria-hidden="true">←</span> {zh ? '返回仪表板' : es ? 'Volver al panel' : 'Back to dashboard'}
+        <Link to="/admin" className="inline-flex items-center gap-1 text-sm font-semibold text-bff-700 hover:underline">
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" /> {zh ? '返回仪表板' : es ? 'Volver al panel' : 'Back to dashboard'}
         </Link>
         <h1 className="mt-3 font-display text-3xl font-bold text-slate-900">{zh ? '您的账户' : es ? 'Tu cuenta' : 'Your account'}</h1>
         <p className="mt-2 text-slate-600">
@@ -126,8 +127,8 @@ export default function AccountPage() {
             </p>
           )}
           {done && (
-            <p role="status" className="rounded-xl bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
-              {zh ? '已保存！' : es ? '¡Guardado!' : 'Saved!'} <span aria-hidden="true">✅</span>
+            <p role="status" className="inline-flex items-center gap-1.5 rounded-xl bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
+              <Check className="h-4 w-4" aria-hidden="true" /> {zh ? '已保存！' : es ? '¡Guardado!' : 'Saved!'}
             </p>
           )}
 

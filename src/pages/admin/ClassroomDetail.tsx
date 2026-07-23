@@ -2,6 +2,20 @@
 
 import { useCallback, useEffect, useState, type FormEvent } from 'react'
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
+import {
+  ArrowLeft,
+  Backpack,
+  Check,
+  ClipboardList,
+  Copy,
+  Download,
+  Link2,
+  Play,
+  RefreshCw,
+  Search,
+  Users,
+  X,
+} from 'lucide-react'
 import { BACKEND_ENABLED } from '../../lib/config'
 import { useAdmin } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
@@ -39,7 +53,9 @@ function ProgressChip({ row, zh, es }: { row: ProgressRow | undefined; zh: boole
   if (row.status === 'completed') {
     return (
       <span className="chip bg-green-100 text-green-700">
-        <span aria-hidden="true">✓{row.score != null ? ` ${row.score}` : ''}</span>
+        <span aria-hidden="true" className="inline-flex items-center gap-0.5">
+          <Check className="h-3.5 w-3.5" aria-hidden="true" />{row.score != null ? ` ${row.score}` : ''}
+        </span>
         <span className="sr-only">
           {zh ? '已完成' : es ? 'Completado' : 'Completed'}{row.score != null ? `${zh ? '，得分 ' : es ? ', puntuación ' : ', score '}${row.score}` : ''}
         </span>
@@ -122,9 +138,7 @@ export default function ClassroomDetail() {
     return (
       <div className="mx-auto max-w-lg px-4 py-16">
         <div className="card text-center">
-          <div className="text-4xl" aria-hidden>
-            🔍
-          </div>
+          <Search className="mx-auto h-9 w-9 text-slate-400" aria-hidden="true" />
           <h1 className="mt-3 font-display text-2xl font-bold text-slate-900">
             {zh ? '未找到班级' : es ? 'Aula no encontrada' : 'Classroom not found'}
           </h1>
@@ -136,7 +150,8 @@ export default function ClassroomDetail() {
                 : "This class doesn't exist, was archived, or belongs to another mentor."}
           </p>
           <Link to="/admin" className="btn-secondary mt-6">
-            {zh ? '← 返回仪表板' : es ? '← Volver al panel' : '← Back to dashboard'}
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            {zh ? '返回仪表板' : es ? 'Volver al panel' : 'Back to dashboard'}
           </Link>
         </div>
       </div>
@@ -165,7 +180,8 @@ export default function ClassroomDetail() {
             {zh ? '重试' : es ? 'Intentar de nuevo' : 'Try again'}
           </button>
           <Link to="/admin" className="btn-ghost">
-            {zh ? '← 仪表板' : es ? '← Panel' : '← Dashboard'}
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            {zh ? '仪表板' : es ? 'Panel' : 'Dashboard'}
           </Link>
         </div>
       </div>
@@ -342,8 +358,8 @@ export default function ClassroomDetail() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
       {/* ---------- Header ---------- */}
-      <Link to="/admin" className="text-sm font-semibold text-bff-700 hover:text-bff-800">
-        <span aria-hidden="true">←</span> {zh ? '所有班级' : es ? 'Todas las aulas' : 'All classrooms'}
+      <Link to="/admin" className="inline-flex items-center gap-1 text-sm font-semibold text-bff-700 hover:text-bff-800">
+        <ArrowLeft className="h-4 w-4" aria-hidden="true" /> {zh ? '所有班级' : es ? 'Todas las aulas' : 'All classrooms'}
       </Link>
       <div className="mt-3 flex flex-wrap items-start justify-between gap-4">
         <div>
@@ -385,7 +401,10 @@ export default function ClassroomDetail() {
                       : `Copy class code ${classroom.code}`
               }
             >
-              <span aria-hidden="true">{copied ? (zh ? '✓ 已复制' : es ? '✓ Copiado' : '✓ Copied') : zh ? '复制' : es ? 'Copiar' : 'Copy'}</span>
+              <span aria-hidden="true" className="inline-flex items-center gap-1.5">
+                {copied ? <Check className="h-4 w-4" aria-hidden="true" /> : <Copy className="h-4 w-4" aria-hidden="true" />}
+                {copied ? (zh ? '已复制' : es ? 'Copiado' : 'Copied') : zh ? '复制' : es ? 'Copiar' : 'Copy'}
+              </span>
             </button>
             <button
               type="button"
@@ -396,7 +415,7 @@ export default function ClassroomDetail() {
                 toast(zh ? '加入链接已复制！' : es ? '¡Enlace para unirse copiado!' : 'Join link copied!', 'success')
               }}
             >
-              <span aria-hidden="true">🔗</span> {zh ? '复制加入链接' : es ? 'Copiar enlace' : 'Copy join link'}
+              <Link2 className="h-4 w-4" aria-hidden="true" /> {zh ? '复制加入链接' : es ? 'Copiar enlace' : 'Copy join link'}
             </button>
             <span role="status" className="sr-only">
               {copied ? (zh ? `班级代码 ${classroom.code} 已复制` : es ? `Código de clase ${classroom.code} copiado` : `Class code ${classroom.code} copied`) : ''}
@@ -410,7 +429,7 @@ export default function ClassroomDetail() {
             onClick={() => void load()}
             disabled={loading}
           >
-            <span aria-hidden="true">↻</span> {loading ? (zh ? '刷新中…' : es ? 'Actualizando…' : 'Refreshing…') : zh ? '刷新' : es ? 'Actualizar' : 'Refresh'}
+            <RefreshCw className="h-4 w-4" aria-hidden="true" /> {loading ? (zh ? '刷新中…' : es ? 'Actualizando…' : 'Refreshing…') : zh ? '刷新' : es ? 'Actualizar' : 'Refresh'}
           </button>
           <button
             type="button"
@@ -435,7 +454,8 @@ export default function ClassroomDetail() {
       <div className="mt-10 grid gap-8 lg:grid-cols-2">
         {/* ---------- Assignments ---------- */}
         <section>
-          <h2 className="font-display text-xl font-bold text-slate-900">
+          <h2 className="flex items-center gap-2 font-display text-xl font-bold text-slate-900">
+            <ClipboardList className="h-5 w-5 text-bff-600" aria-hidden="true" />
             {zh ? '作业' : es ? 'Tareas' : 'Assignments'}
           </h2>
 
@@ -473,7 +493,7 @@ export default function ClassroomDetail() {
                       onClick={() => void handleUnassign(a)}
                       aria-label={zh ? `移除作业 ${meta?.title ?? a.activity_slug}` : es ? `Quitar la tarea ${meta?.title ?? a.activity_slug}` : `Remove assignment ${meta?.title ?? a.activity_slug}`}
                     >
-                      <span aria-hidden="true">✕</span>
+                      <X className="h-4 w-4" aria-hidden="true" />
                     </button>
                   </li>
                 )
@@ -574,7 +594,10 @@ export default function ClassroomDetail() {
 
         {/* ---------- Live game ---------- */}
         <section>
-          <h2 className="font-display text-xl font-bold text-slate-900">{zh ? '实时游戏' : es ? 'Juego en vivo' : 'Live game'}</h2>
+          <h2 className="flex items-center gap-2 font-display text-xl font-bold text-slate-900">
+            <Play className="h-5 w-5 text-bff-600" aria-hidden="true" />
+            {zh ? '实时游戏' : es ? 'Juego en vivo' : 'Live game'}
+          </h2>
           <div className="mt-4">
             <HostLauncher classroomId={classroom.id} />
           </div>
@@ -584,7 +607,8 @@ export default function ClassroomDetail() {
       {/* ---------- Students & progress ---------- */}
       <section className="mt-12">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="font-display text-xl font-bold text-slate-900">
+          <h2 className="flex items-center gap-2 font-display text-xl font-bold text-slate-900">
+            <Users className="h-5 w-5 text-bff-600" aria-hidden="true" />
             {zh ? '学生与进度' : es ? 'Estudiantes y progreso' : 'Students & progress'}
           </h2>
           {students.length > 0 && (
@@ -593,7 +617,7 @@ export default function ClassroomDetail() {
               className="btn-secondary text-sm"
               onClick={handleExportCsv}
             >
-              <span aria-hidden="true">⬇</span> {zh ? '导出 CSV' : es ? 'Exportar CSV' : 'Export CSV'}
+              <Download className="h-4 w-4" aria-hidden="true" /> {zh ? '导出 CSV' : es ? 'Exportar CSV' : 'Export CSV'}
             </button>
           )}
         </div>
@@ -641,9 +665,7 @@ export default function ClassroomDetail() {
 
         {students.length === 0 ? (
           <div className="card mt-4 text-center">
-            <div className="text-3xl" aria-hidden>
-              🎒
-            </div>
+            <Backpack className="mx-auto h-8 w-8 text-slate-400" aria-hidden="true" />
             <p className="mt-2 font-display font-semibold text-slate-700">
               {zh ? '还没有学生' : es ? 'Aún no hay estudiantes' : 'No students yet'}
             </p>

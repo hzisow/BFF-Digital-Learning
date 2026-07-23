@@ -8,6 +8,7 @@
 
 import { useMemo, useState, type FormEvent } from 'react'
 import { Navigate } from 'react-router-dom'
+import { Check, Copy, Download, Printer, Sparkles, Wand2 } from 'lucide-react'
 import { invokeAI, AI_ENABLED, AINotConfiguredError } from '../../lib/ai'
 import { useLang } from '../../lib/i18n'
 import { useAdmin } from '../../lib/session'
@@ -256,7 +257,8 @@ export default function LessonPlanGenerator() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">
       <header className="mb-8">
-        <p className="text-sm font-semibold uppercase tracking-wide text-bff-700">
+        <p className="eyebrow">
+          <Wand2 className="h-3.5 w-3.5" aria-hidden="true" />
           {zh ? '导师工具' : es ? 'Herramienta para mentores' : 'Mentor tool'}
         </p>
         <h1 className="mt-1 font-display text-3xl font-bold text-slate-900">
@@ -379,6 +381,7 @@ export default function LessonPlanGenerator() {
 
         <div className="mt-6 flex items-center gap-3">
           <button type="submit" className="btn-primary" disabled={busy || !AI_ENABLED || !topic.trim()} aria-busy={busy}>
+            <Sparkles className="h-4 w-4" aria-hidden="true" />
             {busy
               ? zh
                 ? '生成中…'
@@ -432,12 +435,15 @@ export default function LessonPlanGenerator() {
               <h2 className="font-display text-xl font-bold text-slate-900">{resultName}</h2>
               <div className="flex flex-wrap gap-2">
                 <button type="button" className="btn-secondary" onClick={handleCopy}>
+                  {copied ? <Check className="h-4 w-4" aria-hidden="true" /> : <Copy className="h-4 w-4" aria-hidden="true" />}
                   {copied ? (zh ? '已复制' : es ? 'Copiado' : 'Copied') : zh ? '复制' : es ? 'Copiar' : 'Copy'}
                 </button>
                 <button type="button" className="btn-secondary" onClick={() => window.print()}>
+                  <Printer className="h-4 w-4" aria-hidden="true" />
                   {zh ? '打印' : es ? 'Imprimir' : 'Print'}
                 </button>
                 <button type="button" className="btn-ghost" onClick={handleDownload}>
+                  <Download className="h-4 w-4" aria-hidden="true" />
                   {zh ? '下载 .md' : es ? 'Descargar .md' : 'Download .md'}
                 </button>
               </div>

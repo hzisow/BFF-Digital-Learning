@@ -3,6 +3,7 @@
 
 import { useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
+import { ArrowLeft, Plug } from 'lucide-react'
 import { BACKEND_ENABLED, GOOGLE_CLIENT_ID } from '../../lib/config'
 import { useAdmin } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
@@ -19,9 +20,7 @@ export function BackendOffCard() {
   return (
     <div className="mx-auto max-w-lg px-4 py-16">
       <div className="card animate-pop-in text-center">
-        <div className="text-4xl" aria-hidden>
-          🔌
-        </div>
+        <Plug className="mx-auto h-9 w-9 text-slate-400" aria-hidden="true" />
         <h1 className="mt-3 font-display text-2xl font-bold text-slate-900">
           {zh ? '团队仪表板尚未连接' : es ? 'El panel del equipo aún no está conectado' : 'Team dashboard not connected yet'}
         </h1>
@@ -33,7 +32,8 @@ export function BackendOffCard() {
               : 'Class codes, assignments, and the mentor dashboard activate once the backend is connected — see the README for the quick Supabase setup. Lessons and solo activities already work for everyone, no backend needed.'}
         </p>
         <Link to="/" className="btn-secondary mt-6">
-          {zh ? '← 返回首页' : es ? '← Volver al inicio' : '← Back home'}
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+          {zh ? '返回首页' : es ? 'Volver al inicio' : 'Back home'}
         </Link>
       </div>
     </div>

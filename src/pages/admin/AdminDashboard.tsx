@@ -2,6 +2,21 @@
 
 import { useCallback, useEffect, useState, type FormEvent } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
+import {
+  ArrowRight,
+  Bell,
+  Check,
+  Copy,
+  GraduationCap,
+  Lock,
+  LogOut,
+  Play,
+  PlusCircle,
+  RefreshCw,
+  School,
+  Settings,
+  Wand2,
+} from 'lucide-react'
 import type { User } from '@supabase/supabase-js'
 import { BACKEND_ENABLED } from '../../lib/config'
 import { supabase } from '../../lib/supabase'
@@ -42,7 +57,7 @@ function ClassroomCard({
 }) {
   const { copied, copy } = useCopy()
   return (
-    <div className="card flex flex-col gap-4">
+    <div className="card flex flex-col gap-4 transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-1 hover:border-bff-300 hover:shadow-card-hover">
       <div>
         <h3 className="font-display text-lg font-bold text-slate-900">
           {classroom.name}
@@ -76,7 +91,10 @@ function ClassroomCard({
                   : `Copy class code ${classroom.code}`
           }
         >
-          <span aria-hidden="true">{copied ? (zh ? '✓ 已复制' : es ? '✓ Copiado' : '✓ Copied') : zh ? '复制' : es ? 'Copiar' : 'Copy'}</span>
+          <span aria-hidden="true" className="inline-flex items-center gap-1.5">
+            {copied ? <Check className="h-4 w-4" aria-hidden="true" /> : <Copy className="h-4 w-4" aria-hidden="true" />}
+            {copied ? (zh ? '已复制' : es ? 'Copiado' : 'Copied') : zh ? '复制' : es ? 'Copiar' : 'Copy'}
+          </span>
         </button>
         <span role="status" className="sr-only">
           {copied ? (zh ? `班级代码 ${classroom.code} 已复制` : es ? `Código de clase ${classroom.code} copiado` : `Class code ${classroom.code} copied`) : ''}
@@ -90,7 +108,8 @@ function ClassroomCard({
             : `${count} student${count === 1 ? '' : 's'} joined`}
       </p>
       <Link to={`/admin/class/${classroom.id}`} className="btn-secondary mt-auto">
-        {zh ? '打开班级 →' : es ? 'Abrir clase →' : 'Open class →'}
+        {zh ? '打开班级' : es ? 'Abrir clase' : 'Open class'}
+        <ArrowRight className="h-4 w-4" aria-hidden="true" />
       </Link>
     </div>
   )
@@ -209,8 +228,8 @@ export default function AdminDashboard() {
     return (
       <div className="mx-auto max-w-lg px-4 py-16">
         <div className="card animate-pop-in text-center">
-          <div className="text-5xl" aria-hidden="true">
-            🔒
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-bff-50 text-bff-700">
+            <Lock className="h-7 w-7" aria-hidden="true" />
           </div>
           <h1 className="mt-4 font-display text-2xl font-bold text-slate-900">
             {zh ? '正在等待管理员审批' : es ? 'Esperando la aprobación del administrador' : 'Waiting for admin approval'}
@@ -226,10 +245,10 @@ export default function AdminDashboard() {
           </p>
           <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
             <button type="button" className="btn-primary" onClick={() => void load()}>
-              <span aria-hidden="true">↻</span> {zh ? '重新检查' : es ? 'Comprobar de nuevo' : 'Check again'}
+              <RefreshCw className="h-4 w-4" aria-hidden="true" /> {zh ? '重新检查' : es ? 'Comprobar de nuevo' : 'Check again'}
             </button>
             <button type="button" className="btn-ghost" onClick={() => void handleSignOut()}>
-              {zh ? '退出登录' : es ? 'Cerrar sesión' : 'Sign out'}
+              <LogOut className="h-4 w-4" aria-hidden="true" /> {zh ? '退出登录' : es ? 'Cerrar sesión' : 'Sign out'}
             </button>
           </div>
           <p className="mt-6 text-xs text-slate-400">
@@ -261,10 +280,10 @@ export default function AdminDashboard() {
         </div>
         <div className="flex items-center gap-2">
           <Link to="/account" className="btn-ghost">
-            {zh ? '账户' : es ? 'Cuenta' : 'Account'}
+            <Settings className="h-4 w-4" aria-hidden="true" /> {zh ? '账户' : es ? 'Cuenta' : 'Account'}
           </Link>
           <button type="button" className="btn-ghost" onClick={() => void handleSignOut()}>
-            {zh ? '退出登录' : es ? 'Cerrar sesión' : 'Sign out'}
+            <LogOut className="h-4 w-4" aria-hidden="true" /> {zh ? '退出登录' : es ? 'Cerrar sesión' : 'Sign out'}
           </button>
         </div>
       </div>
@@ -273,8 +292,8 @@ export default function AdminDashboard() {
       {pending.length > 0 && (
         <section className="mt-8">
           <div className="card border-amber-200 bg-amber-50">
-            <h2 className="font-display text-lg font-bold text-amber-900">
-              <span aria-hidden="true">🔔</span> {zh ? '待处理的团队审批' : es ? 'Aprobaciones de equipo pendientes' : 'Pending team approvals'} ({pending.length})
+            <h2 className="flex items-center gap-2 font-display text-lg font-bold text-amber-900">
+              <Bell className="h-5 w-5" aria-hidden="true" /> {zh ? '待处理的团队审批' : es ? 'Aprobaciones de equipo pendientes' : 'Pending team approvals'} ({pending.length})
             </h2>
             <p className="mt-1 text-sm text-amber-800">
               {zh
@@ -317,7 +336,8 @@ export default function AdminDashboard() {
       {/* ---------- Your classrooms ---------- */}
       <section className="mt-10">
         <div className="flex items-center justify-between gap-4">
-          <h2 className="font-display text-xl font-bold text-slate-900">
+          <h2 className="flex items-center gap-2 font-display text-xl font-bold text-slate-900">
+            <GraduationCap className="h-5 w-5 text-bff-600" aria-hidden="true" />
             {zh ? '您的班级' : es ? 'Tus aulas' : 'Your classrooms'}
           </h2>
           <button
@@ -326,7 +346,7 @@ export default function AdminDashboard() {
             onClick={() => void load()}
             disabled={loading}
           >
-            <span aria-hidden="true">↻</span> {zh ? '刷新' : es ? 'Actualizar' : 'Refresh'}
+            <RefreshCw className="h-4 w-4" aria-hidden="true" /> {zh ? '刷新' : es ? 'Actualizar' : 'Refresh'}
           </button>
         </div>
 
@@ -357,9 +377,7 @@ export default function AdminDashboard() {
 
             {classrooms.length === 0 && !error && (
               <div className="card flex flex-col justify-center text-center sm:col-span-2 lg:col-span-1">
-                <div className="text-3xl" aria-hidden>
-                  🏫
-                </div>
+                <School className="mx-auto h-8 w-8 text-slate-400" aria-hidden="true" />
                 <p className="mt-2 font-display font-semibold text-slate-700">
                   {zh ? '还没有班级' : es ? 'Aún no hay aulas' : 'No classrooms yet'}
                 </p>
@@ -378,8 +396,8 @@ export default function AdminDashboard() {
               onSubmit={handleCreate}
               className="card flex flex-col gap-3 border-2 border-dashed border-bff-200 bg-bff-50/40"
             >
-              <h3 className="font-display text-lg font-bold text-slate-900">
-                <span aria-hidden="true">＋</span> {zh ? '新建班级' : es ? 'Nueva aula' : 'New classroom'}
+              <h3 className="flex items-center gap-2 font-display text-lg font-bold text-slate-900">
+                <PlusCircle className="h-5 w-5 text-bff-600" aria-hidden="true" /> {zh ? '新建班级' : es ? 'Nueva aula' : 'New classroom'}
               </h3>
               <label className="block">
                 <span className="mb-1 block text-sm font-semibold text-slate-700">
@@ -428,7 +446,10 @@ export default function AdminDashboard() {
 
       {/* ---------- Quick host (any game, no classroom needed) ---------- */}
       <section className="mt-10">
-        <h2 className="font-display text-xl font-bold text-slate-900">{zh ? '实时游戏' : es ? 'Juego en vivo' : 'Live game'}</h2>
+        <h2 className="flex items-center gap-2 font-display text-xl font-bold text-slate-900">
+          <Play className="h-5 w-5 text-bff-600" aria-hidden="true" />
+          {zh ? '实时游戏' : es ? 'Juego en vivo' : 'Live game'}
+        </h2>
         <p className="mt-1 text-sm text-slate-600">
           {zh
             ? '立即开始一场实时游戏——无需班级。玩家用大屏幕上显示的代码加入。'
@@ -443,7 +464,8 @@ export default function AdminDashboard() {
 
       {/* ---------- Teaching tools (AI) ---------- */}
       <section className="mt-10">
-        <h2 className="font-display text-xl font-bold text-slate-900">
+        <h2 className="flex items-center gap-2 font-display text-xl font-bold text-slate-900">
+          <Wand2 className="h-5 w-5 text-bff-600" aria-hidden="true" />
           {zh ? '教学工具' : es ? 'Herramientas de enseñanza' : 'Teaching tools'}
         </h2>
         <div className="card mt-4 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
@@ -465,6 +487,7 @@ export default function AdminDashboard() {
           </div>
           <Link to="/admin/generate" className="btn-primary shrink-0">
             {zh ? '打开生成器' : es ? 'Abrir generador' : 'Open generator'}
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </div>
       </section>
