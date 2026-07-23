@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { Check, X } from 'lucide-react'
+import { Check, X, Lightbulb } from 'lucide-react'
 import { getLesson } from '../content/lessons'
 import type { Lesson, LessonSection } from '../content/types'
 import VideoCheckpoint from '../components/VideoCheckpoint'
@@ -233,8 +233,10 @@ function SectionView({
       )
     case 'example':
       return (
-        <div className="animate-slide-up rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-bff-50 p-6 sm:p-8">
-          <p className="text-3xl" aria-hidden="true">💡</p>
+        <div className="animate-slide-up rounded-2xl border border-amber-200 bg-amber-50 p-6 sm:p-8">
+          <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-400 text-amber-950">
+            <Lightbulb className="h-5 w-5" aria-hidden="true" />
+          </span>
           <h2 className="mt-3 font-display text-2xl font-bold text-slate-900">
             {section.heading}
           </h2>
@@ -499,7 +501,7 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
 
     return (
       <div className="mx-auto max-w-2xl px-4 py-12">
-        <div className="animate-pop-in rounded-3xl bg-gradient-to-br from-bff-600 to-bff-800 p-8 text-center text-white shadow-lg">
+        <div className="animate-pop-in rounded-3xl bg-bff-900 p-8 text-center text-white shadow-card">
           <p className="text-5xl" aria-hidden="true">{pct >= 80 ? '🎉' : pct >= 60 ? '👏' : '💪'}</p>
           <h1 className="mt-4 font-display text-3xl font-extrabold">
             {loc.title}: {pct}%
