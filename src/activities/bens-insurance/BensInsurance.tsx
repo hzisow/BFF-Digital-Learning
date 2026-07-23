@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { AlertTriangle, Check } from 'lucide-react'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
@@ -312,7 +313,7 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
           style={{ animationDelay: `${tallyDelay + EVENT_DELAY}s` }}
         >
           <p className="font-display font-bold text-slate-900">
-            <span aria-hidden="true">⚠️</span> {zh ? '一条重要提示' : es ? 'Una nota importante' : 'One important note'}
+            <AlertTriangle className="mr-1 inline-block h-4 w-4 align-[-0.15em] text-amber-500" aria-hidden="true" /> {zh ? '一条重要提示' : es ? 'Una nota importante' : 'One important note'}
           </p>
           <p className="mt-1">
             {zh
@@ -419,7 +420,7 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
                 role="radio"
                 aria-checked={on}
                 onClick={() => setCar(opt.value)}
-                className={`flex w-full items-center justify-between gap-3 rounded-xl border-2 px-4 py-3 text-left transition ${
+                className={`flex w-full items-center justify-between gap-3 rounded-xl border-2 px-4 py-3 text-left transition active:scale-[0.98] ${
                   on ? 'border-bff-500 bg-bff-50 shadow-sm' : 'border-slate-200 bg-white hover:border-bff-300'
                 }`}
               >
@@ -490,7 +491,7 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
                 type="button"
                 aria-pressed={on}
                 onClick={() => toggle(p.id)}
-                className={`flex items-start justify-between gap-2 rounded-xl border-2 px-4 py-3 text-left transition ${
+                className={`flex items-start justify-between gap-2 rounded-xl border-2 px-4 py-3 text-left transition active:scale-[0.98] ${
                   on ? 'border-bff-500 bg-bff-50 shadow-sm' : 'border-slate-200 bg-white hover:border-bff-300'
                 }`}
               >
@@ -508,7 +509,7 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
                   <p className={`text-xs font-semibold ${on ? 'text-bff-700' : 'text-slate-500'}`}>
                     {on ? (
                       <>
-                        {zh ? '已投保' : es ? 'Asegurado' : 'Insured'} <span aria-hidden="true">✓</span>
+                        {zh ? '已投保' : es ? 'Asegurado' : 'Insured'} <Check className="inline-block h-3.5 w-3.5 align-[-0.15em]" aria-hidden="true" />
                       </>
                     ) : (
                       zh ? '未保障' : es ? 'Sin cobertura' : 'Not covered'

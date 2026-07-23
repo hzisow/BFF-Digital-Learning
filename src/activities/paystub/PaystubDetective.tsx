@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { ArrowRight, Lightbulb } from 'lucide-react'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
@@ -715,7 +716,7 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
 
         <div className="card mt-4 animate-slide-up border-bff-200 bg-bff-50">
           <h2 className="font-display text-lg font-bold text-slate-900">
-            <span aria-hidden="true">💡</span> {zh ? '关键要点' : es ? 'La lección clave' : 'The key takeaway'}
+            <Lightbulb className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-bff-600" aria-hidden="true" /> {zh ? '关键要点' : es ? 'La lección clave' : 'The key takeaway'}
           </h2>
           <p className="mt-1 text-sm font-semibold text-slate-700">
             {zh
@@ -737,7 +738,7 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
             {zh ? '再查一次' : es ? 'Investigar de nuevo' : 'Investigate again'}
           </button>
           <Link to="/activities" className="btn-primary">
-            {zh ? '返回活动列表' : es ? 'Volver a las actividades' : 'Back to activities'} <span aria-hidden="true">→</span>
+            {zh ? '返回活动列表' : es ? 'Volver a las actividades' : 'Back to activities'} <ArrowRight className="inline-block h-4 w-4 align-[-0.15em]" aria-hidden="true" />
           </Link>
         </div>
       </div>
@@ -852,7 +853,7 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
                           type="button"
                           aria-pressed={on}
                           onClick={() => toggle(line.id)}
-                          className={`flex w-full items-center justify-between gap-3 rounded-xl border-2 px-4 py-3 text-left transition ${
+                          className={`flex w-full items-center justify-between gap-3 rounded-xl border-2 px-4 py-3 text-left transition active:scale-[0.98] ${
                             on
                               ? 'border-red-500 bg-red-50 shadow-sm'
                               : 'border-slate-200 bg-white hover:border-bff-300'
@@ -919,7 +920,7 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
             {roundIndex + 1 >= ROUNDS.length
               ? zh ? '查看你的侦探评级' : es ? 'Ver tu calificación de detective' : 'See your detective rating'
               : zh ? '下一个案件' : es ? 'Siguiente caso' : 'Next case'}{' '}
-            <span aria-hidden="true">→</span>
+            <ArrowRight className="inline-block h-4 w-4 align-[-0.15em]" aria-hidden="true" />
           </button>
         </div>
       ) : (

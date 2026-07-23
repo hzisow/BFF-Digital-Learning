@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Check } from 'lucide-react'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
@@ -564,7 +565,7 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
                 aria-pressed={isPicked}
                 disabled={revealed}
                 onClick={() => pick(i as 0 | 1)}
-                className={`rounded-xl border-2 p-4 text-left transition disabled:cursor-default ${
+                className={`rounded-xl border-2 p-4 text-left transition active:scale-[0.98] disabled:cursor-default disabled:active:scale-100 ${
                   revealed
                     ? isBetter
                       ? 'border-green-600 bg-green-50'
@@ -602,7 +603,7 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
                     >
                       {isBetter ? (
                         <>
-                          <span aria-hidden="true">✓</span> {zh ? offer.bottomLineZh : es ? offer.bottomLineEs : offer.bottomLine}
+                          <Check className="inline-block h-4 w-4 align-[-0.15em]" aria-hidden="true" /> {zh ? offer.bottomLineZh : es ? offer.bottomLineEs : offer.bottomLine}
                         </>
                       ) : (
                         zh ? offer.bottomLineZh : es ? offer.bottomLineEs : offer.bottomLine

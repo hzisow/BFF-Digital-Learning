@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Lightbulb, Check, Clock } from 'lucide-react'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
@@ -405,11 +406,11 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
                 >
                   {reached ? (
                     <>
-                      {zh ? '已达成' : es ? 'Lograda' : 'Reached'} <span aria-hidden="true">✅</span>
+                      {zh ? '已达成' : es ? 'Lograda' : 'Reached'} <Check className="inline-block h-3.5 w-3.5 align-[-0.15em]" aria-hidden="true" />
                     </>
                   ) : missed ? (
                     <>
-                      {zh ? '已过期限' : es ? 'Plazo vencido' : 'Deadline passed'} <span aria-hidden="true">⏰</span>
+                      {zh ? '已过期限' : es ? 'Plazo vencido' : 'Deadline passed'} <Clock className="inline-block h-3.5 w-3.5 align-[-0.15em]" aria-hidden="true" />
                     </>
                   ) : zh ? (
                     '存钱中'
@@ -507,7 +508,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
           style={{ animationDelay: '1s' }}
         >
           <p className="font-display font-bold text-slate-900">
-            <span aria-hidden="true">💡</span> {zh ? '收获' : es ? 'La lección' : 'The takeaway'}
+            <Lightbulb className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-bff-600" aria-hidden="true" /> {zh ? '收获' : es ? 'La lección' : 'The takeaway'}
           </p>
           <p className="mt-1">
             <strong>{zh ? '先付给自己：' : es ? 'Págate a ti primero:' : 'Pay yourself first:'}</strong>{' '}
@@ -656,7 +657,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
                     onClick={() => bump(b.id, -STEP)}
                     disabled={value <= min}
                     aria-label={zh ? `从${b.labelZh}中减去 $20` : es ? `Quitar $20 de ${b.labelEs}` : `Take $20 away from ${b.label}`}
-                    className="h-9 w-9 rounded-lg border-2 border-slate-200 bg-white font-display text-lg font-bold text-slate-700 transition hover:border-bff-300 disabled:cursor-not-allowed disabled:opacity-40"
+                    className="h-9 w-9 rounded-lg border-2 border-slate-200 bg-white font-display text-lg font-bold text-slate-700 transition hover:border-bff-300 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 disabled:active:scale-100"
                   >
                     <span aria-hidden="true">−</span>
                   </button>
@@ -667,7 +668,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
                     type="button"
                     onClick={() => bump(b.id, STEP)}
                     aria-label={zh ? `向${b.labelZh}再投入 $20` : es ? `Poner $20 más en ${b.labelEs}` : `Put $20 more toward ${b.label}`}
-                    className="h-9 w-9 rounded-lg border-2 border-slate-200 bg-white font-display text-lg font-bold text-slate-700 transition hover:border-bff-300 disabled:cursor-not-allowed disabled:opacity-40"
+                    className="h-9 w-9 rounded-lg border-2 border-slate-200 bg-white font-display text-lg font-bold text-slate-700 transition hover:border-bff-300 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 disabled:active:scale-100"
                   >
                     <span aria-hidden="true">+</span>
                   </button>

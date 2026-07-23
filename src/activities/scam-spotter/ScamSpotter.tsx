@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { ArrowLeft, Check, X, AlertTriangle } from 'lucide-react'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
@@ -720,11 +721,11 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
                   >
                     {correct ? (
                       <>
-                        <span aria-hidden="true">✓</span> {zh ? '答对了' : es ? 'Acertaste' : 'You got it'}
+                        <Check className="inline-block h-3.5 w-3.5 align-[-0.15em]" aria-hidden="true" /> {zh ? '答对了' : es ? 'Acertaste' : 'You got it'}
                       </>
                     ) : (
                       <>
-                        <span aria-hidden="true">✗</span> {zh ? '这条看走眼了' : es ? 'Fallaste este' : 'You missed this one'}
+                        <X className="inline-block h-3.5 w-3.5 align-[-0.15em]" aria-hidden="true" /> {zh ? '这条看走眼了' : es ? 'Fallaste este' : 'You missed this one'}
                       </>
                     )}
                   </span>
@@ -749,7 +750,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
                   <p className="font-display font-bold text-slate-900">
                     {m.isScam ? (
                       <>
-                        <span aria-hidden="true">🚩</span> {zh ? '危险信号' : es ? 'Señales de alerta' : 'Red flags'}
+                        <AlertTriangle className="mr-1 inline-block h-4 w-4 align-[-0.15em] text-red-600" aria-hidden="true" /> {zh ? '危险信号' : es ? 'Señales de alerta' : 'Red flags'}
                       </>
                     ) : (
                       <>
@@ -836,7 +837,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
 
         <div className="card animate-pop-in mt-4">
           <button className="btn-ghost -ml-2 text-sm" onClick={() => setOpenId(null)}>
-            <span aria-hidden="true">←</span> {zh ? '返回收件箱' : es ? 'Volver a la bandeja' : 'Back to inbox'}
+            <ArrowLeft className="inline-block h-4 w-4 align-[-0.15em]" aria-hidden="true" /> {zh ? '返回收件箱' : es ? 'Volver a la bandeja' : 'Back to inbox'}
           </button>
           <div className="mt-3 border-b border-slate-200 pb-3">
             <p className="text-sm font-semibold text-slate-800">
@@ -856,7 +857,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
               type="button"
               aria-pressed={v === 'legit'}
               onClick={() => mark(open.id, 'legit')}
-              className={`flex-1 rounded-xl border-2 px-4 py-2.5 font-display font-semibold transition ${
+              className={`flex-1 rounded-xl border-2 px-4 py-2.5 font-display font-semibold transition active:scale-[0.97] ${
                 v === 'legit'
                   ? 'border-green-600 bg-green-600 text-white shadow-sm'
                   : 'border-slate-200 bg-white text-slate-700 hover:border-green-400'
@@ -868,7 +869,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
               type="button"
               aria-pressed={v === 'scam'}
               onClick={() => mark(open.id, 'scam')}
-              className={`flex-1 rounded-xl border-2 px-4 py-2.5 font-display font-semibold transition ${
+              className={`flex-1 rounded-xl border-2 px-4 py-2.5 font-display font-semibold transition active:scale-[0.97] ${
                 v === 'scam'
                   ? 'border-red-600 bg-red-600 text-white shadow-sm'
                   : 'border-slate-200 bg-white text-slate-700 hover:border-red-400'
@@ -969,7 +970,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
               <button
                 type="button"
                 onClick={() => setOpenId(m.id)}
-                className="flex w-full items-center justify-between gap-3 rounded-xl border-2 border-slate-200 bg-white px-4 py-3 text-left transition hover:border-bff-300"
+                className="flex w-full items-center justify-between gap-3 rounded-xl border-2 border-slate-200 bg-white px-4 py-3 text-left transition hover:border-bff-300 active:scale-[0.98]"
               >
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold text-slate-800">

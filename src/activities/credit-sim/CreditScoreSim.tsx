@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { ArrowRight, Lightbulb } from 'lucide-react'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
@@ -812,7 +813,7 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
 
         <div className="card mt-4 border-bff-200 bg-bff-50">
           <h2 className="font-display text-lg font-bold text-slate-900">
-            <span aria-hidden="true">💡</span>{' '}
+            <Lightbulb className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-bff-600" aria-hidden="true" />{' '}
             {zh ? '配方永远不变' : es ? 'La receta nunca cambia' : 'The recipe never changes'}
           </h2>
           <p className="mt-1 text-sm text-slate-700">
@@ -837,7 +838,7 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
           </button>
           <Link to="/activities" className="btn-primary">
             {zh ? '返回活动列表' : es ? 'Volver a las actividades' : 'Back to activities'}{' '}
-            <span aria-hidden="true">→</span>
+            <ArrowRight className="inline-block h-4 w-4 align-[-0.15em]" aria-hidden="true" />
           </Link>
         </div>
       </div>
@@ -890,7 +891,7 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
                 key={choice.id}
                 type="button"
                 onClick={() => choose(choice)}
-                className="block w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-3 text-left text-sm font-semibold text-slate-800 transition hover:border-bff-400 hover:bg-bff-50"
+                className="block w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-3 text-left text-sm font-semibold text-slate-800 transition hover:border-bff-400 hover:bg-bff-50 active:scale-[0.98]"
               >
                 {zh ? choice.labelZh : es ? choice.labelEs : choice.label}
               </button>
@@ -933,7 +934,7 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
                   : es
                   ? `Al mes ${monthIndex + 2}`
                   : `On to month ${monthIndex + 2}`}{' '}
-              <span aria-hidden="true">→</span>
+              <ArrowRight className="inline-block h-4 w-4 align-[-0.15em]" aria-hidden="true" />
             </button>
           </div>
         )}

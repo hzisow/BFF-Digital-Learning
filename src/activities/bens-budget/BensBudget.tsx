@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Wallet, Info, Check } from 'lucide-react'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
@@ -445,7 +446,7 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="font-display text-2xl font-bold text-slate-900">
-        <span aria-hidden="true">💸</span> {zh ? 'Ben 的预算挑战' : es ? 'El Reto del Presupuesto de Ben' : "Ben's Budget Challenge"}
+        <Wallet className="mr-1.5 inline-block h-6 w-6 align-[-0.18em] text-bff-600" aria-hidden="true" /> {zh ? 'Ben 的预算挑战' : es ? 'El Reto del Presupuesto de Ben' : "Ben's Budget Challenge"}
       </h1>
       <p className="mt-1 text-sm text-slate-500">{zh ? 'Ben 理财冒险的第 1 部分' : es ? 'Parte 1 de la aventura financiera de Ben' : "Part 1 of Ben's money adventure"}</p>
 
@@ -473,7 +474,7 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
           </p>
         )}
         <p className="mt-2 text-xs text-slate-600">
-          <span aria-hidden="true">ℹ️</span>{' '}
+          <Info className="mr-1 inline-block h-3.5 w-3.5 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
           {zh
             ? `医疗保险（$300/月）已经从 Ben 的工资里扣掉了——这一项已经搞定，不算在这 ${usd(INCOME)} 里面。`
             : es
@@ -496,9 +497,9 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
               <div className="flex items-center gap-3">
                 <span
                   aria-hidden
-                  className="flex h-5 w-5 items-center justify-center rounded border border-slate-300 bg-slate-300 text-xs text-white"
+                  className="flex h-5 w-5 items-center justify-center rounded border border-slate-300 bg-slate-300 text-white"
                 >
-                  ✓
+                  <Check className="h-3.5 w-3.5" aria-hidden="true" />
                 </span>
                 <div>
                   <p className="text-sm font-semibold text-slate-600">{zh ? n.labelZh : es ? n.labelEs : n.label}</p>
@@ -553,7 +554,7 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
                 type="button"
                 aria-pressed={on}
                 onClick={() => toggle(c.id)}
-                className={`flex items-start justify-between gap-2 rounded-xl border-2 px-4 py-3 text-left transition ${
+                className={`flex items-start justify-between gap-2 rounded-xl border-2 px-4 py-3 text-left transition active:scale-[0.98] ${
                   on
                     ? 'border-bff-500 bg-bff-50 shadow-sm'
                     : 'border-slate-200 bg-white hover:border-bff-300'
@@ -573,7 +574,7 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
                   <p className={`text-xs font-semibold ${on ? 'text-bff-700' : 'text-slate-500'}`}>
                     {on ? (
                       <>
-                        {zh ? '购买' : es ? 'Comprando' : 'Buying'} <span aria-hidden="true">✓</span>
+                        {zh ? '购买' : es ? 'Comprando' : 'Buying'} <Check className="inline-block h-3.5 w-3.5 align-[-0.15em]" aria-hidden="true" />
                       </>
                     ) : (
                       zh ? '跳过' : es ? 'Omitido' : 'Skipped'
@@ -601,7 +602,7 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
                 role="radio"
                 aria-checked={on}
                 onClick={() => setSaved(opt.value)}
-                className={`flex w-full items-center justify-between gap-3 rounded-xl border-2 px-4 py-3 text-left transition ${
+                className={`flex w-full items-center justify-between gap-3 rounded-xl border-2 px-4 py-3 text-left transition active:scale-[0.98] ${
                   on
                     ? 'border-bff-500 bg-bff-50 shadow-sm'
                     : 'border-slate-200 bg-white hover:border-bff-300'
