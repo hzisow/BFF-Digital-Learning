@@ -4,6 +4,7 @@
 
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { BookOpen, Search } from 'lucide-react'
 import { LESSONS } from '../content/lessons'
 import { useLang, localizeLesson } from '../lib/i18n'
 
@@ -61,7 +62,7 @@ export default function GlossaryPage() {
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="text-center">
         <p className="chip mx-auto bg-bff-50 text-bff-700">
-          <span aria-hidden="true">📖</span> {t('glossary.title')}
+          <BookOpen className="h-3.5 w-3.5" aria-hidden="true" /> {t('glossary.title')}
         </p>
         <h1 className="mt-3 font-display text-4xl font-extrabold text-slate-900">
           {t('glossary.title')}
@@ -75,14 +76,20 @@ export default function GlossaryPage() {
         <label htmlFor="glossary-search" className="sr-only">
           {t('common.search')}
         </label>
-        <input
-          id="glossary-search"
-          type="search"
-          className="input"
-          placeholder={t('glossary.searchPlaceholder')}
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
+        <div className="relative">
+          <Search
+            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
+            aria-hidden="true"
+          />
+          <input
+            id="glossary-search"
+            type="search"
+            className="input pl-10"
+            placeholder={t('glossary.searchPlaceholder')}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
         <p role="status" className="mt-2 text-sm text-slate-500">
           {filtered.length} {filtered.length === 1 ? 'term' : 'terms'}
         </p>

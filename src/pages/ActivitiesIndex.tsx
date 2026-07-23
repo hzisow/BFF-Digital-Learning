@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
+import { Check, Clock, Gamepad2 } from 'lucide-react'
 import { ACTIVITIES, kindLabel, localizeActivity } from '../lib/activities'
 import { useLang } from '../lib/i18n'
 import type { ActivityProgress } from '../lib/progress'
@@ -17,7 +18,7 @@ function ProgressChip({
   if (progress?.status === 'completed') {
     return (
       <span className="chip bg-green-100 text-green-700">
-        <span aria-hidden="true">✓</span> {zh ? '已完成' : es ? 'Completado' : 'Completed'}
+        <Check className="h-3.5 w-3.5" aria-hidden="true" /> {zh ? '已完成' : es ? 'Completado' : 'Completed'}
         {progress.score != null ? ` · ${Math.round(progress.score)}%` : ''}
       </span>
     )
@@ -53,7 +54,7 @@ export default function ActivitiesIndex() {
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="max-w-2xl">
         <p className="chip bg-bff-50 text-bff-700">
-          <span aria-hidden="true">🎮</span> {zh ? '学习，但很好玩' : es ? 'Aprender, pero divertido' : 'Learning, but fun'}
+          <Gamepad2 className="h-3.5 w-3.5" aria-hidden="true" /> {zh ? '学习，但很好玩' : es ? 'Aprender, pero divertido' : 'Learning, but fun'}
         </p>
         <h1 className="mt-4 font-display text-4xl font-extrabold text-slate-900">
           {zh ? '游戏与挑战' : es ? 'Juegos y Desafíos' : 'Games & Challenges'}
@@ -75,7 +76,7 @@ export default function ActivitiesIndex() {
             <Link
               key={a.slug}
               to={a.path}
-              className="card group flex flex-col transition hover:-translate-y-1 hover:border-bff-300 hover:shadow-md"
+              className="card group flex flex-col transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-1 hover:border-bff-300 hover:shadow-card-hover"
             >
               <div className="flex items-start justify-between gap-3">
                 <span className="text-4xl" aria-hidden="true">{a.emoji}</span>
@@ -88,8 +89,8 @@ export default function ActivitiesIndex() {
                 {description}
               </p>
               <div className="mt-4 flex items-center justify-between gap-2">
-                <span className="text-xs font-semibold text-slate-500">
-                  <span aria-hidden="true">⏱️</span> ~{a.durationMin} {zh ? '分钟' : 'min'}
+                <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500">
+                  <Clock className="h-3.5 w-3.5" aria-hidden="true" /> ~{a.durationMin} {zh ? '分钟' : 'min'}
                 </span>
                 <ProgressChip progress={p} es={es} zh={zh} />
               </div>

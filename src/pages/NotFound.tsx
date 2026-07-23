@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Home, BookOpen } from 'lucide-react'
 import { useLang } from '../lib/i18n'
 
 export default function NotFound() {
@@ -25,10 +26,10 @@ export default function NotFound() {
       </p>
       <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
         <Link to="/" className="btn-primary">
-          {zh ? '带我回首页' : es ? 'Llévame al inicio' : 'Take me home'} <span aria-hidden="true">🏠</span>
+          {zh ? '带我回首页' : es ? 'Llévame al inicio' : 'Take me home'} <Home className="h-4 w-4" aria-hidden="true" />
         </Link>
         <Link to="/lessons" className="btn-secondary">
-          {zh ? '浏览课程' : es ? 'Ver lecciones' : 'Browse lessons'} <span aria-hidden="true">📚</span>
+          {zh ? '浏览课程' : es ? 'Ver lecciones' : 'Browse lessons'} <BookOpen className="h-4 w-4" aria-hidden="true" />
         </Link>
       </div>
     </div>
