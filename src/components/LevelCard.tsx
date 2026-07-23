@@ -1,6 +1,7 @@
 // A student's level, rank, and XP with a progress bar to the next rank.
 // XP is passed in (computed from local progress or the server leaderboard).
 
+import { Crown } from 'lucide-react'
 import { levelInfo } from '../lib/xp'
 import { useLang } from '../lib/i18n'
 
@@ -11,7 +12,7 @@ export default function LevelCard({ xp }: { xp: number }) {
   const info = levelInfo(xp)
 
   return (
-    <div className="rounded-2xl bg-gradient-to-r from-bff-600 to-bff-800 px-6 py-5 text-white shadow-sm">
+    <div className="rounded-2xl bg-bff-900 px-6 py-5 text-white shadow-sm">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <span className="text-4xl" aria-hidden="true">
@@ -50,8 +51,8 @@ export default function LevelCard({ xp }: { xp: number }) {
           />
         </div>
       ) : (
-        <p className="mt-4 font-display text-sm font-semibold text-bff-50">
-          <span aria-hidden="true">👑</span> {zh ? '已达到最高等级！' : es ? '¡Nivel máximo alcanzado!' : 'Max rank reached!'}
+        <p className="mt-4 flex items-center gap-1.5 font-display text-sm font-semibold text-bff-50">
+          <Crown className="h-4 w-4 text-gold-400" aria-hidden="true" /> {zh ? '已达到最高等级！' : es ? '¡Nivel máximo alcanzado!' : 'Max rank reached!'}
         </p>
       )}
     </div>

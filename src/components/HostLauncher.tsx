@@ -3,6 +3,7 @@
 // kind of session and jumps to that game's host (projector) screen.
 
 import { useMemo, useState } from 'react'
+import { Radio } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { ACTIVITIES } from '../lib/activities'
 import { useLang } from '../lib/i18n'
@@ -65,8 +66,8 @@ export default function HostLauncher({ classroomId }: { classroomId: string | nu
 
   return (
     <div className="card border-bff-200 bg-bff-50/50">
-      <h3 className="font-display text-lg font-bold text-slate-900">
-        <span aria-hidden="true">📡</span> {zh ? '主持一场实时游戏' : es ? 'Organiza un juego en vivo' : 'Host a live game'}
+      <h3 className="flex items-center gap-2 font-display text-lg font-bold text-slate-900">
+        <Radio className="h-5 w-5 text-bff-600" aria-hidden="true" /> {zh ? '主持一场实时游戏' : es ? 'Organiza un juego en vivo' : 'Host a live game'}
       </h3>
       <p className="mt-1 text-sm text-slate-600">
         {zh

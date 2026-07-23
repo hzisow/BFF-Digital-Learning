@@ -5,6 +5,7 @@
 // cards so the lesson is never blocked.
 
 import { useEffect, useId, useRef, useState } from 'react'
+import { Pause, Play, Check, CheckCircle2, AlertCircle, Zap } from 'lucide-react'
 import type { VideoQuestion } from '../content/types'
 import { useLang } from '../lib/i18n'
 
@@ -123,8 +124,8 @@ function QuestionCard({
 
   return (
     <div className={`w-full ${compact ? '' : 'card'} text-left`}>
-      <p className="text-xs font-bold uppercase tracking-wide text-bff-700">
-        <span aria-hidden="true">⏸️</span>{' '}
+      <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-bff-700">
+        <Pause className="h-3.5 w-3.5" aria-hidden="true" />{' '}
         {zh
           ? `视频检查 · 第 ${index + 1} / ${total} 题`
           : es
@@ -171,7 +172,7 @@ function QuestionCard({
           <span className="font-bold">
             {gotIt ? (
               <>
-                {zh ? '答对了！' : es ? '¡Perfecto!' : 'Nailed it!'} <span aria-hidden="true">✅</span>{' '}
+                {zh ? '答对了！' : es ? '¡Perfecto!' : 'Nailed it!'} <Check className="inline h-4 w-4 align-text-bottom" aria-hidden="true" />{' '}
               </>
             ) : zh ? (
               '不错的尝试！'
@@ -197,7 +198,7 @@ function QuestionCard({
               : es
                 ? 'Continuar'
                 : 'Continue'}{' '}
-          <span aria-hidden="true">▶</span>
+          <Play className="h-4 w-4" aria-hidden="true" />
         </button>
       )}
     </div>
@@ -229,8 +230,8 @@ function FallbackQuestions({
   return (
     <div className="space-y-4">
       <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
-        <p className="font-bold">
-          <span aria-hidden="true">📺</span> {zh ? '视频无法加载？' : es ? '¿No carga el video?' : 'Video not loading?'}
+        <p className="flex items-center gap-1.5 font-bold">
+          <AlertCircle className="h-4 w-4" aria-hidden="true" /> {zh ? '视频无法加载？' : es ? '¿No carga el video?' : 'Video not loading?'}
         </p>
         <p className="mt-1">
           {zh ? (
@@ -278,10 +279,10 @@ function FallbackQuestions({
       {done ? (
         <p
           role="status"
-          className="rounded-2xl bg-green-50 p-4 text-center text-sm font-bold text-green-700"
+          className="flex items-center justify-center gap-1.5 rounded-2xl bg-green-50 p-4 text-center text-sm font-bold text-green-700"
         >
-          {zh ? '所有视频检查都完成了，继续前进吧！' : es ? '¡Listos todos los controles del video, sigue adelante!' : 'All video checks done — keep going!'}{' '}
-          <span aria-hidden="true">🎉</span>
+          <CheckCircle2 className="h-4 w-4" aria-hidden="true" />{' '}
+          {zh ? '所有视频检查都完成了，继续前进吧！' : es ? '¡Listos todos los controles del video, sigue adelante!' : 'All video checks done — keep going!'}
         </p>
       ) : (
         <QuestionCard
@@ -488,12 +489,12 @@ export default function VideoCheckpoint({
           >
             {/* Light scrim: the paused frame stays visible, panel edge reads cleanly */}
             <div
-              className="absolute inset-0 bg-gradient-to-l from-slate-950/60 via-slate-950/25 to-transparent"
+              className="absolute inset-0 bg-slate-950/40"
               aria-hidden
             />
             {/* "Paused" pill sits over the still-visible video */}
             <div className="absolute left-3 top-3 flex items-center gap-1.5 rounded-full bg-slate-950/70 px-3 py-1 text-xs font-bold text-white backdrop-blur">
-              <span className="text-sm" aria-hidden="true">⏸️</span>{' '}
+              <Pause className="h-3.5 w-3.5" aria-hidden="true" />{' '}
               {zh ? '已暂停以回答问题' : es ? 'En pausa para una pregunta' : 'Paused for a question'}
             </div>
             {/* Question slides in from the right (bottom on small screens) */}
@@ -559,13 +560,13 @@ export default function VideoCheckpoint({
             {zh ? '道问题已回答' : es ? 'preguntas respondidas' : 'questions answered'}
           </span>
           {watchDone ? (
-            <span className="text-green-700">
+            <span className="flex items-center gap-1 text-green-700">
               {zh ? '所有检查都完成了，请在下方继续！' : es ? '¡Listos todos los controles, continúa abajo!' : 'All checks done — continue below!'}{' '}
-              <span aria-hidden="true">✅</span>
+              <Check className="h-3.5 w-3.5" aria-hidden="true" />
             </span>
           ) : (
-            <span>
-              <span aria-hidden="true">⚡</span>{' '}
+            <span className="flex items-center gap-1">
+              <Zap className="h-3.5 w-3.5" aria-hidden="true" />{' '}
               {zh
                 ? '视频会暂停来考考你——不要快进哦！'
                 : es

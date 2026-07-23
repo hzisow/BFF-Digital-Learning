@@ -2,12 +2,11 @@
 // class) and the mentor's classroom page. Privacy-safe: nicknames only.
 
 import { useCallback, useEffect, useState } from 'react'
+import { Trophy, Crown, Medal, RefreshCw } from 'lucide-react'
 import { fetchLeaderboard, type LeaderboardRow } from '../lib/leaderboard'
 import { levelInfo } from '../lib/xp'
 import { useLang } from '../lib/i18n'
 import { SkeletonRow } from './Skeleton'
-
-const MEDALS = ['🥇', '🥈', '🥉']
 
 export default function ClassLeaderboard({
   classroomId,
@@ -43,8 +42,8 @@ export default function ClassLeaderboard({
   return (
     <div className="card">
       <div className="flex items-center justify-between gap-3">
-        <h2 className="font-display text-lg font-bold text-slate-900">
-          <span aria-hidden="true">🏅</span> {zh ? '班级排行榜' : es ? 'Tabla de la clase' : 'Class leaderboard'}
+        <h2 className="flex items-center gap-2 font-display text-lg font-bold text-slate-900">
+          <Trophy className="h-5 w-5 text-gold-500" aria-hidden="true" /> {zh ? '班级排行榜' : es ? 'Tabla de la clase' : 'Class leaderboard'}
         </h2>
         <button
           type="button"
@@ -52,7 +51,7 @@ export default function ClassLeaderboard({
           onClick={() => void load()}
           disabled={loading}
         >
-          <span aria-hidden="true">↻</span> {zh ? '刷新' : es ? 'Actualizar' : 'Refresh'}
+          <RefreshCw className="h-4 w-4" aria-hidden="true" /> {zh ? '刷新' : es ? 'Actualizar' : 'Refresh'}
         </button>
       </div>
 
@@ -89,10 +88,18 @@ export default function ClassLeaderboard({
                 }`}
               >
                 <span
-                  className="w-7 shrink-0 text-center font-display text-sm font-bold text-slate-500"
+                  className="flex w-7 shrink-0 items-center justify-center"
                   aria-hidden="true"
                 >
-                  {MEDALS[i] ?? i + 1}
+                  {i === 0 ? (
+                    <Crown className="h-5 w-5 text-gold-500" />
+                  ) : i === 1 ? (
+                    <Medal className="h-5 w-5 text-slate-400" />
+                  ) : i === 2 ? (
+                    <Medal className="h-5 w-5 text-amber-600" />
+                  ) : (
+                    <span className="font-display text-sm font-bold text-slate-500">{i + 1}</span>
+                  )}
                 </span>
                 <span className="min-w-0 flex-1 truncate font-display font-semibold text-slate-800">
                   {r.nickname}

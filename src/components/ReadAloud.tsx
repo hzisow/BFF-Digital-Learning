@@ -3,6 +3,7 @@
 // the text changes (student moved to the next step) or on unmount.
 
 import { useEffect, useRef, useState } from 'react'
+import { Volume2, Pause } from 'lucide-react'
 import { useLang } from '../lib/i18n'
 
 export default function ReadAloud({ text }: { text: string }) {
@@ -52,7 +53,11 @@ export default function ReadAloud({ text }: { text: string }) {
           : 'bg-slate-100 text-slate-600 hover:bg-bff-50 hover:text-bff-700'
       }`}
     >
-      <span aria-hidden="true">{speaking ? '⏹️' : '🔊'}</span>
+      {speaking ? (
+        <Pause className="h-4 w-4" aria-hidden="true" />
+      ) : (
+        <Volume2 className="h-4 w-4" aria-hidden="true" />
+      )}
     </button>
   )
 }

@@ -9,6 +9,7 @@
 //   { score: number | null; summary: string; strengths: string[]; improve: string[] }
 
 import { useId, useState } from 'react'
+import { Sparkles, Loader2 } from 'lucide-react'
 import { invokeAI, AI_ENABLED, AINotConfiguredError } from '../lib/ai'
 import { useLang } from '../lib/i18n'
 
@@ -121,6 +122,11 @@ export default function OpenResponse({ prompt, rubric, id }: OpenResponseProps) 
             aria-busy={submitting}
             className="btn-primary"
           >
+            {submitting ? (
+              <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+            ) : (
+              <Sparkles className="h-4 w-4" aria-hidden="true" />
+            )}
             {submitting
               ? zh
                 ? '正在批改…'
@@ -175,7 +181,8 @@ export default function OpenResponse({ prompt, rubric, id }: OpenResponseProps) 
         {showFeedback && grade && (
           <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-5">
             <div className="flex flex-wrap items-center gap-3">
-              <h3 className="font-display text-base font-bold text-slate-900">
+              <h3 className="flex items-center gap-1.5 font-display text-base font-bold text-slate-900">
+                <Sparkles className="h-4 w-4 text-bff-600" aria-hidden="true" />
                 {zh ? '你的反馈' : es ? 'Tus comentarios' : 'Your feedback'}
               </h3>
               {grade.score !== null && (

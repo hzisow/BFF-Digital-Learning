@@ -2,6 +2,7 @@
 // of a blank white screen. Bilingual copy (it can't use the language hook).
 
 import { Component, type ErrorInfo, type ReactNode } from 'react'
+import { AlertTriangle } from 'lucide-react'
 
 interface Props {
   children: ReactNode
@@ -26,8 +27,11 @@ export default class ErrorBoundary extends Component<Props, State> {
     if (!this.state.hasError) return this.props.children
     return (
       <div className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center px-4 text-center">
-        <div className="text-5xl" aria-hidden="true">
-          🙈
+        <div
+          className="flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-50 text-amber-500"
+          aria-hidden="true"
+        >
+          <AlertTriangle className="h-8 w-8" />
         </div>
         <h1 className="mt-4 font-display text-2xl font-bold text-slate-900">
           Something went wrong

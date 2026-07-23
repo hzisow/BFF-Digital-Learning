@@ -4,6 +4,7 @@
 /* eslint-disable react-refresh/only-export-components */
 
 import { createContext, useCallback, useContext, useRef, useState, type ReactNode } from 'react'
+import { CheckCircle2, XCircle, Info } from 'lucide-react'
 
 type ToastKind = 'info' | 'success' | 'error'
 
@@ -46,7 +47,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         {items.map((t) => (
           <div
             key={t.id}
-            className={`pointer-events-auto animate-slide-up rounded-xl px-4 py-2.5 text-sm font-semibold shadow-lg ${
+            className={`pointer-events-auto flex items-center gap-2 animate-slide-up rounded-xl px-4 py-2.5 text-sm font-semibold shadow-lg ${
               t.kind === 'success'
                 ? 'bg-green-600 text-white'
                 : t.kind === 'error'
@@ -54,6 +55,13 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                   : 'bg-slate-900 text-white'
             }`}
           >
+            {t.kind === 'success' ? (
+              <CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden="true" />
+            ) : t.kind === 'error' ? (
+              <XCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
+            ) : (
+              <Info className="h-4 w-4 shrink-0" aria-hidden="true" />
+            )}
             {t.message}
           </div>
         ))}
