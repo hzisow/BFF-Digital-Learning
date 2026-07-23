@@ -137,27 +137,27 @@ const lesson: Lesson = {
     },
     {
       type: 'video',
-      heading: "Watch: I'm Young & Healthy — Can I Skip Health Insurance?",
+      heading: 'Watch: Can I Skip Insurance?',
       body:
-        "Lots of young people figure they don't need health insurance. Two Cents runs the numbers on that gamble. The video pauses to quiz you, so stay sharp!",
+        "Watch this short BFF video on why insurance matters even when you're young and healthy. Heads up — it pauses to quiz you along the way, so pay attention!",
       videoId: 'WTtjmdyTCRM',
-      source: 'Two Cents · PBS Digital Studios',
+      source: 'BFF Classroom',
       questions: [
         {
-          at: 100,
+          at: 85,
           question: 'Why do even young, healthy people need health insurance?',
           options: [
-            'It is a fashion statement',
-            'Accidents and sudden illnesses can hit anyone — and the bills can be enormous',
-            'Doctors refuse to see uninsured people',
-            'They do not — young people never get sick',
+            "It's a fashion statement",
+            'Accidents and sudden illness can hit anyone, and the bills can be enormous',
+            "Doctors won't see uninsured people",
+            "They don't — young people never get sick",
           ],
           answerIndex: 1,
           explanation:
-            'A single broken leg or emergency surgery can cost tens of thousands of dollars. You cannot schedule your accidents — that is exactly the kind of huge, unpredictable risk insurance exists to cover.',
+            "One broken leg or ER visit can cost tens of thousands of dollars, and you can't schedule an accident. That's the huge, unpredictable risk insurance covers.",
         },
         {
-          at: 240,
+          at: 150,
           question: 'At its core, what does insurance protect you from?',
           options: [
             'Ever having to pay a premium',
@@ -167,7 +167,7 @@ const lesson: Lesson = {
           ],
           answerIndex: 1,
           explanation:
-            "Insurance transfers the BIG risks — the catastrophic, budget-destroying bills — to the insurance company in exchange for a predictable premium. You handle the small stuff; it catches the disasters.",
+            "Insurance trades a small, predictable premium for protection against a rare, catastrophic cost — that's its whole job.",
         },
       ],
     },
@@ -423,28 +423,28 @@ const lesson: Lesson = {
       },
       {
         type: 'video',
-        heading: 'Mira: Soy joven y saludable, ¿puedo saltarme el seguro de salud?',
+        heading: 'Mira: ¿Puedo saltarme el seguro?',
         body:
-          'Muchos jóvenes piensan que no necesitan seguro de salud. Two Cents hace las cuentas de esa apuesta. Ojo: el video está en inglés, pero las preguntas y explicaciones aparecen en español. El video se pausa para ponerte a prueba, ¡así que mantente alerta!',
+          'Mira este breve video de BFF sobre por qué el seguro importa incluso cuando eres joven y estás sano. Ojo: se pausa para ponerte a prueba en el camino, ¡así que presta atención!',
         videoId: 'WTtjmdyTCRM',
-        source: 'Two Cents · PBS Digital Studios',
+        source: 'BFF Classroom',
         questions: [
           {
-            at: 100,
+            at: 85,
             question:
               '¿Por qué incluso los jóvenes saludables necesitan seguro de salud?',
             options: [
               'Es una declaración de moda',
               'Los accidentes y las enfermedades repentinas le pueden pasar a cualquiera, y las facturas pueden ser enormes',
-              'Los doctores se niegan a atender a personas sin seguro',
+              'Los doctores no atienden a personas sin seguro',
               'No lo necesitan: los jóvenes nunca se enferman',
             ],
             answerIndex: 1,
             explanation:
-              'Una sola pierna rota o una cirugía de emergencia puede costar decenas de miles de dólares. No puedes agendar tus accidentes; ese es exactamente el tipo de riesgo enorme e impredecible que el seguro existe para cubrir.',
+              'Una sola pierna rota o una visita a urgencias puede costar decenas de miles de dólares, y no puedes agendar un accidente. Ese es el riesgo enorme e impredecible que cubre el seguro.',
           },
           {
-            at: 240,
+            at: 150,
             question: 'En esencia, ¿de qué te protege el seguro?',
             options: [
               'De tener que pagar una prima alguna vez',
@@ -454,7 +454,7 @@ const lesson: Lesson = {
             ],
             answerIndex: 1,
             explanation:
-              'El seguro transfiere los riesgos GRANDES, esas facturas catastróficas que destruyen presupuestos, a la compañía de seguros a cambio de una prima predecible. Tú te encargas de lo pequeño; el seguro atrapa los desastres.',
+              'El seguro cambia una prima pequeña y predecible por protección contra un costo raro y catastrófico: ese es todo su trabajo.',
           },
         ],
       },
@@ -710,27 +710,27 @@ const lesson: Lesson = {
       },
       {
         type: 'video',
-        heading: '观看：我年轻又健康——可以不买健康保险吗？',
+        heading: '观看：我可以不买保险吗？',
         body:
-          '很多年轻人觉得自己不需要健康保险。Two Cents来给这场赌博算算账。注意：视频是英文的，但问题和解释是中文的。视频会暂停来考考你，所以保持警觉！',
+          '看看这个简短的BFF视频，了解为什么即使你年轻又健康，保险也很重要。注意：视频会中途暂停来考考你，所以要专心！',
         videoId: 'WTtjmdyTCRM',
-        source: 'Two Cents · PBS Digital Studios',
+        source: 'BFF Classroom',
         questions: [
           {
-            at: 100,
+            at: 85,
             question: '为什么连年轻、健康的人也需要健康保险？',
             options: [
               '这是一种时尚宣言',
               '事故和突发疾病可能降临到任何人头上——而账单可能是天文数字',
-              '医生拒绝给没保险的人看病',
+              '医生不给没保险的人看病',
               '不需要——年轻人永远不会生病',
             ],
             answerIndex: 1,
             explanation:
-              '仅仅一次腿骨折或一台急诊手术就可能花费数万美元。你没法给自己的意外排日程——而这恰恰是保险存在要覆盖的那种巨大又难以预测的风险。',
+              '一次腿骨折或一趟急诊就可能花费数万美元，而你没法给意外排日程。这正是保险所覆盖的那种巨大又难以预测的风险。',
           },
           {
-            at: 240,
+            at: 150,
             question: '归根结底，保险保护你免受什么？',
             options: [
               '永远不用付保费',
@@ -740,7 +740,7 @@ const lesson: Lesson = {
             ],
             answerIndex: 1,
             explanation:
-              '保险把那些巨大的风险——那些足以摧毁预算的灾难性账单——转移给保险公司，作为交换，你付一笔可预测的保费。小事你自己扛；灾难由它来接住。',
+              '保险用一笔小额、可预测的保费，换取对罕见而灾难性开支的保障——这就是它的全部作用。',
           },
         ],
       },

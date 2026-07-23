@@ -104,31 +104,31 @@ const lesson: Lesson = {
       type: 'video',
       heading: 'Watch: Compound Interest in Action',
       body:
-        'Want to see the math behind the magic? Watch Khan Academy walk through exactly how compounding snowballs. The video will pause and quiz you — no skipping ahead!',
+        "Watch this short BFF video on how compound interest works. Heads up — it pauses to quiz you along the way, so pay attention!",
       videoId: 'Rm6UdfRs3gw',
-      source: 'Khan Academy',
+      source: 'BFF Classroom',
       questions: [
         {
-          at: 95,
+          at: 80,
           question:
-            'You deposit $100 at 10% interest, compounded yearly. After year 1 you have $110. About how much after year 2?',
-          options: ['$120', '$121', '$130', '$110 — it stays the same'],
+            'You put in $100 at 10% per year. After year 1 you have $110. About how much after year 2?',
+          options: ['$120', '$121', '$110', '$200'],
           answerIndex: 1,
           explanation:
-            "Year 2's 10% applies to the whole $110 — not just your original $100 — so you earn $11 and land on $121. That extra dollar is interest earning interest, and it grows every single year.",
+            "Year 2 you earn 10% on $110 — that's $11 — so $121. You earned interest on your interest.",
         },
         {
-          at: 240,
+          at: 150,
           question: 'What makes compound interest different from simple interest?',
           options: [
-            'Compound interest only works at big banks',
-            'With compounding, you earn interest on your interest — not just on what you deposited',
-            'Simple interest grows faster over time',
-            'There is no difference, just different names',
+            'Compounding only works at big banks',
+            'With compounding you earn interest on your interest, not just your original deposit',
+            'Simple interest always grows faster',
+            "There's no real difference",
           ],
           answerIndex: 1,
           explanation:
-            'Simple interest pays on your original deposit only, forever. Compounding pays on your deposit PLUS everything it has already earned — which is why it starts slow and then explodes over the years.',
+            "Simple interest pays only on your original deposit; compounding pays on your deposit plus everything it's already earned — which is why it snowballs.",
         },
       ],
     },
@@ -397,31 +397,31 @@ const lesson: Lesson = {
         type: 'video',
         heading: 'Mira el video: El interés compuesto en acción',
         body:
-          '¿Quieres ver las matemáticas detrás de la magia? Mira cómo Khan Academy explica exactamente cómo el interés compuesto crece como bola de nieve. El video está en inglés y se pausará para hacerte preguntas — ¡nada de adelantarse!',
+          'Mira este breve video de BFF sobre cómo funciona el interés compuesto. ¡Ojo! — se pausa para hacerte preguntas por el camino, así que pon atención.',
         videoId: 'Rm6UdfRs3gw',
-        source: 'Khan Academy',
+        source: 'BFF Classroom',
         questions: [
           {
-            at: 95,
+            at: 80,
             question:
-              'Depositas $100 al 10% de interés, compuesto anualmente. Después del año 1 tienes $110. ¿Aproximadamente cuánto tienes después del año 2?',
-            options: ['$120', '$121', '$130', '$110 — se queda igual'],
+              'Pones $100 al 10% por año. Después del año 1 tienes $110. ¿Aproximadamente cuánto tienes después del año 2?',
+            options: ['$120', '$121', '$110', '$200'],
             answerIndex: 1,
             explanation:
-              'El 10% del año 2 se aplica a los $110 completos — no solo a tus $100 originales — así que ganas $11 y llegas a $121. Ese dólar extra es interés que gana interés, y crece cada año que pasa.',
+              'En el año 2 ganas el 10% sobre $110 — eso son $11 — así que $121. Ganaste interés sobre tu interés.',
           },
           {
-            at: 240,
+            at: 150,
             question: '¿Qué hace diferente al interés compuesto del interés simple?',
             options: [
               'El interés compuesto solo funciona en los bancos grandes',
-              'Con el interés compuesto, ganas interés sobre tu interés — no solo sobre lo que depositaste',
-              'El interés simple crece más rápido con el tiempo',
-              'No hay diferencia, solo son nombres distintos',
+              'Con el interés compuesto ganas interés sobre tu interés, no solo sobre tu depósito original',
+              'El interés simple siempre crece más rápido',
+              'No hay ninguna diferencia real',
             ],
             answerIndex: 1,
             explanation:
-              'El interés simple paga solo sobre tu depósito original, para siempre. El compuesto paga sobre tu depósito MÁS todo lo que ya ha ganado — por eso empieza lento y luego explota con los años.',
+              'El interés simple paga solo sobre tu depósito original; el compuesto paga sobre tu depósito más todo lo que ya ha ganado — por eso crece como bola de nieve.',
           },
         ],
       },
@@ -691,31 +691,31 @@ const lesson: Lesson = {
         type: 'video',
         heading: '观看：复利实战',
         body:
-          '想看看这魔术背后的数学吗？看 Khan Academy 一步步演示复利是怎么滚雪球的。视频是英文的，它会暂停来考你——不许跳着看！',
+          '看这段 BFF 的短视频，了解复利是怎么运作的。提醒一下——它会中途暂停来考你，所以要认真看哦！',
         videoId: 'Rm6UdfRs3gw',
-        source: 'Khan Academy',
+        source: 'BFF Classroom',
         questions: [
           {
-            at: 95,
+            at: 80,
             question:
-              '你以 10% 的利息存入 $100，按年复利。第 1 年后你有 $110。第 2 年后大约有多少？',
-            options: ['$120', '$121', '$130', '$110——保持不变'],
+              '你以每年 10% 存入 $100。第 1 年后你有 $110。第 2 年后大约有多少？',
+            options: ['$120', '$121', '$110', '$200'],
             answerIndex: 1,
             explanation:
-              '第 2 年的 10% 是对整个 $110 计算的——不只是你原来的 $100——所以你赚到 $11，达到 $121。那多出来的一美元就是利息生利息，而且它每一年都在增长。',
+              '第 2 年你在 $110 上赚 10%——也就是 $11——所以是 $121。你赚到了利息之上的利息。',
           },
           {
-            at: 240,
+            at: 150,
             question: '复利和单利有什么不同？',
             options: [
               '复利只在大银行才管用',
-              '有了复利，你会在利息之上赚利息——而不只是在你存入的本金上',
-              '单利随时间增长得更快',
-              '没有区别，只是名字不同',
+              '有了复利，你会在利息之上赚利息，而不只是在你原来的本金上',
+              '单利总是增长得更快',
+              '其实没有区别',
             ],
             answerIndex: 1,
             explanation:
-              '单利永远只对你的原始存款支付利息。复利支付的是你的存款「加上」它已经赚到的一切之上的利息——这就是为什么它一开始很慢，然后在多年之后爆发式增长。',
+              '单利只对你的原始存款支付利息；复利支付的是你的存款加上它已经赚到的一切之上的利息——这就是为什么它会滚雪球般增长。',
           },
         ],
       },
