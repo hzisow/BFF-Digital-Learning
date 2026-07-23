@@ -11,9 +11,10 @@ import {
 import { getActivity } from '../../lib/activities'
 import { Logo } from '../../components/Logo'
 import { useLang } from '../../lib/i18n'
+import { Play, Trophy } from 'lucide-react'
 
 const BIG_BUTTON =
-  'rounded-2xl bg-white px-8 py-4 font-display text-2xl font-bold text-bff-900 shadow-lg transition hover:bg-bff-50 disabled:cursor-not-allowed disabled:opacity-50'
+  'rounded-2xl bg-white px-8 py-4 font-display text-2xl font-bold text-bff-900 shadow-lg transition hover:bg-bff-50 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50'
 
 function errorMessage(err: unknown, es: boolean, zh: boolean): string {
   return err instanceof Error
@@ -239,7 +240,7 @@ export default function CoPlayHost() {
             onClick={() => setState('playing')}
             disabled={players.length === 0}
           >
-            {zh ? '开始游戏' : es ? 'Comenzar juego' : 'Start game'} <span aria-hidden="true">🚀</span>
+            {zh ? '开始游戏' : es ? 'Comenzar juego' : 'Start game'} <Play className="inline h-6 w-6 align-[-0.15em]" aria-hidden="true" />
           </button>
         </div>
       )}
@@ -258,7 +259,7 @@ export default function CoPlayHost() {
           </p>
           <div className="rounded-2xl bg-white/10 p-6" aria-live="polite" aria-label={zh ? '实时排行榜' : es ? 'Tabla de posiciones en vivo' : 'Live leaderboard'}>
             <h2 className="mb-4 font-display text-lg font-bold uppercase tracking-wide text-bff-200">
-              <span aria-hidden="true">🏆</span> {zh ? '实时排行榜' : es ? 'Tabla de posiciones en vivo' : 'Live leaderboard'}
+              <Trophy className="inline h-5 w-5 align-[-0.15em]" aria-hidden="true" /> {zh ? '实时排行榜' : es ? 'Tabla de posiciones en vivo' : 'Live leaderboard'}
             </h2>
             <ol className="space-y-2.5">
               {standings.map((p, i) => (
@@ -302,7 +303,7 @@ export default function CoPlayHost() {
       {session.state === 'ended' && (
         <div className="flex flex-col items-center gap-10 pt-6 text-center">
           <h1 className="font-display text-5xl font-bold sm:text-6xl">
-            <span aria-hidden="true">🏆</span> {zh ? '最终排行榜' : es ? 'Tabla de posiciones final' : 'Final Leaderboard'}
+            <Trophy className="inline h-10 w-10 align-[-0.12em]" aria-hidden="true" /> {zh ? '最终排行榜' : es ? 'Tabla de posiciones final' : 'Final Leaderboard'}
           </h1>
           <div className="grid w-full max-w-4xl gap-4 sm:grid-cols-3">
             {standings.slice(0, 3).map((p, i) => (

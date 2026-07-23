@@ -119,7 +119,7 @@ export default function TradingBoard({ stage, cash, holdings, onTrade, locked }:
                 </span>
                 <div className="flex gap-1.5">
                   <button
-                    className="rounded-lg bg-red-50 px-3 py-1.5 text-sm font-bold text-red-700 transition hover:bg-red-100 disabled:opacity-30"
+                    className="rounded-lg bg-red-50 px-3 py-1.5 text-sm font-bold text-red-700 transition hover:bg-red-100 active:scale-[0.97] disabled:opacity-30"
                     disabled={!canSell}
                     onClick={() => onTrade(c.ticker, -1)}
                     aria-label={zh ? `卖出一股 ${c.name}` : es ? `Vender una acción de ${c.name}` : `Sell one share of ${c.name}`}
@@ -127,7 +127,7 @@ export default function TradingBoard({ stage, cash, holdings, onTrade, locked }:
                     {zh ? '卖出' : es ? 'Vender' : 'Sell'}
                   </button>
                   <button
-                    className="rounded-lg bg-green-50 px-3 py-1.5 text-sm font-bold text-green-700 transition hover:bg-green-100 disabled:opacity-30"
+                    className="rounded-lg bg-green-50 px-3 py-1.5 text-sm font-bold text-green-700 transition hover:bg-green-100 active:scale-[0.97] disabled:opacity-30"
                     disabled={!canBuy}
                     onClick={() => onTrade(c.ticker, 1)}
                     aria-label={zh ? `买入一股 ${c.name}` : es ? `Comprar una acción de ${c.name}` : `Buy one share of ${c.name}`}

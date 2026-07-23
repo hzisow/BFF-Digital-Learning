@@ -13,6 +13,7 @@ import { Logo } from '../../components/Logo'
 import { BACKEND_ENABLED } from '../../lib/config'
 import { useAdmin } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
+import { Check, Play, Trophy } from 'lucide-react'
 
 const QUESTION_SECONDS = 20
 
@@ -26,7 +27,7 @@ const OPTION_COLORS = [
 ]
 
 const BIG_BUTTON =
-  'rounded-2xl bg-white px-8 py-4 font-display text-2xl font-bold text-bff-900 shadow-lg transition hover:bg-bff-50 disabled:cursor-not-allowed disabled:opacity-50'
+  'rounded-2xl bg-white px-8 py-4 font-display text-2xl font-bold text-bff-900 shadow-lg transition hover:bg-bff-50 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50'
 
 function optionLetter(i: number): string {
   return String.fromCharCode(65 + i)
@@ -342,7 +343,7 @@ export default function QuizHost() {
             </div>
           </div>
           <button className={BIG_BUTTON} onClick={() => startQuestion(0)}>
-            {zh ? '开始测验' : es ? 'Empezar quiz' : 'Start quiz'} <span aria-hidden="true">🚀</span>
+            {zh ? '开始测验' : es ? 'Empezar quiz' : 'Start quiz'} <Play className="inline h-6 w-6 align-[-0.15em]" aria-hidden="true" />
           </button>
         </div>
       )}
@@ -439,7 +440,7 @@ export default function QuizHost() {
                     {correct && (
                       <>
                         {' '}
-                        <span aria-hidden="true">✔️</span>
+                        <Check className="inline h-6 w-6 align-[-0.15em]" aria-hidden="true" />
                         <span className="sr-only">
                           {zh ? ' —— 正确答案' : es ? ' — respuesta correcta' : ' — correct answer'}
                         </span>
@@ -459,7 +460,7 @@ export default function QuizHost() {
             </div>
             <div className="h-fit rounded-2xl bg-white/10 p-6">
               <h2 className="mb-4 font-display text-lg font-bold uppercase tracking-wide text-bff-200">
-                <span aria-hidden="true">🏆</span>{' '}
+                <Trophy className="inline h-5 w-5 align-[-0.15em]" aria-hidden="true" />{' '}
                 {zh ? '排行榜' : es ? 'Tabla de posiciones' : 'Leaderboard'}
               </h2>
               <ol className="space-y-2.5">
@@ -510,7 +511,7 @@ export default function QuizHost() {
       {session.state === 'done' && (
         <div className="flex flex-col items-center gap-10 pt-6 text-center">
           <h1 className="font-display text-5xl font-bold sm:text-6xl">
-            <span aria-hidden="true">🏆</span>{' '}
+            <Trophy className="inline h-10 w-10 align-[-0.12em]" aria-hidden="true" />{' '}
             {zh ? '最终结果' : es ? 'Resultados finales' : 'Final Results'}
           </h1>
           <div className="grid w-full max-w-4xl gap-4 sm:grid-cols-3">
