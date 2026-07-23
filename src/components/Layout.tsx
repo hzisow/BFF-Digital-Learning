@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
+import { Volume2, VolumeX, Menu, X } from 'lucide-react'
 import { Logo } from './Logo'
 import { useAdmin, useStudent } from '../lib/session'
 import { useLang } from '../lib/i18n'
@@ -27,9 +28,13 @@ function SoundToggle() {
       aria-pressed={on}
       aria-label={on ? 'Mute sound effects' : 'Turn on sound effects'}
       title={on ? 'Sound on' : 'Sound off'}
-      className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-800"
+      className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-800"
     >
-      <span aria-hidden="true">{on ? '🔊' : '🔇'}</span>
+      {on ? (
+        <Volume2 className="h-[18px] w-[18px]" aria-hidden="true" />
+      ) : (
+        <VolumeX className="h-[18px] w-[18px]" aria-hidden="true" />
+      )}
     </button>
   )
 }
@@ -264,31 +269,13 @@ export default function Layout() {
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
               aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-              className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100"
+              className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-700 transition-colors hover:bg-slate-100"
             >
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                aria-hidden="true"
-              >
-                {menuOpen ? (
-                  <>
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                  </>
-                ) : (
-                  <>
-                    <line x1="3" y1="6" x2="21" y2="6" />
-                    <line x1="3" y1="12" x2="21" y2="12" />
-                    <line x1="3" y1="18" x2="21" y2="18" />
-                  </>
-                )}
-              </svg>
+              {menuOpen ? (
+                <X className="h-[22px] w-[22px]" aria-hidden="true" />
+              ) : (
+                <Menu className="h-[22px] w-[22px]" aria-hidden="true" />
+              )}
             </button>
           </div>
         </div>

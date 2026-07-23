@@ -23,8 +23,25 @@ export default {
         },
       },
       fontFamily: {
-        display: ['Poppins', 'system-ui', 'sans-serif'],
+        display: ['"Bricolage Grotesque"', 'system-ui', 'sans-serif'],
         body: ['Inter', 'system-ui', 'sans-serif'],
+      },
+      // Deliberately tightened off the Tailwind defaults — bubbly, uniform
+      // rounding is a giveaway of un-customized output. These crisper radii
+      // read as an intentional design decision and ripple app-wide.
+      borderRadius: {
+        lg: '0.5rem',
+        xl: '0.625rem', // was 0.75rem
+        '2xl': '0.875rem', // was 1rem
+        '3xl': '1.125rem', // was 1.5rem
+      },
+      boxShadow: {
+        // A tight, layered shadow instead of one big soft blur.
+        card: '0 1px 2px rgba(15, 42, 66, 0.06), 0 2px 8px rgba(15, 42, 66, 0.05)',
+        'card-hover': '0 2px 4px rgba(15, 42, 66, 0.08), 0 10px 24px rgba(15, 42, 66, 0.09)',
+      },
+      letterSpacing: {
+        tightish: '-0.011em',
       },
       keyframes: {
         'pop-in': {

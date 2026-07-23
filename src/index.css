@@ -10,7 +10,7 @@
     @apply bg-slate-50;
   }
   h1, h2, h3, h4 {
-    @apply font-display;
+    @apply font-display tracking-tightish;
   }
 
   /* Visible keyboard-focus ring on every interactive element, including the
@@ -34,17 +34,24 @@
 }
 
 @layer components {
+  /* active:scale gives buttons a physical "press" — a small human touch that
+     un-customized output almost never has. transition-transform keeps it snappy. */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-bff-600 px-5 py-2.5 font-display font-semibold text-white shadow-sm transition hover:bg-bff-700 focus:outline-none focus:ring-2 focus:ring-bff-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-bff-600 px-5 py-2.5 font-display font-semibold text-white shadow-sm transition-[transform,background-color,box-shadow] duration-150 hover:bg-bff-700 active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-bff-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100;
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl border-2 border-bff-600 bg-white px-5 py-2.5 font-display font-semibold text-bff-700 transition hover:bg-bff-50 focus:outline-none focus:ring-2 focus:ring-bff-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border-2 border-bff-600 bg-white px-5 py-2.5 font-display font-semibold text-bff-700 transition-[transform,background-color] duration-150 hover:bg-bff-50 active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-bff-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100;
   }
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 font-display font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-bff-400 focus-visible:ring-offset-2;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 font-display font-medium text-slate-600 transition-[transform,background-color,color] duration-150 hover:bg-slate-100 hover:text-slate-900 active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-bff-400 focus-visible:ring-offset-2;
   }
   .card {
-    @apply rounded-2xl border border-slate-200 bg-white p-6 shadow-sm;
+    @apply rounded-2xl border border-slate-200/80 bg-white p-6 shadow-card;
+  }
+  /* An eyebrow: a small, tracked, uppercase label above a heading. A staple of
+     editorial/human layouts; signals hierarchy the generic centered-hero lacks. */
+  .eyebrow {
+    @apply inline-flex items-center gap-1.5 font-display text-xs font-bold uppercase tracking-[0.12em] text-bff-600;
   }
   .input {
     @apply w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-900 placeholder-slate-400 focus:border-bff-500 focus:outline-none focus:ring-2 focus:ring-bff-200;

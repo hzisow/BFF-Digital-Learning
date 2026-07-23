@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import { Check, X } from 'lucide-react'
 import { getLesson } from '../content/lessons'
 import type { Lesson, LessonSection } from '../content/types'
 import VideoCheckpoint from '../components/VideoCheckpoint'
@@ -525,7 +526,11 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
             return (
               <div
                 key={i}
-                className={`card border-l-4 ${right ? 'border-l-green-500' : 'border-l-red-400'}`}
+                className={`card ${
+                  right
+                    ? 'border-green-200 bg-green-50/50'
+                    : 'border-red-200 bg-red-50/40'
+                }`}
               >
                 <div className="flex items-start justify-between gap-3">
                   <p className="font-display font-semibold text-slate-900">
@@ -536,7 +541,11 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
                       right ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
                     }`}
                   >
-                    <span aria-hidden="true">{right ? '✓' : '✗'}</span>{' '}
+                    {right ? (
+                      <Check className="h-3.5 w-3.5" aria-hidden="true" />
+                    ) : (
+                      <X className="h-3.5 w-3.5" aria-hidden="true" />
+                    )}
                     {right ? t('lesson.correctChip') : t('lesson.missedChip')}
                   </span>
                 </div>
