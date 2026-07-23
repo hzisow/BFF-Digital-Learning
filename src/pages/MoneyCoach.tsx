@@ -5,6 +5,7 @@
 // handling for the "not set up yet" and transient-error cases.
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
+import { MessageCircle, Send, RefreshCw } from 'lucide-react'
 import { invokeAI, AI_ENABLED, AINotConfiguredError } from '../lib/ai'
 import { useLang } from '../lib/i18n'
 
@@ -151,7 +152,7 @@ export default function MoneyCoach() {
   const header = (
     <div className="text-center">
       <p className="chip mx-auto bg-bff-50 text-bff-700">
-        <ChatIcon />
+        <MessageCircle className="h-4 w-4" aria-hidden="true" />
         {kicker}
       </p>
       <h1 className="mt-3 font-display text-4xl font-extrabold text-slate-900">{title}</h1>
@@ -219,6 +220,7 @@ export default function MoneyCoach() {
                 onClick={() => void runCoach(messages)}
                 disabled={busy}
               >
+                <RefreshCw className="h-4 w-4" aria-hidden="true" />
                 {retryLabel}
               </button>
             </div>
@@ -278,6 +280,7 @@ export default function MoneyCoach() {
             className="btn-primary"
             disabled={busy || !input.trim()}
           >
+            <Send className="h-4 w-4" aria-hidden="true" />
             {sendLabel}
           </button>
         </form>
@@ -313,22 +316,5 @@ function Dot({ delay }: { delay: string }) {
       className="h-2 w-2 animate-bounce rounded-full bg-slate-400 motion-reduce:animate-none"
       style={{ animationDelay: delay }}
     />
-  )
-}
-
-function ChatIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className="h-4 w-4"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-    </svg>
   )
 }

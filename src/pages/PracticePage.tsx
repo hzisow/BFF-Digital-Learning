@@ -4,6 +4,7 @@
 
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { ArrowRight, RefreshCw } from 'lucide-react'
 import { LESSONS } from '../content/lessons'
 import { useLang, localizeLesson } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
@@ -66,7 +67,7 @@ export default function PracticePage() {
         </p>
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
           <Link to="/lessons" className="btn-primary inline-flex">
-            {zh ? '去上课' : es ? 'Ir a las lecciones' : 'Go to lessons'} <span aria-hidden="true">→</span>
+            {zh ? '去上课' : es ? 'Ir a las lecciones' : 'Go to lessons'} <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
           <Link to="/practice/ai" className="btn-secondary inline-flex">
             {zh ? 'AI 生成练习' : es ? 'Práctica con IA' : 'AI-generated practice'}
@@ -80,7 +81,7 @@ export default function PracticePage() {
     const pct = Math.round((correctCount / deck.length) * 100)
     return (
       <div className="mx-auto max-w-xl px-4 py-20 text-center">
-        <div className="animate-pop-in rounded-3xl bg-gradient-to-br from-bff-600 to-bff-800 p-8 text-white shadow-lg">
+        <div className="animate-pop-in rounded-3xl bg-bff-900 p-8 text-white shadow-lg">
           <p className="text-5xl" aria-hidden="true">{pct >= 80 ? '🎉' : '💪'}</p>
           <h1 className="mt-4 font-display text-3xl font-extrabold">
             {zh ? '复习完成' : es ? 'Repaso completado' : 'Review complete'}: {pct}%
@@ -110,7 +111,7 @@ export default function PracticePage() {
               setCorrectCount(0)
             }}
           >
-            {zh ? '再复习一遍' : es ? 'Repasar otra vez' : 'Review again'} <span aria-hidden="true">🔄</span>
+            {zh ? '再复习一遍' : es ? 'Repasar otra vez' : 'Review again'} <RefreshCw className="h-4 w-4" aria-hidden="true" />
           </button>
           <Link to="/lessons" className="btn-primary">
             {zh ? '返回学习路径' : es ? 'Volver a la ruta' : 'Back to the path'}
@@ -138,7 +139,7 @@ export default function PracticePage() {
     <div className="mx-auto max-w-2xl px-4 py-10">
       <div className="flex items-center justify-between gap-3">
         <p className="chip bg-bff-100 text-bff-800">
-          <span aria-hidden="true">🔁</span>{' '}
+          <RefreshCw className="h-3.5 w-3.5" aria-hidden="true" />
           {zh
             ? `复习 · 第 ${step + 1} / ${deck.length} 题`
             : es
@@ -218,7 +219,7 @@ export default function PracticePage() {
                 : es
                   ? 'Ver resultado'
                   : 'See results'}{' '}
-            <span aria-hidden="true">→</span>
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
       )}

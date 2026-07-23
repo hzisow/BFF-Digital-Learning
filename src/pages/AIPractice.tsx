@@ -10,6 +10,7 @@
 
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Sparkles, Check, X, ArrowRight } from 'lucide-react'
 import { invokeAI, AI_ENABLED, AINotConfiguredError } from '../lib/ai'
 import { useLang } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
@@ -124,7 +125,7 @@ export default function AIPractice() {
   const header = (
     <header className="mb-8">
       <p className="chip bg-bff-100 text-bff-800">
-        <span aria-hidden="true">✨</span>{' '}
+        <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
         {zh ? 'AI 练习' : es ? 'Práctica con IA' : 'AI Practice'}
       </p>
       <h1 className="mt-3 font-display text-3xl font-bold text-slate-900">
@@ -373,14 +374,14 @@ export default function AIPractice() {
               >
                 <span>{opt}</span>
                 {revealed && isAnswer && (
-                  <span className="shrink-0 text-sm font-semibold">
-                    <span aria-hidden="true">✓ </span>
+                  <span className="inline-flex shrink-0 items-center gap-1 text-sm font-semibold">
+                    <Check className="h-4 w-4" aria-hidden="true" />
                     {zh ? '正确' : es ? 'Correcta' : 'Correct'}
                   </span>
                 )}
                 {revealed && isChosen && !isAnswer && (
-                  <span className="shrink-0 text-sm font-semibold">
-                    <span aria-hidden="true">✗ </span>
+                  <span className="inline-flex shrink-0 items-center gap-1 text-sm font-semibold">
+                    <X className="h-4 w-4" aria-hidden="true" />
                     {zh ? '答错' : es ? 'Incorrecta' : 'Incorrect'}
                   </span>
                 )}
@@ -425,7 +426,7 @@ export default function AIPractice() {
                 : es
                   ? 'Ver resultado'
                   : 'See results'}{' '}
-            <span aria-hidden="true">→</span>
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
       )}

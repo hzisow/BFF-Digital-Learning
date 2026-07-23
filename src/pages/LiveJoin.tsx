@@ -3,6 +3,7 @@
 
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { ArrowRight, Loader2 } from 'lucide-react'
 import { BACKEND_ENABLED } from '../lib/config'
 import { findLiveSession } from '../activities/live/coplay'
 import { useLang } from '../lib/i18n'
@@ -110,9 +111,12 @@ export default function LiveJoin() {
               aria-busy={busy}
             >
               {busy ? (
-                zh ? '正在查找你的游戏…' : es ? 'Buscando tu juego…' : 'Finding your game…'
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                  {zh ? '正在查找你的游戏…' : es ? 'Buscando tu juego…' : 'Finding your game…'}
+                </>
               ) : (
-                <>{zh ? '加入游戏' : es ? 'Unirse al juego' : 'Join game'} <span aria-hidden="true">🚀</span></>
+                <>{zh ? '加入游戏' : es ? 'Unirse al juego' : 'Join game'} <ArrowRight className="h-4 w-4" aria-hidden="true" /></>
               )}
             </button>
           </form>
