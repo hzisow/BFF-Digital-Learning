@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { ArrowRight, BookOpen, Check, Clock, Lock } from 'lucide-react'
 import { ACTIVITIES, getActivity, kindLabel, localizeActivity } from '../../lib/activities'
 import { BACKEND_ENABLED } from '../../lib/config'
 import type { ActivityProgress } from '../../lib/progress'
@@ -30,7 +31,7 @@ function ProgressChip({
   if (progress?.status === 'completed') {
     return (
       <span className="chip bg-green-100 text-green-700">
-        <span aria-hidden="true">✓</span> {zh ? '已完成' : es ? 'Completado' : 'Completed'}
+        <Check className="h-3.5 w-3.5" aria-hidden="true" /> {zh ? '已完成' : es ? 'Completado' : 'Completed'}
         {progress.score != null ? ` · ${Math.round(progress.score)}%` : ''}
       </span>
     )
@@ -147,7 +148,7 @@ export default function StudentHome() {
     return (
       <div className="mx-auto max-w-lg px-4 py-16">
         <div className="card animate-pop-in text-center">
-          <p className="text-5xl" aria-hidden="true">🔒</p>
+          <Lock className="mx-auto h-12 w-12 text-slate-400" strokeWidth={1.5} aria-hidden="true" />
           <h1 className="mt-4 font-display text-2xl font-bold text-slate-900">
             {zh ? '这个班级已关闭' : es ? 'Esta clase está cerrada' : 'This class is closed'}
           </h1>
@@ -173,7 +174,7 @@ export default function StudentHome() {
           </p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Link to="/lessons" className="btn-primary">
-              {zh ? '继续学习' : es ? 'Seguir aprendiendo' : 'Keep learning'} <span aria-hidden="true">📚</span>
+              {zh ? '继续学习' : es ? 'Seguir aprendiendo' : 'Keep learning'} <BookOpen className="h-4 w-4" aria-hidden="true" />
             </Link>
             <button
               type="button"
@@ -262,7 +263,7 @@ export default function StudentHome() {
           </div>
           <span className="btn-primary shrink-0 px-4 py-2 text-sm">
             {resume.inProgress ? (zh ? '继续' : es ? 'Continuar' : 'Continue') : zh ? '开始' : es ? 'Empezar' : 'Start'}{' '}
-            <span aria-hidden="true">→</span>
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </span>
         </Link>
       )}
@@ -342,9 +343,9 @@ export default function StudentHome() {
                   <div className="mt-4 flex items-center justify-between gap-2">
                     <span className="text-xs font-semibold text-slate-500">
                       {asg.due_at ? (
-                        <>
-                          <span aria-hidden="true">📅</span> {zh ? '截止' : es ? 'Entrega' : 'Due'} {formatDue(asg.due_at, es, zh)}
-                        </>
+                        <span className="inline-flex items-center gap-1">
+                          <Clock className="h-3.5 w-3.5" aria-hidden="true" /> {zh ? '截止' : es ? 'Entrega' : 'Due'} {formatDue(asg.due_at, es, zh)}
+                        </span>
                       ) : zh ? (
                         '没有截止日期'
                       ) : es ? (
@@ -371,7 +372,7 @@ export default function StudentHome() {
                             : es
                             ? 'Empezar'
                             : 'Start'}{' '}
-                      <span aria-hidden="true">→</span>
+                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
                     </Link>
                   </div>
                 </div>
@@ -411,8 +412,8 @@ export default function StudentHome() {
                   {local.title}
                 </p>
                 <div className="mt-3 flex items-center justify-between gap-2">
-                  <span className="text-xs font-semibold text-slate-500">
-                    <span aria-hidden="true">⏱️</span> ~{a.durationMin} {zh ? '分钟' : 'min'}
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500">
+                    <Clock className="h-3.5 w-3.5" aria-hidden="true" /> ~{a.durationMin} {zh ? '分钟' : 'min'}
                   </span>
                   <ProgressChip progress={p} es={es} zh={zh} />
                 </div>

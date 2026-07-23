@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { Ticket, BookOpen } from 'lucide-react'
 import { BACKEND_ENABLED } from '../../lib/config'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
@@ -14,7 +15,7 @@ function SoloModeCard() {
   const zh = lang === 'zh'
   return (
     <div className="card animate-pop-in mx-auto max-w-md text-center">
-      <p className="text-5xl" aria-hidden="true">🎟️</p>
+      <Ticket className="mx-auto h-12 w-12 text-bff-600" strokeWidth={1.5} aria-hidden="true" />
       <h1 className="mt-4 font-display text-2xl font-bold text-slate-900">
         {zh ? '班级代码马上就要上线啦！' : es ? '¡Los códigos de clase estarán disponibles muy pronto!' : 'Class codes are coming online soon!'}
       </h1>
@@ -27,7 +28,7 @@ function SoloModeCard() {
       </p>
       <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
         <Link to="/lessons" className="btn-primary">
-          {zh ? '探索课程' : es ? 'Explorar lecciones' : 'Explore lessons'} <span aria-hidden="true">📚</span>
+          {zh ? '探索课程' : es ? 'Explorar lecciones' : 'Explore lessons'} <BookOpen className="h-4 w-4" aria-hidden="true" />
         </Link>
         <Link to="/activities" className="btn-secondary">
           {zh ? '游戏和挑战' : es ? 'Juegos y desafíos' : 'Games & challenges'} <span aria-hidden="true">🎮</span>
