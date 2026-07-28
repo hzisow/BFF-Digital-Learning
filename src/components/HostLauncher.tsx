@@ -88,18 +88,18 @@ export default function HostLauncher({ classroomId }: { classroomId: string | nu
           onChange={(e) => setChoice(e.target.value)}
           disabled={busy}
         >
-          <option value="wolf">🐺 {zh ? 'Wolf of Wall Street（实时市场）' : es ? 'Wolf of Wall Street (mercado en vivo)' : 'Wolf of Wall Street (live market)'}</option>
+          <option value="wolf">{zh ? 'Wolf of Wall Street（实时市场）' : es ? 'Wolf of Wall Street (mercado en vivo)' : 'Wolf of Wall Street (live market)'}</option>
           <optgroup label={zh ? '实时测验 — 选择一节课' : es ? 'Quiz en vivo — elige una lección' : 'Live quiz — pick a lesson'}>
             {lessons.map((l) => (
               <option key={l.slug} value={`quiz:${l.slug}`}>
-                📝 {zh ? '测验：' : es ? 'Quiz: ' : 'Quiz: '}{l.title}
+                {zh ? '测验：' : es ? 'Quiz: ' : 'Quiz: '}{l.title}
               </option>
             ))}
           </optgroup>
           <optgroup label={zh ? '协作挑战（共享排行榜）' : es ? 'Reto en equipo (tabla de posiciones compartida)' : 'Co-play challenge (shared leaderboard)'}>
             {coplay.map((a) => (
               <option key={a.slug} value={`coplay:${a.slug}`}>
-                {a.emoji} {a.title}
+                {a.title}
               </option>
             ))}
           </optgroup>

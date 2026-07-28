@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { Volume2, VolumeX, Menu, X, ArrowRight } from 'lucide-react'
 import { Logo } from './Logo'
+import { AppIcon } from '../lib/icons'
 import { useAdmin, useStudent } from '../lib/session'
 import { useLang } from '../lib/i18n'
 import type { Lang } from '../lib/i18n'
@@ -169,8 +170,8 @@ export default function Layout() {
       celebrate('levelup')
       toast(
         lang === 'es'
-          ? `¡Subiste de nivel! Ahora eres ${level.tier.name} ${level.tier.emoji}`
-          : `Level up! You're now a ${level.tier.name} ${level.tier.emoji}`,
+          ? `¡Subiste de nivel! Ahora eres ${level.tier.name}`
+          : `Level up! You're now a ${level.tier.name}`,
         'success',
       )
     }
@@ -181,7 +182,7 @@ export default function Layout() {
         /* ignore */
       }
     }
-  }, [level.level, level.tier.name, level.tier.emoji, lang, toast])
+  }, [level.level, level.tier.name, lang, toast])
 
   const links = (
     <>
@@ -206,10 +207,10 @@ export default function Layout() {
       {student ? (
         <NavLink to="/student" className={navLinkClass}>
           <span
-            className="mr-1 rounded-md bg-bff-100 px-1.5 py-0.5 text-xs font-bold text-bff-700"
+            className="mr-1 inline-flex items-center gap-1 rounded-md bg-bff-100 px-1.5 py-0.5 text-xs font-bold text-bff-700"
             title={`Level ${level.level} · ${level.tier.name}`}
           >
-            <span aria-hidden="true">{level.tier.emoji}</span> Lv{level.level}
+            <AppIcon name={level.tier.icon} className="h-3.5 w-3.5" /> Lv{level.level}
           </span>
           <span className="hidden sm:inline">{t('nav.myClass')} · </span>
           {student.nickname}
