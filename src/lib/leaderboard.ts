@@ -10,7 +10,7 @@ export interface LeaderboardRow {
   activities_completed: number
 }
 
-/** Ranked standings for a classroom, XP high→low. Empty if backend is off. */
+/** Ranked standings for a classroom, XP from high to low. Empty if backend is off. */
 export async function fetchLeaderboard(classroomId: string): Promise<LeaderboardRow[]> {
   if (!supabase) return []
   const { data, error } = await supabase.rpc('classroom_leaderboard', {

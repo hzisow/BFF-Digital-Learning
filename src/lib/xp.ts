@@ -3,7 +3,7 @@ import type { IconName } from './icons'
 // from completed work (never stored separately), so it always agrees with a
 // student's real progress and with the server leaderboard, which computes the
 // SAME formula in SQL (see migration 0012):
-//   completed with a score : 10 + floor(score * 9 / 10)   → 10 (weak) … 100 (perfect)
+//   completed with a score : 10 + floor(score * 9 / 10)   giving 10 (weak) up to 100 (perfect)
 //   completed, no score     : 50
 // XP is weighted toward mastery on purpose: finishing alone earns little, so
 // levels track how *well* you play, not just how much you click through.

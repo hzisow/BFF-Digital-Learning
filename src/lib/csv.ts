@@ -9,7 +9,7 @@ function cell(value: string | number | null | undefined): string {
   return /["\n,]/.test(safe) ? `"${safe.replace(/"/g, '""')}"` : safe
 }
 
-/** Rows (including an optional header row) → a CSV string with CRLF line endings. */
+/** Rows (including an optional header row) as a CSV string with CRLF line endings. */
 export function toCsv(rows: Array<Array<string | number | null | undefined>>): string {
   return rows.map((r) => r.map(cell).join(',')).join('\r\n')
 }

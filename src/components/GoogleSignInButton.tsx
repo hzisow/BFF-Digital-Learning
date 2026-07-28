@@ -130,7 +130,7 @@ export default function GoogleSignInButton({
     }
   }, [onError])
 
-  // No client ID configured yet → render nothing (email sign-in still works).
+  // No client ID configured yet, so render nothing (email sign-in still works).
   if (!GOOGLE_CLIENT_ID) return null
 
   return (

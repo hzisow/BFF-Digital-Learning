@@ -451,8 +451,13 @@ export default function LessonsIndex() {
                 >
                   {q.done && <Check className="h-3.5 w-3.5" aria-hidden="true" />}
                 </span>
-                <span className={q.done ? 'text-slate-400 line-through' : 'text-slate-700'}>
-                  <AppIcon name={q.icon} className="h-4 w-4" /> {zh ? q.zh : es ? q.es : q.en}
+                <span
+                  className={`inline-flex items-center gap-2 ${
+                    q.done ? 'text-slate-400 line-through' : 'text-slate-700'
+                  }`}
+                >
+                  <AppIcon name={q.icon} className="h-4 w-4 shrink-0" />
+                  {zh ? q.zh : es ? q.es : q.en}
                 </span>
                 <span className="sr-only">{q.done ? (zh ? '已完成' : es ? 'completada' : 'done') : (zh ? '未完成' : es ? 'pendiente' : 'not done')}</span>
               </li>
@@ -634,7 +639,7 @@ export default function LessonsIndex() {
                           </span>
                         )}
                         {/* bg matches the page so the dotted connector never bleeds through the text */}
-                        <div className="absolute left-1/2 top-[82px] w-[152px] -translate-x-1/2 bg-paper px-1 text-center">
+                        <div className="absolute left-1/2 top-[82px] w-[160px] -translate-x-1/2 bg-paper px-1 text-center leading-tight">
                           <p
                             className={`text-xs font-bold leading-tight ${
                               node.state === 'locked' ? 'text-ink/50' : 'text-ink'
@@ -663,8 +668,9 @@ export default function LessonsIndex() {
             <span className="eyebrow-line" aria-hidden="true" />
             {zh ? '额外' : es ? 'Extra' : 'Bonus'}
           </p>
-          <h2 className="mt-2 inline-flex items-center gap-2 font-display text-2xl font-bold text-slate-900">
-            <Sparkles className="h-5 w-5 text-gold-500" aria-hidden="true" /> {zh ? '额外选修单元' : es ? 'Unidades extra' : 'Bonus electives'}
+          <h2 className="mt-2 flex items-center gap-2 font-display text-2xl font-bold text-ink">
+            <Sparkles className="h-5 w-5 shrink-0 text-gold-500" aria-hidden="true" />
+            {zh ? '额外选修单元' : es ? 'Unidades extra' : 'Bonus electives'}
           </h2>
           <p className="mt-2 max-w-2xl text-slate-600">
             {zh
@@ -730,7 +736,8 @@ export default function LessonsIndex() {
             </p>
           </div>
           <Link to="/activities" className="btn-secondary shrink-0">
-            {zh ? '游戏与挑战 →' : es ? 'Juegos y desafíos →' : 'Games & Challenges →'}
+            {zh ? '游戏与挑战' : es ? 'Juegos y desafíos' : 'Games & Challenges'}
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </div>
       </div>

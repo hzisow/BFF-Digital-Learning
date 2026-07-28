@@ -141,7 +141,7 @@ const MOTIFS: Record<string, () => ReactElement> = {
   bank: Bank,
 }
 
-// Each lesson slug → a motif. Electives reuse the closest archetype.
+// Each lesson slug maps to a motif. Electives reuse the closest archetype.
 const SLUG_MOTIF: Record<string, keyof typeof MOTIFS> = {
   'earning-income': 'paycheck',
   'first-paycheck': 'paycheck',

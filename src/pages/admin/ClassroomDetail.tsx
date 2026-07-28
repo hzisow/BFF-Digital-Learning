@@ -65,7 +65,7 @@ function ProgressChip({ row, zh, es }: { row: ProgressRow | undefined; zh: boole
   }
   return (
     <span className="chip bg-amber-100 text-amber-700">
-      <span aria-hidden="true">●</span> {zh ? '进行中' : es ? 'comenzado' : 'started'}
+      <span aria-hidden="true" className="inline-block h-1.5 w-1.5 rounded-full bg-current" /> {zh ? '进行中' : es ? 'comenzado' : 'started'}
     </span>
   )
 }
