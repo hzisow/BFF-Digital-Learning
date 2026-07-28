@@ -12,7 +12,15 @@
 const MODEL_OVERRIDE = (Deno.env.get('GEMINI_MODEL') ?? '').trim()
 const MODELS = MODEL_OVERRIDE
   ? [MODEL_OVERRIDE]
-  : ['gemini-2.0-flash', 'gemini-flash-latest', 'gemini-2.5-flash', 'gemini-1.5-flash']
+  : [
+      // Lite tiers first: they carry the most generous free-tier quota, and
+      // they are more than good enough for short tutoring replies.
+      'gemini-2.0-flash-lite',
+      'gemini-2.5-flash-lite',
+      'gemini-2.0-flash',
+      'gemini-2.5-flash',
+      'gemini-flash-latest',
+    ]
 
 export const MODEL = MODELS[0]
 
@@ -89,8 +97,10 @@ export async function callAI(opts: CallAIOptions): Promise<string> {
 
   let lastStatus = 0
   let lastDetail = ''
+  const tried: string[] = []
 
   for (const model of MODELS) {
+    tried.push(model)
     let res: Response
     try {
       res = await fetch(endpoint(model), {
@@ -127,10 +137,11 @@ export async function callAI(opts: CallAIOptions): Promise<string> {
       `Gemini API error: status=${res.status} model=${model} body=${lastDetail.slice(0, 800)}`,
     )
 
-    // Unknown model for this key/project — try the next candidate. Anything
-    // else (bad key, quota, permission) will fail identically on every model,
-    // so stop and report it.
-    if (res.status === 404) continue
+    // Free-tier quota is allocated PER MODEL, so a 429 on one model says
+    // nothing about the next — keep going. 404 likewise means only that this
+    // model name is unknown. Anything else (bad key, disabled API) fails the
+    // same way everywhere, so stop and report it.
+    if (res.status === 404 || res.status === 429) continue
     break
   }
 
@@ -142,7 +153,10 @@ export async function callAI(opts: CallAIOptions): Promise<string> {
   } catch {
     // not JSON — keep the raw text
   }
-  throw new Error(`Gemini ${lastStatus || 'request failed'}: ${String(reason).slice(0, 300)}`)
+  throw new Error(
+    `Gemini ${lastStatus || 'request failed'}: ${String(reason).slice(0, 220)} ` +
+      `[tried ${tried.join(', ')}]`,
+  )
 }
 
 /** Map a caller language code to an instruction the model can follow. */
