@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
-import { Volume2, VolumeX, Menu, X, ArrowRight } from 'lucide-react'
+import { Volume2, VolumeX, Menu, X, ArrowRight, ChevronDown } from 'lucide-react'
 import { Logo } from './Logo'
 import { AppIcon } from '../lib/icons'
 import { useAdmin, useStudent } from '../lib/session'
@@ -124,6 +124,81 @@ function LangSwitcher() {
   )
 }
 
+/** Overflow menu for the secondary destinations and the sound toggle. */
+function MoreMenu({
+  adminUser,
+  t,
+}: {
+  adminUser: unknown
+  t: (k: string) => string
+}) {
+  const [open, setOpen] = useState(false)
+  const wrapRef = useRef<HTMLDivElement | null>(null)
+  const location = useLocation()
+
+  useEffect(() => setOpen(false), [location.pathname])
+
+  useEffect(() => {
+    if (!open) return
+    function onDown(e: MouseEvent) {
+      if (!wrapRef.current?.contains(e.target as Node)) setOpen(false)
+    }
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('mousedown', onDown)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('mousedown', onDown)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [open])
+
+  const itemClass =
+    'block rounded-[5px] px-3 py-2 font-display text-sm font-semibold text-ink transition-colors hover:bg-ink/5'
+
+  return (
+    <div className="relative" ref={wrapRef}>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        aria-haspopup="true"
+        className={`${navLinkClass({ isActive: false })} inline-flex items-center gap-1`}
+      >
+        {t('nav.more')}
+        <ChevronDown
+          className={`h-3.5 w-3.5 transition-transform ${open ? 'rotate-180' : ''}`}
+          aria-hidden="true"
+        />
+      </button>
+      {open && (
+        <div className="absolute right-0 top-full z-50 mt-1 w-52 rounded-[8px] border border-ink/10 bg-white p-1.5 shadow-card">
+          <NavLink to="/glossary" className={itemClass}>
+            {t('nav.glossary')}
+          </NavLink>
+          <NavLink to="/practice" className={itemClass}>
+            {t('nav.practice')}
+          </NavLink>
+          {adminUser ? (
+            <NavLink to="/admin" className={itemClass}>
+              {t('nav.dashboard')}
+            </NavLink>
+          ) : (
+            <NavLink to="/team" className={itemClass}>
+              {t('nav.team')}
+            </NavLink>
+          )}
+          <div className="my-1 h-px bg-ink/10" />
+          <div className="px-1 py-0.5">
+            <SoundToggle />
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function Layout() {
   const { student } = useStudent()
   const { adminUser } = useAdmin()
@@ -184,7 +259,10 @@ export default function Layout() {
     }
   }, [level.level, level.tier.name, lang, toast])
 
-  const links = (
+  // Only the four learning destinations stay in the bar. Everything else moves
+  // into "More" so the header reads as a short, scannable row instead of a wall
+  // of links competing with the page.
+  const primaryLinks = (
     <>
       <NavLink to="/lessons" className={navLinkClass}>
         {t('nav.lessons')}
@@ -198,38 +276,27 @@ export default function Layout() {
       <NavLink to="/coach" className={navLinkClass}>
         {t('nav.coach')}
       </NavLink>
-      <NavLink
-        to="/glossary"
-        className={`${navLinkClass({ isActive: false })} hidden md:inline-flex`}
-      >
-        {t('nav.glossary')}
-      </NavLink>
-      {student ? (
-        <NavLink to="/student" className={navLinkClass}>
-          <span
-            className="mr-1 inline-flex items-center gap-1 rounded-md bg-bff-100 px-1.5 py-0.5 text-xs font-bold text-bff-700"
-            title={`Level ${level.level} · ${level.tier.name}`}
-          >
-            <AppIcon name={level.tier.icon} className="h-3.5 w-3.5" /> Lv{level.level}
-          </span>
-          <span className="hidden sm:inline">{t('nav.myClass')} · </span>
-          {student.nickname}
-        </NavLink>
-      ) : (
-        <NavLink to="/join" className={navLinkClass}>
-          {t('nav.join')}
-        </NavLink>
-      )}
-      {adminUser ? (
-        <NavLink to="/admin" className={navLinkClass}>
-          {t('nav.dashboard')}
-        </NavLink>
-      ) : (
-        <NavLink to="/team" className={navLinkClass}>
-          {t('nav.team')}
-        </NavLink>
-      )}
     </>
+  )
+
+  // The student's own space is the one persistent call to action on the right.
+  const accountLink = student ? (
+    <NavLink
+      to="/student"
+      className="inline-flex items-center gap-1.5 rounded-[5px] border border-ink/15 px-2.5 py-1.5 font-display text-sm font-semibold text-ink transition-colors hover:bg-ink/5"
+    >
+      <span
+        className="inline-flex items-center gap-1 rounded-[4px] bg-bff-100 px-1.5 py-0.5 text-xs font-bold text-bff-700"
+        title={`Level ${level.level} · ${level.tier.name}`}
+      >
+        <AppIcon name={level.tier.icon} className="h-3.5 w-3.5" /> {level.level}
+      </span>
+      <span className="max-w-[9ch] truncate">{student.nickname}</span>
+    </NavLink>
+  ) : (
+    <NavLink to="/join" className="btn-primary px-3 py-1.5 text-sm">
+      {t('nav.join')}
+    </NavLink>
   )
 
   return (
@@ -255,14 +322,15 @@ export default function Layout() {
 
           {/* Desktop nav */}
           <nav className="hidden items-center gap-1 md:flex" aria-label={t('a11y.primaryNav')}>
-            {links}
-            <SoundToggle />
+            {primaryLinks}
+            <MoreMenu adminUser={adminUser} t={t} />
+            <span aria-hidden="true" className="mx-1 h-5 w-px bg-ink/10" />
+            {accountLink}
             <LangSwitcher />
           </nav>
 
           {/* Mobile: compact language switch + hamburger */}
           <div className="flex items-center gap-2 md:hidden">
-            <SoundToggle />
             <LangSwitcher />
             <button
               type="button"
@@ -304,6 +372,9 @@ export default function Layout() {
               <NavLink to="/glossary" className={mobileLinkClass}>
                 {t('nav.glossary')}
               </NavLink>
+              <NavLink to="/practice" className={mobileLinkClass}>
+                {t('nav.practice')}
+              </NavLink>
               {student ? (
                 <NavLink to="/student" className={mobileLinkClass}>
                   {t('nav.myClass')} · {student.nickname}
@@ -322,6 +393,10 @@ export default function Layout() {
                   {t('nav.team')}
                 </NavLink>
               )}
+              <div className="mt-1 flex items-center gap-2 border-t border-ink/10 px-4 pt-3">
+                <SoundToggle />
+                <span className="text-sm font-medium text-ink/60">{t('nav.sound')}</span>
+              </div>
             </div>
           </nav>
         )}

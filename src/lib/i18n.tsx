@@ -32,6 +32,9 @@ const STRINGS: Record<string, Variants> = {
   'nav.myClass': { en: 'My Class', es: 'Mi clase', zh: '我的班级' },
   'nav.team': { en: 'Team', es: 'Equipo', zh: '团队' },
   'nav.dashboard': { en: 'Dashboard', es: 'Panel', zh: '仪表板' },
+  'nav.more': { en: 'More', es: 'Más', zh: '更多' },
+  'nav.practice': { en: 'Practice', es: 'Práctica', zh: '练习' },
+  'nav.sound': { en: 'Sound', es: 'Sonido', zh: '音效' },
   'a11y.skip': {
     en: 'Skip to main content',
     es: 'Saltar al contenido principal',
