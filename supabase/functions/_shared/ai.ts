@@ -4,17 +4,20 @@
 // then set it in Supabase:
 //   Project Settings → Edge Functions → Secrets → GEMINI_API_KEY
 // The public repo never contains the key.
-//
-// Gemini's free tier covers a classroom nonprofit's usage at no cost. This file
-// keeps the same call shape the functions already used, so swapping providers
-// later (or back to another API) only touches this one module.
 
-// One place to change the model. Overridable with a GEMINI_MODEL secret so the
-// model can be swapped from the dashboard without a redeploy.
-export const MODEL = Deno.env.get('GEMINI_MODEL') || 'gemini-2.0-flash'
+// Candidate models, tried in order. A key/project that doesn't recognise the
+// first one (404 NOT_FOUND) falls through to the next, so a model rename on
+// Google's side degrades instead of taking the whole feature down. Set a
+// GEMINI_MODEL secret to pin one explicitly.
+const MODEL_OVERRIDE = (Deno.env.get('GEMINI_MODEL') ?? '').trim()
+const MODELS = MODEL_OVERRIDE
+  ? [MODEL_OVERRIDE]
+  : ['gemini-2.0-flash', 'gemini-flash-latest', 'gemini-2.5-flash', 'gemini-1.5-flash']
 
-const ENDPOINT = (model: string, key: string) =>
-  `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`
+export const MODEL = MODELS[0]
+
+const endpoint = (model: string) =>
+  `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`
 
 export interface AIMessage {
   role: 'user' | 'assistant' | 'model'
@@ -52,11 +55,13 @@ function toGeminiSchema(node: unknown): unknown {
 
 /**
  * Call Gemini and return the model's text. Throws 'AI_NOT_CONFIGURED' if the
- * key is missing, 'AI_REFUSED' if the model declined / was safety-blocked, or a
- * descriptive error otherwise.
+ * key is missing, 'AI_REFUSED' if the model declined / was safety-blocked, or an
+ * error whose message carries the upstream detail so the UI can show it.
  */
 export async function callAI(opts: CallAIOptions): Promise<string> {
-  const key = Deno.env.get('GEMINI_API_KEY')
+  // Trim: a key pasted into the dashboard often carries a trailing newline or
+  // stray space, which Google rejects with a fast 400 API_KEY_INVALID.
+  const key = (Deno.env.get('GEMINI_API_KEY') ?? '').trim()
   if (!key) {
     console.error('GEMINI_API_KEY secret is not set on this project.')
     throw new Error('AI_NOT_CONFIGURED')
@@ -76,44 +81,68 @@ export async function callAI(opts: CallAIOptions): Promise<string> {
     generationConfig.responseSchema = toGeminiSchema(opts.outputSchema)
   }
 
-  const body = {
+  const body = JSON.stringify({
     systemInstruction: { parts: [{ text: opts.system }] },
     contents,
     generationConfig,
-  }
-
-  const res = await fetch(ENDPOINT(MODEL, key), {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(body),
   })
 
-  if (!res.ok) {
-    const detail = await res.text().catch(() => '')
-    // Log upstream failures so they show up in the edge-function logs. The key
-    // is never part of the body, only the URL, which we don't log.
+  let lastStatus = 0
+  let lastDetail = ''
+
+  for (const model of MODELS) {
+    let res: Response
+    try {
+      res = await fetch(endpoint(model), {
+        method: 'POST',
+        // Header auth rather than ?key= so the secret never lands in a URL,
+        // which is what proxies and error messages tend to echo back.
+        headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
+        body,
+      })
+    } catch (e) {
+      lastStatus = 0
+      lastDetail = `network error: ${e instanceof Error ? e.message : String(e)}`
+      console.error(`Gemini fetch failed for ${model}: ${lastDetail}`)
+      continue
+    }
+
+    if (res.ok) {
+      const data = await res.json()
+      if (data.promptFeedback?.blockReason) throw new Error('AI_REFUSED')
+      const candidate = data.candidates?.[0]
+      if (!candidate) throw new Error('AI_REFUSED')
+      if (candidate.finishReason === 'SAFETY' || candidate.finishReason === 'RECITATION') {
+        throw new Error('AI_REFUSED')
+      }
+      const parts: Array<{ text?: string }> = candidate.content?.parts ?? []
+      const text = parts.map((p) => p.text ?? '').join('').trim()
+      if (text) return text
+      throw new Error('AI_REFUSED')
+    }
+
+    lastStatus = res.status
+    lastDetail = await res.text().catch(() => '')
     console.error(
-      `Gemini API error: status=${res.status} model=${MODEL} body=${detail.slice(0, 800)}`,
+      `Gemini API error: status=${res.status} model=${model} body=${lastDetail.slice(0, 800)}`,
     )
-    throw new Error(`Gemini API error ${res.status}: ${detail.slice(0, 300)}`)
+
+    // Unknown model for this key/project — try the next candidate. Anything
+    // else (bad key, quota, permission) will fail identically on every model,
+    // so stop and report it.
+    if (res.status === 404) continue
+    break
   }
 
-  const data = await res.json()
-
-  // Prompt-level safety block (no candidates returned).
-  if (data.promptFeedback?.blockReason) throw new Error('AI_REFUSED')
-
-  const candidate = data.candidates?.[0]
-  if (!candidate) throw new Error('AI_REFUSED')
-  if (candidate.finishReason === 'SAFETY' || candidate.finishReason === 'RECITATION') {
-    throw new Error('AI_REFUSED')
+  // Compact, human-readable reason pulled out of Google's error envelope.
+  let reason = lastDetail
+  try {
+    const parsed = JSON.parse(lastDetail)
+    reason = parsed?.error?.message ?? lastDetail
+  } catch {
+    // not JSON — keep the raw text
   }
-
-  const parts: Array<{ text?: string }> = candidate.content?.parts ?? []
-  return parts
-    .map((p) => p.text ?? '')
-    .join('')
-    .trim()
+  throw new Error(`Gemini ${lastStatus || 'request failed'}: ${String(reason).slice(0, 300)}`)
 }
 
 /** Map a caller language code to an instruction the model can follow. */

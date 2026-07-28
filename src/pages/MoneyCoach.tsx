@@ -14,6 +14,22 @@ interface ChatMessage {
   content: string
 }
 
+/**
+ * Pull a human-readable reason out of a failed edge-function call. Supabase
+ * wraps non-2xx responses, so the useful text lives in the parsed body rather
+ * than the Error message ("non-2xx status code").
+ */
+function serverReason(err: unknown): string | null {
+  const ctx = (err as { context?: unknown })?.context
+  if (ctx && typeof ctx === 'object') {
+    const e = (ctx as { error?: unknown }).error
+    if (typeof e === 'string' && e.trim()) return e
+  }
+  const msg = err instanceof Error ? err.message : String(err ?? '')
+  if (!msg || /non-2xx/i.test(msg)) return null
+  return msg
+}
+
 export default function MoneyCoach() {
   const { lang } = useLang()
   const es = lang === 'es'
@@ -24,6 +40,7 @@ export default function MoneyCoach() {
   const [busy, setBusy] = useState(false)
   const [notConfigured, setNotConfigured] = useState(false)
   const [failed, setFailed] = useState(false)
+  const [failReason, setFailReason] = useState<string | null>(null)
 
   const inputRef = useRef<HTMLInputElement>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
@@ -58,6 +75,7 @@ export default function MoneyCoach() {
   async function runCoach(convo: ChatMessage[]) {
     setBusy(true)
     setFailed(false)
+    setFailReason(null)
     try {
       const { reply } = await invokeAI<{ reply: string }>('money-coach', {
         messages: convo,
@@ -68,8 +86,11 @@ export default function MoneyCoach() {
       if (err instanceof AINotConfiguredError) {
         setNotConfigured(true)
       } else {
-        // Leave the user's message in place so Retry can resend it.
+        // Leave the user's message in place so Retry can resend it, and keep
+        // the server's reason so the UI can show something actionable rather
+        // than a dead end.
         setFailed(true)
+        setFailReason(serverReason(err))
       }
     } finally {
       setBusy(false)
@@ -237,7 +258,14 @@ export default function MoneyCoach() {
               role="alert"
               className="flex flex-wrap items-center gap-3 self-start rounded-[10px] border border-gold-400 bg-gold-400/10 px-4 py-3 text-sm text-ink"
             >
-              <span>{errorText}</span>
+              <span className="min-w-0">
+                {errorText}
+                {failReason && (
+                  <span className="mt-1 block break-words font-mono text-xs text-ink/60">
+                    {failReason}
+                  </span>
+                )}
+              </span>
               <button
                 type="button"
                 className="btn-secondary px-3 py-1.5 text-sm"
