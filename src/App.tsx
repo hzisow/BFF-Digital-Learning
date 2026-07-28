@@ -40,7 +40,6 @@ export default function App() {
       <Route element={<Layout />}>
         <Route path="/" element={<Landing />} />
         <Route path="/lessons" element={<LessonsIndex />} />
-        <Route path="/lessons/:slug" element={<LessonPage />} />
         <Route path="/activities" element={<ActivitiesIndex />} />
         <Route path="/glossary" element={<GlossaryPage />} />
         <Route path="/certificate" element={<CertificatePage />} />
@@ -66,6 +65,8 @@ export default function App() {
         <Route path="/account" element={<AccountPage />} />
         <Route path="*" element={<NotFound />} />
       </Route>
+      {/* Focused module route (own chrome, no global header/footer): the lesson canvas */}
+      <Route path="/lessons/:slug" element={<LessonPage />} />
       {/* Full-screen routes (no site chrome): live game screens */}
       <Route path="/play/:code" element={<WolfPlayer />} />
       <Route path="/host/:sessionId" element={<WolfHost />} />

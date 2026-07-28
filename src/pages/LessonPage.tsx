@@ -1,17 +1,22 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { Check, X, Lightbulb } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Check, X, Lightbulb, SearchX, RotateCcw } from 'lucide-react'
 import { getLesson } from '../content/lessons'
 import type { Lesson, LessonSection } from '../content/types'
 import VideoCheckpoint from '../components/VideoCheckpoint'
 import ReadAloud from '../components/ReadAloud'
 import OpenResponse from '../components/OpenResponse'
+import { LessonArt } from '../components/lesson/LessonArt'
 import { ACTIVITIES } from '../lib/activities'
 import { useLang, localizeLesson } from '../lib/i18n'
+import type { Lang } from '../lib/i18n'
 import { saveProgress } from '../lib/progress'
 import { useStudent } from '../lib/session'
 import { playSound } from '../lib/sound'
 import { celebrate } from '../lib/celebrate'
+import '../styles/lesson.css'
+
+const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F']
 
 // Plain-text version of a step, for the read-aloud button.
 function sectionText(section: LessonSection): string {
@@ -21,10 +26,7 @@ function sectionText(section: LessonSection): string {
     case 'content':
       return [section.heading, section.body, ...(section.bullets ?? [])].join('. ')
     case 'terms':
-      return [
-        section.heading,
-        ...section.terms.map((t) => `${t.term}: ${t.definition}`),
-      ].join('. ')
+      return [section.heading, ...section.terms.map((t) => `${t.term}: ${t.definition}`)].join('. ')
     case 'example':
       return `${section.heading}. ${section.body}`
     case 'checkpoint':
@@ -39,35 +41,68 @@ function sectionText(section: LessonSection): string {
 // ---------- Answer state for checkpoints & quiz questions ----------
 
 interface AnswerState {
-  /** Latest option the student picked. */
   chosen: number | null
-  /** Wrong options picked so far (checkpoints allow one retry). */
   wrongPicks: number[]
-  /** Explanation shown, Continue enabled. */
   revealed: boolean
 }
 
 const EMPTY_ANSWER: AnswerState = { chosen: null, wrongPicks: [], revealed: false }
 
-// ---------- Shared multiple-choice renderer ----------
+// ---------- Compact chrome pieces ----------
 
-function optionClasses(state: AnswerState, answerIndex: number, i: number): string {
-  const base =
-    'w-full rounded-xl border-2 px-4 py-3 text-left font-medium transition disabled:cursor-default '
-  if (state.revealed) {
-    if (i === answerIndex) return `${base}border-green-500 bg-green-50 text-green-800`
-    if (i === state.chosen) return `${base}border-red-400 bg-red-50 text-red-700`
-    return `${base}border-slate-200 bg-white text-slate-500`
-  }
-  if (state.wrongPicks.includes(i)) return `${base}border-red-400 bg-red-50 text-red-700`
-  return `${base}border-slate-200 bg-white text-slate-700 hover:border-bff-400 hover:bg-bff-50`
+function LangSwitch() {
+  const { lang, setLang } = useLang()
+  const opt = (l: Lang, label: string, aria: string) => (
+    <button
+      key={l}
+      type="button"
+      onClick={() => setLang(l)}
+      aria-pressed={lang === l}
+      aria-label={aria}
+      className={lang === l ? 'is-active' : ''}
+    >
+      {label}
+    </button>
+  )
+  return (
+    <div className="lz-lang" role="group" aria-label="Language / Idioma / 语言">
+      {opt('en', 'EN', 'Switch to English')}
+      {opt('es', 'ES', 'Cambiar a español')}
+      {opt('zh', '中', '切换到中文')}
+    </div>
+  )
 }
+
+// ---------- Eyebrow with step number ----------
+
+function Kicker({ step, label }: { step: number; label: string }) {
+  return (
+    <p className="lz-eyebrow">
+      <span className="lz-eyebrow-num">{String(step).padStart(2, '0')}</span>
+      <span className="lz-eyebrow-line" aria-hidden="true" />
+      {label}
+    </p>
+  )
+}
+
+// ---------- Shared multiple-choice renderer ----------
 
 let mcCounter = 0
 
+function optionClass(state: AnswerState, answerIndex: number, i: number): string {
+  const base = 'lz-option'
+  if (state.revealed) {
+    if (i === answerIndex) return `${base} is-correct`
+    if (i === state.chosen) return `${base} is-wrong`
+    return `${base} is-dim`
+  }
+  if (state.wrongPicks.includes(i)) return `${base} is-wrong`
+  return base
+}
+
 function MultipleChoice({
+  step,
   kicker,
-  kickerEmoji,
   question,
   options,
   answerIndex,
@@ -75,8 +110,8 @@ function MultipleChoice({
   state,
   onSelect,
 }: {
+  step: number
   kicker: string
-  kickerEmoji?: string
   question: string
   options: string[]
   answerIndex: number
@@ -100,67 +135,40 @@ function MultipleChoice({
   }
 
   return (
-    <div className="animate-slide-up">
-      <p className="chip bg-bff-100 text-bff-800">
-        {kicker}
-        {kickerEmoji && (
-          <>
-            {' '}
-            <span aria-hidden="true">{kickerEmoji}</span>
-          </>
-        )}
-      </p>
-      <h2 id={questionId} className="mt-4 font-display text-2xl font-bold text-slate-900">
+    <div className="lz-panel animate-slide-up">
+      <Kicker step={step} label={kicker} />
+      <h2 id={questionId} className="lz-h" style={{ fontSize: '26px' }}>
         {question}
       </h2>
-      <div role="group" aria-labelledby={questionId} className="mt-6 space-y-3">
+      <div role="group" aria-labelledby={questionId} className="lz-options">
         {options.map((opt, i) => (
           <button
             key={i}
             type="button"
             disabled={state.revealed}
+            data-key={LETTERS[i]}
             aria-label={optionStateLabel(i)}
             onClick={() => onSelect(i)}
-            className={optionClasses(state, answerIndex, i)}
+            className={optionClass(state, answerIndex, i)}
           >
             {opt}
           </button>
         ))}
       </div>
       {!state.revealed && state.wrongPicks.length === 1 && (
-        <p
-          role="status"
-          className="mt-4 rounded-xl bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-700"
-        >
-          {zh ? '还差一点——再试一次！' : es ? 'Casi — ¡inténtalo una vez más!' : 'Not quite — take one more shot!'}{' '}
-          <span aria-hidden="true">🎯</span>
+        <p role="status" className="lz-retry-note">
+          {zh ? '还差一点——再试一次！' : es ? 'Casi — ¡inténtalo una vez más!' : 'Not quite — take one more shot.'}
         </p>
       )}
       {state.revealed && (
-        <div
-          role="status"
-          className={`mt-5 rounded-2xl border p-5 ${
-            gotIt ? 'border-green-200 bg-green-50' : 'border-amber-200 bg-amber-50'
-          }`}
-        >
-          <p
-            className={`font-display font-bold ${gotIt ? 'text-green-800' : 'text-amber-800'}`}
-          >
-            {gotIt ? (
-              <>
-                {zh ? '答对了！' : es ? '¡Perfecto!' : 'Nailed it!'} <span aria-hidden="true">✅</span>
-              </>
-            ) : zh ? (
-              `不错的尝试！正确答案是“${options[answerIndex]}”`
-            ) : es ? (
-              `¡Buen intento! La respuesta es “${options[answerIndex]}”`
-            ) : (
-              `Good try! The answer is “${options[answerIndex]}”`
-            )}
-          </p>
-          <p className={`mt-2 text-sm leading-relaxed ${gotIt ? 'text-green-800' : 'text-amber-800'}`}>
-            {explanation}
-          </p>
+        <div role="status" className={`lz-feedback ${gotIt ? 'ok' : 'no'}`}>
+          <strong>
+            {gotIt ? <Check className="h-4 w-4" aria-hidden="true" /> : <ArrowRight className="h-4 w-4" aria-hidden="true" />}
+            {gotIt
+              ? zh ? '答对了！' : es ? '¡Perfecto!' : 'Nailed it.'
+              : zh ? `正确答案是“${options[answerIndex]}”` : es ? `La respuesta es “${options[answerIndex]}”` : `The answer is “${options[answerIndex]}”`}
+          </strong>
+          <p>{explanation}</p>
         </div>
       )}
     </div>
@@ -170,43 +178,42 @@ function MultipleChoice({
 // ---------- Section renderers ----------
 
 function SectionView({
-  lesson,
+  step,
   section,
   answer,
   onSelect,
   onVideoDone,
+  kickers,
 }: {
-  lesson: Lesson
+  step: number
   section: LessonSection
   answer: AnswerState
   onSelect: (i: number) => void
   onVideoDone: () => void
+  kickers: Record<string, string>
 }) {
-  const { tr } = useLang()
   switch (section.type) {
     case 'intro':
-      return (
-        <div className="animate-slide-up text-center">
-          <p className="text-7xl" aria-hidden="true">{lesson.emoji}</p>
-          <h2 className="mt-6 font-display text-3xl font-extrabold text-slate-900">
-            {section.heading}
-          </h2>
-          <p className="mx-auto mt-5 max-w-xl text-left leading-relaxed text-slate-600 sm:text-lg">
-            {section.body}
-          </p>
-        </div>
-      )
+      // Intro is rendered as the hero cover by the player, not here.
+      return null
     case 'content':
       return (
-        <div className="animate-slide-up">
-          <h2 className="font-display text-2xl font-bold text-slate-900">{section.heading}</h2>
-          <p className="mt-4 leading-relaxed text-slate-600">{section.body}</p>
+        <div className="lz-panel lz-panel--plain animate-slide-up">
+          <Kicker step={step} label={kickers.concept} />
+          <h2 className="lz-h" style={{ fontSize: '30px' }}>
+            {section.heading}
+          </h2>
+          <p className="lz-body" style={{ marginTop: '18px' }}>
+            {section.body}
+          </p>
           {section.bullets && section.bullets.length > 0 && (
-            <ul className="mt-5 space-y-3">
+            <ul className="lz-list">
               {section.bullets.map((b, i) => (
-                <li key={i} className="flex gap-3 rounded-xl bg-white p-4 shadow-sm">
-                  <span aria-hidden="true">✅</span>
-                  <span className="text-sm leading-relaxed text-slate-700">{b}</span>
+                <li key={i} className="lz-li">
+                  <span className="lz-li-tick" aria-hidden="true">
+                    <Check className="h-3.5 w-3.5" />
+                  </span>
+                  <span>{b}</span>
                 </li>
               ))}
             </ul>
@@ -215,17 +222,16 @@ function SectionView({
       )
     case 'terms':
       return (
-        <div className="animate-slide-up">
-          <h2 className="font-display text-2xl font-bold text-slate-900">{section.heading}</h2>
-          <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-bff-700">
-            {tr({ en: 'Key terms', es: 'Términos clave', zh: '关键术语' })}{' '}
-            <span aria-hidden="true">🔑</span>
-          </p>
-          <div className="mt-5 grid gap-4 sm:grid-cols-2">
+        <div className="lz-panel lz-panel--plain animate-slide-up">
+          <Kicker step={step} label={kickers.terms} />
+          <h2 className="lz-h" style={{ fontSize: '30px' }}>
+            {section.heading}
+          </h2>
+          <div className="lz-terms">
             {section.terms.map((t) => (
-              <div key={t.term} className="card p-5">
-                <p className="font-display font-bold text-bff-700">{t.term}</p>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">{t.definition}</p>
+              <div key={t.term} className="lz-term">
+                <strong>{t.term}</strong>
+                <p>{t.definition}</p>
               </div>
             ))}
           </div>
@@ -233,21 +239,24 @@ function SectionView({
       )
     case 'example':
       return (
-        <div className="animate-slide-up rounded-2xl border border-amber-200 bg-amber-50 p-6 sm:p-8">
-          <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-400 text-amber-950">
-            <Lightbulb className="h-5 w-5" aria-hidden="true" />
+        <div className="lz-scenario animate-slide-up">
+          <span className="lz-scenario-badge" aria-hidden="true">
+            <Lightbulb className="h-5 w-5" />
           </span>
-          <h2 className="mt-3 font-display text-2xl font-bold text-slate-900">
+          <Kicker step={step} label={kickers.example} />
+          <h2 className="lz-h" style={{ fontSize: '28px' }}>
             {section.heading}
           </h2>
-          <p className="mt-4 leading-relaxed text-slate-700">{section.body}</p>
+          <p className="lz-body" style={{ marginTop: '16px' }}>
+            {section.body}
+          </p>
         </div>
       )
     case 'checkpoint':
       return (
         <MultipleChoice
-          kicker={tr({ en: 'Checkpoint', es: 'Punto de control', zh: '检查点' })}
-          kickerEmoji="🧠"
+          step={step}
+          kicker={kickers.checkpoint}
           question={section.checkpoint.question}
           options={section.checkpoint.options}
           answerIndex={section.checkpoint.answerIndex}
@@ -258,38 +267,34 @@ function SectionView({
       )
     case 'open':
       return (
-        <div className="animate-slide-up">
-          <p className="chip bg-bff-100 text-bff-800">
-            <span aria-hidden="true">✍️</span>{' '}
-            {tr({ en: 'Write & get feedback', es: 'Escribe y recibe comentarios', zh: '写作并获得反馈' })}
-          </p>
-          <h2 className="mt-4 font-display text-2xl font-bold text-slate-900">{section.heading}</h2>
-          <div className="mt-5">
+        <div className="lz-panel animate-slide-up">
+          <Kicker step={step} label={kickers.open} />
+          <h2 className="lz-h" style={{ fontSize: '28px' }}>
+            {section.heading}
+          </h2>
+          <div style={{ marginTop: '18px' }}>
             <OpenResponse prompt={section.prompt} rubric={section.rubric} />
           </div>
         </div>
       )
     case 'video':
       return (
-        <div className="animate-slide-up">
-          <p className="chip bg-red-100 text-red-700">
-            <span aria-hidden="true">🎬</span>{' '}
-            {tr({ en: 'Watch & answer', es: 'Mira y responde', zh: '观看并回答' })}
-          </p>
-          <h2 className="mt-4 font-display text-2xl font-bold text-slate-900">
+        <div className="lz-panel animate-slide-up">
+          <Kicker step={step} label={kickers.video} />
+          <h2 className="lz-h" style={{ fontSize: '28px' }}>
             {section.heading}
           </h2>
-          <p className="mt-3 leading-relaxed text-slate-600">{section.body}</p>
-          <div className="mt-5">
-            <VideoCheckpoint
-              key={section.videoId}
-              videoId={section.videoId}
-              questions={section.questions}
-              onDone={onVideoDone}
-            />
-          </div>
-          <p className="mt-3 text-xs text-slate-500">
-            {tr({ en: 'Video', es: 'Video', zh: '视频' })}: {section.source}
+          <p className="lz-body" style={{ marginTop: '14px', marginBottom: '18px' }}>
+            {section.body}
+          </p>
+          <VideoCheckpoint
+            key={section.videoId}
+            videoId={section.videoId}
+            questions={section.questions}
+            onDone={onVideoDone}
+          />
+          <p style={{ marginTop: '12px', fontSize: '12px', color: 'var(--lz-muted)' }}>
+            {kickers.videoWord}: {section.source}
           </p>
         </div>
       )
@@ -314,12 +319,20 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
   const studentRef = useRef(student)
   studentRef.current = student
 
-  // Mark the lesson as started once.
+  const kickers = {
+    concept: tr({ en: 'Concept', es: 'Concepto', zh: '概念' }),
+    terms: tr({ en: 'Key terms', es: 'Términos clave', zh: '关键术语' }),
+    example: tr({ en: 'Worked example', es: 'Ejemplo práctico', zh: '实例演练' }),
+    checkpoint: tr({ en: 'Your turn', es: 'Tu turno', zh: '轮到你了' }),
+    open: tr({ en: 'Write & reflect', es: 'Escribe y reflexiona', zh: '写作与思考' }),
+    video: tr({ en: 'Watch & answer', es: 'Mira y responde', zh: '观看并回答' }),
+    videoWord: tr({ en: 'Video', es: 'Video', zh: '视频' }),
+  }
+
   useEffect(() => {
     void saveProgress(studentRef.current, lesson.slug, { status: 'started' })
   }, [lesson.slug])
 
-  // Scroll to the top whenever the step changes.
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [phase, sectionIndex, quizIndex])
@@ -335,6 +348,7 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
 
   const section = loc.sections[sectionIndex]
   const quizQuestion = loc.quiz[quizIndex]
+  const isHero = phase === 'lesson' && section?.type === 'intro'
 
   const canContinue =
     phase === 'lesson'
@@ -356,8 +370,6 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
     void saveProgress(studentRef.current, lesson.slug, {
       status: 'completed',
       score: pct,
-      // Per-question picks (-1 = unanswered) power the Practice page and the
-      // mentor's per-question analytics. answerIndex is language-independent.
       data: { correct, total, answers: loc.quiz.map((_, i) => answers[i]?.chosen ?? -1) },
     })
   }
@@ -385,8 +397,6 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
     if (phase === 'lesson' && sectionIndex > 0) setSectionIndex(sectionIndex - 1)
   }
 
-  // Enter advances when allowed (skips events targeting interactive elements,
-  // which handle Enter natively).
   const goNextRef = useRef<(() => void) | null>(null)
   goNextRef.current = canContinue && phase !== 'results' ? goNext : null
   useEffect(() => {
@@ -414,7 +424,6 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
         return { ...prev, [sectionIndex]: { ...cur, chosen: i, revealed: true } }
       }
       const wrongPicks = cur.wrongPicks.includes(i) ? cur.wrongPicks : [...cur.wrongPicks, i]
-      // One retry allowed; second miss reveals the answer + explanation.
       return { ...prev, [sectionIndex]: { chosen: i, wrongPicks, revealed: wrongPicks.length >= 2 } }
     })
   }
@@ -426,7 +435,6 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
     setQuizAnswers((prev) => {
       const cur = prev[quizIndex] ?? EMPTY_ANSWER
       if (cur.revealed) return prev
-      // Quiz questions lock on the first attempt — that is the one that counts.
       return { ...prev, [quizIndex]: { chosen: i, wrongPicks: [], revealed: true } }
     })
   }
@@ -445,19 +453,20 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
   const nextLesson =
     myIndex >= 0 && myIndex + 1 < lessonOrder.length ? lessonOrder[myIndex + 1] : undefined
 
-  const stepLabel =
-    phase === 'lesson'
-      ? `${t('lesson.step')} ${currentStep} ${t('lesson.of')} ${totalSteps}`
-      : phase === 'quiz'
-        ? `${t('lesson.questionWord')} ${quizIndex + 1} ${t('lesson.of')} ${loc.quiz.length}`
-        : t('lesson.complete')
+  const unitLabel = tr({
+    en: `Week ${lesson.week} · Day ${lesson.day}`,
+    es: `Semana ${lesson.week} · Día ${lesson.day}`,
+    zh: `第 ${lesson.week} 周 · 第 ${lesson.day} 天`,
+  })
 
   const continueLabel =
     phase === 'lesson' && sectionIndex === loc.sections.length - 1
       ? t('lesson.startQuiz')
       : phase === 'quiz' && quizIndex === loc.quiz.length - 1
         ? t('lesson.seeResults')
-        : t('common.continue')
+        : isHero
+          ? tr({ en: 'Start lesson', es: 'Empezar lección', zh: '开始学习' })
+          : t('common.continue')
 
   const readText =
     phase === 'lesson'
@@ -465,6 +474,39 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
       : phase === 'quiz' && quizQuestion
         ? `${quizQuestion.question}. ${quizQuestion.options.join('. ')}`
         : ''
+
+  // Shared focused top bar.
+  const topbar = (
+    <header className="lz-topbar">
+      <div className="lz-topbar-inner">
+        <Link to="/lessons" className="lz-exit">
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+          {tr({ en: 'Exit', es: 'Salir', zh: '退出' })}
+        </Link>
+        <div className="lz-topbar-title">
+          <span className="lz-topbar-unit">{unitLabel}</span>
+          <strong>{loc.title}</strong>
+          {loc.fallback && (
+            <span className="chip shrink-0 bg-amber-100 text-amber-700">{t('common.englishOnly')}</span>
+          )}
+        </div>
+        <div className="lz-tools">
+          {readText && <ReadAloud text={readText} />}
+          <LangSwitch />
+        </div>
+      </div>
+      <div
+        className="lz-progress"
+        role="progressbar"
+        aria-label={tr({ en: 'Lesson progress', es: 'Progreso de la lección', zh: '课程进度' })}
+        aria-valuenow={percent}
+        aria-valuemin={0}
+        aria-valuemax={100}
+      >
+        <div className="lz-progress-fill" style={{ width: `${percent}%` }} />
+      </div>
+    </header>
+  )
 
   // ---------- Results ----------
 
@@ -476,112 +518,86 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
     const pct = total > 0 ? Math.round((correct / total) * 100) : 100
     const tier =
       pct === 100
-        ? zh
-          ? '满分——你正式成为理财高手了！🏆'
-          : es
-            ? '¡Puntaje perfecto — eres oficialmente un master del dinero! 🏆'
-            : 'Perfect score — you are officially a money master! 🏆'
+        ? zh ? '满分——你正式成为理财高手了！' : es ? '¡Puntaje perfecto — eres un master del dinero!' : 'Perfect score — you are officially a money master.'
         : pct >= 80
-          ? zh
-            ? '太棒了——你是真的懂这些！🌟'
-            : es
-              ? '¡Increíble — de verdad sabes de esto! 🌟'
-              : 'Amazing work — you really know your stuff! 🌟'
+          ? zh ? '太棒了——你是真的懂这些！' : es ? '¡Increíble — de verdad sabes de esto!' : 'Amazing work — you really know your stuff.'
           : pct >= 60
-            ? zh
-              ? '做得不错！快速复习一下你就全掌握了。💪'
-              : es
-                ? '¡Bien hecho! Un repaso rápido y lo dominas. 💪'
-                : 'Nice job! One quick review and you will have it down. 💪'
-            : zh
-              ? '很努力了！再把这节课过一遍、重做测验——你可以的。🚀'
-              : es
-                ? '¡Buen esfuerzo! Repasa la lección y repite el examen — tú puedes. 🚀'
-                : 'Good effort! Skim the lesson again and retake the quiz — you have got this. 🚀'
+            ? zh ? '做得不错！快速复习一下你就全掌握了。' : es ? '¡Bien hecho! Un repaso rápido y lo dominas.' : 'Nice job — one quick review and you will have it down.'
+            : zh ? '很努力了！再把这节课过一遍、重做测验。' : es ? '¡Buen esfuerzo! Repasa la lección y repite el examen.' : 'Good effort — skim the lesson again and retake the quiz.'
 
     return (
-      <div className="mx-auto max-w-2xl px-4 py-12">
-        <div className="animate-pop-in rounded-3xl bg-bff-900 p-8 text-center text-white shadow-card">
-          <p className="text-5xl" aria-hidden="true">{pct >= 80 ? '🎉' : pct >= 60 ? '👏' : '💪'}</p>
-          <h1 className="mt-4 font-display text-3xl font-extrabold">
-            {loc.title}: {pct}%
-          </h1>
-          <div role="status">
-            <p className="mt-2 text-bff-100">
-              {zh
-                ? `你在第一次尝试就答对了 ${total} 道题中的 ${correct} 道。`
-                : es
-                  ? `Acertaste ${correct} de ${total} preguntas al primer intento.`
-                  : `You got ${correct} of ${total} questions right on the first try.`}
+      <div className="lz">
+        {topbar}
+        <div className="lz-stage">
+          <div className="lz-result-cover animate-pop-in">
+            <div className="lz-hero-orbit one" aria-hidden="true" />
+            <p className="lz-eyebrow" style={{ color: 'var(--lz-blue-bright)', justifyContent: 'center' }}>
+              {tr({ en: 'Lesson complete', es: 'Lección completa', zh: '课程完成' })}
             </p>
-            <p className="mt-4 font-display text-lg font-semibold">{tier}</p>
+            <p className="lz-result-score">
+              <em>{pct}</em>%
+            </p>
+            <div role="status">
+              <p style={{ marginTop: '10px', color: '#b6c2cf', fontSize: '15px' }}>
+                {zh
+                  ? `你在第一次尝试就答对了 ${total} 道题中的 ${correct} 道。`
+                  : es
+                    ? `Acertaste ${correct} de ${total} preguntas al primer intento.`
+                    : `You got ${correct} of ${total} questions right on the first try.`}
+              </p>
+              <p style={{ marginTop: '14px', fontFamily: '"Bricolage Grotesque", sans-serif', fontWeight: 700, fontSize: '17px' }}>
+                {tier}
+              </p>
+            </div>
           </div>
-        </div>
 
-        <h2 className="mt-10 font-display text-xl font-bold text-slate-900">
-          {t('lesson.reviewAnswers')}
-        </h2>
-        <div className="mt-4 space-y-4">
-          {loc.quiz.map((q, i) => {
-            const chosen = quizAnswers[i]?.chosen ?? null
-            const right = chosen === q.answerIndex
-            return (
-              <div
-                key={i}
-                className={`card ${
-                  right
-                    ? 'border-green-200 bg-green-50/50'
-                    : 'border-red-200 bg-red-50/40'
-                }`}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <p className="font-display font-semibold text-slate-900">
-                    {i + 1}. {q.question}
+          <h2 className="lz-h" style={{ fontSize: '22px', marginTop: '40px' }}>
+            {t('lesson.reviewAnswers')}
+          </h2>
+          <div style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {loc.quiz.map((q, i) => {
+              const chosen = quizAnswers[i]?.chosen ?? null
+              const right = chosen === q.answerIndex
+              return (
+                <div key={i} className={`lz-review-item ${right ? 'ok' : 'no'}`}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px' }}>
+                    <p style={{ fontFamily: '"Bricolage Grotesque", sans-serif', fontWeight: 600, margin: 0 }}>
+                      {i + 1}. {q.question}
+                    </p>
+                    <span className={`chip shrink-0 ${right ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                      {right ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <X className="h-3.5 w-3.5" aria-hidden="true" />}
+                      {right ? t('lesson.correctChip') : t('lesson.missedChip')}
+                    </span>
+                  </div>
+                  <p style={{ marginTop: '12px', fontSize: '14px', color: '#4a5460' }}>
+                    <b style={{ color: '#2a3340' }}>{t('lesson.yourAnswer')}</b> {chosen != null ? q.options[chosen] : '—'}
                   </p>
-                  <span
-                    className={`chip shrink-0 ${
-                      right ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-                    }`}
-                  >
-                    {right ? (
-                      <Check className="h-3.5 w-3.5" aria-hidden="true" />
-                    ) : (
-                      <X className="h-3.5 w-3.5" aria-hidden="true" />
-                    )}
-                    {right ? t('lesson.correctChip') : t('lesson.missedChip')}
-                  </span>
+                  {!right && (
+                    <p style={{ marginTop: '4px', fontSize: '14px', color: '#4a5460' }}>
+                      <b style={{ color: '#175f36' }}>{t('lesson.correctAnswer')}</b> {q.options[q.answerIndex]}
+                    </p>
+                  )}
+                  <p style={{ marginTop: '12px', background: 'var(--lz-paper)', border: '1px solid var(--lz-line)', padding: '12px 14px', fontSize: '14px', lineHeight: 1.6, color: '#3a4450' }}>
+                    {q.explanation}
+                  </p>
                 </div>
-                <p className="mt-3 text-sm text-slate-600">
-                  <span className="font-semibold text-slate-700">{t('lesson.yourAnswer')}</span>{' '}
-                  {chosen != null ? q.options[chosen] : '—'}
-                </p>
-                {!right && (
-                  <p className="mt-1 text-sm text-slate-600">
-                    <span className="font-semibold text-green-700">{t('lesson.correctAnswer')}</span>{' '}
-                    {q.options[q.answerIndex]}
-                  </p>
-                )}
-                <p className="mt-3 rounded-xl bg-slate-50 p-3 text-sm leading-relaxed text-slate-600">
-                  {q.explanation}
-                </p>
-              </div>
-            )
-          })}
-        </div>
+              )
+            })}
+          </div>
 
-        <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:justify-center">
-          <button type="button" onClick={retakeQuiz} className="btn-secondary">
-            {t('lesson.retake')} <span aria-hidden="true">🔄</span>
-          </button>
-          <Link to="/lessons" className="btn-ghost">
-            {t('lesson.backToLessons')}
-          </Link>
-          {nextLesson && (
-            <Link to={nextLesson.path} className="btn-primary">
-              {t('lesson.nextLesson')}: <span aria-hidden="true">{nextLesson.emoji}</span>{' '}
-              {nextLesson.title} <span aria-hidden="true">→</span>
+          <div style={{ marginTop: '36px', display: 'flex', flexWrap: 'wrap', gap: '10px', alignItems: 'center' }}>
+            <button type="button" onClick={retakeQuiz} className="lz-btn lz-btn--ghost-dark">
+              <RotateCcw className="h-4 w-4" aria-hidden="true" /> {t('lesson.retake')}
+            </button>
+            <Link to="/lessons" className="lz-btn lz-btn--ghost-dark">
+              {t('lesson.backToLessons')}
             </Link>
-          )}
+            {nextLesson && (
+              <Link to={nextLesson.path} className="lz-btn lz-btn--primary" style={{ marginLeft: 'auto' }}>
+                {t('lesson.nextLesson')} <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     )
@@ -590,58 +606,51 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
   // ---------- Lesson / quiz steps ----------
 
   return (
-    <div>
-      {/* Progress bar */}
-      <div className="sticky top-16 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
-        <div className="mx-auto max-w-2xl px-4 py-3">
-          <div className="flex items-center justify-between gap-3 text-xs font-semibold text-slate-500">
-            <span className="flex min-w-0 items-center gap-2">
-              <span className="truncate">
-                <span aria-hidden="true">{lesson.emoji}</span> {loc.title}
-              </span>
-              {loc.fallback && (
-                <span className="chip shrink-0 bg-amber-100 text-amber-700">
-                  {t('common.englishOnly')}
-                </span>
-              )}
-            </span>
-            <span className="flex shrink-0 items-center gap-2">
-              <span>
-                {stepLabel} · {percent}%
-              </span>
-              {readText && <ReadAloud text={readText} />}
-            </span>
-          </div>
-          <div
-            role="progressbar"
-            aria-label={`${tr({ en: 'Lesson progress', es: 'Progreso de la lección', zh: '课程进度' })}: ${stepLabel}`}
-            aria-valuenow={percent}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            className="mt-2 h-2 overflow-hidden rounded-full bg-slate-200"
-          >
-            <div
-              className="h-full rounded-full bg-bff-600 transition-all duration-300"
-              style={{ width: `${percent}%` }}
-            />
-          </div>
-        </div>
-      </div>
+    <div className="lz">
+      {topbar}
 
-      <div className="mx-auto max-w-2xl px-4 py-10">
-        {phase === 'lesson' ? (
+      <div className="lz-stage">
+        {isHero && section.type === 'intro' ? (
+          <section className="lz-hero animate-slide-up">
+            <div className="lz-hero-orbit one" aria-hidden="true" />
+            <div className="lz-hero-orbit two" aria-hidden="true" />
+            <div className="lz-hero-grid">
+              <div>
+                <p className="lz-eyebrow">
+                  {unitLabel}
+                  <span className="lz-eyebrow-line" aria-hidden="true" />
+                </p>
+                <h1>{loc.title}</h1>
+                <p className="lz-hero-lede">{section.body}</p>
+                <div className="lz-hero-meta">
+                  <span>
+                    {totalSteps} {tr({ en: 'steps', es: 'pasos', zh: '步' })}
+                  </span>
+                  <span className="dot" aria-hidden="true" />
+                  <span>
+                    {loc.quiz.length} {tr({ en: 'quiz Qs', es: 'preguntas', zh: '道测验题' })}
+                  </span>
+                </div>
+              </div>
+              <div className="lz-hero-art">
+                <LessonArt slug={lesson.slug} />
+              </div>
+            </div>
+          </section>
+        ) : phase === 'lesson' ? (
           <SectionView
-            lesson={lesson}
+            step={currentStep}
             section={section}
             answer={checkpointAnswers[sectionIndex] ?? EMPTY_ANSWER}
             onSelect={answerCheckpoint}
             onVideoDone={() => setVideoDone((prev) => ({ ...prev, [sectionIndex]: true }))}
+            kickers={kickers}
           />
         ) : (
           quizQuestion && (
             <MultipleChoice
-              kicker={`${t('lesson.quizKicker')} · ${t('lesson.questionWord')} ${quizIndex + 1} ${t('lesson.of')} ${loc.quiz.length}`}
-              kickerEmoji="📝"
+              step={currentStep}
+              kicker={`${t('lesson.quizKicker')} · ${quizIndex + 1}/${loc.quiz.length}`}
               question={quizQuestion.question}
               options={quizQuestion.options}
               answerIndex={quizQuestion.answerIndex}
@@ -651,29 +660,24 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
             />
           )
         )}
+      </div>
 
-        {/* Nav */}
-        <div className="mt-10 flex items-center justify-between gap-3">
+      {/* Fixed, consistent bottom action bar */}
+      <div className="lz-actionbar">
+        <div className="lz-actionbar-inner">
           {phase === 'lesson' && sectionIndex > 0 ? (
-            <button type="button" onClick={goBack} className="btn-ghost">
-              <span aria-hidden="true">←</span> Back
+            <button type="button" onClick={goBack} className="lz-btn">
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" /> {tr({ en: 'Back', es: 'Atrás', zh: '返回' })}
             </button>
           ) : (
-            <span />
+            <span className="lz-step-label">
+              {tr({ en: 'Step', es: 'Paso', zh: '第' })} <b>{currentStep}</b> / {totalSteps}
+            </span>
           )}
-          <button type="button" onClick={goNext} disabled={!canContinue} className="btn-primary">
-            {continueLabel} <span aria-hidden="true">→</span>
+          <button type="button" onClick={goNext} disabled={!canContinue} className="lz-btn lz-btn--primary">
+            {continueLabel} <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
-        {canContinue && (
-          <p className="mt-4 text-center text-xs text-slate-500">
-            {t('lesson.enterTip')}{' '}
-            <kbd className="rounded border border-slate-300 bg-slate-100 px-1 text-slate-700">
-              Enter ↵
-            </kbd>{' '}
-            {t('lesson.enterTipEnd')}
-          </p>
-        )}
       </div>
     </div>
   )
@@ -688,30 +692,33 @@ export default function LessonPage() {
 
   if (!lesson) {
     return (
-      <div className="mx-auto max-w-xl px-4 py-24 text-center">
-        <p className="text-6xl" aria-hidden="true">🔎</p>
-        <h1 className="mt-6 font-display text-3xl font-bold text-slate-900">
-          {tr({ en: 'Lesson not found', es: 'Lección no encontrada', zh: '未找到课程' })}
-        </h1>
-        <p className="mt-3 text-slate-600">
-          {tr({
-            en: 'We looked everywhere, but this lesson seems to have left the syllabus. Check the address, or browse the full curriculum.',
-            es: 'Buscamos por todas partes, pero esta lección parece haber salido del temario. Revisa la dirección o explora todo el plan de estudios.',
-            zh: '我们到处都找过了，但这节课似乎已经不在课程表里了。请检查网址，或浏览完整课程。',
-          })}
-        </p>
-        <div className="mt-8 flex justify-center gap-3">
-          <Link to="/lessons" className="btn-primary">
-            {tr({ en: 'Browse lessons', es: 'Explorar lecciones', zh: '浏览课程' })}
-          </Link>
-          <Link to="/" className="btn-ghost">
-            {tr({ en: 'Go home', es: 'Ir al inicio', zh: '回到首页' })}
-          </Link>
+      <div className="lz">
+        <div className="mx-auto max-w-xl px-4 py-24 text-center">
+          <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-bff-100 text-bff-700">
+            <SearchX className="h-8 w-8" aria-hidden="true" />
+          </span>
+          <h1 className="mt-6 font-display text-3xl font-bold text-slate-900">
+            {tr({ en: 'Lesson not found', es: 'Lección no encontrada', zh: '未找到课程' })}
+          </h1>
+          <p className="mt-3 text-slate-600">
+            {tr({
+              en: 'We looked everywhere, but this lesson seems to have left the syllabus. Check the address, or browse the full curriculum.',
+              es: 'Buscamos por todas partes, pero esta lección parece haber salido del temario. Revisa la dirección o explora todo el plan de estudios.',
+              zh: '我们到处都找过了，但这节课似乎已经不在课程表里了。请检查网址，或浏览完整课程。',
+            })}
+          </p>
+          <div className="mt-8 flex justify-center gap-3">
+            <Link to="/lessons" className="btn-primary">
+              {tr({ en: 'Browse lessons', es: 'Explorar lecciones', zh: '浏览课程' })}
+            </Link>
+            <Link to="/" className="btn-ghost">
+              {tr({ en: 'Go home', es: 'Ir al inicio', zh: '回到首页' })}
+            </Link>
+          </div>
         </div>
       </div>
     )
   }
 
-  // key resets the player state when jumping between lessons (e.g. "Next lesson").
   return <LessonPlayer key={lesson.slug} lesson={lesson} />
 }
