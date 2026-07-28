@@ -6,10 +6,12 @@
 // Access is gated to signed-in BFF team members; the edge function additionally
 // best-effort checks the caller is an approved mentor.
 
-import { useMemo, useState, type FormEvent } from 'react'
+import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import { Navigate } from 'react-router-dom'
 import { Check, Copy, Download, Printer, Sparkles, Wand2 } from 'lucide-react'
 import { invokeAI, AI_ENABLED, AINotConfiguredError } from '../../lib/ai'
+import { buildWorksheetPdf, worksheetFilename } from '../../lib/worksheetPdf'
+import type { Worksheet } from '../../lib/worksheetPdf'
 import { useLang } from '../../lib/i18n'
 import { useAdmin } from '../../lib/session'
 
@@ -170,8 +172,23 @@ export default function LessonPlanGenerator() {
   const [error, setError] = useState<string | null>(null)
   const [notConfigured, setNotConfigured] = useState(false)
   const [copied, setCopied] = useState(false)
+  // Worksheets come back structured and are rendered as a real PDF; lesson
+  // plans stay Markdown.
+  const [worksheet, setWorksheet] = useState<Worksheet | null>(null)
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null)
+  const pdfUrlRef = useRef<string | null>(null)
+  const pdfFrameRef = useRef<HTMLIFrameElement | null>(null)
 
   const renderedHtml = useMemo(() => (markdown ? renderMarkdown(markdown) : ''), [markdown])
+
+  // Blob URLs are a manual resource: release the previous one whenever it is
+  // replaced, and on unmount, so previewing repeatedly cannot leak memory.
+  useEffect(() => {
+    pdfUrlRef.current = pdfUrl
+    return () => {
+      if (pdfUrlRef.current) URL.revokeObjectURL(pdfUrlRef.current)
+    }
+  }, [pdfUrl])
 
   // Guard: mentors only. Wait for auth to resolve before deciding, so we don't
   // redirect a signed-in mentor during the initial session check.
@@ -193,25 +210,33 @@ export default function LessonPlanGenerator() {
     setError(null)
     setNotConfigured(false)
     setMarkdown('')
+    setWorksheet(null)
+    setPdfUrl(null)
+    const failed = zh
+      ? '生成器无法完成此请求。请尝试改写主题。'
+      : es
+        ? 'El generador no pudo completar esta solicitud. Intenta reformular el tema.'
+        : "The generator couldn't complete this request. Try rephrasing the topic."
     try {
-      const res = await invokeAI<{ markdown: string }>('lesson-plan', {
+      const res = await invokeAI<{ markdown?: string; worksheet?: Worksheet }>('lesson-plan', {
         kind,
         topic: topic.trim(),
         gradeBand: gradeBand.trim(),
         minutes,
         lang,
       })
-      const md = res.markdown ?? ''
-      if (!md) {
-        setError(
-          zh
-            ? '生成器无法完成此请求。请尝试改写主题。'
-            : es
-              ? 'El generador no pudo completar esta solicitud. Intenta reformular el tema.'
-              : "The generator couldn't complete this request. Try rephrasing the topic.",
-        )
+      if (kind === 'worksheet') {
+        const ws = res.worksheet
+        if (!ws?.questions?.length) {
+          setError(failed)
+        } else {
+          setWorksheet(ws)
+          await renderPdf(ws)
+        }
       } else {
-        setMarkdown(md)
+        const md = res.markdown ?? ''
+        if (!md) setError(failed)
+        else setMarkdown(md)
       }
     } catch (err) {
       if (err instanceof AINotConfiguredError) {
@@ -234,14 +259,22 @@ export default function LessonPlanGenerator() {
     }
   }
 
-  function handleDownload() {
-    const base = (topic.trim() || (isWorksheet ? 'worksheet' : 'lesson-plan'))
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '')
-      .slice(0, 60)
-    const name = `${isWorksheet ? 'worksheet' : 'lesson-plan'}-${base || 'bff'}.md`
-    const blob = new Blob([markdown], { type: 'text/markdown;charset=utf-8' })
+  /**
+   * Build the worksheet PDF and expose it as a blob URL for the inline
+   * preview. jsPDF is imported on demand so it never lands in the main bundle.
+   */
+  async function renderPdf(ws: Worksheet) {
+    const { jsPDF } = await import('jspdf')
+    const doc = new jsPDF({ unit: 'pt', format: 'letter' })
+    buildWorksheetPdf(doc, ws, lang, { topic: topic.trim(), gradeBand: gradeBand.trim() })
+    const url = URL.createObjectURL(doc.output('blob'))
+    setPdfUrl((prev) => {
+      if (prev) URL.revokeObjectURL(prev)
+      return url
+    })
+  }
+
+  function saveFile(blob: Blob, name: string) {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
@@ -250,6 +283,27 @@ export default function LessonPlanGenerator() {
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
+  }
+
+  async function handleDownload() {
+    // Worksheets download as a print-ready PDF; lesson plans stay Markdown so
+    // mentors can paste them into their own docs.
+    if (isWorksheet && worksheet) {
+      const { jsPDF } = await import('jspdf')
+      const doc = new jsPDF({ unit: 'pt', format: 'letter' })
+      buildWorksheetPdf(doc, worksheet, lang, {
+        topic: topic.trim(),
+        gradeBand: gradeBand.trim(),
+      })
+      doc.save(worksheetFilename(topic.trim()))
+      return
+    }
+    const base = (topic.trim() || 'lesson-plan')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 60)
+    saveFile(new Blob([markdown], { type: 'text/markdown;charset=utf-8' }), `lesson-plan-${base || 'bff'}.md`)
   }
 
   const resultName = zh ? '生成的材料' : es ? 'Materiales generados' : 'Generated materials'
@@ -455,6 +509,58 @@ export default function LessonPlanGenerator() {
         aria-live="polite"
         aria-busy={busy}
       >
+        {/* Worksheet: a real PDF, previewed exactly as it will print. */}
+        {worksheet && (
+          <div className="card">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 className="font-display text-xl font-bold text-ink">{worksheet.title}</h2>
+                <p className="mt-1 text-sm text-ink/60">
+                  {worksheet.questions.length}{' '}
+                  {zh ? '道题 · 含答案页' : es ? 'preguntas · con clave de respuestas' : 'questions · answer key included'}
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  onClick={() => {
+                    // Print the PDF itself, not the page around it.
+                    pdfFrameRef.current?.contentWindow?.print()
+                  }}
+                  disabled={!pdfUrl}
+                >
+                  <Printer className="h-4 w-4" aria-hidden="true" />
+                  {zh ? '打印' : es ? 'Imprimir' : 'Print'}
+                </button>
+                <button type="button" className="btn-primary" onClick={() => void handleDownload()}>
+                  <Download className="h-4 w-4" aria-hidden="true" />
+                  {zh ? '下载 PDF' : es ? 'Descargar PDF' : 'Download PDF'}
+                </button>
+              </div>
+            </div>
+            {pdfUrl ? (
+              <iframe
+                ref={pdfFrameRef}
+                src={pdfUrl}
+                title={worksheet.title}
+                className="h-[860px] w-full rounded-[6px] border border-ink/15 bg-paper-deep"
+              />
+            ) : (
+              <p className="text-sm text-ink/60">
+                {zh ? '正在生成 PDF…' : es ? 'Generando el PDF…' : 'Building the PDF…'}
+              </p>
+            )}
+            <p className="mt-3 text-xs text-ink/50">
+              {zh
+                ? '学生页留有书写空间；答案在最后一页，发放前可移除。'
+                : es
+                  ? 'Las páginas del estudiante dejan espacio para escribir; la clave va en la última página y puedes retirarla antes de repartir.'
+                  : 'Student pages leave room to write. The answer key is the last page - remove it before handing out.'}
+            </p>
+          </div>
+        )}
+
         {markdown && (
           <div className="card">
             <div className="mb-4 flex flex-wrap items-center justify-between gap-3 print:hidden">
@@ -468,7 +574,7 @@ export default function LessonPlanGenerator() {
                   <Printer className="h-4 w-4" aria-hidden="true" />
                   {zh ? '打印' : es ? 'Imprimir' : 'Print'}
                 </button>
-                <button type="button" className="btn-ghost" onClick={handleDownload}>
+                <button type="button" className="btn-ghost" onClick={() => void handleDownload()}>
                   <Download className="h-4 w-4" aria-hidden="true" />
                   {zh ? '下载 .md' : es ? 'Descargar .md' : 'Download .md'}
                 </button>
