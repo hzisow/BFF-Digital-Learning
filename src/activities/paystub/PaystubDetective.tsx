@@ -753,12 +753,20 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
     <div className="mx-auto max-w-3xl px-4 py-8">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
-          <h1 className="font-display text-2xl font-bold text-slate-900">
-            <span aria-hidden="true">🧾🔍</span> {zh ? '工资单侦探' : es ? 'Detective de Comprobantes' : 'Paystub Detective'}
-          </h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="eyebrow">
+            <span className="eyebrow-line" aria-hidden="true" />
             {zh ? '第' : es ? 'Ronda' : 'Round'} {roundIndex + 1} {zh ? `轮，共 ${ROUNDS.length} 轮` : es ? 'de' : 'of'} {zh ? '' : ROUNDS.length}
           </p>
+          <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
+            <span aria-hidden="true">🧾🔍</span>{' '}
+            {zh ? (
+              <>工资单<em>侦探</em></>
+            ) : es ? (
+              <>Detective de <em>Comprobantes</em></>
+            ) : (
+              <>Paystub <em>Detective</em></>
+            )}
+          </h1>
         </div>
         <p className="chip bg-bff-50 text-bff-700" aria-live="polite">
           {zh ? '得分' : es ? 'Puntaje' : 'Score'}: {score}
@@ -799,7 +807,7 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
 
       {/* The paystub */}
       <section className="card mt-4 p-0" aria-label={zh ? `${round.worker} 的工资单` : es ? `Comprobante de pago de ${round.worker}` : `Paystub for ${round.worker}`}>
-        <div className="rounded-t-2xl border-b border-slate-200 bg-slate-100 px-5 py-4">
+        <div className="rounded-t-[7px] border-b border-slate-200 bg-slate-100 px-5 py-4">
           <p className="font-display text-base font-bold text-slate-900">{round.employer}</p>
           <p className="text-sm text-slate-600">
             {zh ? '员工' : es ? 'Empleado' : 'Employee'}: {round.worker} · {zh ? '工资周期' : es ? 'Periodo de pago' : 'Pay period'}: {zh ? round.periodZh : es ? round.periodEs : round.period}

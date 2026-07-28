@@ -676,17 +676,27 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
   if (submitted) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
-        <h1 className="font-display text-2xl font-bold text-slate-900">
-          <span aria-hidden="true">🕵️</span> {zh ? '识骗高手' : es ? 'Detector de Estafas' : 'Scam Spotter'}{' '}
-          <span aria-hidden="true">📱</span>
-        </h1>
-        <p className="mt-1 text-sm text-slate-500">
-          {zh
-            ? '案子结了。这些是消息里藏着的东西。'
-            : es
-            ? 'Caso cerrado. Esto es lo que escondían los mensajes.'
-            : "Case closed. Here's what the messages were hiding."}
-        </p>
+        <header className="mb-2">
+          <p className="eyebrow">
+            <span className="eyebrow-line" aria-hidden="true" />
+            {zh
+              ? '案子结了。这些是消息里藏着的东西。'
+              : es
+              ? 'Caso cerrado. Esto es lo que escondían los mensajes.'
+              : "Case closed. Here's what the messages were hiding."}
+          </p>
+          <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
+            <span aria-hidden="true">🕵️</span>{' '}
+            {zh ? (
+              <>识骗<em>高手</em></>
+            ) : es ? (
+              <>Detector de <em>Estafas</em></>
+            ) : (
+              <>Scam <em>Spotter</em></>
+            )}{' '}
+            <span aria-hidden="true">📱</span>
+          </h1>
+        </header>
 
         <div className="card animate-pop-in mt-4 space-y-2 text-center" role="status">
           <p className="text-5xl" aria-hidden="true">{tier.emoji}</p>
@@ -823,17 +833,27 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
     const v = verdicts[open.id]
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
-        <h1 className="font-display text-2xl font-bold text-slate-900">
-          <span aria-hidden="true">🕵️</span> {zh ? '识骗高手' : es ? 'Detector de Estafas' : 'Scam Spotter'}{' '}
-          <span aria-hidden="true">📱</span>
-        </h1>
-        <p className="mt-1 text-sm text-slate-500">
-          {zh
-            ? '仔细读。这条消息是合法的，还是一个骗局？'
-            : es
-            ? 'Lee con atención. ¿Este mensaje es legítimo o una estafa?'
-            : 'Read closely. Is this message legit, or a scam?'}
-        </p>
+        <header className="mb-2">
+          <p className="eyebrow">
+            <span className="eyebrow-line" aria-hidden="true" />
+            {zh
+              ? '仔细读。这条消息是合法的，还是一个骗局？'
+              : es
+              ? 'Lee con atención. ¿Este mensaje es legítimo o una estafa?'
+              : 'Read closely. Is this message legit, or a scam?'}
+          </p>
+          <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
+            <span aria-hidden="true">🕵️</span>{' '}
+            {zh ? (
+              <>识骗<em>高手</em></>
+            ) : es ? (
+              <>Detector de <em>Estafas</em></>
+            ) : (
+              <>Scam <em>Spotter</em></>
+            )}{' '}
+            <span aria-hidden="true">📱</span>
+          </h1>
+        </header>
 
         <div className="card animate-pop-in mt-4">
           <button className="btn-ghost -ml-2 text-sm" onClick={() => setOpenId(null)}>
@@ -899,17 +919,27 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
   // ---------- Inbox view ----------
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="font-display text-2xl font-bold text-slate-900">
-        <span aria-hidden="true">🕵️</span> {zh ? '识骗高手' : es ? 'Detector de Estafas' : 'Scam Spotter'}{' '}
-        <span aria-hidden="true">📱</span>
-      </h1>
-      <p className="mt-1 text-sm text-slate-500">
-        {zh
-          ? '你的收件箱有 8 条新消息。其中一些是陷阱。'
-          : es
-          ? 'Tu bandeja tiene 8 mensajes nuevos. Algunos son trampas.'
-          : 'Your inbox has 8 new messages. Some of them are traps.'}
-      </p>
+      <header className="mb-2">
+        <p className="eyebrow">
+          <span className="eyebrow-line" aria-hidden="true" />
+          {zh
+            ? '你的收件箱有 8 条新消息。其中一些是陷阱。'
+            : es
+            ? 'Tu bandeja tiene 8 mensajes nuevos. Algunos son trampas.'
+            : 'Your inbox has 8 new messages. Some of them are traps.'}
+        </p>
+        <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
+          <span aria-hidden="true">🕵️</span>{' '}
+          {zh ? (
+            <>识骗<em>高手</em></>
+          ) : es ? (
+            <>Detector de <em>Estafas</em></>
+          ) : (
+            <>Scam <em>Spotter</em></>
+          )}{' '}
+          <span aria-hidden="true">📱</span>
+        </h1>
+      </header>
 
       <div className="card mt-4 border-bff-200 bg-bff-50 text-sm text-slate-700">
         {zh ? (

@@ -445,10 +445,22 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
   // ---------- Builder view ----------
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="font-display text-2xl font-bold text-slate-900">
-        <Wallet className="mr-1.5 inline-block h-6 w-6 align-[-0.18em] text-bff-600" aria-hidden="true" /> {zh ? 'Ben 的预算挑战' : es ? 'El Reto del Presupuesto de Ben' : "Ben's Budget Challenge"}
-      </h1>
-      <p className="mt-1 text-sm text-slate-500">{zh ? 'Ben 理财冒险的第 1 部分' : es ? 'Parte 1 de la aventura financiera de Ben' : "Part 1 of Ben's money adventure"}</p>
+      <header className="mb-6">
+        <p className="eyebrow">
+          <span className="eyebrow-line" aria-hidden="true" />
+          {zh ? 'Ben 理财冒险的第 1 部分' : es ? 'Parte 1 de la aventura financiera de Ben' : "Part 1 of Ben's money adventure"}
+        </p>
+        <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
+          <Wallet className="mr-2 inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />
+          {zh ? (
+            <>Ben 的预算<em>挑战</em></>
+          ) : es ? (
+            <>El Reto del <em>Presupuesto</em> de Ben</>
+          ) : (
+            <>Ben's Budget <em>Challenge</em></>
+          )}
+        </h1>
+      </header>
 
       <div className="card mt-4 border-bff-200 bg-bff-50 text-sm text-slate-700">
         {zh ? (

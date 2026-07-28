@@ -848,17 +848,29 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
   // ---------- Playing view ----------
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="font-display text-2xl font-bold text-slate-900">
-        <span aria-hidden="true">💳📈</span>{' '}
-        {zh ? '信用分养成记' : es ? 'Constructor de Puntaje de Crédito' : 'Credit Score Builder'}
-      </h1>
-      <p className="mt-1 text-sm text-slate-500">
-        {zh
-          ? '10 个月，10 个决定。养出那个跟随你一辈子的三位数。'
-          : es
-          ? '10 meses, 10 decisiones. Construye el número de tres dígitos que te acompaña toda la vida.'
-          : '10 months, 10 decisions. Build the three-digit number that follows you for life.'}
-      </p>
+      <header className="mb-2">
+        <p className="eyebrow">
+          <span className="eyebrow-line" aria-hidden="true" />
+          {zh ? '模拟' : es ? 'Simulación' : 'Simulation'}
+        </p>
+        <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
+          <span aria-hidden="true">💳📈</span>{' '}
+          {zh ? (
+            <>信用分<em>养成记</em></>
+          ) : es ? (
+            <>Constructor de <em>Puntaje</em></>
+          ) : (
+            <>Credit Score <em>Builder</em></>
+          )}
+        </h1>
+        <p className="mt-2 text-sm text-slate-600">
+          {zh
+            ? '10 个月，10 个决定。养出那个跟随你一辈子的三位数。'
+            : es
+            ? '10 meses, 10 decisiones. Construye el número de tres dígitos que te acompaña toda la vida.'
+            : '10 months, 10 decisions. Build the three-digit number that follows you for life.'}
+        </p>
+      </header>
 
       {/* Score meter */}
       <section className="card mt-4">

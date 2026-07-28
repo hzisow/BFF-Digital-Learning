@@ -434,13 +434,23 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
     const tier = tierFor(score, es, zh)
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
-        <h1 className="font-display text-2xl font-bold text-slate-900">
-          <span aria-hidden="true">🎯</span> {zh ? '目标达成者' : es ? 'Cazametas' : 'Goal Getter'}{' '}
-          <span aria-hidden="true">💰</span>
-        </h1>
-        <p className="mt-1 text-sm text-slate-500">
-          {zh ? '六个月结束了。你的计划撑住了吗？' : es ? 'Se acabaron los seis meses. ¿Aguantó tu plan?' : 'Six months are up. Did your plan hold?'}
-        </p>
+        <header className="mb-2">
+          <p className="eyebrow">
+            <span className="eyebrow-line" aria-hidden="true" />
+            {zh ? '六个月结束了。你的计划撑住了吗？' : es ? 'Se acabaron los seis meses. ¿Aguantó tu plan?' : 'Six months are up. Did your plan hold?'}
+          </p>
+          <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
+            <span aria-hidden="true">🎯</span>{' '}
+            {zh ? (
+              <>目标<em>达成者</em></>
+            ) : es ? (
+              <><em>Cazametas</em></>
+            ) : (
+              <>Goal <em>Getter</em></>
+            )}{' '}
+            <span aria-hidden="true">💰</span>
+          </h1>
+        </header>
 
         <div className="mt-4 space-y-3">
           {GOALS.map((g, i) => {
@@ -547,14 +557,24 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
   if (phase === 'event' && eventCard) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
-        <h1 className="font-display text-2xl font-bold text-slate-900">
-          <span aria-hidden="true">🎯</span> {zh ? '目标达成者' : es ? 'Cazametas' : 'Goal Getter'}{' '}
-          <span aria-hidden="true">💰</span>
-        </h1>
-        <p className="mt-1 text-sm text-slate-500">
-          {zh ? '第' : es ? 'Mes' : 'Month'} {month} {zh ? '个月，共' : es ? 'de' : 'of'} {TOTAL_MONTHS}{zh ? ' 个月' : ''} —{' '}
-          {zh ? '生活总有意外……' : es ? 'la vida pasa…' : 'life happens…'}
-        </p>
+        <header className="mb-2">
+          <p className="eyebrow">
+            <span className="eyebrow-line" aria-hidden="true" />
+            {zh ? '第' : es ? 'Mes' : 'Month'} {month} {zh ? '个月，共' : es ? 'de' : 'of'} {TOTAL_MONTHS}{zh ? ' 个月' : ''} —{' '}
+            {zh ? '生活总有意外……' : es ? 'la vida pasa…' : 'life happens…'}
+          </p>
+          <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
+            <span aria-hidden="true">🎯</span>{' '}
+            {zh ? (
+              <>目标<em>达成者</em></>
+            ) : es ? (
+              <><em>Cazametas</em></>
+            ) : (
+              <>Goal <em>Getter</em></>
+            )}{' '}
+            <span aria-hidden="true">💰</span>
+          </h1>
+        </header>
 
         <div className="card animate-pop-in mt-4" role="status">
           <p className="text-5xl" aria-hidden="true">{eventCard.emoji}</p>
@@ -588,13 +608,23 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
   // ---------- Allocation view ----------
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="font-display text-2xl font-bold text-slate-900">
-        <span aria-hidden="true">🎯</span> {zh ? '目标达成者' : es ? 'Cazametas' : 'Goal Getter'}{' '}
-        <span aria-hidden="true">💰</span>
-      </h1>
-      <p className="mt-1 text-sm text-slate-500">
-        {zh ? '第' : es ? 'Mes' : 'Month'} {month} {zh ? '个月，共' : es ? 'de' : 'of'} {TOTAL_MONTHS}{zh ? ' 个月' : ''}
-      </p>
+      <header className="mb-2">
+        <p className="eyebrow">
+          <span className="eyebrow-line" aria-hidden="true" />
+          {zh ? '第' : es ? 'Mes' : 'Month'} {month} {zh ? '个月，共' : es ? 'de' : 'of'} {TOTAL_MONTHS}{zh ? ' 个月' : ''}
+        </p>
+        <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
+          <span aria-hidden="true">🎯</span>{' '}
+          {zh ? (
+            <>目标<em>达成者</em></>
+          ) : es ? (
+            <><em>Cazametas</em></>
+          ) : (
+            <>Goal <em>Getter</em></>
+          )}{' '}
+          <span aria-hidden="true">💰</span>
+        </h1>
+      </header>
 
       {month === 1 && (
         <div className="card mt-4 border-bff-200 bg-bff-50 text-sm text-slate-700">

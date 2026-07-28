@@ -261,10 +261,22 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
     const tallyDelay = results.events.length * EVENT_DELAY + 0.3
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
-        <h1 className="font-display text-2xl font-bold text-slate-900">
-        <span aria-hidden="true">🛡️</span> {zh ? 'Ben 的保险挑战' : es ? 'El Reto del Seguro de Ben' : "Ben's Insurance Challenge"}
-      </h1>
-        <p className="mt-1 text-sm text-slate-500">{zh ? '保障已确定。来看看这个月过得怎么样……' : es ? 'Cobertura confirmada. Veamos cómo va el mes…' : "Coverage locked. Let's see how the month goes…"}</p>
+        <header className="mb-2">
+          <p className="eyebrow">
+            <span className="eyebrow-line" aria-hidden="true" />
+            {zh ? '保障已确定。来看看这个月过得怎么样……' : es ? 'Cobertura confirmada. Veamos cómo va el mes…' : "Coverage locked. Let's see how the month goes…"}
+          </p>
+          <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
+            <span aria-hidden="true">🛡️</span>{' '}
+            {zh ? (
+              <>Ben 的保险<em>挑战</em></>
+            ) : es ? (
+              <>El Reto del <em>Seguro</em> de Ben</>
+            ) : (
+              <>Ben's Insurance <em>Challenge</em></>
+            )}
+          </h1>
+        </header>
 
         <div className="mt-4 space-y-3">
           {results.events.map((e, i) => (
@@ -342,10 +354,22 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
   // ---------- Picker view ----------
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="font-display text-2xl font-bold text-slate-900">
-        <span aria-hidden="true">🛡️</span> {zh ? 'Ben 的保险挑战' : es ? 'El Reto del Seguro de Ben' : "Ben's Insurance Challenge"}
-      </h1>
-      <p className="mt-1 text-sm text-slate-500">{zh ? 'Ben 理财冒险的第 2 部分' : es ? 'Parte 2 de la aventura financiera de Ben' : "Part 2 of Ben's money adventure"}</p>
+      <header className="mb-6">
+        <p className="eyebrow">
+          <span className="eyebrow-line" aria-hidden="true" />
+          {zh ? 'Ben 理财冒险的第 2 部分' : es ? 'Parte 2 de la aventura financiera de Ben' : "Part 2 of Ben's money adventure"}
+        </p>
+        <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
+          <span aria-hidden="true">🛡️</span>{' '}
+          {zh ? (
+            <>Ben 的保险<em>挑战</em></>
+          ) : es ? (
+            <>El Reto del <em>Seguro</em> de Ben</>
+          ) : (
+            <>Ben's Insurance <em>Challenge</em></>
+          )}
+        </h1>
+      </header>
 
       <div className="card mt-4 border-bff-200 bg-bff-50 text-sm text-slate-700">
         {zh ? (

@@ -476,11 +476,23 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
   if (finished) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
-        <h1 className="font-display text-2xl font-bold text-slate-900">
-          <span aria-hidden="true">🛒</span> {zh ? '聪明购物者' : es ? 'Comprador Inteligente' : 'Smart Shopper'}{' '}
-          <span aria-hidden="true">⚖️</span>
-        </h1>
-        <p className="mt-1 text-sm text-slate-500">{zh ? '结账完成。来算算你的捡漏雷达有多准。' : es ? 'Compra terminada. Sumemos tu radar de ofertas.' : "Checkout complete. Let's total up your deal radar."}</p>
+        <header className="mb-2">
+          <p className="eyebrow">
+            <span className="eyebrow-line" aria-hidden="true" />
+            {zh ? '结账完成。来算算你的捡漏雷达有多准。' : es ? 'Compra terminada. Sumemos tu radar de ofertas.' : "Checkout complete. Let's total up your deal radar."}
+          </p>
+          <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
+            <span aria-hidden="true">🛒</span>{' '}
+            {zh ? (
+              <>聪明<em>购物者</em></>
+            ) : es ? (
+              <>Comprador <em>Inteligente</em></>
+            ) : (
+              <>Smart <em>Shopper</em></>
+            )}{' '}
+            <span aria-hidden="true">⚖️</span>
+          </h1>
+        </header>
 
         <div className="card animate-pop-in mt-4 space-y-2 text-center" role="status">
           <p className="text-5xl" aria-hidden="true">{tier.emoji}</p>
@@ -526,17 +538,27 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="font-display text-2xl font-bold text-slate-900">
-        <span aria-hidden="true">🛒</span> {zh ? '聪明购物者' : es ? 'Comprador Inteligente' : 'Smart Shopper'}{' '}
-        <span aria-hidden="true">⚖️</span>
-      </h1>
-      <p className="mt-1 text-sm text-slate-500">
-        {zh
-          ? `第 ${roundIndex + 1} 轮，共 ${ROUNDS.length} 轮 · 目前得分：答对 ${correctCount} 题`
-          : es
-          ? `Ronda ${roundIndex + 1} de ${ROUNDS.length} · Puntaje hasta ahora: ${correctCount} correcta${correctCount === 1 ? '' : 's'}`
-          : `Round ${roundIndex + 1} of ${ROUNDS.length} · Score so far: ${correctCount} right`}
-      </p>
+      <header className="mb-2">
+        <p className="eyebrow">
+          <span className="eyebrow-line" aria-hidden="true" />
+          {zh
+            ? `第 ${roundIndex + 1} 轮，共 ${ROUNDS.length} 轮 · 目前得分：答对 ${correctCount} 题`
+            : es
+            ? `Ronda ${roundIndex + 1} de ${ROUNDS.length} · Puntaje hasta ahora: ${correctCount} correcta${correctCount === 1 ? '' : 's'}`
+            : `Round ${roundIndex + 1} of ${ROUNDS.length} · Score so far: ${correctCount} right`}
+        </p>
+        <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
+          <span aria-hidden="true">🛒</span>{' '}
+          {zh ? (
+            <>聪明<em>购物者</em></>
+          ) : es ? (
+            <>Comprador <em>Inteligente</em></>
+          ) : (
+            <>Smart <em>Shopper</em></>
+          )}{' '}
+          <span aria-hidden="true">⚖️</span>
+        </h1>
+      </header>
 
       {roundIndex === 0 && !revealed && (
         <div className="card mt-4 border-bff-200 bg-bff-50 text-sm text-slate-700">
