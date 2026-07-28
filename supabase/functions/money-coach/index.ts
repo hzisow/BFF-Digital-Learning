@@ -48,7 +48,8 @@ Answer in ${languageName(lang)}. Keep every reply short and friendly — just a 
       })
     }
     // 200 on purpose: supabase-js discards the body on non-2xx, which hides
-    // the reason from the UI. Report the failure in the payload instead.
-    return json({ error: 'AI_FAILED', reason: message })
+    // the reason from the UI. Report the failure in the payload, and also put
+    // it in `reply` so it is visible even to a cached older client build.
+    return json({ error: 'AI_FAILED', reason: message, reply: `AI error - ${message}` })
   }
 })
