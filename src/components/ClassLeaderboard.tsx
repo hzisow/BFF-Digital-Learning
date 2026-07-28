@@ -40,14 +40,15 @@ export default function ClassLeaderboard({
   }, [load])
 
   return (
-    <div className="card">
-      <div className="flex items-center justify-between gap-3">
-        <h2 className="flex items-center gap-2 font-display text-lg font-bold text-slate-900">
-          <Trophy className="h-5 w-5 text-gold-500" aria-hidden="true" /> {zh ? '班级排行榜' : es ? 'Tabla de la clase' : 'Class leaderboard'}
+    <div className="card overflow-hidden !p-0">
+      {/* Ink masthead — editorial ranking header */}
+      <div className="flex items-center justify-between gap-3 bg-ink px-5 py-4 text-white">
+        <h2 className="flex items-center gap-2 font-display text-lg font-bold">
+          <Trophy className="h-5 w-5 text-gold-400" aria-hidden="true" /> {zh ? '班级排行榜' : es ? 'Tabla de la clase' : 'Class leaderboard'}
         </h2>
         <button
           type="button"
-          className="btn-ghost text-sm"
+          className="inline-flex items-center gap-1.5 rounded-[5px] px-3 py-1.5 font-display text-sm font-semibold text-white/70 transition hover:bg-white/10 hover:text-white active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bff-300"
           onClick={() => void load()}
           disabled={loading}
         >
@@ -55,71 +56,75 @@ export default function ClassLeaderboard({
         </button>
       </div>
 
-      {error && (
-        <p role="alert" className="mt-3 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
-          {error}
-        </p>
-      )}
+      <div className="p-5">
+        {error && (
+          <p role="alert" className="rounded-[6px] border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+            {error}
+          </p>
+        )}
 
-      {loading && rows.length === 0 ? (
-        <div className="mt-4 space-y-3" role="status" aria-label={zh ? '加载中…' : es ? 'Cargando…' : 'Loading…'}>
-          <SkeletonRow />
-          <SkeletonRow />
-          <SkeletonRow />
-        </div>
-      ) : rows.length === 0 ? (
-        <p className="mt-4 text-sm text-slate-500">
-          {zh
-            ? '还没有积分！完成一个活动就能登上榜单。'
-            : es
-              ? '¡Aún no hay puntos! Completa una actividad para aparecer aquí.'
-              : 'No points yet — finish an activity to land on the board!'}
-        </p>
-      ) : (
-        <ol className="mt-4 space-y-1.5">
-          {rows.map((r, i) => {
-            const info = levelInfo(r.xp)
-            const isMe = highlightStudentId === r.student_id
-            return (
-              <li
-                key={r.student_id}
-                className={`flex items-center gap-3 rounded-xl px-3 py-2 ${
-                  isMe ? 'bg-bff-50 ring-1 ring-bff-200' : 'odd:bg-slate-50'
-                }`}
-              >
-                <span
-                  className="flex w-7 shrink-0 items-center justify-center"
-                  aria-hidden="true"
+        {loading && rows.length === 0 ? (
+          <div className="space-y-3" role="status" aria-label={zh ? '加载中…' : es ? 'Cargando…' : 'Loading…'}>
+            <SkeletonRow />
+            <SkeletonRow />
+            <SkeletonRow />
+          </div>
+        ) : rows.length === 0 ? (
+          <p className="text-sm text-ink/50">
+            {zh
+              ? '还没有积分！完成一个活动就能登上榜单。'
+              : es
+                ? '¡Aún no hay puntos! Completa una actividad para aparecer aquí.'
+                : 'No points yet — finish an activity to land on the board!'}
+          </p>
+        ) : (
+          <ol className="space-y-1">
+            {rows.map((r, i) => {
+              const info = levelInfo(r.xp)
+              const isMe = highlightStudentId === r.student_id
+              const medal =
+                i === 0 ? 'text-gold-500' : i === 1 ? 'text-ink/40' : i === 2 ? 'text-gold-400' : ''
+              return (
+                <li
+                  key={r.student_id}
+                  className={`flex items-center gap-3 rounded-[6px] border-l-4 px-3 py-2 ${
+                    isMe
+                      ? 'border-l-bff-600 bg-bff-50 ring-1 ring-bff-200'
+                      : 'border-l-transparent odd:bg-ink/[0.03]'
+                  }`}
                 >
-                  {i === 0 ? (
-                    <Crown className="h-5 w-5 text-gold-500" />
-                  ) : i === 1 ? (
-                    <Medal className="h-5 w-5 text-slate-400" />
-                  ) : i === 2 ? (
-                    <Medal className="h-5 w-5 text-amber-600" />
-                  ) : (
-                    <span className="font-display text-sm font-bold text-slate-500">{i + 1}</span>
-                  )}
-                </span>
-                <span className="min-w-0 flex-1 truncate font-display font-semibold text-slate-800">
-                  {r.nickname}
-                  {isMe && (
-                    <span className="ml-1.5 text-xs font-semibold text-bff-600">
-                      ({zh ? '你' : es ? 'tú' : 'you'})
-                    </span>
-                  )}
-                  <span className="ml-2 text-xs font-normal text-slate-400">
-                    {info.tier.emoji} {info.tier.name}
+                  <span
+                    className="flex w-7 shrink-0 items-center justify-center"
+                    aria-hidden="true"
+                  >
+                    {i === 0 ? (
+                      <Crown className={`h-5 w-5 ${medal}`} />
+                    ) : i <= 2 ? (
+                      <Medal className={`h-5 w-5 ${medal}`} />
+                    ) : (
+                      <span className="font-display text-sm font-bold tabular-nums text-ink/40">{i + 1}</span>
+                    )}
                   </span>
-                </span>
-                <span className="shrink-0 font-display text-sm font-bold text-bff-700">
-                  {r.xp.toLocaleString()} XP
-                </span>
-              </li>
-            )
-          })}
-        </ol>
-      )}
+                  <span className="min-w-0 flex-1 truncate font-display font-semibold text-ink">
+                    {r.nickname}
+                    {isMe && (
+                      <span className="ml-1.5 text-xs font-semibold text-bff-600">
+                        ({zh ? '你' : es ? 'tú' : 'you'})
+                      </span>
+                    )}
+                    <span className="ml-2 text-xs font-normal uppercase tracking-wide text-ink/40">
+                      {info.tier.name}
+                    </span>
+                  </span>
+                  <span className="shrink-0 font-display text-sm font-bold tabular-nums text-bff-700">
+                    {r.xp.toLocaleString()} XP
+                  </span>
+                </li>
+              )
+            })}
+          </ol>
+        )}
+      </div>
     </div>
   )
 }

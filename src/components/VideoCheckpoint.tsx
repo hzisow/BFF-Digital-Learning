@@ -124,7 +124,7 @@ function QuestionCard({
 
   return (
     <div className={`w-full ${compact ? '' : 'card'} text-left`}>
-      <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-bff-700">
+      <p className="eyebrow text-bff-600">
         <Pause className="h-3.5 w-3.5" aria-hidden="true" />{' '}
         {zh
           ? `视频检查 · 第 ${index + 1} / ${total} 题`
@@ -132,19 +132,19 @@ function QuestionCard({
             ? `Control del video · ${index + 1} de ${total}`
             : `Video check · ${index + 1} of ${total}`}
       </p>
-      <p id={questionId} className="mt-2 font-display font-bold leading-snug text-slate-900">
+      <p id={questionId} className="mt-2 font-display font-bold leading-snug text-ink">
         {q.question}
       </p>
       <div role="group" aria-labelledby={questionId} className="mt-3 space-y-2">
         {q.options.map((opt, i) => {
-          let cls = 'border-slate-200 bg-white text-slate-700 hover:border-bff-400 hover:bg-bff-50'
+          let cls = 'border-ink/15 bg-white text-ink/80 hover:border-bff-400 hover:bg-bff-50'
           if (revealed) {
             cls =
               i === q.answerIndex
                 ? 'border-green-500 bg-green-50 text-green-800'
                 : i === chosen
                   ? 'border-red-400 bg-red-50 text-red-700'
-                  : 'border-slate-200 bg-white text-slate-500'
+                  : 'border-ink/15 bg-white text-ink/40'
           }
           return (
             <button
@@ -153,7 +153,7 @@ function QuestionCard({
               disabled={revealed}
               aria-label={optionStateLabel(i)}
               onClick={() => pick(i)}
-              className={`w-full rounded-xl border-2 px-3 py-2 text-left text-sm font-medium transition disabled:cursor-default ${cls}`}
+              className={`w-full rounded-[6px] border-2 px-3 py-2 text-left text-sm font-medium transition disabled:cursor-default ${cls}`}
             >
               {opt}
             </button>
@@ -163,7 +163,7 @@ function QuestionCard({
       {revealed && (
         <div
           role="status"
-          className={`mt-3 rounded-xl border p-3 text-sm leading-relaxed ${
+          className={`mt-3 rounded-[6px] border p-3 text-sm leading-relaxed ${
             gotIt
               ? 'border-green-200 bg-green-50 text-green-800'
               : 'border-amber-200 bg-amber-50 text-amber-800'
@@ -229,7 +229,7 @@ function FallbackQuestions({
 
   return (
     <div className="space-y-4">
-      <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
+      <div className="rounded-[6px] border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
         <p className="flex items-center gap-1.5 font-bold">
           <AlertCircle className="h-4 w-4" aria-hidden="true" /> {zh ? '视频无法加载？' : es ? '¿No carga el video?' : 'Video not loading?'}
         </p>
@@ -279,7 +279,7 @@ function FallbackQuestions({
       {done ? (
         <p
           role="status"
-          className="flex items-center justify-center gap-1.5 rounded-2xl bg-green-50 p-4 text-center text-sm font-bold text-green-700"
+          className="flex items-center justify-center gap-1.5 rounded-[6px] bg-green-50 p-4 text-center text-sm font-bold text-green-700"
         >
           <CheckCircle2 className="h-4 w-4" aria-hidden="true" />{' '}
           {zh ? '所有视频检查都完成了，继续前进吧！' : es ? '¡Listos todos los controles del video, sigue adelante!' : 'All video checks done — keep going!'}
@@ -465,7 +465,7 @@ export default function VideoCheckpoint({
   return (
     <div>
       {/* Player + question overlay */}
-      <div className="relative overflow-hidden rounded-2xl bg-slate-900 shadow-lg">
+      <div className="relative overflow-hidden rounded-[8px] border border-ink/10 bg-ink shadow-card">
         <div className="aspect-video w-full">
           <div ref={hostRef} className="h-full w-full" />
         </div>
@@ -489,19 +489,19 @@ export default function VideoCheckpoint({
           >
             {/* Light scrim: the paused frame stays visible, panel edge reads cleanly */}
             <div
-              className="absolute inset-0 bg-slate-950/40"
+              className="absolute inset-0 bg-ink/40"
               aria-hidden
             />
             {/* "Paused" pill sits over the still-visible video */}
-            <div className="absolute left-3 top-3 flex items-center gap-1.5 rounded-full bg-slate-950/70 px-3 py-1 text-xs font-bold text-white backdrop-blur">
-              <Pause className="h-3.5 w-3.5" aria-hidden="true" />{' '}
+            <div className="absolute left-3 top-3 flex items-center gap-1.5 rounded-[5px] border border-white/15 bg-ink/80 px-3 py-1 text-xs font-bold uppercase tracking-wide text-white backdrop-blur">
+              <Pause className="h-3.5 w-3.5 text-gold-400" aria-hidden="true" />{' '}
               {zh ? '已暂停以回答问题' : es ? 'En pausa para una pregunta' : 'Paused for a question'}
             </div>
             {/* Question slides in from the right (bottom on small screens) */}
             <div
               ref={panelRef}
               tabIndex={-1}
-              className="relative flex h-full w-full animate-slide-in-up flex-col overflow-y-auto bg-white/95 p-4 shadow-2xl backdrop-blur sm:w-[62%] sm:max-w-sm sm:animate-slide-in-right sm:p-5"
+              className="relative flex h-full w-full animate-slide-in-up flex-col overflow-y-auto border-l-2 border-bff-600 bg-white/95 p-4 shadow-2xl backdrop-blur sm:w-[62%] sm:max-w-sm sm:animate-slide-in-right sm:p-5"
             >
               <div className="my-auto">
                 <QuestionCard
@@ -531,7 +531,7 @@ export default function VideoCheckpoint({
           aria-valuenow={Math.round(watchedPct)}
           aria-valuemin={0}
           aria-valuemax={100}
-          className="relative h-2.5 overflow-visible rounded-full bg-slate-200"
+          className="relative h-2.5 overflow-visible rounded-full bg-ink/10"
         >
           <div
             className="h-full rounded-full bg-bff-500 transition-all duration-300"
@@ -544,7 +544,7 @@ export default function VideoCheckpoint({
                 key={i}
                 aria-hidden="true"
                 className={`absolute top-1/2 h-4 w-4 -translate-y-1/2 rounded-full border-2 border-white shadow ${
-                  answered[i] ? 'bg-green-500' : 'bg-amber-400'
+                  answered[i] ? 'bg-green-500' : 'bg-gold-400'
                 }`}
                 style={{ left: `calc(${pct}% - 8px)` }}
               />
@@ -553,7 +553,7 @@ export default function VideoCheckpoint({
         </div>
         <div
           role="status"
-          className="mt-2 flex items-center justify-between text-xs font-semibold text-slate-500"
+          className="mt-2 flex items-center justify-between text-xs font-semibold text-ink/50"
         >
           <span>
             {sorted.filter((_, i) => answered[i]).length}/{sorted.length}{' '}

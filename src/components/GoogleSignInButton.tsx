@@ -137,7 +137,7 @@ export default function GoogleSignInButton({
     <div>
       <div ref={holderRef} className="flex min-h-[44px] justify-center" />
       {loading && (
-        <p className="flex items-center justify-center gap-1.5 text-center text-xs text-slate-400">
+        <p className="flex items-center justify-center gap-1.5 text-center text-xs font-medium text-ink/50">
           <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
           {zh ? '正在加载 Google 登录…' : es ? 'Cargando el inicio de sesión con Google…' : 'Loading Google sign-in…'}
         </p>

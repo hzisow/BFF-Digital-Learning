@@ -47,20 +47,20 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         {items.map((t) => (
           <div
             key={t.id}
-            className={`pointer-events-auto flex items-center gap-2 animate-slide-up rounded-xl px-4 py-2.5 text-sm font-semibold shadow-lg ${
+            className={`pointer-events-auto flex items-center gap-2 animate-slide-up rounded-[6px] border border-l-4 border-ink/10 bg-white px-4 py-2.5 text-sm font-semibold text-ink shadow-card ${
               t.kind === 'success'
-                ? 'bg-green-600 text-white'
+                ? 'border-l-green-500'
                 : t.kind === 'error'
-                  ? 'bg-red-600 text-white'
-                  : 'bg-slate-900 text-white'
+                  ? 'border-l-red-500'
+                  : 'border-l-bff-600'
             }`}
           >
             {t.kind === 'success' ? (
-              <CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden="true" />
+              <CheckCircle2 className="h-4 w-4 shrink-0 text-green-600" aria-hidden="true" />
             ) : t.kind === 'error' ? (
-              <XCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
+              <XCircle className="h-4 w-4 shrink-0 text-red-600" aria-hidden="true" />
             ) : (
-              <Info className="h-4 w-4 shrink-0" aria-hidden="true" />
+              <Info className="h-4 w-4 shrink-0 text-bff-600" aria-hidden="true" />
             )}
             {t.message}
           </div>

@@ -3,7 +3,7 @@
 // kind of session and jumps to that game's host (projector) screen.
 
 import { useMemo, useState } from 'react'
-import { Radio } from 'lucide-react'
+import { Radio, Play } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { ACTIVITIES } from '../lib/activities'
 import { useLang } from '../lib/i18n'
@@ -65,11 +65,11 @@ export default function HostLauncher({ classroomId }: { classroomId: string | nu
   }
 
   return (
-    <div className="card border-bff-200 bg-bff-50/50">
-      <h3 className="flex items-center gap-2 font-display text-lg font-bold text-slate-900">
+    <div className="panel p-6">
+      <h3 className="flex items-center gap-2 font-display text-lg font-bold text-ink">
         <Radio className="h-5 w-5 text-bff-600" aria-hidden="true" /> {zh ? '主持一场实时游戏' : es ? 'Organiza un juego en vivo' : 'Host a live game'}
       </h3>
-      <p className="mt-1 text-sm text-slate-600">
+      <p className="mt-1 text-sm text-ink/60">
         {zh
           ? '将主持人屏幕投放到投影仪上；学生用屏幕上显示的代码在各自设备上加入。'
           : es
@@ -105,12 +105,13 @@ export default function HostLauncher({ classroomId }: { classroomId: string | nu
           </optgroup>
         </select>
         <button type="button" className="btn-primary shrink-0" onClick={() => void host()} disabled={busy}>
-          {busy ? (zh ? '开始中…' : es ? 'Iniciando…' : 'Starting…') : zh ? '开始主持 →' : es ? 'Organizar →' : 'Host it →'}
+          <Play className="h-4 w-4" aria-hidden="true" />
+          {busy ? (zh ? '开始中…' : es ? 'Iniciando…' : 'Starting…') : zh ? '开始主持' : es ? 'Organizar' : 'Host it'}
         </button>
       </div>
 
       {error && (
-        <p role="alert" className="mt-3 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+        <p role="alert" className="mt-3 rounded-[6px] border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
           {error}
         </p>
       )}

@@ -1,7 +1,7 @@
 // Loading placeholders — a subtle pulsing block, plus a ready-made card shape.
 
 export function Skeleton({ className = '' }: { className?: string }) {
-  return <div className={`animate-pulse rounded-xl bg-slate-200/70 ${className}`} aria-hidden="true" />
+  return <div className={`animate-pulse rounded-[6px] bg-ink/[0.07] ${className}`} aria-hidden="true" />
 }
 
 /** A card-shaped skeleton for grids of loading content. */

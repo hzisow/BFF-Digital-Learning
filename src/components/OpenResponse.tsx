@@ -74,15 +74,16 @@ export default function OpenResponse({ prompt, rubric, id }: OpenResponseProps) 
   const scoreLabel = zh ? '得分' : es ? 'Puntuación' : 'Score'
 
   return (
-    <div className="card">
-      <p className="text-xs font-bold uppercase tracking-wide text-bff-700">
+    <div className="card accent-left">
+      <p className="eyebrow text-bff-600">
+        <span className="eyebrow-line" aria-hidden="true" />
         {zh ? '开放式问题' : es ? 'Respuesta abierta' : 'Open response'}
       </p>
 
       {/* The question label doubles as the textarea's <label> for screen readers. */}
       <label
         htmlFor={textareaId}
-        className="mt-2 block font-display text-lg font-bold leading-snug text-slate-900"
+        className="mt-2 block font-display text-lg font-bold leading-snug text-ink"
       >
         {prompt}
       </label>
@@ -93,7 +94,7 @@ export default function OpenResponse({ prompt, rubric, id }: OpenResponseProps) 
         onChange={(e) => setAnswer(e.target.value)}
         disabled={submitting || showFeedback}
         rows={4}
-        className="input mt-3 resize-y leading-relaxed disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500"
+        className="input mt-3 resize-y leading-relaxed disabled:cursor-not-allowed disabled:bg-ink/5 disabled:text-ink/50"
         placeholder={
           zh
             ? '用一两句话写下你的想法……'
@@ -104,7 +105,7 @@ export default function OpenResponse({ prompt, rubric, id }: OpenResponseProps) 
       />
 
       {!AI_ENABLED && (
-        <p className="mt-2 text-sm text-slate-500">
+        <p className="mt-2 text-sm text-ink/50">
           {zh
             ? 'AI 反馈暂时不可用，但你仍然可以写下并保存你的答案，导师会阅读它。'
             : es
@@ -140,7 +141,7 @@ export default function OpenResponse({ prompt, rubric, id }: OpenResponseProps) 
                   : 'Get feedback'}
           </button>
           {AI_ENABLED && (
-            <span className="text-sm text-slate-500">
+            <span className="text-sm text-ink/50">
               {zh
                 ? 'AI 会给出鼓励性的具体反馈。'
                 : es
@@ -154,7 +155,7 @@ export default function OpenResponse({ prompt, rubric, id }: OpenResponseProps) 
       {/* Live region: announces the feedback (or an error) as it arrives. */}
       <div role="status" aria-live="polite">
         {status === 'not-configured' && (
-          <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
+          <div className="mt-4 rounded-[6px] border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
             {zh
               ? 'AI 反馈还没有设置好——不过没关系，你的导师仍然可以阅读你的答案。'
               : es
@@ -164,7 +165,7 @@ export default function OpenResponse({ prompt, rubric, id }: OpenResponseProps) 
         )}
 
         {status === 'error' && (
-          <div className="mt-4 flex flex-col gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-4 flex flex-col gap-3 rounded-[6px] border border-red-200 bg-red-50 p-4 text-sm text-red-700 sm:flex-row sm:items-center sm:justify-between">
             <span>
               {zh
                 ? '获取反馈时出错了。请再试一次。'
@@ -179,9 +180,9 @@ export default function OpenResponse({ prompt, rubric, id }: OpenResponseProps) 
         )}
 
         {showFeedback && grade && (
-          <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-5">
+          <div className="panel mt-4 p-5">
             <div className="flex flex-wrap items-center gap-3">
-              <h3 className="flex items-center gap-1.5 font-display text-base font-bold text-slate-900">
+              <h3 className="flex items-center gap-1.5 font-display text-base font-bold text-ink">
                 <Sparkles className="h-4 w-4 text-bff-600" aria-hidden="true" />
                 {zh ? '你的反馈' : es ? 'Tus comentarios' : 'Your feedback'}
               </h3>
@@ -192,14 +193,14 @@ export default function OpenResponse({ prompt, rubric, id }: OpenResponseProps) 
               )}
             </div>
 
-            <p className="mt-3 leading-relaxed text-slate-700">{grade.summary}</p>
+            <p className="mt-3 leading-relaxed text-ink/70">{grade.summary}</p>
 
             {grade.strengths.length > 0 && (
               <div className="mt-4">
-                <h4 className="text-sm font-bold text-slate-900">
+                <h4 className="text-sm font-bold text-ink">
                   {zh ? '做得好的地方' : es ? 'Lo que hiciste bien' : 'What went well'}
                 </h4>
-                <ul className="mt-1 list-disc space-y-1 pl-5 text-sm leading-relaxed text-slate-700">
+                <ul className="mt-1 list-disc space-y-1 pl-5 text-sm leading-relaxed text-ink/70">
                   {grade.strengths.map((s, i) => (
                     <li key={i}>{s}</li>
                   ))}
@@ -209,10 +210,10 @@ export default function OpenResponse({ prompt, rubric, id }: OpenResponseProps) 
 
             {grade.improve.length > 0 && (
               <div className="mt-4">
-                <h4 className="text-sm font-bold text-slate-900">
+                <h4 className="text-sm font-bold text-ink">
                   {zh ? '可以改进的地方' : es ? 'Para mejorar' : 'To improve'}
                 </h4>
-                <ul className="mt-1 list-disc space-y-1 pl-5 text-sm leading-relaxed text-slate-700">
+                <ul className="mt-1 list-disc space-y-1 pl-5 text-sm leading-relaxed text-ink/70">
                   {grade.improve.map((s, i) => (
                     <li key={i}>{s}</li>
                   ))}

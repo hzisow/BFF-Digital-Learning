@@ -47,10 +47,10 @@ export default function ReadAloud({ text }: { text: string }) {
       aria-pressed={speaking}
       aria-label={speaking ? t('readAloud.stop') : t('readAloud.play')}
       title={speaking ? t('readAloud.stop') : t('readAloud.play')}
-      className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-base transition ${
+      className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-[5px] text-base transition ${
         speaking
-          ? 'bg-bff-600 text-white shadow-sm'
-          : 'bg-slate-100 text-slate-600 hover:bg-bff-50 hover:text-bff-700'
+          ? 'bg-bff-600 text-white'
+          : 'text-current hover:bg-bff-600 hover:text-white'
       }`}
     >
       {speaking ? (
