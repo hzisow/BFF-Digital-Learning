@@ -440,18 +440,25 @@ export default function AIPractice() {
             gotIt ? 'border-green-200 bg-green-50' : 'border-amber-200 bg-amber-50'
           }`}
         >
-          <p className={`font-display font-bold ${gotIt ? 'text-green-800' : 'text-amber-800'}`}>
+          <p
+            className={`flex items-start gap-2 font-display font-bold ${gotIt ? 'text-green-800' : 'text-amber-800'}`}
+          >
+            {gotIt ? (
+              <Check className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+            ) : (
+              <X className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+            )}
             {gotIt
               ? zh
-                ? '答对了 ✓'
+                ? '答对了'
                 : es
-                  ? '¡Correcto! ✓'
-                  : 'Correct! ✓'
+                  ? '¡Correcto!'
+                  : 'Correct!'
               : zh
-                ? `不对 ✗ —— 正确答案是“${q.options[q.answerIndex]}”`
+                ? `不对 —— 正确答案是“${q.options[q.answerIndex]}”`
                 : es
-                  ? `Incorrecto ✗ — la respuesta es “${q.options[q.answerIndex]}”`
-                  : `Incorrect ✗ — the answer is “${q.options[q.answerIndex]}”`}
+                  ? `Incorrecto — la respuesta es “${q.options[q.answerIndex]}”`
+                  : `Incorrect — the answer is “${q.options[q.answerIndex]}”`}
           </p>
           <p className={`mt-2 text-sm leading-relaxed ${gotIt ? 'text-green-800' : 'text-amber-800'}`}>
             {q.explanation}

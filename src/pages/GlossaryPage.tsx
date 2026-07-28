@@ -6,13 +6,15 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { BookOpen, Search } from 'lucide-react'
 import { LESSONS } from '../content/lessons'
+import { AppIcon } from '../lib/icons'
+import type { IconName } from '../lib/icons'
 import { useLang, localizeLesson } from '../lib/i18n'
 
 interface GlossaryEntry {
   term: string
   definition: string
   lessonSlug: string
-  lessonEmoji: string
+  lessonIcon: IconName
   lessonTitle: string
 }
 
@@ -31,7 +33,7 @@ export default function GlossaryPage() {
             term: kt.term,
             definition: kt.definition,
             lessonSlug: lesson.slug,
-            lessonEmoji: lesson.emoji,
+            lessonIcon: lesson.icon,
             lessonTitle: localized.title,
           })
         }
@@ -125,9 +127,10 @@ export default function GlossaryPage() {
                       {t('glossary.from')}{' '}
                       <Link
                         to={`/lessons/${e.lessonSlug}`}
-                        className="font-semibold text-bff-700 hover:underline"
+                        className="inline-flex items-center gap-1.5 font-semibold text-bff-700 hover:underline"
                       >
-                        <span aria-hidden="true">{e.lessonEmoji}</span> {e.lessonTitle}
+                        <AppIcon name={e.lessonIcon} className="h-4 w-4" />
+                        {e.lessonTitle}
                       </Link>
                     </dd>
                   </div>

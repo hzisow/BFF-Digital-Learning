@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Check, Clock, Gamepad2 } from 'lucide-react'
 import { ACTIVITIES, kindLabel, localizeActivity } from '../lib/activities'
+import { AppIcon } from '../lib/icons'
 import { useLang } from '../lib/i18n'
 import type { ActivityProgress } from '../lib/progress'
 import { loadLocalProgress } from '../lib/progress'
@@ -95,7 +96,9 @@ export default function ActivitiesIndex() {
           return (
             <Link key={a.slug} to={a.path} className="card lift group flex flex-col">
               <div className="flex items-start justify-between gap-3">
-                <span className="text-4xl" aria-hidden="true">{a.emoji}</span>
+                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-bff-50 text-bff-700">
+                  <AppIcon name={a.icon} className="h-6 w-6" />
+                </span>
                 <span className="chip bg-bff-50 text-bff-700">{kindLabel(a.kind, lang)}</span>
               </div>
               <h2 className="mt-4 font-display text-lg font-bold text-ink group-hover:text-bff-700">

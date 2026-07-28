@@ -6,13 +6,15 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, RefreshCw, Star, Sparkles, Trophy, Check } from 'lucide-react'
 import { LESSONS } from '../content/lessons'
+import { AppIcon } from '../lib/icons'
+import type { IconName } from '../lib/icons'
 import { useLang, localizeLesson } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
 import { recordActivity } from '../lib/streak'
 
 interface PracticeItem {
   lessonSlug: string
-  lessonEmoji: string
+  lessonIcon: IconName
   lessonTitle: string
   questionIndex: number
 }
@@ -35,7 +37,7 @@ export default function PracticePage() {
         if (q && chosen !== q.answerIndex) {
           items.push({
             lessonSlug: lesson.slug,
-            lessonEmoji: lesson.emoji,
+            lessonIcon: lesson.icon,
             lessonTitle: loc.title,
             questionIndex: i,
           })
@@ -174,8 +176,9 @@ export default function PracticePage() {
                 ? `Repaso · ${step + 1} de ${deck.length}`
                 : `Practice · ${step + 1} of ${deck.length}`}
           </p>
-          <p className="text-xs font-semibold text-white/70">
-            <span aria-hidden="true">{item.lessonEmoji}</span> {item.lessonTitle}
+          <p className="inline-flex items-center gap-1.5 text-xs font-semibold text-white/70">
+            <AppIcon name={item.lessonIcon} className="h-4 w-4" />
+            {item.lessonTitle}
           </p>
         </div>
       </section>

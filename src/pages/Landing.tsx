@@ -4,6 +4,7 @@ import type { LucideIcon } from 'lucide-react'
 import { Logo } from '../components/Logo'
 import { getActivity, kindLabel, localizeActivity } from '../lib/activities'
 import type { ActivityMeta } from '../lib/activities'
+import { AppIcon } from '../lib/icons'
 import { useLang } from '../lib/i18n'
 import { resumeLesson } from '../lib/resume'
 
@@ -236,7 +237,9 @@ export default function Landing() {
                   className="card lift group flex flex-col"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-4xl" aria-hidden="true">{a.emoji}</span>
+                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-bff-50 text-bff-700">
+                      <AppIcon name={a.icon} className="h-6 w-6" />
+                    </span>
                     <span className="chip bg-bff-50 text-bff-700">{kindLabel(a.kind, lang)}</span>
                   </div>
                   <h3 className="mt-4 font-display text-lg font-bold text-ink group-hover:text-bff-700">
