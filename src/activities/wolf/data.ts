@@ -12,6 +12,8 @@ export interface Company {
   /** Simplified Chinese sector label. */
   industryZh: string
   product: string
+  /** Lucide icon name for this company (rendered via GAME_ICONS). */
+  icon: string
   /** Spanish product description. */
   productEs: string
   /** Simplified Chinese product description. */
@@ -32,6 +34,7 @@ export const COMPANIES: Company[] = [
     industryEs: 'Tecnología',
     industryZh: '科技',
     product: 'Virtual zoo tours & live animal cams',
+    icon: 'PawPrint',
     productEs: 'Tours virtuales de zoológico y cámaras de animales en vivo',
     productZh: '虚拟动物园游览和动物直播镜头',
     prices: [100, 103, 99, 110],
@@ -44,6 +47,7 @@ export const COMPANIES: Company[] = [
     industryEs: 'Energía',
     industryZh: '能源',
     product: 'Clean fuel for electric aircraft',
+    icon: 'Plane',
     productEs: 'Combustible limpio para aviones eléctricos',
     productZh: '电动飞机用的清洁燃料',
     prices: [102, 110, 114, 118],
@@ -56,6 +60,7 @@ export const COMPANIES: Company[] = [
     industryEs: 'Bienes de consumo',
     industryZh: '消费品',
     product: 'Viral healthy snacks from TikTok',
+    icon: 'Cookie',
     productEs: 'Snacks saludables virales de TikTok',
     productZh: '在 TikTok 上爆红的健康零食',
     prices: [97, 101, 94, 92],
@@ -68,6 +73,7 @@ export const COMPANIES: Company[] = [
     industryEs: 'Tecnología de moda',
     industryZh: '时尚科技',
     product: 'Color-changing temperature-sensitive clothing',
+    icon: 'Shirt',
     productEs: 'Ropa que cambia de color según la temperatura',
     productZh: '随温度变色的服装',
     prices: [98, 102, 96, 95],
@@ -80,6 +86,7 @@ export const COMPANIES: Company[] = [
     industryEs: 'Biotecnología',
     industryZh: '生物科技',
     product: 'Allergy-blocking daily vitamins',
+    icon: 'Pill',
     productEs: 'Vitaminas diarias que bloquean las alergias',
     productZh: '抗过敏的每日维生素',
     prices: [101, 99, 104, 107],
@@ -92,6 +99,7 @@ export const COMPANIES: Company[] = [
     industryEs: 'Entretenimiento',
     industryZh: '娱乐',
     product: 'Cloud-based indie gaming platform',
+    icon: 'Gamepad2',
     productEs: 'Plataforma de videojuegos indie en la nube',
     productZh: '基于云端的独立游戏平台',
     prices: [99, 101, 108, 112],
@@ -104,6 +112,7 @@ export const COMPANIES: Company[] = [
     industryEs: 'Medios / Tecnología',
     industryZh: '媒体／科技',
     product: 'AI-curated streaming bundles',
+    icon: 'MonitorPlay',
     productEs: 'Paquetes de streaming seleccionados por IA',
     productZh: '由 AI 精选的流媒体套餐',
     prices: [103, 100, 104, 106],
@@ -116,6 +125,7 @@ export const COMPANIES: Company[] = [
     industryEs: 'Agricultura',
     industryZh: '农业',
     product: 'AI-run indoor farms for schools',
+    icon: 'Sprout',
     productEs: 'Granjas de interior manejadas por IA para escuelas',
     productZh: '由 AI 运营、供学校使用的室内农场',
     prices: [96, 102, 108, 114],
@@ -128,6 +138,7 @@ export const COMPANIES: Company[] = [
     industryEs: 'Tecnología / Comida',
     industryZh: '科技／食品',
     product: 'Smart vending machines recommending snacks based on mood',
+    icon: 'CupSoda',
     productEs: 'Máquinas expendedoras inteligentes que recomiendan snacks según tu estado de ánimo',
     productZh: '根据你的心情推荐零食的智能自动售货机',
     prices: [98, 103, 93, 90],
@@ -140,6 +151,7 @@ export const COMPANIES: Company[] = [
     industryEs: 'Salud / Consumo',
     industryZh: '健康／消费',
     product: 'Pet wellness subscription boxes + vet telehealth',
+    icon: 'Dog',
     productEs: 'Cajas de suscripción de bienestar para mascotas + telemedicina veterinaria',
     productZh: '宠物保健订阅盒＋兽医远程问诊',
     prices: [100, 104, 109, 112],
@@ -152,6 +164,7 @@ export const COMPANIES: Company[] = [
     industryEs: 'Energía renovable',
     industryZh: '可再生能源',
     product: 'Solar-powered chargers made from recycled plastic',
+    icon: 'BatteryCharging',
     productEs: 'Cargadores solares hechos de plástico reciclado',
     productZh: '用回收塑料制成的太阳能充电器',
     prices: [99, 103, 106, 108],
@@ -164,6 +177,7 @@ export const COMPANIES: Company[] = [
     industryEs: 'Transporte',
     industryZh: '交通出行',
     product: 'App for renting e-skateboards & scooters',
+    icon: 'Bike',
     productEs: 'App para alquilar patinetas eléctricas y scooters',
     productZh: '租借电动滑板和滑板车的应用',
     prices: [101, 104, 96, 93],
@@ -175,32 +189,42 @@ export const COMPANIES: Company[] = [
 
 /** Phase 2 of the paper game — shown while students pick their stocks. */
 export const MARKET_HINTS = [
-  '🚀 Clean energy and sustainability are in demand.',
-  '🐾 Health, wellness, and pet care spending is strong.',
-  '🎮 Gaming and budget streaming are growing fast.',
-  '📱 Social media trends can skyrocket or sink brands.',
-  '⚠️ Risky tech and overregulation can hurt new companies.',
-  '🧠 Consumers want convenience, value, and reliability.',
+  'Clean energy and sustainability are in demand.',
+  'Health, wellness, and pet care spending is strong.',
+  'Gaming and budget streaming are growing fast.',
+  'Social media trends can skyrocket or sink brands.',
+  'Risky tech and overregulation can hurt new companies.',
+  'Consumers want convenience, value, and reliability.',
 ]
 
 /** Spanish market hints (same order as MARKET_HINTS). */
 export const MARKET_HINTS_ES = [
-  '🚀 La energía limpia y la sostenibilidad están en demanda.',
-  '🐾 El gasto en salud, bienestar y cuidado de mascotas es fuerte.',
-  '🎮 Los videojuegos y el streaming económico crecen rápido.',
-  '📱 Las tendencias de las redes sociales pueden disparar o hundir marcas.',
-  '⚠️ La tecnología arriesgada y el exceso de regulación pueden perjudicar a las empresas nuevas.',
-  '🧠 Los consumidores quieren comodidad, buen precio y confiabilidad.',
+  'La energía limpia y la sostenibilidad están en demanda.',
+  'El gasto en salud, bienestar y cuidado de mascotas es fuerte.',
+  'Los videojuegos y el streaming económico crecen rápido.',
+  'Las tendencias de las redes sociales pueden disparar o hundir marcas.',
+  'La tecnología arriesgada y el exceso de regulación pueden perjudicar a las empresas nuevas.',
+  'Los consumidores quieren comodidad, buen precio y confiabilidad.',
 ]
 
 /** Simplified Chinese market hints (same order as MARKET_HINTS). */
 export const MARKET_HINTS_ZH = [
-  '🚀 清洁能源和可持续发展很受追捧。',
-  '🐾 健康、养生和宠物护理方面的消费很旺。',
-  '🎮 游戏和平价流媒体增长迅速。',
-  '📱 社交媒体的潮流能让品牌一飞冲天，也能让它一落千丈。',
-  '⚠️ 高风险的科技和过度监管会伤害新公司。',
-  '🧠 消费者想要的是便利、实惠和可靠。',
+  '清洁能源和可持续发展很受追捧。',
+  '健康、养生和宠物护理方面的消费很旺。',
+  '游戏和平价流媒体增长迅速。',
+  '社交媒体的潮流能让品牌一飞冲天，也能让它一落千丈。',
+  '高风险的科技和过度监管会伤害新公司。',
+  '消费者想要的是便利、实惠和可靠。',
+]
+
+/** Lucide icon name per market hint (same order as MARKET_HINTS). */
+export const MARKET_HINT_ICONS: string[] = [
+  'Leaf',
+  'HeartPulse',
+  'Gamepad2',
+  'Smartphone',
+  'TriangleAlert',
+  'Brain',
 ]
 
 export interface NewsItem {

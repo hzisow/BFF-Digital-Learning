@@ -1,7 +1,10 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { COMPANIES, MARKET_HINTS, MARKET_HINTS_ES, MARKET_HINTS_ZH, NEWS_ROUNDS, portfolioValue, priceAt } from './data'
-import { money } from './TradingBoard'
+import {
+  COMPANIES, MARKET_HINTS, MARKET_HINTS_ES, MARKET_HINTS_ZH, MARKET_HINT_ICONS,
+  NEWS_ROUNDS, portfolioValue, priceAt,
+} from './data'
+import { money, GameIcon } from './TradingBoard'
 import {
   createSession,
   getSession,
@@ -15,19 +18,26 @@ import { Logo } from '../../components/Logo'
 import { BACKEND_ENABLED } from '../../lib/config'
 import { useAdmin } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
-import { RotateCcw, Trophy } from 'lucide-react'
+import {
+  ArrowDown, ArrowRight, ArrowUp, Award, Bell, ChartCandlestick, Crown, HelpCircle, LineChart,
+  Lock, Medal, Minus, Monitor, Newspaper, RotateCcw, Search, TrendingDown, TrendingUp, Trophy,
+} from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 
-const STAGE_TITLES: Record<number, { emoji: string; title: string; titleEs: string; titleZh: string }> = {
-  1: { emoji: '🔔', title: 'Opening Bell', titleEs: 'Campana de apertura', titleZh: '开盘钟声' },
-  2: { emoji: '📰', title: 'Breaking News 1', titleEs: 'Última hora 1', titleZh: '突发新闻 1' },
-  3: { emoji: '📰', title: 'Breaking News 2', titleEs: 'Última hora 2', titleZh: '突发新闻 2' },
+const STAGE_TITLES: Record<number, { Icon: LucideIcon; title: string; titleEs: string; titleZh: string }> = {
+  1: { Icon: Bell, title: 'Opening Bell', titleEs: 'Campana de apertura', titleZh: '开盘钟声' },
+  2: { Icon: Newspaper, title: 'Breaking News 1', titleEs: 'Última hora 1', titleZh: '突发新闻 1' },
+  3: { Icon: Newspaper, title: 'Breaking News 2', titleEs: 'Última hora 2', titleZh: '突发新闻 2' },
 }
 
-const ADVANCE_LABELS: Record<number, { label: string; labelEs: string; labelZh: string; emoji?: string }> = {
-  1: { label: 'Breaking news round 1 →', labelEs: 'Ronda de noticias 1 →', labelZh: '第 1 轮突发新闻 →' },
-  2: { label: 'Breaking news round 2 →', labelEs: 'Ronda de noticias 2 →', labelZh: '第 2 轮突发新闻 →' },
-  3: { label: 'Ring the closing bell', labelEs: 'Toca la campana de cierre', labelZh: '敲响收盘钟声', emoji: '🔔' },
+const ADVANCE_LABELS: Record<number, { label: string; labelEs: string; labelZh: string; Icon?: LucideIcon }> = {
+  1: { label: 'Breaking news round 1', labelEs: 'Ronda de noticias 1', labelZh: '第 1 轮突发新闻', Icon: ArrowRight },
+  2: { label: 'Breaking news round 2', labelEs: 'Ronda de noticias 2', labelZh: '第 2 轮突发新闻', Icon: ArrowRight },
+  3: { label: 'Ring the closing bell', labelEs: 'Toca la campana de cierre', labelZh: '敲响收盘钟声', Icon: Bell },
 }
+
+/** Podium icons for 1st / 2nd / 3rd place. */
+const PODIUM_ICONS: LucideIcon[] = [Crown, Medal, Award]
 
 const BIG_BUTTON =
   'rounded-2xl bg-white px-8 py-4 font-display text-2xl font-bold text-bff-900 shadow-lg transition hover:bg-bff-50 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50'
@@ -154,7 +164,9 @@ export default function WolfHost() {
     return (
       <HostShell>
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
-          <p className="text-4xl" aria-hidden="true">🖥️</p>
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-bff-50 text-bff-700">
+            <Monitor className="h-6 w-6" aria-hidden="true" />
+          </span>
           <h1 className="font-display text-xl font-bold text-ink">{zh ? '主持人屏幕' : es ? 'Pantalla del anfitrión' : 'Host screen'}</h1>
           <p className="text-sm text-ink/70">
             {!BACKEND_ENABLED
@@ -181,7 +193,9 @@ export default function WolfHost() {
     return (
       <HostShell>
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
-          <p className="text-4xl" aria-hidden="true">🤔</p>
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-bff-50 text-bff-700">
+            <HelpCircle className="h-6 w-6" aria-hidden="true" />
+          </span>
           <h1 className="font-display text-xl font-bold text-ink">{zh ? '无法加载游戏' : es ? 'No se pudo cargar el juego' : 'Could not load the game'}</h1>
           <p className="text-sm text-ink/70">{error}</p>
           <Link to="/wolf" className="btn-primary">
@@ -217,8 +231,9 @@ export default function WolfHost() {
             <span className="eyebrow-line" aria-hidden="true" />
             {zh ? '实时市场游戏' : es ? 'JUEGO DE MERCADO EN VIVO' : 'LIVE MARKET GAME'}
           </p>
-          <h1 className="font-display text-4xl font-bold sm:text-5xl">
-            <span aria-hidden="true">🐺</span> Wolf of Wall Street
+          <h1 className="flex items-center justify-center gap-3 font-display text-4xl font-bold sm:text-5xl">
+            <LineChart className="h-9 w-9 shrink-0 text-bff-300 sm:h-11 sm:w-11" aria-hidden="true" />
+            Wolf of Wall Street
           </h1>
           <p className="text-xl text-bff-200">{zh ? '拿起一台设备，用游戏代码加入' : es ? 'Toma un dispositivo y únete con el código del juego' : 'Grab a device and join with the game code'}</p>
           <p className="font-display text-7xl font-bold tracking-widest sm:text-8xl md:text-9xl">
@@ -255,7 +270,7 @@ export default function WolfHost() {
             </div>
           </div>
           <button className={BIG_BUTTON} onClick={() => setStage(1)}>
-            {zh ? '开始游戏' : es ? 'Comenzar el juego' : 'Start the game'} <span aria-hidden="true">🔔</span>
+            {zh ? '开始游戏' : es ? 'Comenzar el juego' : 'Start the game'} <Bell className="inline h-6 w-6 align-[-0.15em]" aria-hidden="true" />
           </button>
         </div>
       )}
@@ -263,8 +278,12 @@ export default function WolfHost() {
       {/* Stages 1-3 — presenter view */}
       {stage >= 1 && stage <= 3 && (
         <div className="space-y-6 pt-2">
-          <h1 className="font-display text-4xl font-bold sm:text-5xl">
-            <span aria-hidden="true">{STAGE_TITLES[stage].emoji}</span> {zh ? STAGE_TITLES[stage].titleZh : es ? STAGE_TITLES[stage].titleEs : STAGE_TITLES[stage].title}
+          <h1 className="flex items-center gap-3 font-display text-4xl font-bold sm:text-5xl">
+            {(() => {
+              const StageIcon = STAGE_TITLES[stage].Icon
+              return <StageIcon className="h-9 w-9 shrink-0 text-bff-300 sm:h-11 sm:w-11" aria-hidden="true" />
+            })()}
+            {zh ? STAGE_TITLES[stage].titleZh : es ? STAGE_TITLES[stage].titleEs : STAGE_TITLES[stage].title}
           </h1>
           <div className="grid gap-6 lg:grid-cols-[1fr_minmax(300px,360px)]">
             <div className="space-y-6">
@@ -272,35 +291,42 @@ export default function WolfHost() {
                 <h2 className="mb-4 font-display text-lg font-bold uppercase tracking-wide text-bff-200">
                   {stage === 1 ? (
                     <>
-                      <span aria-hidden="true">🔍</span> {zh ? '市场信息' : es ? 'Información del mercado' : 'Market information'}
+                      <Search className="inline h-5 w-5 align-[-0.15em]" aria-hidden="true" /> {zh ? '市场信息' : es ? 'Información del mercado' : 'Market information'}
                     </>
                   ) : (
                     <>
-                      <span aria-hidden="true">📰</span> {zh ? '突发新闻' : es ? 'Última hora' : 'Breaking news'}
+                      <Newspaper className="inline h-5 w-5 align-[-0.15em]" aria-hidden="true" /> {zh ? '突发新闻' : es ? 'Última hora' : 'Breaking news'}
                     </>
                   )}
                 </h2>
                 <ul className="space-y-3">
                   {stage === 1
-                    ? (zh ? MARKET_HINTS_ZH : es ? MARKET_HINTS_ES : MARKET_HINTS).map((h) => (
-                        <li key={h} className="text-2xl font-semibold leading-snug">
-                          {h}
+                    ? (zh ? MARKET_HINTS_ZH : es ? MARKET_HINTS_ES : MARKET_HINTS).map((h, i) => (
+                        <li key={h} className="flex items-start gap-3 text-2xl font-semibold leading-snug">
+                          <GameIcon name={MARKET_HINT_ICONS[i]} className="mt-1 h-7 w-7 shrink-0 text-bff-300" />
+                          <span>{h}</span>
                         </li>
                       ))
                     : NEWS_ROUNDS[stage - 2].map((n) => (
-                        <li key={n.headline} className="text-2xl font-semibold leading-snug">
-                          <span aria-hidden="true">{n.direction === 'up' ? '📈' : '📉'}</span>{' '}
-                          <span className="sr-only">
-                            {n.direction === 'up' ? (zh ? '好消息：' : es ? 'Buenas noticias: ' : 'Good news: ') : (zh ? '坏消息：' : es ? 'Malas noticias: ' : 'Bad news: ')}
+                        <li key={n.headline} className="flex items-start gap-3 text-2xl font-semibold leading-snug">
+                          {n.direction === 'up' ? (
+                            <TrendingUp className="mt-1 h-7 w-7 shrink-0 text-green-400" aria-hidden="true" />
+                          ) : (
+                            <TrendingDown className="mt-1 h-7 w-7 shrink-0 text-red-400" aria-hidden="true" />
+                          )}
+                          <span>
+                            <span className="sr-only">
+                              {n.direction === 'up' ? (zh ? '好消息：' : es ? 'Buenas noticias: ' : 'Good news: ') : (zh ? '坏消息：' : es ? 'Malas noticias: ' : 'Bad news: ')}
+                            </span>
+                            {zh ? n.headlineZh : es ? n.headlineEs : n.headline}
                           </span>
-                          {zh ? n.headlineZh : es ? n.headlineEs : n.headline}
                         </li>
                       ))}
                 </ul>
               </div>
               <div className="rounded-2xl bg-white/10 p-6">
                 <h2 className="mb-4 font-display text-lg font-bold uppercase tracking-wide text-bff-200">
-                  <span aria-hidden="true">💹</span> {zh ? '价格' : es ? 'Precios' : 'Prices'}
+                  <ChartCandlestick className="inline h-5 w-5 align-[-0.15em]" aria-hidden="true" /> {zh ? '价格' : es ? 'Precios' : 'Prices'}
                 </h2>
                 <div className="grid gap-x-8 gap-y-1 sm:grid-cols-2">
                   {COMPANIES.map((c) => {
@@ -328,8 +354,19 @@ export default function WolfHost() {
                                     : 'text-bff-300'
                               }`}
                             >
-                              <span aria-hidden="true">
-                                {change > 0 ? `▲ +${change}` : change < 0 ? `▼ ${change}` : '· flat'}
+                              <span aria-hidden="true" className="inline-flex items-center gap-0.5">
+                                {change > 0 ? (
+                                  <>
+                                    <ArrowUp className="h-4 w-4 shrink-0" />+{change}
+                                  </>
+                                ) : change < 0 ? (
+                                  <>
+                                    <ArrowDown className="h-4 w-4 shrink-0" />
+                                    {change}
+                                  </>
+                                ) : (
+                                  <Minus className="h-4 w-4 shrink-0" />
+                                )}
                               </span>
                               <span className="sr-only">
                                 {zh
@@ -388,12 +425,15 @@ export default function WolfHost() {
             </p>
             <button className={BIG_BUTTON} onClick={() => setStage(stage + 1)}>
               {zh ? ADVANCE_LABELS[stage].labelZh : es ? ADVANCE_LABELS[stage].labelEs : ADVANCE_LABELS[stage].label}
-              {ADVANCE_LABELS[stage].emoji && (
-                <>
-                  {' '}
-                  <span aria-hidden="true">{ADVANCE_LABELS[stage].emoji}</span>
-                </>
-              )}
+              {(() => {
+                const AdvanceIcon = ADVANCE_LABELS[stage].Icon
+                return AdvanceIcon ? (
+                  <>
+                    {' '}
+                    <AdvanceIcon className="inline h-6 w-6 align-[-0.15em]" aria-hidden="true" />
+                  </>
+                ) : null
+              })()}
             </button>
           </ControlBar>
         </div>
@@ -403,7 +443,7 @@ export default function WolfHost() {
       {stage === 4 && (
         <div className="space-y-6 pt-2">
           <h1 className="font-display text-4xl font-bold sm:text-5xl">
-            <span aria-hidden="true">🔒</span> {zh ? '收盘钟声——结果揭晓' : es ? 'Campana de cierre — ya están los resultados' : 'Closing Bell — the results are in'}
+            <Lock className="inline h-9 w-9 align-[-0.12em] text-bff-300 sm:h-10 sm:w-10" aria-hidden="true" /> {zh ? '收盘钟声——结果揭晓' : es ? 'Campana de cierre — ya están los resultados' : 'Closing Bell — the results are in'}
           </h1>
           {session.reveal_index === 0 && (
             <p className="text-2xl text-bff-200">
@@ -425,12 +465,17 @@ export default function WolfHost() {
                     latest ? 'animate-pop-in ring-2 ring-white/40' : ''
                   }`}
                 >
-                  <div>
-                    <p className="font-display text-2xl font-bold">
-                      {c.name}{' '}
-                      <span className="text-lg font-semibold text-bff-300">{c.ticker}</span>
-                    </p>
-                    <p className="mt-1 text-lg text-bff-100">{zh ? c.summaryZh : es ? c.summaryEs : c.summary}</p>
+                  <div className="flex items-start gap-4">
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/10 text-bff-100">
+                      <GameIcon name={c.icon} className="h-6 w-6" />
+                    </span>
+                    <div>
+                      <p className="font-display text-2xl font-bold">
+                        {c.name}{' '}
+                        <span className="text-lg font-semibold text-bff-300">{c.ticker}</span>
+                      </p>
+                      <p className="mt-1 text-lg text-bff-100">{zh ? c.summaryZh : es ? c.summaryEs : c.summary}</p>
+                    </div>
                   </div>
                   <p
                     className={`whitespace-nowrap font-display text-3xl font-bold ${
@@ -460,7 +505,8 @@ export default function WolfHost() {
           <ControlBar>
             {session.reveal_index < COMPANIES.length ? (
               <button className={BIG_BUTTON} onClick={revealNext}>
-                {zh ? '揭晓下一家公司 →' : es ? 'Revelar la siguiente empresa →' : 'Reveal next company →'}
+                {zh ? '揭晓下一家公司' : es ? 'Revelar la siguiente empresa' : 'Reveal next company'}{' '}
+                <ArrowRight className="inline h-6 w-6 align-[-0.15em]" aria-hidden="true" />
               </button>
             ) : (
               <button className={BIG_BUTTON} onClick={() => setStage(5)}>
@@ -489,7 +535,15 @@ export default function WolfHost() {
                       : 'bg-white/10 sm:order-3'
                 }`}
               >
-                <p className="text-6xl" aria-hidden="true">{i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉'}</p>
+                {(() => {
+                  const PlaceIcon = PODIUM_ICONS[i] ?? Medal
+                  return (
+                    <PlaceIcon
+                      className={`mx-auto h-14 w-14 ${i === 0 ? 'text-gold-400' : 'text-bff-100'}`}
+                      aria-hidden="true"
+                    />
+                  )
+                })()}
                 <p className="mt-3 break-words font-display text-3xl font-bold">
                   <span className="sr-only">{zh ? `第 ${i + 1} 名：` : es ? `puesto ${i + 1}: ` : `${i + 1}${['st', 'nd', 'rd'][i] ?? 'th'} place: `}</span>
                   {p.nickname}

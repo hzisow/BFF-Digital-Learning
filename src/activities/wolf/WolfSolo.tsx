@@ -1,16 +1,18 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { COMPANIES, STARTING_CASH, portfolioValue, priceAt, type Holdings } from './data'
-import TradingBoard, { money } from './TradingBoard'
+import TradingBoard, { money, GameIcon } from './TradingBoard'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
+import { ArrowRight, Bell, LineChart, Lock, Newspaper, PartyPopper, TrendingDown } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 
-const STAGE_TITLES: Record<number, { emoji: string; title: string; titleEs: string; titleZh: string }> = {
-  1: { emoji: '🔔', title: 'Opening Bell — pick your stocks', titleEs: 'Campana de apertura — elige tus acciones', titleZh: '开盘钟声——挑选你的股票' },
-  2: { emoji: '📰', title: 'Breaking News — round 1', titleEs: 'Última hora — ronda 1', titleZh: '突发新闻——第 1 轮' },
-  3: { emoji: '📰', title: 'Breaking News — round 2', titleEs: 'Última hora — ronda 2', titleZh: '突发新闻——第 2 轮' },
-  4: { emoji: '🔒', title: 'Closing Bell — the results are in', titleEs: 'Campana de cierre — ya están los resultados', titleZh: '收盘钟声——结果揭晓' },
+const STAGE_TITLES: Record<number, { Icon: LucideIcon; title: string; titleEs: string; titleZh: string }> = {
+  1: { Icon: Bell, title: 'Opening Bell — pick your stocks', titleEs: 'Campana de apertura — elige tus acciones', titleZh: '开盘钟声——挑选你的股票' },
+  2: { Icon: Newspaper, title: 'Breaking News — round 1', titleEs: 'Última hora — ronda 1', titleZh: '突发新闻——第 1 轮' },
+  3: { Icon: Newspaper, title: 'Breaking News — round 2', titleEs: 'Última hora — ronda 2', titleZh: '突发新闻——第 2 轮' },
+  4: { Icon: Lock, title: 'Closing Bell — the results are in', titleEs: 'Campana de cierre — ya están los resultados', titleZh: '收盘钟声——结果揭晓' },
 }
 
 export default function WolfSolo() {
@@ -60,11 +62,17 @@ export default function WolfSolo() {
     <div className="mx-auto max-w-4xl px-4 py-8">
       <div className="mb-6 flex items-center justify-between gap-3">
         <div>
-          <h1 className="font-display text-2xl font-bold text-ink">
-            <span aria-hidden="true">🐺</span> Wolf of Wall <em>Street</em>
+          <h1 className="flex items-center gap-2 font-display text-2xl font-bold text-ink">
+            <LineChart className="h-6 w-6 shrink-0 text-bff-700" aria-hidden="true" />
+            <span>
+              Wolf of Wall <em>Street</em>
+            </span>
           </h1>
-          <p className="text-sm text-ink/60">
-            <span aria-hidden="true">{STAGE_TITLES[Math.min(stage, 4)].emoji}</span>{' '}
+          <p className="flex items-center gap-1.5 text-sm text-ink/60">
+            {(() => {
+              const StageIcon = STAGE_TITLES[Math.min(stage, 4)].Icon
+              return <StageIcon className="h-4 w-4 shrink-0" aria-hidden="true" />
+            })()}
             {zh ? STAGE_TITLES[Math.min(stage, 4)].titleZh : es ? STAGE_TITLES[Math.min(stage, 4)].titleEs : STAGE_TITLES[Math.min(stage, 4)].title}
           </p>
         </div>
@@ -133,14 +141,19 @@ export default function WolfSolo() {
               const shares = holdings[c.ticker] ?? 0
               return (
                 <div key={c.ticker} className="card animate-pop-in flex items-start justify-between gap-3 p-4">
-                  <div>
-                    <p className="font-display font-bold text-ink">
-                      {c.name} <span className="text-xs text-ink/60">{c.ticker}</span>
-                      {shares > 0 && (
-                        <span className="chip ml-2 bg-bff-50 text-bff-700">{zh ? `你持有 ${shares}` : es ? `tienes ${shares}` : `you own ${shares}`}</span>
-                      )}
-                    </p>
-                    <p className="text-sm text-ink/70">{zh ? c.summaryZh : es ? c.summaryEs : c.summary}</p>
+                  <div className="flex items-start gap-2.5">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-bff-50 text-bff-700">
+                      <GameIcon name={c.icon} className="h-5 w-5" />
+                    </span>
+                    <div>
+                      <p className="font-display font-bold text-ink">
+                        {c.name} <span className="text-xs text-ink/60">{c.ticker}</span>
+                        {shares > 0 && (
+                          <span className="chip ml-2 bg-bff-50 text-bff-700">{zh ? `你持有 ${shares}` : es ? `tienes ${shares}` : `you own ${shares}`}</span>
+                        )}
+                      </p>
+                      <p className="text-sm text-ink/70">{zh ? c.summaryZh : es ? c.summaryEs : c.summary}</p>
+                    </div>
                   </div>
                   <p className={`whitespace-nowrap font-display text-lg font-bold ${change >= 0 ? 'text-green-700' : 'text-red-600'}`}>
                     ${c.prices[3]}{' '}
@@ -166,28 +179,33 @@ export default function WolfSolo() {
           <button className="btn-primary w-full" onClick={revealNext}>
             {revealIndex < COMPANIES.length - 1
               ? zh
-                ? `揭晓 ${COMPANIES[revealIndex].name} →`
+                ? `揭晓 ${COMPANIES[revealIndex].name}`
                 : es
-                  ? `Revelar ${COMPANIES[revealIndex].name} →`
-                  : `Reveal ${COMPANIES[revealIndex].name} →`
+                  ? `Revelar ${COMPANIES[revealIndex].name}`
+                  : `Reveal ${COMPANIES[revealIndex].name}`
               : revealIndex === COMPANIES.length - 1
                 ? zh
-                  ? `揭晓 ${COMPANIES[revealIndex].name} 并查看你的总额 →`
+                  ? `揭晓 ${COMPANIES[revealIndex].name} 并查看你的总额`
                   : es
-                    ? `Revelar ${COMPANIES[revealIndex].name} y ver tu total →`
-                    : `Reveal ${COMPANIES[revealIndex].name} and see your total →`
+                    ? `Revelar ${COMPANIES[revealIndex].name} y ver tu total`
+                    : `Reveal ${COMPANIES[revealIndex].name} and see your total`
                 : zh
-                  ? '查看你的结果 →'
+                  ? '查看你的结果'
                   : es
-                    ? 'Ver tus resultados →'
-                    : 'See your results →'}
+                    ? 'Ver tus resultados'
+                    : 'See your results'}{' '}
+            <ArrowRight className="inline h-4 w-4 align-[-0.15em]" aria-hidden="true" />
           </button>
         </div>
       )}
 
       {stage === 5 && (
         <div className="card animate-pop-in space-y-4 text-center" role="status">
-          <p className="text-5xl" aria-hidden="true">{finalValue >= STARTING_CASH ? '🎉' : '📉'}</p>
+          {finalValue >= STARTING_CASH ? (
+            <PartyPopper className="mx-auto h-14 w-14 text-green-600" aria-hidden="true" />
+          ) : (
+            <TrendingDown className="mx-auto h-14 w-14 text-red-500" aria-hidden="true" />
+          )}
           <h2 className="font-display text-2xl font-bold text-ink">
             {zh ? '最终投资组合：' : es ? 'Cartera final:' : 'Final portfolio:'} {money(finalValue)}
           </h2>

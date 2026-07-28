@@ -1,11 +1,12 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { COMPANIES, STARTING_CASH } from './data'
-import { money } from './TradingBoard'
+import { money, GameIcon } from './TradingBoard'
 import { createSession } from './live'
 import { useAdmin } from '../../lib/session'
 import { BACKEND_ENABLED } from '../../lib/config'
 import { useLang } from '../../lib/i18n'
+import { LineChart, Monitor, Smartphone, Target } from 'lucide-react'
 
 const OFFLINE_NOTE =
   'Live games unlock when the class backend is connected — solo mode is ready now!'
@@ -57,7 +58,9 @@ export default function WolfHome() {
     <div className="mx-auto max-w-5xl px-4 py-10">
       {/* Hero */}
       <section className="mb-10 text-center">
-        <p className="text-6xl" aria-hidden="true">🐺</p>
+        <span className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-bff-50 text-bff-700 shadow-sm">
+          <LineChart className="h-10 w-10" aria-hidden="true" />
+        </span>
         <p className="eyebrow mt-4 justify-center">
           <span className="eyebrow-line" aria-hidden="true" />
           {zh ? '市场游戏' : es ? 'JUEGO DE MERCADO' : 'MARKET GAME'}
@@ -94,7 +97,9 @@ export default function WolfHome() {
       <section className="mb-12 grid gap-4 md:grid-cols-3">
         {/* Solo */}
         <div className="card flex flex-col gap-3 text-center">
-          <p className="text-4xl" aria-hidden="true">🎯</p>
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-bff-50 text-bff-700">
+            <Target className="h-6 w-6" aria-hidden="true" />
+          </span>
           <h2 className="font-display text-lg font-bold text-ink">{zh ? '单人游戏' : es ? 'Juega individual' : 'Play solo'}</h2>
           <p className="flex-1 text-sm text-ink/70">
             {zh
@@ -110,7 +115,9 @@ export default function WolfHome() {
 
         {/* Join */}
         <div className="card flex flex-col gap-3 text-center">
-          <p className="text-4xl" aria-hidden="true">📱</p>
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-bff-50 text-bff-700">
+            <Smartphone className="h-6 w-6" aria-hidden="true" />
+          </span>
           <h2 className="font-display text-lg font-bold text-ink">{zh ? '加入实时对战' : es ? 'Únete a un juego en vivo' : 'Join a live game'}</h2>
           <p className="flex-1 text-sm text-ink/70">
             {zh
@@ -145,7 +152,9 @@ export default function WolfHome() {
 
         {/* Host */}
         <div className="card flex flex-col gap-3 text-center">
-          <p className="text-4xl" aria-hidden="true">🖥️</p>
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-bff-50 text-bff-700">
+            <Monitor className="h-6 w-6" aria-hidden="true" />
+          </span>
           <h2 className="font-display text-lg font-bold text-ink">{zh ? '主持实时对战' : es ? 'Organiza un juego en vivo' : 'Host a live game'}</h2>
           {!BACKEND_ENABLED ? (
             <>
@@ -209,6 +218,9 @@ export default function WolfHome() {
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {COMPANIES.map((c) => (
             <div key={c.ticker} className="card p-4">
+              <span className="mb-2 flex h-9 w-9 items-center justify-center rounded-lg bg-bff-50 text-bff-700">
+                <GameIcon name={c.icon} className="h-5 w-5" />
+              </span>
               <p className="font-display text-sm font-bold text-ink">{c.name}</p>
               <p className="text-xs font-semibold text-bff-700">{c.ticker}</p>
               <p className="mt-1 text-xs text-ink/60">{zh ? c.industryZh : es ? c.industryEs : c.industry}</p>

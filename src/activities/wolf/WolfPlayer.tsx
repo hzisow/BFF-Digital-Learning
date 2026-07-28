@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { COMPANIES, STARTING_CASH, portfolioValue, priceAt, type Holdings } from './data'
-import TradingBoard, { money } from './TradingBoard'
+import TradingBoard, { money, GameIcon } from './TradingBoard'
 import {
   getSessionByCode,
   joinSession,
@@ -16,14 +16,22 @@ import { BACKEND_ENABLED } from '../../lib/config'
 import { useStudent } from '../../lib/session'
 import { saveProgress } from '../../lib/progress'
 import { useLang } from '../../lib/i18n'
+import {
+  Award, Bell, Crown, HelpCircle, LineChart, Lock, Medal, Newspaper, PartyPopper,
+  Plug, TrendingDown,
+} from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 
 const NICK_KEY = 'bff_wolf_nick'
 
-const STAGE_TITLES: Record<number, { emoji: string; title: string; titleEs: string; titleZh: string }> = {
-  1: { emoji: '🔔', title: 'Opening Bell — pick your stocks', titleEs: 'Campana de apertura — elige tus acciones', titleZh: '开盘钟声——挑选你的股票' },
-  2: { emoji: '📰', title: 'Breaking News — round 1', titleEs: 'Última hora — ronda 1', titleZh: '突发新闻——第 1 轮' },
-  3: { emoji: '📰', title: 'Breaking News — round 2', titleEs: 'Última hora — ronda 2', titleZh: '突发新闻——第 2 轮' },
+const STAGE_TITLES: Record<number, { Icon: LucideIcon; title: string; titleEs: string; titleZh: string }> = {
+  1: { Icon: Bell, title: 'Opening Bell — pick your stocks', titleEs: 'Campana de apertura — elige tus acciones', titleZh: '开盘钟声——挑选你的股票' },
+  2: { Icon: Newspaper, title: 'Breaking News — round 1', titleEs: 'Última hora — ronda 1', titleZh: '突发新闻——第 1 轮' },
+  3: { Icon: Newspaper, title: 'Breaking News — round 2', titleEs: 'Última hora — ronda 2', titleZh: '突发新闻——第 2 轮' },
 }
+
+/** Podium icons for 1st / 2nd / 3rd place in the final standings. */
+const PODIUM_ICONS: LucideIcon[] = [Crown, Medal, Award]
 
 function errorMessage(err: unknown, es: boolean, zh: boolean): string {
   return err instanceof Error
@@ -182,7 +190,9 @@ export default function WolfPlayer() {
     return (
       <Shell code={code}>
         <div className="card mx-auto mt-10 max-w-md space-y-3 text-center">
-          <p className="text-4xl" aria-hidden="true">🔌</p>
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-bff-50 text-bff-700">
+            <Plug className="h-6 w-6" aria-hidden="true" />
+          </span>
           <h1 className="font-display text-xl font-bold text-ink">
             {zh ? '实时对战还没有接通' : es ? 'Los juegos en vivo aún no están conectados' : 'Live games are not connected yet'}
           </h1>
@@ -205,7 +215,9 @@ export default function WolfPlayer() {
     return (
       <Shell code={code}>
         <div className="card mx-auto mt-10 max-w-md space-y-3 text-center">
-          <p className="text-4xl" aria-hidden="true">🤔</p>
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-bff-50 text-bff-700">
+            <HelpCircle className="h-6 w-6" aria-hidden="true" />
+          </span>
           <h1 className="font-display text-xl font-bold text-ink">{zh ? '嗯，这没能成功' : es ? 'Mmm, eso no funcionó' : 'Hmm, that did not work'}</h1>
           <p className="text-sm text-ink/70">{loadError}</p>
           <Link to="/wolf" className="btn-primary">
@@ -231,7 +243,9 @@ export default function WolfPlayer() {
       <Shell code={session.code}>
         <div className="card mx-auto mt-10 max-w-md space-y-4">
           <div className="text-center">
-            <p className="text-4xl" aria-hidden="true">🐺</p>
+            <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-bff-50 text-bff-700">
+              <LineChart className="h-7 w-7" aria-hidden="true" />
+            </span>
             <h1 className="mt-2 font-display text-xl font-bold text-ink">
               {zh ? '你找到游戏啦！' : es ? '¡Encontraste el juego!' : 'You found the game!'}
             </h1>
@@ -280,7 +294,7 @@ export default function WolfPlayer() {
     <Shell code={session.code}>
       {stage === 0 && (
         <div className="card animate-pop-in mt-6 space-y-4 text-center">
-          <p className="text-5xl" aria-hidden="true">🎉</p>
+          <PartyPopper className="mx-auto h-14 w-14 text-bff-600" aria-hidden="true" />
           <h1 className="font-display text-2xl font-bold text-ink">
             {zh ? `你进来啦，${player.nickname}！` : es ? `¡Estás dentro, ${player.nickname}!` : `You're in, ${player.nickname}!`}
           </h1>
@@ -312,8 +326,12 @@ export default function WolfPlayer() {
         <div className="space-y-4">
           <div>
             <h1 className="font-display text-xl font-bold text-ink">Wolf of Wall Street</h1>
-            <p className="text-sm text-ink/60">
-              <span aria-hidden="true">{STAGE_TITLES[stage].emoji}</span> {zh ? STAGE_TITLES[stage].titleZh : es ? STAGE_TITLES[stage].titleEs : STAGE_TITLES[stage].title}
+            <p className="flex items-center gap-1.5 text-sm text-ink/60">
+              {(() => {
+                const StageIcon = STAGE_TITLES[stage].Icon
+                return <StageIcon className="h-4 w-4 shrink-0" aria-hidden="true" />
+              })()}
+              {zh ? STAGE_TITLES[stage].titleZh : es ? STAGE_TITLES[stage].titleEs : STAGE_TITLES[stage].title}
             </p>
           </div>
           <TradingBoard stage={stage} cash={cash} holdings={holdings} onTrade={trade} />
@@ -323,7 +341,7 @@ export default function WolfPlayer() {
       {stage === 4 && (
         <div className="space-y-3">
           <div className="card border-bff-200 bg-bff-50 p-4 text-center text-sm text-ink/75">
-            <span aria-hidden="true">🔒</span>{' '}
+            <Lock className="mr-1.5 inline h-4 w-4 align-[-0.2em]" aria-hidden="true" />
             {zh
               ? '市场已经收盘！盯着大屏幕，结果正在揭晓……'
               : es
@@ -339,14 +357,19 @@ export default function WolfPlayer() {
                   key={c.ticker}
                   className="card animate-pop-in flex items-start justify-between gap-3 p-4"
                 >
-                  <div>
-                    <p className="font-display font-bold text-ink">
-                      {c.name} <span className="text-xs text-ink/60">{c.ticker}</span>
-                      {shares > 0 && (
-                        <span className="chip ml-2 bg-bff-50 text-bff-700">{zh ? `你持有 ${shares}` : es ? `tienes ${shares}` : `you own ${shares}`}</span>
-                      )}
-                    </p>
-                    <p className="text-sm text-ink/70">{zh ? c.summaryZh : es ? c.summaryEs : c.summary}</p>
+                  <div className="flex items-start gap-2.5">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-bff-50 text-bff-700">
+                      <GameIcon name={c.icon} className="h-5 w-5" />
+                    </span>
+                    <div>
+                      <p className="font-display font-bold text-ink">
+                        {c.name} <span className="text-xs text-ink/60">{c.ticker}</span>
+                        {shares > 0 && (
+                          <span className="chip ml-2 bg-bff-50 text-bff-700">{zh ? `你持有 ${shares}` : es ? `tienes ${shares}` : `you own ${shares}`}</span>
+                        )}
+                      </p>
+                      <p className="text-sm text-ink/70">{zh ? c.summaryZh : es ? c.summaryEs : c.summary}</p>
+                    </div>
                   </div>
                   <p
                     className={`whitespace-nowrap font-display text-lg font-bold ${change >= 0 ? 'text-green-700' : 'text-red-600'}`}
@@ -376,7 +399,11 @@ export default function WolfPlayer() {
 
       {stage === 5 && (
         <div className="card animate-pop-in mt-6 space-y-5 text-center" role="status">
-          <p className="text-5xl" aria-hidden="true">{finalValue >= STARTING_CASH ? '🎊' : '📉'}</p>
+          {finalValue >= STARTING_CASH ? (
+            <PartyPopper className="mx-auto h-14 w-14 text-green-600" aria-hidden="true" />
+          ) : (
+            <TrendingDown className="mx-auto h-14 w-14 text-red-500" aria-hidden="true" />
+          )}
           <div>
             <h1 className="font-display text-2xl font-bold text-ink">
               {zh ? '最终投资组合：' : es ? 'Cartera final:' : 'Final portfolio:'} {money(finalValue)}
@@ -395,7 +422,7 @@ export default function WolfPlayer() {
           </div>
           {myRank > 0 && (
             <p className="font-display text-lg font-bold text-bff-700">
-              <span aria-hidden="true">🎉</span>{' '}
+              <PartyPopper className="mr-1.5 inline h-5 w-5 align-[-0.2em]" aria-hidden="true" />
               {zh
                 ? `你在 ${standings.length} 位投资者中排名第 ${myRank}`
                 : es
@@ -418,11 +445,19 @@ export default function WolfPlayer() {
                         : 'bg-paper text-ink/75'
                     }`}
                   >
-                    <span>
-                      <span aria-hidden="true">
-                        {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`}
-                      </span>
-                      <span className="sr-only">{zh ? `第 ${i + 1} 名，` : es ? `puesto ${i + 1}, ` : `${i + 1}${['st', 'nd', 'rd'][i] ?? 'th'} place, `}</span>{' '}
+                    <span className="flex items-center gap-1.5">
+                      {(() => {
+                        const PlaceIcon = PODIUM_ICONS[i]
+                        return PlaceIcon ? (
+                          <PlaceIcon
+                            className={`h-4 w-4 shrink-0 ${i === 0 ? 'text-gold-500' : 'text-ink/50'}`}
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <span aria-hidden="true">{i + 1}.</span>
+                        )
+                      })()}
+                      <span className="sr-only">{zh ? `第 ${i + 1} 名，` : es ? `puesto ${i + 1}, ` : `${i + 1}${['st', 'nd', 'rd'][i] ?? 'th'} place, `}</span>
                       {p.nickname}
                     </span>
                     <span className="font-display font-bold">{money(p.value)}</span>
