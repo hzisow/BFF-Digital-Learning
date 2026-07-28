@@ -43,6 +43,9 @@ interface WeekTheme {
   bar: string
 }
 
+// Weeks alternate between two solid editorial fields — BFF blue and near-black
+// ink — instead of the old rainbow. White text on both; a gold rule ties them
+// together. Node colors follow the same field so the trail reads as one system.
 const WEEK_THEMES: Record<number, WeekTheme> = {
   1: {
     name: 'Money In, Money Out',
@@ -52,11 +55,11 @@ const WEEK_THEMES: Record<number, WeekTheme> = {
     blurbEs: 'De dónde viene el dinero — y a dónde se va el tuyo.',
     blurbZh: '钱从哪里来——你的钱又去了哪里。',
     banner: 'bg-bff-700',
-    nodeBg: 'bg-bff-500',
-    nodeShadow: 'shadow-[0_5px_0_#036092]',
-    border: 'border-bff-500',
-    text: 'text-bff-600',
-    bar: 'bg-bff-500',
+    nodeBg: 'bg-bff-600',
+    nodeShadow: 'shadow-[0_4px_0_#075178]',
+    border: 'border-bff-600',
+    text: 'text-bff-700',
+    bar: 'bg-bff-600',
   },
   2: {
     name: 'Make It Grow',
@@ -65,12 +68,12 @@ const WEEK_THEMES: Record<number, WeekTheme> = {
     blurb: 'Growing your money and borrowing without the traps.',
     blurbEs: 'Haz crecer tu dinero y pide prestado sin caer en trampas.',
     blurbZh: '让你的钱增长，借钱也不落入陷阱。',
-    banner: 'bg-emerald-700',
-    nodeBg: 'bg-emerald-500',
-    nodeShadow: 'shadow-[0_5px_0_#047857]',
-    border: 'border-emerald-500',
-    text: 'text-emerald-600',
-    bar: 'bg-emerald-500',
+    banner: 'bg-ink',
+    nodeBg: 'bg-ink',
+    nodeShadow: 'shadow-[0_4px_0_#050f18]',
+    border: 'border-ink',
+    text: 'text-ink',
+    bar: 'bg-ink',
   },
   3: {
     name: 'Play It Smart',
@@ -79,12 +82,12 @@ const WEEK_THEMES: Record<number, WeekTheme> = {
     blurb: 'Protecting yourself and making smarter choices.',
     blurbEs: 'Protégete y toma decisiones más inteligentes.',
     blurbZh: '保护好自己，做出更聪明的选择。',
-    banner: 'bg-orange-600',
-    nodeBg: 'bg-amber-500',
-    nodeShadow: 'shadow-[0_5px_0_#b45309]',
-    border: 'border-amber-500',
-    text: 'text-amber-600',
-    bar: 'bg-amber-500',
+    banner: 'bg-bff-800',
+    nodeBg: 'bg-bff-700',
+    nodeShadow: 'shadow-[0_4px_0_#0b4364]',
+    border: 'border-bff-700',
+    text: 'text-bff-800',
+    bar: 'bg-bff-700',
   },
   4: {
     name: 'Plan & Protect',
@@ -93,12 +96,12 @@ const WEEK_THEMES: Record<number, WeekTheme> = {
     blurb: 'Planning ahead and outsmarting the scammers.',
     blurbEs: 'Planifica tu futuro y gánale a los estafadores.',
     blurbZh: '提前规划，智胜骗子。',
-    banner: 'bg-violet-700',
-    nodeBg: 'bg-violet-500',
-    nodeShadow: 'shadow-[0_5px_0_#6d28d9]',
-    border: 'border-violet-500',
-    text: 'text-violet-600',
-    bar: 'bg-violet-500',
+    banner: 'bg-ink',
+    nodeBg: 'bg-ink',
+    nodeShadow: 'shadow-[0_4px_0_#050f18]',
+    border: 'border-ink',
+    text: 'text-ink',
+    bar: 'bg-ink',
   },
 }
 
@@ -155,7 +158,7 @@ function Stars({ score, lang }: { score: number | null; lang: 'en' | 'es' | 'zh'
       className="mt-0.5 flex justify-center gap-0.5 text-sm leading-none"
     >
       {[0, 1, 2].map((i) => (
-        <span key={i} aria-hidden="true" className={i < n ? 'text-yellow-400' : 'text-slate-300'}>
+        <span key={i} aria-hidden="true" className={i < n ? 'text-gold-500' : 'text-ink/20'}>
           ★
         </span>
       ))}
@@ -164,14 +167,16 @@ function Stars({ score, lang }: { score: number | null; lang: 'en' | 'es' | 'zh'
 }
 
 function NodeCircle({ node, theme }: { node: PathNode; theme: WeekTheme }) {
+  // Crisper than the old bubbly Duolingo pill: a flatter 4px offset shadow and
+  // a thin hairline ring instead of a puffy border.
   const base =
-    'flex h-[76px] w-[76px] items-center justify-center rounded-full border-b-0 text-4xl transition active:translate-y-1 active:shadow-none'
+    'flex h-[76px] w-[76px] items-center justify-center rounded-full text-4xl ring-1 ring-black/5 transition active:translate-y-1 active:shadow-none'
   if (node.kind === 'trophy') {
     return node.state === 'done' ? (
-      <div className={`${base} bg-yellow-400 shadow-[0_5px_0_#b45309]`} aria-hidden="true">🏆</div>
+      <div className={`${base} bg-gold-400 shadow-[0_4px_0_#b7791f]`} aria-hidden="true">🏆</div>
     ) : (
       <div
-        className={`${base} bg-slate-200 opacity-80 shadow-[0_5px_0_#cbd5e1] grayscale`}
+        className={`${base} bg-paper-deep opacity-80 shadow-[0_4px_0_#d8d2c4] grayscale`}
         aria-hidden="true"
       >
         🏆
@@ -192,15 +197,15 @@ function NodeCircle({ node, theme }: { node: PathNode; theme: WeekTheme }) {
             className={`absolute inset-0 -m-2 animate-ping rounded-full border-4 opacity-30 ${theme.border}`}
             aria-hidden
           />
-          <div className={`${base} border-4 bg-white ${theme.border} ${theme.nodeShadow}`}>
+          <div className={`${base} border-[3px] bg-white ${theme.border} ${theme.nodeShadow}`}>
             {node.meta!.emoji}
           </div>
         </div>
       )
     default:
       return (
-        <div className={`${base} bg-slate-200 shadow-[0_5px_0_#cbd5e1]`}>
-          <span className="opacity-60 grayscale">{node.meta!.emoji}</span>
+        <div className={`${base} bg-paper-deep shadow-[0_4px_0_#d8d2c4]`}>
+          <span className="opacity-50 grayscale">{node.meta!.emoji}</span>
         </div>
       )
   }
@@ -308,29 +313,36 @@ export default function LessonsIndex() {
   }, [lessons, progress, current, allDone])
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10">
-      {/* Header */}
-      <div className="text-center">
-        <p className="chip mx-auto bg-bff-50 text-bff-700">
-          <BookOpen className="h-3.5 w-3.5" aria-hidden="true" /> {zh ? '课程大纲' : es ? 'El plan de estudios' : 'The curriculum'}
-        </p>
-        <h1 className="mt-3 font-display text-4xl font-extrabold text-slate-900">BFF Academy</h1>
-        <p className="mx-auto mt-3 max-w-xl leading-relaxed text-slate-600">
-          {zh
-            ? '4 周，8 节课，每节约 20 分钟。沿着路径走——完成一节课就能解锁下一站，并在终点赢得奖杯。'
-            : es
-            ? '4 semanas, 8 lecciones, ~20 minutos cada una. Sigue la ruta: termina una lección para desbloquear la siguiente parada y gana el trofeo al final.'
-            : '4 weeks, 8 lessons, ~20 minutes each. Follow the path — finish a lesson to unlock the next stop and claim the trophy at the end.'}
-        </p>
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
-          <span className="chip bg-bff-100 text-bff-800">
-            <span aria-hidden="true">{level.tier.emoji}</span>{' '}
-            {zh ? '等级' : es ? 'Nivel' : 'Level'} {level.level} · {level.tier.name}
-          </span>
-          {(streak.current > 0 || missedCount > 0) && (
-            <>
+    <div>
+      {/* Editorial hero — dark ink band with orbit rings, the curriculum
+          eyebrow, an oversized display title, the lede, status chips and the
+          overall course progress. White text throughout. */}
+      <section className="ed-hero">
+        <span aria-hidden className="ed-hero-orbit" style={{ width: 560, height: 560, top: -220, right: -160 }} />
+        <span aria-hidden className="ed-hero-orbit gold" style={{ width: 340, height: 340, bottom: -180, right: -20 }} />
+        <span aria-hidden className="ed-hero-orbit" style={{ width: 220, height: 220, bottom: -120, left: -70 }} />
+        <div className="relative z-[1] mx-auto max-w-3xl px-4 py-14 sm:py-16">
+          <p className="eyebrow text-bff-300">
+            <span className="eyebrow-line" aria-hidden="true" />
+            <BookOpen className="h-3.5 w-3.5" aria-hidden="true" /> {zh ? '课程大纲' : es ? 'El plan de estudios' : 'The curriculum'}
+          </p>
+          <h1 className="mt-3 font-display text-5xl font-extrabold leading-[1.02] text-white sm:text-6xl">
+            BFF <em className="text-bff-300">Academy</em>
+          </h1>
+          <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/80">
+            {zh
+              ? '4 周，8 节课，每节约 20 分钟。沿着路径走——完成一节课就能解锁下一站，并在终点赢得奖杯。'
+              : es
+              ? '4 semanas, 8 lecciones, ~20 minutos cada una. Sigue la ruta: termina una lección para desbloquear la siguiente parada y gana el trofeo al final.'
+              : '4 weeks, 8 lessons, ~20 minutes each. Follow the path — finish a lesson to unlock the next stop and claim the trophy at the end.'}
+          </p>
+          <div className="mt-6 flex flex-wrap items-center gap-2">
+            <span className="chip bg-white/10 text-white ring-1 ring-inset ring-white/15">
+              <span aria-hidden="true">{level.tier.emoji}</span>{' '}
+              {zh ? '等级' : es ? 'Nivel' : 'Level'} {level.level} · {level.tier.name}
+            </span>
             {streak.current > 0 && (
-              <span className="chip bg-orange-100 text-orange-700">
+              <span className="chip bg-orange-100 text-orange-800">
                 <span aria-hidden="true">🔥</span>{' '}
                 {zh
                   ? `连续 ${streak.current} 天`
@@ -341,7 +353,10 @@ export default function LessonsIndex() {
               </span>
             )}
             {missedCount > 0 && (
-              <Link to="/practice" className="chip bg-bff-100 text-bff-800 hover:bg-bff-200">
+              <Link
+                to="/practice"
+                className="chip bg-white/10 text-white ring-1 ring-inset ring-white/15 transition-colors hover:bg-white/20"
+              >
                 <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />{' '}
                 {zh
                   ? `复习 ${missedCount} 道做错的题`
@@ -350,12 +365,56 @@ export default function LessonsIndex() {
                   : `Review ${missedCount} missed ${missedCount === 1 ? 'question' : 'questions'}`}
               </Link>
             )}
-            </>
+          </div>
+
+          <div className="mt-7 flex max-w-md items-center gap-3">
+            <div
+              role="progressbar"
+              aria-label={zh ? '课程进度' : es ? 'Progreso del curso' : 'Course progress'}
+              aria-valuenow={Math.round((doneCount / lessons.length) * 100)}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              className="h-3 flex-1 overflow-hidden rounded-full bg-white/15"
+            >
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-bff-400 to-bff-600 transition-all"
+                style={{ width: `${(doneCount / lessons.length) * 100}%` }}
+              />
+            </div>
+            <span className="shrink-0 text-sm font-bold text-white/80">
+              {doneCount}/{lessons.length}
+            </span>
+          </div>
+
+          {allDone ? (
+            <p className="mt-6 flex flex-col items-start gap-3 font-display text-lg font-bold text-white sm:flex-row sm:items-center">
+              <span>
+                {zh ? '课程完成——你太棒了！' : es ? '¡Curso completado — leyenda!' : 'Course complete — you legend!'}{' '}
+                <span aria-hidden="true">🏆</span>
+              </span>
+              <Link to="/certificate" className="btn-primary">
+                {zh ? '领取我的证书' : es ? 'Obtener mi certificado' : 'Get my certificate'} <Award className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            </p>
+          ) : (
+            current && (
+              <Link to={current.path} className="btn-primary mt-6 inline-flex">
+                {doneCount === 0 ? (zh ? '开始第 1 天' : es ? 'Empezar Día 1' : 'Start Day 1') : zh ? '继续' : es ? 'Continuar' : 'Continue'}:{' '}
+                <span aria-hidden="true">{current.emoji}</span> {lessonTitle(current)}{' '}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            )
           )}
         </div>
+      </section>
 
-        {/* Daily quests */}
-        <div className="mx-auto mt-5 max-w-md rounded-2xl border border-slate-200 bg-white p-4 text-left">
+      <div className="mx-auto max-w-3xl px-4 pb-16 pt-10">
+        {/* Daily quests — editorial panel with a blue top accent bar. */}
+        <p className="eyebrow">
+          <span className="eyebrow-line" aria-hidden="true" />
+          {zh ? '每日' : es ? 'Cada día' : 'Daily'}
+        </p>
+        <div className="panel mt-3 p-5">
           <div className="flex items-center justify-between gap-2">
             <p className="inline-flex items-center gap-1.5 font-display text-sm font-bold text-slate-900">
               <CalendarDays className="h-4 w-4 text-bff-600" aria-hidden="true" /> {zh ? '今日任务' : es ? 'Misiones de hoy' : "Today's quests"}
@@ -390,294 +449,270 @@ export default function LessonsIndex() {
           )}
         </div>
 
-        <div className="mx-auto mt-5 flex max-w-md items-center gap-3">
-          <div
-            role="progressbar"
-            aria-label={zh ? '课程进度' : es ? 'Progreso del curso' : 'Course progress'}
-            aria-valuenow={Math.round((doneCount / lessons.length) * 100)}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            className="h-3 flex-1 overflow-hidden rounded-full bg-slate-200"
-          >
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-bff-400 to-bff-600 transition-all"
-              style={{ width: `${(doneCount / lessons.length) * 100}%` }}
-            />
-          </div>
-          <span className="shrink-0 text-sm font-bold text-slate-600">
-            {doneCount}/{lessons.length}
-          </span>
-        </div>
-        {allDone ? (
-          <p className="mt-4 font-display text-lg font-bold text-bff-700">
-            {zh ? '课程完成——你太棒了！' : es ? '¡Curso completado — leyenda!' : 'Course complete — you legend!'}{' '}
-            <span aria-hidden="true">🏆</span>
-            <Link to="/certificate" className="btn-primary mt-3 flex sm:ml-3 sm:mt-0 sm:inline-flex">
-              {zh ? '领取我的证书' : es ? 'Obtener mi certificado' : 'Get my certificate'} <Award className="h-4 w-4" aria-hidden="true" />
-            </Link>
-          </p>
-        ) : (
-          current && (
-            <Link to={current.path} className="btn-primary mt-5 inline-flex">
-              {doneCount === 0 ? (zh ? '开始第 1 天' : es ? 'Empezar Día 1' : 'Start Day 1') : zh ? '继续' : es ? 'Continuar' : 'Continue'}:{' '}
-              <span aria-hidden="true">{current.emoji}</span> {lessonTitle(current)}{' '}
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
-          )
-        )}
-      </div>
+        {/* The path */}
+        <p className="eyebrow mt-12">
+          <span className="eyebrow-line" aria-hidden="true" />
+          {zh ? '学习路径' : es ? 'La ruta' : 'The path'}
+        </p>
+        <div className="mt-4 space-y-10">
+          {weeks.map(({ week, nodes }, weekIdx) => {
+            const theme = WEEK_THEMES[week] ?? WEEK_THEMES[1]
+            const flip = weekIdx % 2 === 1
+            const weekLessons = nodes.filter((n) => n.kind === 'lesson')
+            const weekDone = weekLessons.filter((n) => n.state === 'done').length
+            const height = nodes.length * ROW_H + 24
 
-      {/* The path */}
-      <div className="mt-12 space-y-10">
-        {weeks.map(({ week, nodes }, weekIdx) => {
-          const theme = WEEK_THEMES[week] ?? WEEK_THEMES[1]
-          const flip = weekIdx % 2 === 1
-          const weekLessons = nodes.filter((n) => n.kind === 'lesson')
-          const weekDone = weekLessons.filter((n) => n.state === 'done').length
-          const height = nodes.length * ROW_H + 24
-
-          return (
-            <section key={week}>
-              {/* Week banner */}
-              <div
-                className={`rounded-3xl ${theme.banner} px-6 py-5 text-white shadow-card`}
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-widest text-white/90">
-                      {zh ? `第 ${week} 周` : <>{es ? 'Semana' : 'Week'} {week}</>}
-                    </p>
-                    <h2 className="font-display text-xl font-extrabold">
-                      {zh ? theme.nameZh : es ? theme.nameEs : theme.name}
-                    </h2>
-                    <p className="mt-1 text-sm text-white/90">{zh ? theme.blurbZh : es ? theme.blurbEs : theme.blurb}</p>
-                  </div>
-                  <span className="shrink-0 rounded-full bg-white/20 px-3 py-1 text-sm font-bold">
-                    {weekDone}/{weekLessons.length}
-                  </span>
-                </div>
-              </div>
-
-              {/* Node trail */}
-              <div className="relative mx-auto mt-4" style={{ width: PATH_W, height }}>
-                <svg
-                  className="pointer-events-none absolute inset-0"
-                  width={PATH_W}
-                  height={height}
-                  aria-hidden
+            return (
+              <section key={week}>
+                {/* Week banner — solid editorial field (ink or BFF blue) with a
+                    gold top accent rule, an eyebrow-style WEEK label and a big
+                    display heading. White text on the solid field. */}
+                <div
+                  className={`relative overflow-hidden rounded-[10px] ${theme.banner} px-6 py-6 text-white shadow-card`}
                 >
-                  <path
-                    d={connectorPath(nodes.length, flip)}
-                    fill="none"
-                    stroke="#94a3b8"
-                    strokeWidth={6}
-                    strokeLinecap="round"
-                    strokeDasharray="0.1 18"
-                  />
-                </svg>
+                  <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-gold-400" />
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <p className="font-display text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/70">
+                        {zh ? `第 ${week} 周` : <>{es ? 'Semana' : 'Week'} {week}</>}
+                      </p>
+                      <h2 className="mt-1.5 font-display text-2xl font-extrabold leading-tight">
+                        {zh ? theme.nameZh : es ? theme.nameEs : theme.name}
+                      </h2>
+                      <p className="mt-1.5 max-w-md text-sm text-white/80">{zh ? theme.blurbZh : es ? theme.blurbEs : theme.blurb}</p>
+                    </div>
+                    <span className="shrink-0 rounded-full bg-white/15 px-3 py-1 text-sm font-bold ring-1 ring-inset ring-white/20">
+                      {weekDone}/{weekLessons.length}
+                    </span>
+                  </div>
+                </div>
 
-                {nodes.map((node, i) => {
-                  const { x, y } = nodeXY(i, flip)
-                  const label =
-                    node.kind === 'trophy'
-                      ? allDone
+                {/* Node trail */}
+                <div className="relative mx-auto mt-4" style={{ width: PATH_W, height }}>
+                  <svg
+                    className="pointer-events-none absolute inset-0"
+                    width={PATH_W}
+                    height={height}
+                    aria-hidden
+                  >
+                    <path
+                      d={connectorPath(nodes.length, flip)}
+                      fill="none"
+                      stroke="#0c1a27"
+                      strokeOpacity={0.18}
+                      strokeWidth={6}
+                      strokeLinecap="round"
+                      strokeDasharray="0.1 18"
+                    />
+                  </svg>
+
+                  {nodes.map((node, i) => {
+                    const { x, y } = nodeXY(i, flip)
+                    const label =
+                      node.kind === 'trophy'
+                        ? allDone
+                          ? zh
+                            ? '课程完成！'
+                            : es
+                            ? '¡Curso completado!'
+                            : 'Course complete!'
+                          : zh
+                            ? '完成所有课程'
+                            : es
+                            ? 'Termina todas las lecciones'
+                            : 'Finish every lesson'
+                        : lessonTitle(node.meta!)
+                    const sub =
+                      node.kind === 'lesson'
                         ? zh
-                          ? '课程完成！'
-                          : es
-                          ? '¡Curso completado!'
-                          : 'Course complete!'
-                        : zh
-                          ? '完成所有课程'
-                          : es
-                          ? 'Termina todas las lecciones'
-                          : 'Finish every lesson'
-                      : lessonTitle(node.meta!)
-                  const sub =
-                    node.kind === 'lesson'
-                      ? zh
-                        ? `第 ${node.meta!.sortKey % 10} 天 · ${node.meta!.durationMin} 分钟`
-                        : `${es ? 'Día' : 'Day'} ${node.meta!.sortKey % 10} · ${node.meta!.durationMin} min`
-                      : ''
+                          ? `第 ${node.meta!.sortKey % 10} 天 · ${node.meta!.durationMin} 分钟`
+                          : `${es ? 'Día' : 'Day'} ${node.meta!.sortKey % 10} · ${node.meta!.durationMin} min`
+                        : ''
 
-                  const circle = <NodeCircle node={node} theme={theme} />
-                  const clickable =
-                    node.kind !== 'trophy' &&
-                    (node.state === 'done' || node.state === 'current')
+                    const circle = <NodeCircle node={node} theme={theme} />
+                    const clickable =
+                      node.kind !== 'trophy' &&
+                      (node.state === 'done' || node.state === 'current')
 
-                  return (
-                    <div
-                      key={node.kind === 'trophy' ? 'trophy' : node.meta!.slug}
-                      className="absolute"
-                      style={{ left: x, top: y, transform: 'translate(-50%, -50%)' }}
-                    >
-                      {node.state === 'current' && (
-                        <span
-                          className={`absolute -top-9 left-1/2 z-10 -translate-x-1/2 animate-float whitespace-nowrap rounded-xl border-2 bg-white px-3 py-1 font-display text-xs font-extrabold uppercase tracking-wide ${theme.border} ${theme.text}`}
-                        >
-                          {node.started
-                            ? zh
-                              ? '继续'
-                              : es
-                                ? 'Sigue'
-                                : 'Keep going'
-                            : zh
-                              ? '开始'
-                              : es
-                                ? 'Empezar'
-                                : 'Start'}
-                        </span>
-                      )}
-                      {clickable ? (
-                        <Link
-                          to={node.meta!.path}
-                          aria-label={
-                            node.state === 'done'
-                              ? `${label}${zh ? '，已完成' : es ? ', completada' : ', completed'}`
-                              : `${label}${zh ? '，当前课程' : es ? ', lección actual' : ', current lesson'}`
-                          }
-                        >
-                          {circle}
-                        </Link>
-                      ) : node.kind === 'trophy' ? (
-                        node.state === 'done' ? (
+                    return (
+                      <div
+                        key={node.kind === 'trophy' ? 'trophy' : node.meta!.slug}
+                        className="absolute"
+                        style={{ left: x, top: y, transform: 'translate(-50%, -50%)' }}
+                      >
+                        {node.state === 'current' && (
+                          <span
+                            className={`absolute -top-9 left-1/2 z-10 -translate-x-1/2 animate-float whitespace-nowrap rounded-[6px] border-2 bg-white px-3 py-1 font-display text-[11px] font-extrabold uppercase tracking-[0.12em] ${theme.border} ${theme.text}`}
+                          >
+                            {node.started
+                              ? zh
+                                ? '继续'
+                                : es
+                                  ? 'Sigue'
+                                  : 'Keep going'
+                              : zh
+                                ? '开始'
+                                : es
+                                  ? 'Empezar'
+                                  : 'Start'}
+                          </span>
+                        )}
+                        {clickable ? (
                           <Link
-                            to="/certificate"
-                            aria-label={zh ? '查看我的证书' : es ? 'Ver mi certificado' : 'View my certificate'}
+                            to={node.meta!.path}
+                            aria-label={
+                              node.state === 'done'
+                                ? `${label}${zh ? '，已完成' : es ? ', completada' : ', completed'}`
+                                : `${label}${zh ? '，当前课程' : es ? ', lección actual' : ', current lesson'}`
+                            }
                           >
                             {circle}
                           </Link>
+                        ) : node.kind === 'trophy' ? (
+                          node.state === 'done' ? (
+                            <Link
+                              to="/certificate"
+                              aria-label={zh ? '查看我的证书' : es ? 'Ver mi certificado' : 'View my certificate'}
+                            >
+                              {circle}
+                            </Link>
+                          ) : (
+                            circle
+                          )
                         ) : (
-                          circle
-                        )
-                      ) : (
-                        <button
-                          type="button"
-                          aria-label={`${label}${zh ? '，已锁定 — 打开确认框' : es ? ', bloqueada — abre una confirmación' : ', locked — opens a confirmation'}`}
-                          onClick={(e) => {
-                            jumpTriggerRef.current = e.currentTarget
-                            setJumpTarget(node.meta!)
-                          }}
-                        >
-                          {circle}
-                        </button>
-                      )}
-                      {node.state === 'done' && node.kind !== 'trophy' && (
-                        <span
-                          aria-hidden="true"
-                          className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full bg-green-500 text-white shadow"
-                        >
-                          <Check className="h-3.5 w-3.5" aria-hidden="true" />
-                        </span>
-                      )}
-                      {node.state === 'locked' && node.kind === 'lesson' && (
-                        <span
-                          aria-hidden="true"
-                          className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full bg-slate-400 text-white shadow"
-                        >
-                          <Lock className="h-3 w-3" aria-hidden="true" />
-                        </span>
-                      )}
-                      {/* bg matches the page so the dotted connector never bleeds through the text */}
-                      <div className="absolute left-1/2 top-[82px] w-36 -translate-x-1/2 bg-slate-50 text-center">
-                        <p
-                          className={`text-xs font-bold leading-tight ${
-                            node.state === 'locked' ? 'text-slate-500' : 'text-slate-700'
-                          }`}
-                        >
-                          {label}
-                        </p>
-                        {sub && <p className="mt-0.5 text-[10px] font-semibold text-slate-500">{sub}</p>}
-                        {node.kind === 'lesson' && node.state === 'done' && (
-                          <Stars score={node.score} lang={lang} />
+                          <button
+                            type="button"
+                            aria-label={`${label}${zh ? '，已锁定 — 打开确认框' : es ? ', bloqueada — abre una confirmación' : ', locked — opens a confirmation'}`}
+                            onClick={(e) => {
+                              jumpTriggerRef.current = e.currentTarget
+                              setJumpTarget(node.meta!)
+                            }}
+                          >
+                            {circle}
+                          </button>
                         )}
+                        {node.state === 'done' && node.kind !== 'trophy' && (
+                          <span
+                            aria-hidden="true"
+                            className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full bg-green-500 text-white shadow"
+                          >
+                            <Check className="h-3.5 w-3.5" aria-hidden="true" />
+                          </span>
+                        )}
+                        {node.state === 'locked' && node.kind === 'lesson' && (
+                          <span
+                            aria-hidden="true"
+                            className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full bg-ink/40 text-white shadow"
+                          >
+                            <Lock className="h-3 w-3" aria-hidden="true" />
+                          </span>
+                        )}
+                        {/* bg matches the page so the dotted connector never bleeds through the text */}
+                        <div className="absolute left-1/2 top-[82px] w-36 -translate-x-1/2 bg-paper text-center">
+                          <p
+                            className={`text-xs font-bold leading-tight ${
+                              node.state === 'locked' ? 'text-ink/50' : 'text-ink'
+                            }`}
+                          >
+                            {label}
+                          </p>
+                          {sub && <p className="mt-0.5 text-[10px] font-semibold text-ink/50">{sub}</p>}
+                          {node.kind === 'lesson' && node.state === 'done' && (
+                            <Stars score={node.score} lang={lang} />
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  )
-                })}
-              </div>
-            </section>
-          )
-        })}
-      </div>
-
-      {/* Bonus electives — off the core 4-week path, self-paced deep dives */}
-      <section className="mt-16">
-        <h2 className="inline-flex items-center gap-2 font-display text-2xl font-bold text-slate-900">
-          <Sparkles className="h-5 w-5 text-gold-500" aria-hidden="true" /> {zh ? '额外选修单元' : es ? 'Unidades extra' : 'Bonus electives'}
-        </h2>
-        <p className="mt-2 max-w-2xl text-slate-600">
-          {zh
-            ? '五个额外的深入单元，随时都能探索——它们不在 4 周路径内，但仍会计入你的进度和连续记录。'
-            : es
-            ? 'Cinco temas extra para profundizar cuando quieras — no son parte de las 4 semanas, pero cuentan para tu progreso y racha.'
-            : "Five extra deep-dives to explore anytime — they're off the 4-week path, but still count toward your progress and streak."}
-        </p>
-        <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {ACTIVITIES.filter((a) => a.kind === 'elective').map((meta) => {
-            const p = progress[meta.slug]
-            return (
-              <Link
-                key={meta.slug}
-                to={meta.path}
-                className="card group flex gap-4 transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-0.5 hover:border-bff-300 hover:shadow-card-hover"
-              >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-bff-50 text-2xl">
-                  <span aria-hidden="true">{meta.emoji}</span>
+                    )
+                  })}
                 </div>
-                <div className="min-w-0">
-                  <h3 className="font-display font-bold text-slate-900 group-hover:text-bff-700">
-                    {lessonTitle(meta)}
-                  </h3>
-                  <p className="mt-1 text-sm leading-relaxed text-slate-600">
-                    {localizeActivity(meta, lang).description}
-                  </p>
-                  <p className="mt-2 text-xs font-semibold text-slate-500">
-                    <Clock className="mr-1 inline h-3.5 w-3.5 align-[-2px]" aria-hidden="true" />~{meta.durationMin} {zh ? '分钟' : 'min'}
-                    {p?.status === 'completed'
-                      ? zh
-                        ? ' · 已完成！🎉'
-                        : es
-                        ? ' · ¡completado! 🎉'
-                        : ' · done! 🎉'
-                      : p?.status === 'started'
-                        ? zh
-                          ? ' · 进行中'
-                          : es
-                          ? ' · en progreso'
-                          : ' · in progress'
-                        : ''}
-                  </p>
-                </div>
-              </Link>
+              </section>
             )
           })}
         </div>
-      </section>
 
-      {/* Games live outside the curriculum path */}
-      <div className="card mt-16 flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-between sm:text-left">
-        <div>
-          <p className="font-display font-bold text-slate-900">
-            <span aria-hidden="true">🐺🏠☂️</span>{' '}
-            {zh ? '在找游戏吗？' : es ? '¿Buscas los juegos?' : 'Looking for the games?'}
+        {/* Bonus electives — off the core 4-week path, self-paced deep dives */}
+        <section className="mt-16">
+          <p className="eyebrow text-gold-500">
+            <span className="eyebrow-line" aria-hidden="true" />
+            {zh ? '额外' : es ? 'Extra' : 'Bonus'}
           </p>
-          <p className="mt-1 text-sm text-slate-600">
+          <h2 className="mt-2 inline-flex items-center gap-2 font-display text-2xl font-bold text-slate-900">
+            <Sparkles className="h-5 w-5 text-gold-500" aria-hidden="true" /> {zh ? '额外选修单元' : es ? 'Unidades extra' : 'Bonus electives'}
+          </h2>
+          <p className="mt-2 max-w-2xl text-slate-600">
             {zh
-              ? 'Wolf of Wall Street 和 Ben 的挑战自成一体——随时都能玩，不需要跟着路径走。'
+              ? '五个额外的深入单元，随时都能探索——它们不在 4 周路径内，但仍会计入你的进度和连续记录。'
               : es
-                ? 'Wolf of Wall Street y los desafíos de Ben van por su cuenta — juégalos cuando quieras, sin necesidad de la ruta.'
-                : "Wolf of Wall Street and Ben's challenges are their own thing — play them anytime, no path required."}
+              ? 'Cinco temas extra para profundizar cuando quieras — no son parte de las 4 semanas, pero cuentan para tu progreso y racha.'
+              : "Five extra deep-dives to explore anytime — they're off the 4-week path, but still count toward your progress and streak."}
           </p>
+          <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {ACTIVITIES.filter((a) => a.kind === 'elective').map((meta) => {
+              const p = progress[meta.slug]
+              return (
+                <Link
+                  key={meta.slug}
+                  to={meta.path}
+                  className="card lift group flex gap-4"
+                >
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[8px] bg-bff-50 text-2xl">
+                    <span aria-hidden="true">{meta.emoji}</span>
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="font-display font-bold text-slate-900 group-hover:text-bff-700">
+                      {lessonTitle(meta)}
+                    </h3>
+                    <p className="mt-1 text-sm leading-relaxed text-slate-600">
+                      {localizeActivity(meta, lang).description}
+                    </p>
+                    <p className="mt-2 text-xs font-semibold text-slate-500">
+                      <Clock className="mr-1 inline h-3.5 w-3.5 align-[-2px]" aria-hidden="true" />~{meta.durationMin} {zh ? '分钟' : 'min'}
+                      {p?.status === 'completed'
+                        ? zh
+                          ? ' · 已完成！🎉'
+                          : es
+                          ? ' · ¡completado! 🎉'
+                          : ' · done! 🎉'
+                        : p?.status === 'started'
+                          ? zh
+                            ? ' · 进行中'
+                            : es
+                            ? ' · en progreso'
+                            : ' · in progress'
+                          : ''}
+                    </p>
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+        </section>
+
+        {/* Games live outside the curriculum path */}
+        <div className="card mt-16 flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-between sm:text-left">
+          <div>
+            <p className="font-display font-bold text-slate-900">
+              <span aria-hidden="true">🐺🏠☂️</span>{' '}
+              {zh ? '在找游戏吗？' : es ? '¿Buscas los juegos?' : 'Looking for the games?'}
+            </p>
+            <p className="mt-1 text-sm text-slate-600">
+              {zh
+                ? 'Wolf of Wall Street 和 Ben 的挑战自成一体——随时都能玩，不需要跟着路径走。'
+                : es
+                  ? 'Wolf of Wall Street y los desafíos de Ben van por su cuenta — juégalos cuando quieras, sin necesidad de la ruta.'
+                  : "Wolf of Wall Street and Ben's challenges are their own thing — play them anytime, no path required."}
+            </p>
+          </div>
+          <Link to="/activities" className="btn-secondary shrink-0">
+            {zh ? '游戏与挑战 →' : es ? 'Juegos y desafíos →' : 'Games & Challenges →'}
+          </Link>
         </div>
-        <Link to="/activities" className="btn-secondary shrink-0">
-          {zh ? '游戏与挑战 →' : es ? 'Juegos y desafíos →' : 'Games & Challenges →'}
-        </Link>
       </div>
 
       {/* Jump-ahead confirm */}
       {jumpTarget && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-ink/70 p-4"
           onClick={() => setJumpTarget(null)}
         >
           <div
@@ -686,7 +721,7 @@ export default function LessonsIndex() {
             aria-modal="true"
             aria-labelledby="jump-dialog-title"
             tabIndex={-1}
-            className="w-full max-w-sm animate-pop-in rounded-3xl bg-white p-6 text-center shadow-2xl"
+            className="w-full max-w-sm animate-pop-in rounded-[10px] bg-white p-6 text-center shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <p className="text-5xl" aria-hidden="true">{jumpTarget.emoji}</p>
