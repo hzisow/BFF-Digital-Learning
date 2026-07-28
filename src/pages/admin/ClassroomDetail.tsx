@@ -355,93 +355,116 @@ export default function ClassroomDetail() {
     downloadCsv(`${safeName || 'class'}-${classroom.code}-progress-${stamp}.csv`, csv)
   }
 
+  const lightBtn =
+    'inline-flex items-center gap-2 rounded-[5px] border border-white/25 px-4 py-2 text-sm font-display font-semibold text-white/90 transition-[transform,background-color,color] duration-150 hover:bg-white/10 hover:text-white active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-bff-400 focus-visible:ring-offset-2 focus-visible:ring-offset-ink disabled:cursor-not-allowed disabled:opacity-50'
+
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
-      {/* ---------- Header ---------- */}
-      <Link to="/admin" className="inline-flex items-center gap-1 text-sm font-semibold text-bff-700 hover:text-bff-800">
-        <ArrowLeft className="h-4 w-4" aria-hidden="true" /> {zh ? '所有班级' : es ? 'Todas las aulas' : 'All classrooms'}
-      </Link>
-      <div className="mt-3 flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 className="font-display text-3xl font-bold text-slate-900">
-            {classroom.name}
-          </h1>
-          <p className="mt-1 text-slate-600">
-            {classroom.school ?? (zh ? '未填写学校' : es ? 'Sin escuela indicada' : 'No school listed')} · {students.length}{' '}
-            {zh
-              ? '名学生'
-              : es
-                ? students.length === 1
-                  ? 'estudiante'
-                  : 'estudiantes'
-                : `student${students.length === 1 ? '' : 's'}`}
-          </p>
-          <div className="mt-3 flex items-center gap-2">
-            <span
-              className="rounded-xl bg-bff-50 px-5 py-2 font-mono text-3xl font-bold tracking-[0.25em] text-bff-700"
-              aria-label={zh ? `班级代码 ${classroom.code}` : es ? `Código de clase ${classroom.code}` : `Class code ${classroom.code}`}
-            >
-              {classroom.code}
-            </span>
-            <button
-              type="button"
-              className="btn-ghost text-sm"
-              onClick={() => copy(classroom.code)}
-              aria-label={
-                copied
-                  ? zh
-                    ? `班级代码 ${classroom.code} 已复制`
-                    : es
-                      ? `Código de clase ${classroom.code} copiado`
-                      : `Class code ${classroom.code} copied`
-                  : zh
-                    ? `复制班级代码 ${classroom.code}`
-                    : es
-                      ? `Copiar código de clase ${classroom.code}`
-                      : `Copy class code ${classroom.code}`
-              }
-            >
-              <span aria-hidden="true" className="inline-flex items-center gap-1.5">
-                {copied ? <Check className="h-4 w-4" aria-hidden="true" /> : <Copy className="h-4 w-4" aria-hidden="true" />}
-                {copied ? (zh ? '已复制' : es ? 'Copiado' : 'Copied') : zh ? '复制' : es ? 'Copiar' : 'Copy'}
-              </span>
-            </button>
-            <button
-              type="button"
-              className="btn-ghost text-sm"
-              onClick={() => {
-                const link = `${window.location.href.split('#')[0]}#/join?code=${classroom.code}`
-                void navigator.clipboard?.writeText(link)
-                toast(zh ? '加入链接已复制！' : es ? '¡Enlace para unirse copiado!' : 'Join link copied!', 'success')
-              }}
-            >
-              <Link2 className="h-4 w-4" aria-hidden="true" /> {zh ? '复制加入链接' : es ? 'Copiar enlace' : 'Copy join link'}
-            </button>
-            <span role="status" className="sr-only">
-              {copied ? (zh ? `班级代码 ${classroom.code} 已复制` : es ? `Código de clase ${classroom.code} copiado` : `Class code ${classroom.code} copied`) : ''}
-            </span>
+    <div>
+      {/* ---------- Editorial ink hero header ---------- */}
+      <section className="ed-hero">
+        <span
+          aria-hidden="true"
+          className="ed-hero-orbit -right-24 -top-40 h-[520px] w-[520px]"
+        />
+        <span
+          aria-hidden="true"
+          className="ed-hero-orbit gold -left-40 bottom-[-11rem] h-[440px] w-[440px]"
+        />
+        <div className="relative z-[1] mx-auto max-w-6xl px-4 py-12 sm:py-14">
+          <Link
+            to="/admin"
+            className="inline-flex items-center gap-1 text-sm font-semibold text-white/70 transition-colors hover:text-white"
+          >
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" /> {zh ? '所有班级' : es ? 'Todas las aulas' : 'All classrooms'}
+          </Link>
+          <div className="mt-5 flex flex-wrap items-start justify-between gap-4">
+            <div className="min-w-0">
+              <p className="eyebrow text-bff-300">
+                <span className="eyebrow-line" aria-hidden="true" />
+                {zh ? '班级' : es ? 'Aula' : 'Classroom'}
+              </p>
+              <h1 className="mt-3 font-display text-4xl font-extrabold leading-[1.05] text-white sm:text-5xl">
+                {classroom.name}
+              </h1>
+              <p className="mt-3 text-white/70">
+                {classroom.school ?? (zh ? '未填写学校' : es ? 'Sin escuela indicada' : 'No school listed')} · {students.length}{' '}
+                {zh
+                  ? '名学生'
+                  : es
+                    ? students.length === 1
+                      ? 'estudiante'
+                      : 'estudiantes'
+                    : `student${students.length === 1 ? '' : 's'}`}
+              </p>
+              <div className="mt-5 flex flex-wrap items-center gap-2">
+                <span
+                  className="rounded-[6px] bg-white/10 px-5 py-2 font-mono text-3xl font-bold tracking-[0.25em] text-white ring-1 ring-inset ring-white/15"
+                  aria-label={zh ? `班级代码 ${classroom.code}` : es ? `Código de clase ${classroom.code}` : `Class code ${classroom.code}`}
+                >
+                  {classroom.code}
+                </span>
+                <button
+                  type="button"
+                  className={lightBtn}
+                  onClick={() => copy(classroom.code)}
+                  aria-label={
+                    copied
+                      ? zh
+                        ? `班级代码 ${classroom.code} 已复制`
+                        : es
+                          ? `Código de clase ${classroom.code} copiado`
+                          : `Class code ${classroom.code} copied`
+                      : zh
+                        ? `复制班级代码 ${classroom.code}`
+                        : es
+                          ? `Copiar código de clase ${classroom.code}`
+                          : `Copy class code ${classroom.code}`
+                  }
+                >
+                  <span aria-hidden="true" className="inline-flex items-center gap-1.5">
+                    {copied ? <Check className="h-4 w-4" aria-hidden="true" /> : <Copy className="h-4 w-4" aria-hidden="true" />}
+                    {copied ? (zh ? '已复制' : es ? 'Copiado' : 'Copied') : zh ? '复制' : es ? 'Copiar' : 'Copy'}
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  className={lightBtn}
+                  onClick={() => {
+                    const link = `${window.location.href.split('#')[0]}#/join?code=${classroom.code}`
+                    void navigator.clipboard?.writeText(link)
+                    toast(zh ? '加入链接已复制！' : es ? '¡Enlace para unirse copiado!' : 'Join link copied!', 'success')
+                  }}
+                >
+                  <Link2 className="h-4 w-4" aria-hidden="true" /> {zh ? '复制加入链接' : es ? 'Copiar enlace' : 'Copy join link'}
+                </button>
+                <span role="status" className="sr-only">
+                  {copied ? (zh ? `班级代码 ${classroom.code} 已复制` : es ? `Código de clase ${classroom.code} copiado` : `Class code ${classroom.code} copied`) : ''}
+                </span>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                className={lightBtn}
+                onClick={() => void load()}
+                disabled={loading}
+              >
+                <RefreshCw className="h-4 w-4" aria-hidden="true" /> {loading ? (zh ? '刷新中…' : es ? 'Actualizando…' : 'Refreshing…') : zh ? '刷新' : es ? 'Actualizar' : 'Refresh'}
+              </button>
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 rounded-[5px] border border-red-400/40 px-4 py-2 text-sm font-display font-semibold text-red-300 transition-[transform,background-color,color] duration-150 hover:bg-red-500/15 hover:text-red-200 active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-offset-2 focus-visible:ring-offset-ink disabled:cursor-not-allowed disabled:opacity-50"
+                onClick={() => void handleArchive()}
+                disabled={archiving}
+              >
+                {archiving ? (zh ? '归档中…' : es ? 'Archivando…' : 'Archiving…') : zh ? '归档班级' : es ? 'Archivar clase' : 'Archive class'}
+              </button>
+            </div>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            className="btn-ghost text-sm"
-            onClick={() => void load()}
-            disabled={loading}
-          >
-            <RefreshCw className="h-4 w-4" aria-hidden="true" /> {loading ? (zh ? '刷新中…' : es ? 'Actualizando…' : 'Refreshing…') : zh ? '刷新' : es ? 'Actualizar' : 'Refresh'}
-          </button>
-          <button
-            type="button"
-            className="btn-ghost text-sm text-red-600 hover:bg-red-50 hover:text-red-700"
-            onClick={() => void handleArchive()}
-            disabled={archiving}
-          >
-            {archiving ? (zh ? '归档中…' : es ? 'Archivando…' : 'Archiving…') : zh ? '归档班级' : es ? 'Archivar clase' : 'Archive class'}
-          </button>
-        </div>
-      </div>
+      </section>
 
+      <div className="mx-auto max-w-6xl px-4 py-10">
       {error && (
         <p
           role="alert"
@@ -454,7 +477,7 @@ export default function ClassroomDetail() {
       <div className="mt-10 grid gap-8 lg:grid-cols-2">
         {/* ---------- Assignments ---------- */}
         <section>
-          <h2 className="flex items-center gap-2 font-display text-xl font-bold text-slate-900">
+          <h2 className="flex items-center gap-2 font-display text-xl font-bold text-ink">
             <ClipboardList className="h-5 w-5 text-bff-600" aria-hidden="true" />
             {zh ? '作业' : es ? 'Tareas' : 'Assignments'}
           </h2>
@@ -511,7 +534,7 @@ export default function ClassroomDetail() {
             </h3>
             {unassigned.length === 0 ? (
               <p className="text-sm text-slate-500">
-                {zh ? '所有活动都已布置——太棒了！🎉' : es ? 'Todas las actividades ya están asignadas. ¡Genial! 🎉' : 'Every activity is already assigned — nice! 🎉'}
+                {zh ? '所有活动都已布置——太棒了！' : es ? 'Todas las actividades ya están asignadas. ¡Genial!' : 'Every activity is already assigned — nice!'}
               </p>
             ) : (
               <>
@@ -594,7 +617,7 @@ export default function ClassroomDetail() {
 
         {/* ---------- Live game ---------- */}
         <section>
-          <h2 className="flex items-center gap-2 font-display text-xl font-bold text-slate-900">
+          <h2 className="flex items-center gap-2 font-display text-xl font-bold text-ink">
             <Play className="h-5 w-5 text-bff-600" aria-hidden="true" />
             {zh ? '实时游戏' : es ? 'Juego en vivo' : 'Live game'}
           </h2>
@@ -607,7 +630,7 @@ export default function ClassroomDetail() {
       {/* ---------- Students & progress ---------- */}
       <section className="mt-12">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="flex items-center gap-2 font-display text-xl font-bold text-slate-900">
+          <h2 className="flex items-center gap-2 font-display text-xl font-bold text-ink">
             <Users className="h-5 w-5 text-bff-600" aria-hidden="true" />
             {zh ? '学生与进度' : es ? 'Estudiantes y progreso' : 'Students & progress'}
           </h2>
@@ -787,6 +810,7 @@ export default function ClassroomDetail() {
           <ClassLeaderboard classroomId={classroom.id} />
         </section>
       )}
+      </div>
     </div>
   )
 }

@@ -255,23 +255,49 @@ export default function LessonPlanGenerator() {
   const resultName = zh ? '生成的材料' : es ? 'Materiales generados' : 'Generated materials'
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10">
-      <header className="mb-8">
-        <p className="eyebrow">
-          <Wand2 className="h-3.5 w-3.5" aria-hidden="true" />
-          {zh ? '导师工具' : es ? 'Herramienta para mentores' : 'Mentor tool'}
-        </p>
-        <h1 className="mt-1 font-display text-3xl font-bold text-slate-900">
-          {zh ? '教案与练习题生成器' : es ? 'Generador de planes de clase y hojas de trabajo' : 'Lesson Plan & Worksheet Generator'}
-        </h1>
-        <p className="mt-2 max-w-2xl text-slate-600">
-          {zh
-            ? '为您的课堂草拟符合 BFF Academy 课程的理财教学材料。请先审阅并根据学生情况进行调整。'
-            : es
-              ? 'Redacta materiales de educación financiera alineados con el currículo de BFF Academy para tu aula. Revísalos y adáptalos a tus estudiantes antes de usarlos.'
-              : 'Draft financial-literacy teaching materials aligned to the BFF Academy curriculum for your classroom. Always review and adapt them for your students before use.'}
-        </p>
-      </header>
+    <div>
+      {/* Editorial ink hero — mentor teaching tool. */}
+      <section className="ed-hero">
+        <span
+          aria-hidden="true"
+          className="ed-hero-orbit -right-24 -top-40 h-[520px] w-[520px]"
+        />
+        <span
+          aria-hidden="true"
+          className="ed-hero-orbit gold -left-40 bottom-[-11rem] h-[440px] w-[440px]"
+        />
+        <div className="relative z-[1] mx-auto max-w-4xl px-4 py-14 sm:py-16">
+          <p className="eyebrow text-bff-300">
+            <span className="eyebrow-line" aria-hidden="true" />
+            <Wand2 className="h-3.5 w-3.5" aria-hidden="true" />
+            {zh ? '导师工具' : es ? 'Herramienta para mentores' : 'Mentor tool'}
+          </p>
+          <h1 className="mt-4 font-display text-4xl font-extrabold leading-[1.05] text-white sm:text-5xl">
+            {zh ? (
+              <>
+                教案与练习题<em>生成器</em>
+              </>
+            ) : es ? (
+              <>
+                <em>Generador</em> de planes de clase y hojas de trabajo
+              </>
+            ) : (
+              <>
+                Lesson plan &amp; worksheet <em>generator</em>
+              </>
+            )}
+          </h1>
+          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/70">
+            {zh
+              ? '为您的课堂草拟符合 BFF Academy 课程的理财教学材料。请先审阅并根据学生情况进行调整。'
+              : es
+                ? 'Redacta materiales de educación financiera alineados con el currículo de BFF Academy para tu aula. Revísalos y adáptalos a tus estudiantes antes de usarlos.'
+                : 'Draft financial-literacy teaching materials aligned to the BFF Academy curriculum for your classroom. Always review and adapt them for your students before use.'}
+          </p>
+        </div>
+      </section>
+
+      <div className="mx-auto max-w-4xl px-4 py-10">
 
       {!AI_ENABLED && (
         <div role="status" className="card mb-6 border-amber-200 bg-amber-50">
@@ -432,7 +458,7 @@ export default function LessonPlanGenerator() {
         {markdown && (
           <div className="card">
             <div className="mb-4 flex flex-wrap items-center justify-between gap-3 print:hidden">
-              <h2 className="font-display text-xl font-bold text-slate-900">{resultName}</h2>
+              <h2 className="font-display text-xl font-bold text-ink">{resultName}</h2>
               <div className="flex flex-wrap gap-2">
                 <button type="button" className="btn-secondary" onClick={handleCopy}>
                   {copied ? <Check className="h-4 w-4" aria-hidden="true" /> : <Copy className="h-4 w-4" aria-hidden="true" />}
@@ -462,6 +488,7 @@ export default function LessonPlanGenerator() {
           </div>
         )}
       </section>
+      </div>
     </div>
   )
 }

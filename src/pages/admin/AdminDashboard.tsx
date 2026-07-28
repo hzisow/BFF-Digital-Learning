@@ -15,6 +15,7 @@ import {
   RefreshCw,
   School,
   Settings,
+  Sparkles,
   Wand2,
 } from 'lucide-react'
 import type { User } from '@supabase/supabase-js'
@@ -57,14 +58,19 @@ function ClassroomCard({
 }) {
   const { copied, copy } = useCopy()
   return (
-    <div className="card flex flex-col gap-4 transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-1 hover:border-bff-300 hover:shadow-card-hover">
-      <div>
-        <h3 className="font-display text-lg font-bold text-slate-900">
-          {classroom.name}
-        </h3>
-        <p className="text-sm text-slate-500">
-          {classroom.school ?? (zh ? '未填写学校' : es ? 'Sin escuela indicada' : 'No school listed')}
-        </p>
+    <div className="card lift accent-left flex flex-col gap-4 pl-7">
+      <div className="flex items-start gap-3">
+        <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-[6px] bg-bff-50 text-bff-600">
+          <GraduationCap className="h-5 w-5" aria-hidden="true" />
+        </span>
+        <div className="min-w-0">
+          <h3 className="font-display text-lg font-bold text-ink">
+            {classroom.name}
+          </h3>
+          <p className="text-sm text-ink/50">
+            {classroom.school ?? (zh ? '未填写学校' : es ? 'Sin escuela indicada' : 'No school listed')}
+          </p>
+        </div>
       </div>
       <div className="flex items-center gap-2">
         <span
@@ -264,29 +270,65 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 className="font-display text-3xl font-bold text-slate-900">
-            {zh ? '您好，' : es ? 'Hola, ' : 'Hey, '}{displayName(adminUser, zh, es)} <span aria-hidden="true">👋</span>
-          </h1>
-          <p className="mt-1 text-slate-600">
-            {zh
-              ? '您的导师仪表板——班级、作业和实时游戏。'
-              : es
-                ? 'Tu panel de mentor: aulas, tareas y juegos en vivo.'
-                : 'Your mentor dashboard — classrooms, assignments, and live games.'}
-          </p>
+    <div>
+      {/* Editorial ink hero — mentor console. */}
+      <section className="ed-hero">
+        <span
+          aria-hidden="true"
+          className="ed-hero-orbit -right-24 -top-40 h-[520px] w-[520px]"
+        />
+        <span
+          aria-hidden="true"
+          className="ed-hero-orbit gold -left-40 bottom-[-11rem] h-[440px] w-[440px]"
+        />
+        <div className="relative z-[1] mx-auto flex max-w-6xl flex-wrap items-end justify-between gap-6 px-4 py-14 sm:py-16">
+          <div className="max-w-2xl">
+            <p className="eyebrow text-bff-300">
+              <span className="eyebrow-line" aria-hidden="true" />
+              {zh ? '导师控制台' : es ? 'Consola del mentor' : 'Mentor console'}
+            </p>
+            <h1 className="mt-4 font-display text-4xl font-extrabold leading-[1.05] text-white sm:text-5xl">
+              {zh ? (
+                <>
+                  您的导师<em>仪表板</em>
+                </>
+              ) : es ? (
+                <>
+                  Tu panel de <em>mentor</em>
+                </>
+              ) : (
+                <>
+                  Your mentor <em>dashboard</em>
+                </>
+              )}
+            </h1>
+            <p className="mt-5 text-lg leading-relaxed text-white/70">
+              {zh
+                ? `您好，${displayName(adminUser, zh, es)} — 班级、作业和实时游戏，尽在此处。`
+                : es
+                  ? `Hola, ${displayName(adminUser, zh, es)} — aulas, tareas y juegos en vivo, todo en un lugar.`
+                  : `Hey, ${displayName(adminUser, zh, es)} — classrooms, assignments, and live games, all in one place.`}
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Link
+              to="/account"
+              className="inline-flex items-center gap-2 rounded-[5px] border border-white/25 px-4 py-2 font-display font-semibold text-white/90 transition-[transform,background-color,color] duration-150 hover:bg-white/10 hover:text-white active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-bff-400 focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+            >
+              <Settings className="h-4 w-4" aria-hidden="true" /> {zh ? '账户' : es ? 'Cuenta' : 'Account'}
+            </Link>
+            <button
+              type="button"
+              className="inline-flex items-center gap-2 rounded-[5px] border border-white/25 px-4 py-2 font-display font-semibold text-white/90 transition-[transform,background-color,color] duration-150 hover:bg-white/10 hover:text-white active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-bff-400 focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+              onClick={() => void handleSignOut()}
+            >
+              <LogOut className="h-4 w-4" aria-hidden="true" /> {zh ? '退出登录' : es ? 'Cerrar sesión' : 'Sign out'}
+            </button>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Link to="/account" className="btn-ghost">
-            <Settings className="h-4 w-4" aria-hidden="true" /> {zh ? '账户' : es ? 'Cuenta' : 'Account'}
-          </Link>
-          <button type="button" className="btn-ghost" onClick={() => void handleSignOut()}>
-            <LogOut className="h-4 w-4" aria-hidden="true" /> {zh ? '退出登录' : es ? 'Cerrar sesión' : 'Sign out'}
-          </button>
-        </div>
-      </div>
+      </section>
+
+      <div className="mx-auto max-w-6xl px-4 py-10">
 
       {/* ---------- Pending team approvals ---------- */}
       {pending.length > 0 && (
@@ -336,7 +378,7 @@ export default function AdminDashboard() {
       {/* ---------- Your classrooms ---------- */}
       <section className="mt-10">
         <div className="flex items-center justify-between gap-4">
-          <h2 className="flex items-center gap-2 font-display text-xl font-bold text-slate-900">
+          <h2 className="flex items-center gap-2 font-display text-xl font-bold text-ink">
             <GraduationCap className="h-5 w-5 text-bff-600" aria-hidden="true" />
             {zh ? '您的班级' : es ? 'Tus aulas' : 'Your classrooms'}
           </h2>
@@ -446,7 +488,7 @@ export default function AdminDashboard() {
 
       {/* ---------- Quick host (any game, no classroom needed) ---------- */}
       <section className="mt-10">
-        <h2 className="flex items-center gap-2 font-display text-xl font-bold text-slate-900">
+        <h2 className="flex items-center gap-2 font-display text-xl font-bold text-ink">
           <Play className="h-5 w-5 text-bff-600" aria-hidden="true" />
           {zh ? '实时游戏' : es ? 'Juego en vivo' : 'Live game'}
         </h2>
@@ -464,26 +506,31 @@ export default function AdminDashboard() {
 
       {/* ---------- Teaching tools (AI) ---------- */}
       <section className="mt-10">
-        <h2 className="flex items-center gap-2 font-display text-xl font-bold text-slate-900">
+        <h2 className="flex items-center gap-2 font-display text-xl font-bold text-ink">
           <Wand2 className="h-5 w-5 text-bff-600" aria-hidden="true" />
           {zh ? '教学工具' : es ? 'Herramientas de enseñanza' : 'Teaching tools'}
         </h2>
-        <div className="card mt-4 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-          <div>
-            <p className="font-display font-semibold text-slate-900">
-              {zh
-                ? 'AI 教案与练习题生成器'
-                : es
-                  ? 'Generador de planes de clase y hojas de trabajo con IA'
-                  : 'AI lesson-plan & worksheet generator'}
-            </p>
-            <p className="mt-1 text-sm text-slate-600">
-              {zh
-                ? '输入一个主题，即可获得可打印的、符合课程标准的教案或练习题（含答案）。'
-                : es
-                  ? 'Escribe un tema y obtén un plan de clase o una hoja de trabajo imprimible y alineada al plan de estudios (con respuestas).'
-                  : 'Type a topic and get a printable, curriculum-aligned lesson plan or worksheet (with answer key).'}
-            </p>
+        <div className="card lift accent-left mt-4 flex flex-col items-start justify-between gap-4 pl-7 sm:flex-row sm:items-center">
+          <div className="flex items-start gap-3">
+            <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-[6px] bg-bff-50 text-bff-600">
+              <Sparkles className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <div>
+              <p className="font-display font-semibold text-ink">
+                {zh
+                  ? 'AI 教案与练习题生成器'
+                  : es
+                    ? 'Generador de planes de clase y hojas de trabajo con IA'
+                    : 'AI lesson-plan & worksheet generator'}
+              </p>
+              <p className="mt-1 text-sm text-ink/60">
+                {zh
+                  ? '输入一个主题，即可获得可打印的、符合课程标准的教案或练习题（含答案）。'
+                  : es
+                    ? 'Escribe un tema y obtén un plan de clase o una hoja de trabajo imprimible y alineada al plan de estudios (con respuestas).'
+                    : 'Type a topic and get a printable, curriculum-aligned lesson plan or worksheet (with answer key).'}
+              </p>
+            </div>
           </div>
           <Link to="/admin/generate" className="btn-primary shrink-0">
             {zh ? '打开生成器' : es ? 'Abrir generador' : 'Open generator'}
@@ -491,6 +538,7 @@ export default function AdminDashboard() {
           </Link>
         </div>
       </section>
+      </div>
     </div>
   )
 }

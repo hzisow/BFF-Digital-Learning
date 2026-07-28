@@ -3,7 +3,7 @@
 
 import { useEffect, useState, type FormEvent } from 'react'
 import { Link, Navigate } from 'react-router-dom'
-import { ArrowLeft, Check } from 'lucide-react'
+import { ArrowLeft, Check, UserCog } from 'lucide-react'
 import { BACKEND_ENABLED } from '../../lib/config'
 import { supabase } from '../../lib/supabase'
 import { useAdmin } from '../../lib/session'
@@ -79,15 +79,34 @@ export default function AccountPage() {
         <Link to="/admin" className="inline-flex items-center gap-1 text-sm font-semibold text-bff-700 hover:underline">
           <ArrowLeft className="h-4 w-4" aria-hidden="true" /> {zh ? '返回仪表板' : es ? 'Volver al panel' : 'Back to dashboard'}
         </Link>
-        <h1 className="mt-3 font-display text-3xl font-bold text-slate-900">{zh ? '您的账户' : es ? 'Tu cuenta' : 'Your account'}</h1>
-        <p className="mt-2 text-slate-600">
+        <p className="eyebrow mt-5">
+          <span className="eyebrow-line" aria-hidden="true" />
+          <UserCog className="h-3.5 w-3.5" aria-hidden="true" />
+          {zh ? '账户' : es ? 'Cuenta' : 'Account'}
+        </p>
+        <h1 className="mt-2 font-display text-3xl font-extrabold leading-[1.05] text-ink sm:text-4xl">
+          {zh ? (
+            <>
+              您的<em>账户</em>
+            </>
+          ) : es ? (
+            <>
+              Tu <em>cuenta</em>
+            </>
+          ) : (
+            <>
+              Your <em>account</em>
+            </>
+          )}
+        </h1>
+        <p className="mt-3 text-ink/70">
           {zh ? '已用 Google 登录为 ' : es ? 'Sesión iniciada con Google como ' : 'Signed in with Google as '}
-          <span className="font-semibold">{adminUser.email}</span>.
+          <span className="font-semibold text-ink">{adminUser.email}</span>.
         </p>
       </div>
 
-      <div className="card animate-pop-in">
-        <h2 className="font-display text-lg font-bold text-slate-900">{zh ? '您的信息' : es ? 'Tus datos' : 'Your details'}</h2>
+      <div className="card accent-left animate-pop-in pl-7">
+        <h2 className="font-display text-lg font-bold text-ink">{zh ? '您的信息' : es ? 'Tus datos' : 'Your details'}</h2>
         <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-4">
           <label className="block">
             <span className="mb-1 block text-sm font-semibold text-slate-700">{zh ? '全名' : es ? 'Nombre completo' : 'Full name'}</span>
