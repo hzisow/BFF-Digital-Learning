@@ -13,7 +13,23 @@ import { Logo } from '../../components/Logo'
 import { BACKEND_ENABLED } from '../../lib/config'
 import { useAdmin } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
-import { Check, Play, Trophy } from 'lucide-react'
+import { AppIcon } from '../../lib/icons'
+import {
+  ArrowRight,
+  Award,
+  BookOpen,
+  Check,
+  Crown,
+  Eye,
+  Flag,
+  HelpCircle,
+  Lightbulb,
+  Medal,
+  Monitor,
+  PartyPopper,
+  Play,
+  Trophy,
+} from 'lucide-react'
 
 const QUESTION_SECONDS = 20
 
@@ -31,6 +47,18 @@ const BIG_BUTTON =
 
 function optionLetter(i: number): string {
   return String.fromCharCode(65 + i)
+}
+
+/**
+ * Podium mark for a standings row: an icon for the top three, a plain number
+ * for everyone else. Purely decorative — every row also carries a screen-reader
+ * place label next to it.
+ */
+function RankMark({ index, className = 'h-6 w-6' }: { index: number; className?: string }) {
+  if (index === 0) return <Crown className={`${className} text-gold-400`} aria-hidden="true" />
+  if (index === 1) return <Medal className={`${className} text-white`} aria-hidden="true" />
+  if (index === 2) return <Award className={`${className} text-bff-200`} aria-hidden="true" />
+  return <>{index + 1}.</>
 }
 
 function HostShell({ code, children }: { code?: string; children: ReactNode }) {
@@ -193,7 +221,7 @@ export default function QuizHost() {
     return (
       <HostShell>
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
-          <p className="text-4xl" aria-hidden="true">🖥️</p>
+          <Monitor className="mx-auto block h-11 w-11 text-bff-600" aria-hidden="true" />
           <h1 className="font-display text-xl font-bold text-ink">
             {zh ? '测验主持人屏幕' : es ? 'Pantalla del anfitrión del quiz' : 'Quiz host screen'}
           </h1>
@@ -222,7 +250,7 @@ export default function QuizHost() {
     return (
       <HostShell>
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
-          <p className="text-4xl" aria-hidden="true">🤔</p>
+          <HelpCircle className="mx-auto block h-11 w-11 text-bff-600" aria-hidden="true" />
           <h1 className="font-display text-xl font-bold text-ink">
             {zh ? '无法加载测验' : es ? 'No se pudo cargar el quiz' : 'Could not load the quiz'}
           </h1>
@@ -250,7 +278,7 @@ export default function QuizHost() {
     return (
       <HostShell code={session.code}>
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
-          <p className="text-4xl" aria-hidden="true">📚</p>
+          <BookOpen className="mx-auto block h-11 w-11 text-bff-600" aria-hidden="true" />
           <h1 className="font-display text-xl font-bold text-ink">
             {zh
               ? '这节课暂时无法使用'
@@ -302,15 +330,15 @@ export default function QuizHost() {
             {zh ? '实时测验' : es ? 'QUIZ EN VIVO' : 'LIVE QUIZ'}
           </p>
           <h1 className="font-display text-4xl font-bold sm:text-5xl">
-            <span aria-hidden="true">{lesson.emoji}</span>{' '}
+            <AppIcon name={lesson.icon} className="inline h-9 w-9 align-[-0.12em] sm:h-11 sm:w-11" />{' '}
             {zh ? '实时测验' : es ? 'Quiz en vivo' : 'Live Quiz'} — {lesson.title}
           </h1>
           <p className="text-xl text-bff-200">
             {zh
-              ? '打开网站 → 活动 → 实时测验，然后输入这个代码'
+              ? '打开网站，进入“活动”，选择“实时测验”，然后输入这个代码'
               : es
-                ? 'Ve al sitio → Actividades → Quiz en vivo, luego ingresa este código'
-                : 'Go to the site → Activities → Live Quiz, then enter this code'}
+                ? 'Ve al sitio, luego a Actividades, luego a Quiz en vivo, e ingresa este código'
+                : 'Go to the site, then Activities, then Live Quiz, and enter this code'}
           </p>
           <p className="font-display text-7xl font-bold tracking-widest sm:text-8xl md:text-9xl">
             {session.code}
@@ -407,7 +435,7 @@ export default function QuizHost() {
             </p>
             <button className={BIG_BUTTON} onClick={() => patchSession({ state: 'reveal' })}>
               {zh ? '揭晓答案' : es ? 'Revelar respuesta' : 'Reveal answer'}{' '}
-              <span aria-hidden="true">👀</span>
+              <Eye className="inline h-6 w-6 align-[-0.15em]" aria-hidden="true" />
             </button>
           </ControlBar>
         </div>
@@ -458,7 +486,8 @@ export default function QuizHost() {
           <div className="grid gap-6 lg:grid-cols-[1fr_minmax(300px,360px)]">
             <div className="rounded-2xl bg-white/10 p-6">
               <h2 className="mb-3 font-display text-lg font-bold uppercase tracking-wide text-bff-200">
-                <span aria-hidden="true">💡</span> {zh ? '为什么' : es ? 'Por qué' : 'Why'}
+                <Lightbulb className="inline h-5 w-5 align-[-0.15em]" aria-hidden="true" />{' '}
+                {zh ? '为什么' : es ? 'Por qué' : 'Why'}
               </h2>
               <p className="text-2xl font-semibold leading-snug">{q.explanation}</p>
             </div>
@@ -470,9 +499,9 @@ export default function QuizHost() {
               <ol className="space-y-2.5">
                 {standings.slice(0, 5).map((p, i) => (
                   <li key={p.id} className="flex items-center justify-between gap-3 text-xl">
-                    <span className="font-display font-semibold">
-                      <span aria-hidden="true">
-                        {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`}
+                    <span className="flex items-center gap-1.5 font-display font-semibold">
+                      <span className="inline-flex w-7 shrink-0 justify-center" aria-hidden="true">
+                        <RankMark index={i} />
                       </span>
                       <span className="sr-only">
                         {zh
@@ -480,7 +509,7 @@ export default function QuizHost() {
                           : es
                             ? `puesto ${i + 1}: `
                             : `${i + 1}${['st', 'nd', 'rd'][i] ?? 'th'} place: `}
-                      </span>{' '}
+                      </span>
                       {p.nickname}
                     </span>
                     <span className="whitespace-nowrap font-display font-bold text-bff-100">
@@ -500,11 +529,12 @@ export default function QuizHost() {
             {lastQuestion ? (
               <button className={BIG_BUTTON} onClick={() => patchSession({ state: 'done' })}>
                 {zh ? '最终结果' : es ? 'Resultados finales' : 'Final results'}{' '}
-                <span aria-hidden="true">🏁</span>
+                <Flag className="inline h-6 w-6 align-[-0.15em]" aria-hidden="true" />
               </button>
             ) : (
               <button className={BIG_BUTTON} onClick={() => startQuestion(qIndex + 1)}>
-                {zh ? '下一题 →' : es ? 'Siguiente pregunta →' : 'Next question →'}
+                {zh ? '下一题' : es ? 'Siguiente pregunta' : 'Next question'}{' '}
+                <ArrowRight className="inline h-6 w-6 align-[-0.15em]" aria-hidden="true" />
               </button>
             )}
           </ControlBar>
@@ -530,7 +560,9 @@ export default function QuizHost() {
                       : 'bg-white/10 sm:order-3'
                 }`}
               >
-                <p className="text-6xl" aria-hidden="true">{i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉'}</p>
+                <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10">
+                  <RankMark index={i} className="h-10 w-10" />
+                </span>
                 <p className="mt-3 break-words font-display text-3xl font-bold">
                   <span className="sr-only">
                     {zh
@@ -575,7 +607,7 @@ export default function QuizHost() {
           )}
           <p className="text-xl text-bff-200">
             {zh ? '大家答得都很棒！' : es ? '¡Excelente quiz, todos!' : 'Great quizzing, everyone!'}{' '}
-            <span aria-hidden="true">🎉</span>
+            <PartyPopper className="inline h-6 w-6 align-[-0.15em] text-gold-400" aria-hidden="true" />
           </p>
         </div>
       )}

@@ -14,6 +14,8 @@ import { getActivity } from '../../lib/activities'
 import { Logo } from '../../components/Logo'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
+import { AppIcon } from '../../lib/icons'
+import { Construction, Flag, Gamepad2, HelpCircle, PartyPopper } from 'lucide-react'
 
 import BensBudget from '../bens-budget/BensBudget'
 import BensInsurance from '../bens-insurance/BensInsurance'
@@ -25,7 +27,7 @@ import GoalGetter from '../goal-getter/GoalGetter'
 
 const NICK_KEY = 'bff_live_nick'
 
-// activity_slug → the solo game component. Typed as ComponentType<LiveGameProps>
+// activity_slug maps to the solo game component. Typed as ComponentType<LiveGameProps>
 // so this compiles whether or not each game has landed its optional onComplete
 // prop yet — a parallel agent is wiring those in.
 const GAME_REGISTRY: Record<string, React.ComponentType<LiveGameProps>> = {
@@ -48,7 +50,7 @@ function errorMessage(err: unknown, es: boolean, zh: boolean): string {
         : 'Something went wrong. Try again!'
 }
 
-/** Rank order: finished players first, then by score (high→low), unscored last. */
+/** Rank order: finished players first, then by score (high to low), unscored last. */
 function rankPlayers(players: LivePlayer[]): LivePlayer[] {
   return [...players].sort((a, b) => {
     if (a.finished !== b.finished) return a.finished ? -1 : 1
@@ -183,9 +185,7 @@ export default function CoPlayPlayer() {
     return (
       <Shell code={code}>
         <div className="card mx-auto mt-10 max-w-md space-y-3 text-center">
-          <p className="text-4xl" aria-hidden="true">
-            🤔
-          </p>
+          <HelpCircle className="mx-auto block h-11 w-11 text-bff-600" aria-hidden="true" />
           <h1 className="font-display text-xl font-bold text-ink">{zh ? '嗯，这没能成功' : es ? 'Mmm, eso no funcionó' : 'Hmm, that did not work'}</h1>
           <p className="text-sm text-ink/70">{loadError}</p>
           <Link to="/" className="btn-primary">
@@ -215,9 +215,11 @@ export default function CoPlayPlayer() {
       <Shell code={session.code}>
         <div className="card mx-auto mt-10 max-w-md space-y-4">
           <div className="text-center">
-            <p className="text-4xl" aria-hidden="true">
-              {activity?.emoji ?? '🎮'}
-            </p>
+            {activity ? (
+              <AppIcon name={activity.icon} className="mx-auto block h-11 w-11 text-bff-600" />
+            ) : (
+              <Gamepad2 className="mx-auto block h-11 w-11 text-bff-600" aria-hidden="true" />
+            )}
             <h1 className="mt-2 font-display text-xl font-bold text-ink">
               {zh ? '你找到游戏啦！' : es ? '¡Encontraste el juego!' : 'You found the game!'}
             </h1>
@@ -270,9 +272,7 @@ export default function CoPlayPlayer() {
     return (
       <Shell code={session.code}>
         <div className="card animate-pop-in mt-6 space-y-4 text-center" role="status">
-          <p className="text-5xl" aria-hidden="true">
-            🏁
-          </p>
+          <Flag className="mx-auto block h-14 w-14 text-bff-600" aria-hidden="true" />
           <h1 className="font-display text-2xl font-bold text-ink">{zh ? '游戏结束！' : es ? '¡Juego terminado!' : 'Game over!'}</h1>
           {myRank > 0 ? (
             <p className="font-display text-lg font-bold text-bff-700">
@@ -300,9 +300,7 @@ export default function CoPlayPlayer() {
     return (
       <Shell code={session.code}>
         <div className="card animate-pop-in mt-6 space-y-4 text-center" aria-live="polite">
-          <p className="text-5xl" aria-hidden="true">
-            🎉
-          </p>
+          <PartyPopper className="mx-auto block h-14 w-14 text-gold-500" aria-hidden="true" />
           <h1 className="font-display text-2xl font-bold text-ink">
             {zh ? `你进来啦，${player.nickname}！` : es ? `¡Estás dentro, ${player.nickname}!` : `You're in, ${player.nickname}!`}
           </h1>
@@ -328,9 +326,7 @@ export default function CoPlayPlayer() {
     return (
       <Shell code={session.code}>
         <div className="card mx-auto mt-10 max-w-md space-y-3 text-center">
-          <p className="text-4xl" aria-hidden="true">
-            🚧
-          </p>
+          <Construction className="mx-auto block h-11 w-11 text-gold-500" aria-hidden="true" />
           <h1 className="font-display text-xl font-bold text-ink">
             {zh ? '这个游戏还不能实时对战' : es ? 'Este juego todavía no se puede jugar en vivo' : 'This game can’t be played live yet'}
           </h1>
@@ -351,9 +347,7 @@ export default function CoPlayPlayer() {
     return (
       <Shell code={session.code}>
         <div className="card animate-pop-in mt-6 space-y-4 text-center" role="status">
-          <p className="text-5xl" aria-hidden="true">
-            🎉
-          </p>
+          <PartyPopper className="mx-auto block h-14 w-14 text-gold-500" aria-hidden="true" />
           <h1 className="font-display text-2xl font-bold text-ink">
             {myScore !== null ? (zh ? `你得了 ${myScore} 分！` : es ? `¡Obtuviste ${myScore} puntos!` : `You scored ${myScore}!`) : zh ? '搞定！' : es ? '¡Listo!' : 'All done!'}
           </h1>

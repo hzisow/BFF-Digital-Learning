@@ -37,7 +37,7 @@ function makeCode(): string {
   return code
 }
 
-/** Look up a code across all live game types → tells the join screen where to go. */
+/** Look up a code across all live game types, telling the join screen where to go. */
 export async function findLiveSession(code: string): Promise<FoundSession | null> {
   const sb = requireSupabase()
   // Anonymous students need a session before the RPC (it's granted to authenticated).

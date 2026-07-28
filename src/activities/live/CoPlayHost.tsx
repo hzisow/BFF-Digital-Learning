@@ -11,7 +11,8 @@ import {
 import { getActivity } from '../../lib/activities'
 import { Logo } from '../../components/Logo'
 import { useLang } from '../../lib/i18n'
-import { Play, Trophy } from 'lucide-react'
+import { AppIcon } from '../../lib/icons'
+import { Award, Crown, Flag, HelpCircle, Medal, Play, Puzzle, Trophy } from 'lucide-react'
 
 const BIG_BUTTON =
   'rounded-2xl bg-white px-8 py-4 font-display text-2xl font-bold text-bff-900 shadow-lg transition hover:bg-bff-50 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50'
@@ -26,7 +27,7 @@ function errorMessage(err: unknown, es: boolean, zh: boolean): string {
         : 'Could not load the game.'
 }
 
-/** Rank order: finished players first, then by score (high→low), unscored last. */
+/** Rank order: finished players first, then by score (high to low), unscored last. */
 function rankPlayers(players: LivePlayer[]): LivePlayer[] {
   return [...players].sort((a, b) => {
     if (a.finished !== b.finished) return a.finished ? -1 : 1
@@ -37,6 +38,18 @@ function rankPlayers(players: LivePlayer[]): LivePlayer[] {
     if (bs === null) return -1
     return bs - as
   })
+}
+
+/**
+ * Podium mark for a standings row: an icon for the top three, a plain number
+ * for everyone else. Decorative — rows carry their own screen-reader place
+ * label.
+ */
+function RankMark({ index, className = 'h-6 w-6' }: { index: number; className?: string }) {
+  if (index === 0) return <Crown className={`${className} text-gold-400`} aria-hidden="true" />
+  if (index === 1) return <Medal className={`${className} text-white`} aria-hidden="true" />
+  if (index === 2) return <Award className={`${className} text-bff-200`} aria-hidden="true" />
+  return <>{index + 1}.</>
 }
 
 function HostShell({ code, children }: { code?: string; children: ReactNode }) {
@@ -128,9 +141,7 @@ export default function CoPlayHost() {
     return (
       <HostShell>
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
-          <p className="text-4xl" aria-hidden="true">
-            🤔
-          </p>
+          <HelpCircle className="mx-auto block h-11 w-11 text-bff-600" aria-hidden="true" />
           <h1 className="font-display text-xl font-bold text-ink">{zh ? '无法加载游戏' : es ? 'No se pudo cargar el juego' : 'Could not load the game'}</h1>
           <p className="text-sm text-ink/70">{error}</p>
           <Link to="/" className="btn-primary">
@@ -157,9 +168,7 @@ export default function CoPlayHost() {
     return (
       <HostShell code={session.code}>
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
-          <p className="text-4xl" aria-hidden="true">
-            🧩
-          </p>
+          <Puzzle className="mx-auto block h-11 w-11 text-bff-600" aria-hidden="true" />
           <h1 className="font-display text-xl font-bold text-ink">{zh ? '未知的游戏' : es ? 'Juego desconocido' : 'Unknown game'}</h1>
           <p className="text-sm text-ink/70">
             {zh ? (
@@ -199,7 +208,8 @@ export default function CoPlayHost() {
             {zh ? '实时对战' : es ? 'JUEGO EN VIVO' : 'LIVE GAME'}
           </p>
           <h1 className="font-display text-4xl font-bold sm:text-5xl">
-            <span aria-hidden="true">{activity.emoji}</span> {activity.title}
+            <AppIcon name={activity.icon} className="inline h-9 w-9 align-[-0.12em] sm:h-11 sm:w-11" />{' '}
+            {activity.title}
           </h1>
           <p className="text-xl text-bff-200">{zh ? '拿起一台设备，用游戏代码加入' : es ? 'Toma un dispositivo y únete con el código del juego' : 'Grab a device and join with the game code'}</p>
           <p className="font-display text-7xl font-bold tracking-widest sm:text-8xl md:text-9xl">
@@ -207,10 +217,10 @@ export default function CoPlayHost() {
           </p>
           <p className="max-w-full overflow-x-auto rounded-xl bg-white/10 px-5 py-2.5 text-lg text-bff-100">
             {zh
-              ? '同学们：进入网站 → 加入实时对战 → 输入这个代码'
+              ? '同学们：进入网站，选择“加入实时对战”，然后输入这个代码'
               : es
-                ? 'Estudiantes: entren al sitio → Unirse a un juego en vivo → ingresen este código'
-                : 'Students: go to the site → Join a live game → enter this code'}
+                ? 'Estudiantes: entren al sitio, elijan Unirse a un juego en vivo e ingresen este código'
+                : 'Students: go to the site, choose Join a live game, then enter this code'}
           </p>
           <div className="w-full">
             <p className="mb-3 font-display text-2xl font-bold text-bff-100">
@@ -253,7 +263,8 @@ export default function CoPlayHost() {
       {session.state === 'playing' && (
         <div className="space-y-6 pt-2">
           <h1 className="font-display text-4xl font-bold sm:text-5xl">
-            <span aria-hidden="true">{activity.emoji}</span> {activity.title}
+            <AppIcon name={activity.icon} className="inline h-9 w-9 align-[-0.12em] sm:h-11 sm:w-11" />{' '}
+            {activity.title}
           </h1>
           <p
             className="font-display text-3xl font-bold text-bff-100 sm:text-4xl"
@@ -271,8 +282,18 @@ export default function CoPlayHost() {
                   key={p.id}
                   className="flex items-center justify-between gap-3 border-b border-white/10 py-1.5 text-xl last:border-0"
                 >
-                  <span className="font-display font-semibold">
-                    {i + 1}. {p.nickname}
+                  <span className="flex items-center gap-1.5 font-display font-semibold">
+                    <span className="inline-flex w-7 shrink-0 justify-center" aria-hidden="true">
+                      <RankMark index={i} />
+                    </span>
+                    <span className="sr-only">
+                      {zh
+                        ? `第 ${i + 1} 名：`
+                        : es
+                          ? `puesto ${i + 1}: `
+                          : `${i + 1}${['st', 'nd', 'rd'][i] ?? 'th'} place: `}
+                    </span>
+                    {p.nickname}
                   </span>
                   <span className="whitespace-nowrap font-display font-bold text-bff-100">
                     {p.finished && p.score !== null ? (
@@ -297,7 +318,8 @@ export default function CoPlayHost() {
                   : 'Everyone plays at their own pace — end the game when the room is done.'}
             </p>
             <button className={BIG_BUTTON} onClick={() => setState('ended')}>
-              {zh ? '结束游戏' : es ? 'Terminar juego' : 'End game'} <span aria-hidden="true">🏁</span>
+              {zh ? '结束游戏' : es ? 'Terminar juego' : 'End game'}{' '}
+              <Flag className="inline h-6 w-6 align-[-0.15em]" aria-hidden="true" />
             </button>
           </ControlBar>
         </div>
@@ -321,9 +343,9 @@ export default function CoPlayHost() {
                       : 'bg-white/10 sm:order-3'
                 }`}
               >
-                <p className="text-6xl" aria-hidden="true">
-                  {i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉'}
-                </p>
+                <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10">
+                  <RankMark index={i} className="h-10 w-10" />
+                </span>
                 <p className="mt-3 break-words font-display text-3xl font-bold">
                   <span className="sr-only">{zh ? `第 ${i + 1} 名：` : es ? `puesto ${i + 1}: ` : `${i + 1}${['st', 'nd', 'rd'][i] ?? 'th'} place: `}</span>
                   {p.nickname}
