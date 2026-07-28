@@ -5,7 +5,7 @@
 // handling for the "not set up yet" and transient-error cases.
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
-import { MessageCircle, Send, RefreshCw } from 'lucide-react'
+import { MessageCircle, Send, RefreshCw, Bot } from 'lucide-react'
 import { invokeAI, AI_ENABLED, AINotConfiguredError } from '../lib/ai'
 import { useLang } from '../lib/i18n'
 
@@ -94,7 +94,19 @@ export default function MoneyCoach() {
 
   // ---- Localized UI chrome ----
   const kicker = zh ? '理财教练' : es ? 'Asesor de dinero' : 'Money Coach'
-  const title = zh ? 'AI 理财教练' : es ? 'Asesor de dinero con IA' : 'AI Money Coach'
+  const titleNode = zh ? (
+    <>
+      AI <em>理财</em>教练
+    </>
+  ) : es ? (
+    <>
+      Asesor de <em>dinero</em> con IA
+    </>
+  ) : (
+    <>
+      AI <em>Money</em> Coach
+    </>
+  )
   const blurb = zh
     ? '有任何关于赚钱、预算、存钱、信用或大学费用的问题，随时问我。'
     : es
@@ -150,14 +162,29 @@ export default function MoneyCoach() {
       : "The AI coach isn't set up yet — ask your BFF mentor."
 
   const header = (
-    <div className="text-center">
-      <p className="chip mx-auto bg-bff-50 text-bff-700">
-        <MessageCircle className="h-4 w-4" aria-hidden="true" />
-        {kicker}
-      </p>
-      <h1 className="mt-3 font-display text-4xl font-extrabold text-slate-900">{title}</h1>
-      <p className="mx-auto mt-3 max-w-xl leading-relaxed text-slate-600">{blurb}</p>
-    </div>
+    <header className="ed-hero chamfer px-6 py-9 sm:px-10 sm:py-11">
+      <span
+        className="ed-hero-orbit"
+        style={{ width: 320, height: 320, top: -150, right: -110 }}
+        aria-hidden="true"
+      />
+      <span
+        className="ed-hero-orbit gold"
+        style={{ width: 200, height: 200, bottom: -120, left: -70 }}
+        aria-hidden="true"
+      />
+      <div className="relative z-[1]">
+        <p className="eyebrow text-bff-300">
+          <span className="eyebrow-line" aria-hidden="true" />
+          <MessageCircle className="h-4 w-4" aria-hidden="true" />
+          {kicker}
+        </p>
+        <h1 className="mt-3 font-display text-4xl font-extrabold leading-[1.05] text-white sm:text-5xl">
+          {titleNode}
+        </h1>
+        <p className="mt-4 max-w-xl leading-relaxed text-white/70">{blurb}</p>
+      </div>
+    </header>
   )
 
   // Backend not connected at all — no chat, just a calm notice.
@@ -165,10 +192,7 @@ export default function MoneyCoach() {
     return (
       <div className="mx-auto max-w-2xl px-4 py-12">
         {header}
-        <div
-          role="status"
-          className="card mt-8 border-bff-100 bg-bff-50/60 text-center text-slate-700"
-        >
+        <div role="status" className="panel mt-8 p-5 pt-6 text-ink/80 shadow-card">
           {notConnectedText}
         </div>
       </div>
@@ -198,7 +222,7 @@ export default function MoneyCoach() {
           ))}
 
           {busy && (
-            <div className="flex items-center gap-2 self-start rounded-2xl rounded-bl-md bg-slate-100 px-4 py-3">
+            <div className="flex items-center gap-2 self-start rounded-[12px] rounded-tl-sm border border-ink/15 bg-white px-4 py-3">
               <span className="sr-only">{typingLabel}</span>
               <span aria-hidden="true" className="flex gap-1">
                 <Dot delay="0ms" />
@@ -211,7 +235,7 @@ export default function MoneyCoach() {
           {failed && (
             <div
               role="alert"
-              className="flex flex-wrap items-center gap-3 self-start rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+              className="flex flex-wrap items-center gap-3 self-start rounded-[10px] border border-gold-400 bg-gold-400/10 px-4 py-3 text-sm text-ink"
             >
               <span>{errorText}</span>
               <button
@@ -229,7 +253,7 @@ export default function MoneyCoach() {
           {notConfigured && (
             <div
               role="status"
-              className="self-start rounded-2xl border border-bff-100 bg-bff-50 px-4 py-3 text-sm text-slate-700"
+              className="self-start rounded-[10px] border border-ink/15 bg-paper px-4 py-3 text-sm text-ink/80"
             >
               {notSetUpText}
             </div>
@@ -241,13 +265,16 @@ export default function MoneyCoach() {
         {/* Starter prompts — only before the student has asked anything. */}
         {messages.length === 0 && (
           <div>
-            <p className="mb-2 text-sm font-semibold text-slate-500">{startersLabel}</p>
+            <p className="eyebrow mb-2 text-bff-600">
+              <span className="eyebrow-line" aria-hidden="true" />
+              {startersLabel}
+            </p>
             <div className="flex flex-wrap gap-2">
               {starters.map((s) => (
                 <button
                   key={s}
                   type="button"
-                  className="chip border border-slate-200 bg-white text-slate-700 transition hover:border-bff-300 hover:bg-bff-50 hover:text-bff-700"
+                  className="chip border border-ink/15 bg-white text-ink/80 transition hover:border-bff-400 hover:bg-bff-50 hover:text-bff-700"
                   onClick={() => send(s)}
                   disabled={busy}
                 >
@@ -286,7 +313,7 @@ export default function MoneyCoach() {
         </form>
       </div>
 
-      <p className="mt-4 px-1 text-center text-xs leading-relaxed text-slate-500">
+      <p className="mt-4 px-1 text-center text-xs leading-relaxed text-ink/50">
         {disclaimer}
       </p>
     </div>
@@ -297,15 +324,24 @@ export default function MoneyCoach() {
 
 function Bubble({ role, children }: { role: 'user' | 'assistant'; children: ReactNode }) {
   const isUser = role === 'user'
+  if (isUser) {
+    return (
+      <div className="max-w-[85%] self-end whitespace-pre-wrap rounded-[12px] rounded-br-sm bg-bff-600 px-4 py-2.5 text-white">
+        {children}
+      </div>
+    )
+  }
   return (
-    <div
-      className={
-        isUser
-          ? 'max-w-[85%] self-end whitespace-pre-wrap rounded-2xl rounded-br-md bg-bff-600 px-4 py-2.5 text-white'
-          : 'max-w-[85%] self-start whitespace-pre-wrap rounded-2xl rounded-bl-md bg-slate-100 px-4 py-2.5 text-slate-800'
-      }
-    >
-      {children}
+    <div className="flex max-w-[88%] items-start gap-2.5 self-start">
+      <span
+        aria-hidden="true"
+        className="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-ink text-white"
+      >
+        <Bot className="h-4 w-4" />
+      </span>
+      <div className="whitespace-pre-wrap rounded-[12px] rounded-tl-sm border border-ink/15 bg-white px-4 py-2.5 text-ink">
+        {children}
+      </div>
     </div>
   )
 }
@@ -313,7 +349,7 @@ function Bubble({ role, children }: { role: 'user' | 'assistant'; children: Reac
 function Dot({ delay }: { delay: string }) {
   return (
     <span
-      className="h-2 w-2 animate-bounce rounded-full bg-slate-400 motion-reduce:animate-none"
+      className="h-2 w-2 animate-bounce rounded-full bg-ink/40 motion-reduce:animate-none"
       style={{ animationDelay: delay }}
     />
   )

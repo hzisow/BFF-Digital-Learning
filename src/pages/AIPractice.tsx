@@ -123,25 +123,46 @@ export default function AIPractice() {
 
   // ---- Header (always shown) ----
   const header = (
-    <header className="mb-8">
-      <p className="chip bg-bff-100 text-bff-800">
-        <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
-        {zh ? 'AI 练习' : es ? 'Práctica con IA' : 'AI Practice'}
-      </p>
-      <h1 className="mt-3 font-display text-3xl font-bold text-slate-900">
-        {zh
-          ? '为你量身定制的练习'
-          : es
-            ? 'Práctica personalizada para ti'
-            : 'Practice made just for you'}
-      </h1>
-      <p className="mt-2 max-w-2xl leading-relaxed text-slate-600">
-        {zh
-          ? '我们会根据你最需要加强的主题，生成全新的练习题。'
-          : es
-            ? 'Generamos preguntas de práctica nuevas centradas en los temas que más necesitas reforzar.'
-            : 'We generate fresh practice questions focused on the topics you most need to strengthen.'}
-      </p>
+    <header className="ed-hero chamfer mb-8 px-6 py-9 sm:px-10 sm:py-11">
+      <span
+        className="ed-hero-orbit"
+        style={{ width: 340, height: 340, top: -160, right: -120 }}
+        aria-hidden="true"
+      />
+      <span
+        className="ed-hero-orbit gold"
+        style={{ width: 210, height: 210, bottom: -130, left: -80 }}
+        aria-hidden="true"
+      />
+      <div className="relative z-[1]">
+        <p className="eyebrow text-bff-300">
+          <span className="eyebrow-line" aria-hidden="true" />
+          <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+          {zh ? 'AI 练习' : es ? 'Práctica con IA' : 'AI Practice'}
+        </p>
+        <h1 className="mt-3 font-display text-4xl font-extrabold leading-[1.05] text-white sm:text-5xl">
+          {zh ? (
+            <>
+              为你<em>量身</em>定制的练习
+            </>
+          ) : es ? (
+            <>
+              Práctica <em>personalizada</em> para ti
+            </>
+          ) : (
+            <>
+              Practice made just for <em>you</em>
+            </>
+          )}
+        </h1>
+        <p className="mt-4 max-w-2xl leading-relaxed text-white/70">
+          {zh
+            ? '我们会根据你最需要加强的主题，生成全新的练习题。'
+            : es
+              ? 'Generamos preguntas de práctica nuevas centradas en los temas que más necesitas reforzar.'
+              : 'We generate fresh practice questions focused on the topics you most need to strengthen.'}
+        </p>
+      </div>
     </header>
   )
 
@@ -150,15 +171,15 @@ export default function AIPractice() {
     return (
       <div className="mx-auto max-w-2xl px-4 py-10">
         {header}
-        <div className="card" role="note">
-          <p className="font-display font-semibold text-slate-900">
+        <div className="panel p-6 pt-7 shadow-card" role="note">
+          <p className="font-display text-lg font-bold text-ink">
             {zh
               ? 'AI 练习暂时不可用'
               : es
                 ? 'La práctica con IA no está disponible'
                 : 'AI Practice is unavailable'}
           </p>
-          <p className="mt-2 text-sm leading-relaxed text-slate-600">
+          <p className="mt-2 text-sm leading-relaxed text-ink/70">
             {zh
               ? '此功能需要连接后端服务。请稍后再试。'
               : es
@@ -172,8 +193,9 @@ export default function AIPractice() {
 
   // ---- Weak-topic summary (shown before generating) ----
   const topicSummary = (
-    <div className="card mb-8">
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+    <div className="card accent-left mb-8 pl-7">
+      <p className="eyebrow text-bff-600">
+        <span className="eyebrow-line" aria-hidden="true" />
         {usingFallback
           ? zh
             ? '我们会从这些主题开始'
@@ -188,13 +210,13 @@ export default function AIPractice() {
       </p>
       <ul className="mt-3 flex flex-wrap gap-2">
         {topics.map((topic) => (
-          <li key={topic} className="chip bg-slate-100 text-slate-700">
+          <li key={topic} className="chip border border-ink/15 bg-paper text-ink/80">
             {topic}
           </li>
         ))}
       </ul>
       {usingFallback && (
-        <p className="mt-3 text-sm leading-relaxed text-slate-500">
+        <p className="mt-3 text-sm leading-relaxed text-ink/60">
           {zh
             ? '完成更多课程和活动后，我们就能发现你的薄弱环节，并据此定制练习。'
             : es
@@ -231,7 +253,7 @@ export default function AIPractice() {
   const errorNotice = error && (
     <div
       role="status"
-      className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-amber-800"
+      className="mt-6 rounded-[10px] border border-gold-400 bg-gold-400/10 p-5 text-ink"
     >
       {error === 'notConfigured' ? (
         <p className="text-sm leading-relaxed">
@@ -280,12 +302,14 @@ export default function AIPractice() {
     return (
       <div className="mx-auto max-w-2xl px-4 py-10">
         {header}
-        <div className="card text-center">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+        <div className="panel p-8 pt-9 text-center shadow-card">
+          <p className="eyebrow justify-center text-bff-600">
+            <span className="eyebrow-line" aria-hidden="true" />
             {zh ? '练习完成' : es ? 'Práctica completada' : 'Practice complete'}
+            <span className="eyebrow-line" aria-hidden="true" />
           </p>
-          <p className="mt-3 font-display text-4xl font-extrabold text-bff-700">{pct}%</p>
-          <p role="status" className="mt-2 leading-relaxed text-slate-600">
+          <p className="mt-4 font-display text-6xl font-extrabold text-bff-600">{pct}%</p>
+          <p role="status" className="mt-2 leading-relaxed text-ink/70">
             {zh
               ? `你答对了 ${questions.length} 道题中的 ${correctCount} 道。`
               : es
@@ -330,23 +354,33 @@ export default function AIPractice() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
       {header}
-      <p className="chip bg-bff-100 text-bff-800">{questionLabel}</p>
+      <p className="eyebrow text-bff-600">
+        <span className="eyebrow-line" aria-hidden="true" />
+        {questionLabel}
+      </p>
 
-      <section role="group" aria-label={questionLabel} className="mt-4">
-        <h2 className="font-display text-2xl font-bold text-slate-900">{q.question}</h2>
+      <section role="group" aria-label={questionLabel} className="mt-3">
+        <h2 className="font-display text-2xl font-bold text-ink sm:text-3xl">{q.question}</h2>
         <div className="mt-6 space-y-3">
           {q.options.map((opt, i) => {
             const isAnswer = i === q.answerIndex
             const isChosen = i === chosen
             let cls =
-              'border-slate-200 bg-white text-slate-700 hover:border-bff-400 hover:bg-bff-50'
+              'border-ink/15 bg-white text-ink hover:border-bff-400 hover:bg-bff-50'
+            let badgeCls = 'border-ink/20 bg-paper text-ink/70'
             if (revealed) {
-              cls = isAnswer
-                ? 'border-green-500 bg-green-50 text-green-800'
-                : isChosen
-                  ? 'border-red-400 bg-red-50 text-red-700'
-                  : 'border-slate-200 bg-white text-slate-500'
+              if (isAnswer) {
+                cls = 'border-green-500 bg-green-50 text-green-800'
+                badgeCls = 'border-green-500 bg-green-500 text-white'
+              } else if (isChosen) {
+                cls = 'border-red-400 bg-red-50 text-red-700'
+                badgeCls = 'border-red-400 bg-red-400 text-white'
+              } else {
+                cls = 'border-ink/10 bg-white text-ink/50'
+                badgeCls = 'border-ink/15 bg-paper text-ink/40'
+              }
             }
+            const letter = String.fromCharCode(65 + i)
             // Text/label marker so correctness is never conveyed by color alone.
             const marker = revealed
               ? isAnswer
@@ -370,9 +404,17 @@ export default function AIPractice() {
                 disabled={revealed}
                 onClick={() => pick(i)}
                 aria-label={marker ? `${opt} — ${marker}` : undefined}
-                className={`flex w-full items-start justify-between gap-3 rounded-xl border-2 px-4 py-3 text-left font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-bff-400 focus-visible:ring-offset-2 disabled:cursor-default ${cls}`}
+                className={`flex w-full items-start justify-between gap-3 rounded-[8px] border-2 px-4 py-3 text-left font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-bff-400 focus-visible:ring-offset-2 disabled:cursor-default ${cls}`}
               >
-                <span>{opt}</span>
+                <span className="flex items-start gap-3">
+                  <span
+                    aria-hidden="true"
+                    className={`inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border font-display text-sm font-bold ${badgeCls}`}
+                  >
+                    {letter}
+                  </span>
+                  <span>{opt}</span>
+                </span>
                 {revealed && isAnswer && (
                   <span className="inline-flex shrink-0 items-center gap-1 text-sm font-semibold">
                     <Check className="h-4 w-4" aria-hidden="true" />
