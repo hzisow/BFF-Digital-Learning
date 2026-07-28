@@ -120,6 +120,21 @@
   background: #0077b5;
 }
 
+/* Horizontal course track — scrolls left to right like a line of text.
+   Keeps a slim, on-theme scrollbar and snaps nothing so scrolling stays free. */
+.scroll-track {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(12, 26, 39, 0.28) transparent;
+  overscroll-behavior-x: contain;
+}
+.scroll-track::-webkit-scrollbar { height: 10px; }
+.scroll-track::-webkit-scrollbar-track { background: rgba(12, 26, 39, 0.06); border-radius: 999px; }
+.scroll-track::-webkit-scrollbar-thumb {
+  background: rgba(12, 26, 39, 0.28);
+  border-radius: 999px;
+}
+.scroll-track::-webkit-scrollbar-thumb:hover { background: rgba(12, 26, 39, 0.45); }
+
 /* Card hover lift shared by interactive cards */
 .lift {
   transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;

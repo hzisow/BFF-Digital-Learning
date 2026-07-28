@@ -1,3 +1,4 @@
+import type { IconName } from './icons'
 // XP + levels — the connective tissue across every activity. XP is derived
 // from completed work (never stored separately), so it always agrees with a
 // student's real progress and with the server leaderboard, which computes the
@@ -25,7 +26,7 @@ export function totalXp(progress: Record<string, ActivityProgress>): number {
 
 export interface LevelTier {
   name: string
-  emoji: string
+  icon: IconName
   /** Cumulative XP needed to reach this tier. */
   minXp: number
 }
@@ -35,13 +36,13 @@ export interface LevelTier {
 // activities in the catalog (perfect play ≈ 2100 XP): Broker takes near-total
 // completion, and Tycoon is reserved for excellent scores across the board.
 export const LEVELS: LevelTier[] = [
-  { name: 'Penny Starter', emoji: '🐣', minXp: 0 },
-  { name: 'Budgeter', emoji: '📊', minXp: 150 },
-  { name: 'Saver', emoji: '🏦', minXp: 400 },
-  { name: 'Investor', emoji: '📈', minXp: 720 },
-  { name: 'Dealmaker', emoji: '🤝', minXp: 1100 },
-  { name: 'Broker', emoji: '💼', minXp: 1500 },
-  { name: 'Tycoon', emoji: '🏆', minXp: 1900 },
+  { name: 'Penny Starter', icon: 'egg', minXp: 0 },
+  { name: 'Budgeter', icon: 'pie', minXp: 150 },
+  { name: 'Saver', icon: 'piggy', minXp: 400 },
+  { name: 'Investor', icon: 'growth', minXp: 720 },
+  { name: 'Dealmaker', icon: 'handshake', minXp: 1100 },
+  { name: 'Broker', icon: 'briefcase', minXp: 1500 },
+  { name: 'Tycoon', icon: 'trophy', minXp: 1900 },
 ]
 
 export interface LevelInfo {

@@ -1,3 +1,4 @@
+import type { IconName } from './icons'
 // Daily quests — small, resettable goals that turn the streak from a passive
 // counter into a directed nudge. Derived entirely from existing progress + the
 // streak, so there's nothing new to store: a quest is "done" when today's
@@ -19,7 +20,7 @@ function isToday(iso: string): boolean {
 
 export interface Quest {
   id: string
-  emoji: string
+  icon: IconName
   en: string
   es: string
   zh: string
@@ -42,7 +43,7 @@ export function dailyQuests(progress: Record<string, ActivityProgress>): Quest[]
   return [
     {
       id: 'warmup',
-      emoji: '☀️',
+      icon: 'sun',
       en: 'Warm up — do any activity',
       es: 'Calienta — haz cualquier actividad',
       zh: '热身——做任意一个活动',
@@ -50,7 +51,7 @@ export function dailyQuests(progress: Record<string, ActivityProgress>): Quest[]
     },
     {
       id: 'lesson',
-      emoji: '📘',
+      icon: 'book',
       en: 'Finish a lesson today',
       es: 'Termina una lección hoy',
       zh: '今天完成一节课',
@@ -58,7 +59,7 @@ export function dailyQuests(progress: Record<string, ActivityProgress>): Quest[]
     },
     {
       id: 'ace',
-      emoji: '🎯',
+      icon: 'target',
       en: 'Score 90+ on anything',
       es: 'Consigue 90+ en algo',
       zh: '任意项目拿到 90 分以上',

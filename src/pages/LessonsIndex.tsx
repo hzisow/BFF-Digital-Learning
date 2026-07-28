@@ -1,5 +1,5 @@
-// BFF Academy as a Duolingo-style course path: a winding trail of the 8
-// curriculum lessons grouped by week. Games and challenges live separately
+// BFF Academy as a course path that reads left to right like a line of text:
+// the 8 curriculum lessons grouped by week along one horizontal track. Games and challenges live separately
 // on the Activities page. Progress comes from local storage (and the
 // classroom DB when connected).
 
@@ -15,7 +15,11 @@ import {
   Lock,
   RotateCcw,
   Sparkles,
+  Star,
+  Trophy,
+  Flame,
 } from 'lucide-react'
+import { AppIcon } from '../lib/icons'
 import { ACTIVITIES, localizeActivity } from '../lib/activities'
 import type { ActivityMeta } from '../lib/activities'
 import { getLesson } from '../content/lessons'
@@ -117,14 +121,23 @@ interface PathNode {
 
 // ---------- Geometry ----------
 
-const PATH_W = 340
-const CENTER_X = PATH_W / 2
-const ROW_H = 160
-const X_PATTERN = [0, 62, 88, 62, 0, -62, -88, -62]
+// The path reads left-to-right like a line of text: lessons advance along the
+// x-axis and the trail gently rises and falls on the y-axis. The whole course
+// lives in one horizontal scroller, so students travel forward rather than down.
+const PATH_H = 300
+const CENTER_Y = PATH_H / 2
+const COL_W = 168
+const NODE_X0 = 84
+const Y_PATTERN = [0, -46, -66, -46, 0, 46, 66, 46]
 
 function nodeXY(i: number, flip: boolean): { x: number; y: number } {
-  const raw = X_PATTERN[i % X_PATTERN.length]
-  return { x: CENTER_X + (flip ? -raw : raw), y: i * ROW_H + 46 }
+  const raw = Y_PATTERN[i % Y_PATTERN.length]
+  return { x: i * COL_W + NODE_X0, y: CENTER_Y + (flip ? -raw : raw) }
+}
+
+/** Total width a run of `count` nodes occupies. */
+function trailWidth(count: number): number {
+  return Math.max(1, count) * COL_W + NODE_X0
 }
 
 function connectorPath(count: number, flip: boolean): string {
@@ -134,7 +147,7 @@ function connectorPath(count: number, flip: boolean): string {
   for (let i = 1; i < pts.length; i++) {
     const a = pts[i - 1]
     const b = pts[i]
-    d += ` C ${a.x} ${a.y + ROW_H / 2}, ${b.x} ${b.y - ROW_H / 2}, ${b.x} ${b.y}`
+    d += ` C ${a.x + COL_W / 2} ${a.y}, ${b.x - COL_W / 2} ${b.y}, ${b.x} ${b.y}`
   }
   return d
 }
@@ -158,9 +171,11 @@ function Stars({ score, lang }: { score: number | null; lang: 'en' | 'es' | 'zh'
       className="mt-0.5 flex justify-center gap-0.5 text-sm leading-none"
     >
       {[0, 1, 2].map((i) => (
-        <span key={i} aria-hidden="true" className={i < n ? 'text-gold-500' : 'text-ink/20'}>
-          ★
-        </span>
+        <Star
+          key={i}
+          className={`h-3.5 w-3.5 ${i < n ? 'fill-gold-500 text-gold-500' : 'fill-ink/15 text-ink/15'}`}
+          aria-hidden="true"
+        />
       ))}
     </span>
   )
@@ -170,24 +185,26 @@ function NodeCircle({ node, theme }: { node: PathNode; theme: WeekTheme }) {
   // Crisper than the old bubbly Duolingo pill: a flatter 4px offset shadow and
   // a thin hairline ring instead of a puffy border.
   const base =
-    'flex h-[76px] w-[76px] items-center justify-center rounded-full text-4xl ring-1 ring-black/5 transition active:translate-y-1 active:shadow-none'
+    'flex h-[76px] w-[76px] items-center justify-center rounded-full ring-1 ring-black/5 transition active:translate-y-1 active:shadow-none'
   if (node.kind === 'trophy') {
     return node.state === 'done' ? (
-      <div className={`${base} bg-gold-400 shadow-[0_4px_0_#b7791f]`} aria-hidden="true">🏆</div>
+      <div className={`${base} bg-gold-400 text-ink shadow-[0_4px_0_#b7791f]`} aria-hidden="true">
+        <Trophy className="h-9 w-9" />
+      </div>
     ) : (
       <div
-        className={`${base} bg-paper-deep opacity-80 shadow-[0_4px_0_#d8d2c4] grayscale`}
+        className={`${base} bg-paper-deep text-ink/35 shadow-[0_4px_0_#d8d2c4]`}
         aria-hidden="true"
       >
-        🏆
+        <Trophy className="h-9 w-9" />
       </div>
     )
   }
   switch (node.state) {
     case 'done':
       return (
-        <div className={`${base} ${theme.nodeBg} ${theme.nodeShadow} hover:brightness-110`}>
-          {node.meta!.emoji}
+        <div className={`${base} ${theme.nodeBg} text-white ${theme.nodeShadow} hover:brightness-110`}>
+          <AppIcon name={node.meta!.icon} className="h-9 w-9" />
         </div>
       )
     case 'current':
@@ -197,15 +214,15 @@ function NodeCircle({ node, theme }: { node: PathNode; theme: WeekTheme }) {
             className={`absolute inset-0 -m-2 animate-ping rounded-full border-4 opacity-30 ${theme.border}`}
             aria-hidden
           />
-          <div className={`${base} border-[3px] bg-white ${theme.border} ${theme.nodeShadow}`}>
-            {node.meta!.emoji}
+          <div className={`${base} border-[3px] bg-white ${theme.border} ${theme.text} ${theme.nodeShadow}`}>
+            <AppIcon name={node.meta!.icon} className="h-9 w-9" />
           </div>
         </div>
       )
     default:
       return (
-        <div className={`${base} bg-paper-deep shadow-[0_4px_0_#d8d2c4]`}>
-          <span className="opacity-50 grayscale">{node.meta!.emoji}</span>
+        <div className={`${base} bg-paper-deep text-ink/35 shadow-[0_4px_0_#d8d2c4]`}>
+          <AppIcon name={node.meta!.icon} className="h-9 w-9" />
         </div>
       )
   }
@@ -338,12 +355,12 @@ export default function LessonsIndex() {
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-2">
             <span className="chip bg-white/10 text-white ring-1 ring-inset ring-white/15">
-              <span aria-hidden="true">{level.tier.emoji}</span>{' '}
+              <AppIcon name={level.tier.icon} className="h-4 w-4" />{' '}
               {zh ? '等级' : es ? 'Nivel' : 'Level'} {level.level} · {level.tier.name}
             </span>
             {streak.current > 0 && (
               <span className="chip bg-orange-100 text-orange-800">
-                <span aria-hidden="true">🔥</span>{' '}
+                <Flame className="h-4 w-4" aria-hidden="true" />{' '}
                 {zh
                   ? `连续 ${streak.current} 天`
                   : es
@@ -390,7 +407,7 @@ export default function LessonsIndex() {
             <p className="mt-6 flex flex-col items-start gap-3 font-display text-lg font-bold text-white sm:flex-row sm:items-center">
               <span>
                 {zh ? '课程完成——你太棒了！' : es ? '¡Curso completado — leyenda!' : 'Course complete — you legend!'}{' '}
-                <span aria-hidden="true">🏆</span>
+                <Trophy className="h-4 w-4" aria-hidden="true" />
               </span>
               <Link to="/certificate" className="btn-primary">
                 {zh ? '领取我的证书' : es ? 'Obtener mi certificado' : 'Get my certificate'} <Award className="h-4 w-4" aria-hidden="true" />
@@ -400,7 +417,7 @@ export default function LessonsIndex() {
             current && (
               <Link to={current.path} className="btn-primary mt-6 inline-flex">
                 {doneCount === 0 ? (zh ? '开始第 1 天' : es ? 'Empezar Día 1' : 'Start Day 1') : zh ? '继续' : es ? 'Continuar' : 'Continue'}:{' '}
-                <span aria-hidden="true">{current.emoji}</span> {lessonTitle(current)}{' '}
+                <AppIcon name={current.icon} className="h-4 w-4" /> {lessonTitle(current)}{' '}
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
             )
@@ -435,7 +452,7 @@ export default function LessonsIndex() {
                   {q.done && <Check className="h-3.5 w-3.5" aria-hidden="true" />}
                 </span>
                 <span className={q.done ? 'text-slate-400 line-through' : 'text-slate-700'}>
-                  <span aria-hidden="true">{q.emoji}</span> {zh ? q.zh : es ? q.es : q.en}
+                  <AppIcon name={q.icon} className="h-4 w-4" /> {zh ? q.zh : es ? q.es : q.en}
                 </span>
                 <span className="sr-only">{q.done ? (zh ? '已完成' : es ? 'completada' : 'done') : (zh ? '未完成' : es ? 'pendiente' : 'not done')}</span>
               </li>
@@ -443,8 +460,7 @@ export default function LessonsIndex() {
           </ul>
           {questsDone === quests.length && (
             <p className="mt-3 rounded-lg bg-green-50 px-3 py-2 text-center text-xs font-semibold text-green-700">
-              <span aria-hidden="true">🎉</span>{' '}
-              {zh ? '今日任务全部完成！' : es ? '¡Todas las misiones de hoy completadas!' : "All of today's quests complete!"}
+                            {zh ? '今日任务全部完成！' : es ? '¡Todas las misiones de hoy completadas!' : "All of today's quests complete!"}
             </p>
           )}
         </div>
@@ -454,24 +470,31 @@ export default function LessonsIndex() {
           <span className="eyebrow-line" aria-hidden="true" />
           {zh ? '学习路径' : es ? 'La ruta' : 'The path'}
         </p>
-        <div className="mt-4 space-y-10">
-          {weeks.map(({ week, nodes }, weekIdx) => {
+        {/* One long horizontal track: weeks sit side by side and the student
+            scrolls forward through the course, left to right. */}
+        <div
+          className="scroll-track -mx-4 mt-4 overflow-x-auto overflow-y-hidden px-4 pb-6"
+          tabIndex={0}
+          role="region"
+          aria-label={zh ? '课程路径（左右滚动）' : es ? 'Ruta del curso (desplázate de izquierda a derecha)' : 'Course path (scroll left to right)'}
+        >
+          <div className="flex w-max items-center gap-8">
+            {weeks.map(({ week, nodes }, weekIdx) => {
             const theme = WEEK_THEMES[week] ?? WEEK_THEMES[1]
             const flip = weekIdx % 2 === 1
             const weekLessons = nodes.filter((n) => n.kind === 'lesson')
             const weekDone = weekLessons.filter((n) => n.state === 'done').length
-            const height = nodes.length * ROW_H + 24
 
             return (
-              <section key={week}>
+              <section key={week} className="flex shrink-0 items-center gap-6">
                 {/* Week banner — solid editorial field (ink or BFF blue) with a
                     gold top accent rule, an eyebrow-style WEEK label and a big
                     display heading. White text on the solid field. */}
                 <div
-                  className={`relative overflow-hidden rounded-[10px] ${theme.banner} px-6 py-6 text-white shadow-card`}
+                  className={`relative w-[248px] shrink-0 self-stretch overflow-hidden rounded-[10px] ${theme.banner} flex flex-col justify-center px-6 py-6 text-white shadow-card`}
                 >
                   <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-gold-400" />
-                  <div className="flex items-center justify-between gap-3">
+                  <div>
                     <div>
                       <p className="font-display text-[11px] font-extrabold uppercase tracking-[0.2em] text-white/70">
                         {zh ? `第 ${week} 周` : <>{es ? 'Semana' : 'Week'} {week}</>}
@@ -479,20 +502,23 @@ export default function LessonsIndex() {
                       <h2 className="mt-1.5 font-display text-2xl font-extrabold leading-tight">
                         {zh ? theme.nameZh : es ? theme.nameEs : theme.name}
                       </h2>
-                      <p className="mt-1.5 max-w-md text-sm text-white/80">{zh ? theme.blurbZh : es ? theme.blurbEs : theme.blurb}</p>
+                      <p className="mt-1.5 text-sm text-white/80">{zh ? theme.blurbZh : es ? theme.blurbEs : theme.blurb}</p>
                     </div>
-                    <span className="shrink-0 rounded-full bg-white/15 px-3 py-1 text-sm font-bold ring-1 ring-inset ring-white/20">
+                    <span className="mt-4 inline-block shrink-0 rounded-full bg-white/15 px-3 py-1 text-sm font-bold ring-1 ring-inset ring-white/20">
                       {weekDone}/{weekLessons.length}
                     </span>
                   </div>
                 </div>
 
                 {/* Node trail */}
-                <div className="relative mx-auto mt-4" style={{ width: PATH_W, height }}>
+                <div
+                  className="relative shrink-0"
+                  style={{ width: trailWidth(nodes.length), height: PATH_H }}
+                >
                   <svg
                     className="pointer-events-none absolute inset-0"
-                    width={PATH_W}
-                    height={height}
+                    width={trailWidth(nodes.length)}
+                    height={PATH_H}
                     aria-hidden
                   >
                     <path
@@ -608,7 +634,7 @@ export default function LessonsIndex() {
                           </span>
                         )}
                         {/* bg matches the page so the dotted connector never bleeds through the text */}
-                        <div className="absolute left-1/2 top-[82px] w-36 -translate-x-1/2 bg-paper text-center">
+                        <div className="absolute left-1/2 top-[82px] w-[152px] -translate-x-1/2 bg-paper px-1 text-center">
                           <p
                             className={`text-xs font-bold leading-tight ${
                               node.state === 'locked' ? 'text-ink/50' : 'text-ink'
@@ -627,7 +653,8 @@ export default function LessonsIndex() {
                 </div>
               </section>
             )
-          })}
+            })}
+          </div>
         </div>
 
         {/* Bonus electives — off the core 4-week path, self-paced deep dives */}
@@ -656,7 +683,7 @@ export default function LessonsIndex() {
                   className="card lift group flex gap-4"
                 >
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[8px] bg-bff-50 text-2xl">
-                    <span aria-hidden="true">{meta.emoji}</span>
+                    <AppIcon name={meta.icon} className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
                     <h3 className="font-display font-bold text-slate-900 group-hover:text-bff-700">
@@ -669,10 +696,10 @@ export default function LessonsIndex() {
                       <Clock className="mr-1 inline h-3.5 w-3.5 align-[-2px]" aria-hidden="true" />~{meta.durationMin} {zh ? '分钟' : 'min'}
                       {p?.status === 'completed'
                         ? zh
-                          ? ' · 已完成！🎉'
+                          ? ' · 已完成！'
                           : es
-                          ? ' · ¡completado! 🎉'
-                          : ' · done! 🎉'
+                          ? ' · ¡completado!'
+                          : ' · done!'
                         : p?.status === 'started'
                           ? zh
                             ? ' · 进行中'
@@ -692,8 +719,7 @@ export default function LessonsIndex() {
         <div className="card mt-16 flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-between sm:text-left">
           <div>
             <p className="font-display font-bold text-slate-900">
-              <span aria-hidden="true">🐺🏠☂️</span>{' '}
-              {zh ? '在找游戏吗？' : es ? '¿Buscas los juegos?' : 'Looking for the games?'}
+                            {zh ? '在找游戏吗？' : es ? '¿Buscas los juegos?' : 'Looking for the games?'}
             </p>
             <p className="mt-1 text-sm text-slate-600">
               {zh
@@ -724,7 +750,7 @@ export default function LessonsIndex() {
             className="w-full max-w-sm animate-pop-in rounded-[10px] bg-white p-6 text-center shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <p className="text-5xl" aria-hidden="true">{jumpTarget.emoji}</p>
+            <AppIcon name={jumpTarget.icon} className="mx-auto h-12 w-12 text-bff-600" />
             <h3 id="jump-dialog-title" className="mt-3 font-display text-xl font-bold text-slate-900">
               {zh ? `即将跳到 ${lessonTitle(jumpTarget)}？` : es ? `¿Saltando a ${lessonTitle(jumpTarget)}?` : `Jumping ahead to ${lessonTitle(jumpTarget)}?`}
             </h3>
@@ -743,7 +769,7 @@ export default function LessonsIndex() {
               {current && (
                 <Link to={current.path} className="btn-secondary w-full">
                   {zh ? '带我去下一课（' : es ? 'Llévame a mi próxima lección (' : 'Take me to my next lesson ('}
-                  <span aria-hidden="true">{current.emoji}</span>{' '}
+                  <AppIcon name={current.icon} className="h-4 w-4" />{' '}
                   {lessonTitle(current)})
                 </Link>
               )}

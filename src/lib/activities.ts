@@ -2,13 +2,16 @@
 // so new activities added here automatically appear everywhere (library,
 // admin assignment picker, progress views).
 
+import type { IconName } from './icons'
+
 export type ActivityKind = 'lesson' | 'elective' | 'challenge' | 'game'
 
 export interface ActivityMeta {
   slug: string
   kind: ActivityKind
   title: string
-  emoji: string
+  /** Key into the central icon registry (src/lib/icons.tsx). No emoji. */
+  icon: IconName
   description: string
   durationMin: number
   path: string
@@ -27,24 +30,24 @@ export const LESSON_SLUGS = [
   'consumer-protection',
 ] as const
 
-const lessonMeta: Array<[string, string, string, string, number, number]> = [
-  // slug, title, emoji, description, week, day
-  ['earning-income', 'Earning Income', '💼', 'Paychecks, careers, taxes, and how money is earned.', 1, 1],
-  ['spending-budgeting', 'Spending & Budgeting', '🛒', 'Needs vs. wants and building a budget that works.', 1, 2],
-  ['saving-investing', 'Saving & Investing', '📈', 'Why saving early wins, and how investing grows money.', 2, 1],
-  ['credit-debt', 'Credit & Debt', '💳', 'Credit scores, borrowing, and staying out of debt traps.', 2, 2],
-  ['risk-insurance', 'Risk Management & Insurance', '🛡️', 'Protecting yourself and your money from the unexpected.', 3, 1],
-  ['financial-decision-making', 'Financial Decision-Making', '🧠', 'Making smart money choices with real decision tools.', 3, 2],
-  ['financial-planning', 'Financial Planning', '🗺️', 'Setting goals and building a plan for your financial future.', 4, 1],
-  ['consumer-protection', 'Consumer Protection', '🕵️', 'Spotting scams, fraud, and knowing your rights.', 4, 2],
+const lessonMeta: Array<[string, string, IconName, string, number, number]> = [
+  // slug, title, icon, description, week, day
+  ['earning-income', 'Earning Income', 'briefcase', 'Paychecks, careers, taxes, and how money is earned.', 1, 1],
+  ['spending-budgeting', 'Spending & Budgeting', 'cart', 'Needs vs. wants and building a budget that works.', 1, 2],
+  ['saving-investing', 'Saving & Investing', 'growth', 'Why saving early wins, and how investing grows money.', 2, 1],
+  ['credit-debt', 'Credit & Debt', 'card', 'Credit scores, borrowing, and staying out of debt traps.', 2, 2],
+  ['risk-insurance', 'Risk Management & Insurance', 'shield', 'Protecting yourself and your money from the unexpected.', 3, 1],
+  ['financial-decision-making', 'Financial Decision-Making', 'brain', 'Making smart money choices with real decision tools.', 3, 2],
+  ['financial-planning', 'Financial Planning', 'map', 'Setting goals and building a plan for your financial future.', 4, 1],
+  ['consumer-protection', 'Consumer Protection', 'detective', 'Spotting scams, fraud, and knowing your rights.', 4, 2],
 ]
 
 export const ACTIVITIES: ActivityMeta[] = [
-  ...lessonMeta.map(([slug, title, emoji, description, week, day]) => ({
+  ...lessonMeta.map(([slug, title, icon, description, week, day]) => ({
     slug,
     kind: 'lesson' as const,
     title,
-    emoji,
+    icon,
     description,
     durationMin: 20,
     path: `/lessons/${slug}`,
@@ -54,7 +57,7 @@ export const ACTIVITIES: ActivityMeta[] = [
     slug: 'wolf-of-wall-street',
     kind: 'game',
     title: 'Wolf of Wall Street',
-    emoji: '🐺',
+    icon: 'market',
     description:
       'Invest $1,000 across 12 companies, react to breaking news, and survive the market. Play solo or live with your class.',
     durationMin: 25,
@@ -65,7 +68,7 @@ export const ACTIVITIES: ActivityMeta[] = [
     slug: 'bens-budget',
     kind: 'challenge',
     title: "Ben's Situation",
-    emoji: '🏠',
+    icon: 'home',
     description:
       'Help Ben (middle school teacher, 3 kids, tight budget) survive the month and still save for the beach trip.',
     durationMin: 15,
@@ -76,7 +79,7 @@ export const ACTIVITIES: ActivityMeta[] = [
     slug: 'bens-insurance',
     kind: 'challenge',
     title: "Ben's Insurance Situation",
-    emoji: '☂️',
+    icon: 'umbrella',
     description:
       'Ben has $500 for insurance. Choose his coverage — then find out what the month throws at his family.',
     durationMin: 10,
@@ -87,7 +90,7 @@ export const ACTIVITIES: ActivityMeta[] = [
     slug: 'paystub-detective',
     kind: 'challenge',
     title: 'Paystub Detective',
-    emoji: '🔍',
+    icon: 'receipt',
     description:
       'Three paystubs, planted errors. Find every mistake before someone loses money — it pays to check your pay.',
     durationMin: 10,
@@ -98,7 +101,7 @@ export const ACTIVITIES: ActivityMeta[] = [
     slug: 'credit-score-sim',
     kind: 'challenge',
     title: 'Credit Score Builder',
-    emoji: '📊',
+    icon: 'gauge',
     description:
       'Ten months of real-life credit decisions. Watch your score climb — or crater — with every choice.',
     durationMin: 12,
@@ -109,7 +112,7 @@ export const ACTIVITIES: ActivityMeta[] = [
     slug: 'scam-spotter',
     kind: 'challenge',
     title: 'Scam Spotter',
-    emoji: '🚨',
+    icon: 'alert',
     description:
       'Eight messages hit your inbox. Some are real, some are scams. Can you spot every red flag?',
     durationMin: 10,
@@ -120,7 +123,7 @@ export const ACTIVITIES: ActivityMeta[] = [
     slug: 'smart-shopper',
     kind: 'challenge',
     title: 'Smart Shopper',
-    emoji: '🛒',
+    icon: 'store',
     description:
       'Six head-to-head deals where the shelf tag lies. Do the math, beat the marketing.',
     durationMin: 8,
@@ -131,7 +134,7 @@ export const ACTIVITIES: ActivityMeta[] = [
     slug: 'goal-getter',
     kind: 'challenge',
     title: 'Goal Getter',
-    emoji: '🎯',
+    icon: 'target',
     description:
       'Three savings goals, $200 a month, and life keeps happening. Allocate wisely and hit every deadline.',
     durationMin: 12,
@@ -141,17 +144,17 @@ export const ACTIVITIES: ActivityMeta[] = [
   // Bonus elective units — off the core path, self-paced deep dives.
   ...(
     [
-      ['first-paycheck', 'Your First Paycheck', '🧾', 'Decode a real paystub: gross vs. net, taxes, FICA, and catching errors.', 1],
-      ['taxes-deep-dive', 'Taxes Deep-Dive', '🏛️', 'Where taxes go, how brackets really work, and why refunds happen.', 2],
-      ['paying-for-college', 'Paying for College', '🎓', 'FAFSA, grants, scholarships, loans, and how to compare offers like a pro.', 3],
-      ['entrepreneurship', 'Entrepreneurship & Side Hustles', '🚀', 'Turn a skill into income: pricing, profit, and your first business.', 4],
-      ['crypto-and-scams', 'Crypto & Modern Money Traps', '🪙', 'Crypto, hype, betting, and BNPL — spot the traps before they cost you.', 5],
-    ] as Array<[string, string, string, string, number]>
-  ).map(([slug, title, emoji, description, day]) => ({
+      ['first-paycheck', 'Your First Paycheck', 'receipt', 'Decode a real paystub: gross vs. net, taxes, FICA, and catching errors.', 1],
+      ['taxes-deep-dive', 'Taxes Deep-Dive', 'landmark', 'Where taxes go, how brackets really work, and why refunds happen.', 2],
+      ['paying-for-college', 'Paying for College', 'college', 'FAFSA, grants, scholarships, loans, and how to compare offers like a pro.', 3],
+      ['entrepreneurship', 'Entrepreneurship & Side Hustles', 'rocket', 'Turn a skill into income: pricing, profit, and your first business.', 4],
+      ['crypto-and-scams', 'Crypto & Modern Money Traps', 'crypto', 'Crypto, hype, betting, and BNPL — spot the traps before they cost you.', 5],
+    ] as Array<[string, string, IconName, string, number]>
+  ).map(([slug, title, icon, description, day]) => ({
     slug,
     kind: 'elective' as const,
     title,
-    emoji,
+    icon,
     description,
     durationMin: 15,
     path: `/lessons/${slug}`,

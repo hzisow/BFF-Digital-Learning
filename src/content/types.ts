@@ -2,6 +2,8 @@
 // Lessons are authored as TypeScript files in src/content/lessons/ so the
 // compiler catches malformed content.
 
+import type { IconName } from '../lib/icons'
+
 export interface KeyTerm {
   term: string
   definition: string
@@ -77,7 +79,8 @@ export interface Lesson {
   week: number
   day: number
   title: string
-  emoji: string
+  /** Key into the central icon registry (src/lib/icons.tsx). No emoji. */
+  icon: IconName
   description: string
   durationMin: number
   sections: LessonSection[]

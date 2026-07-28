@@ -1,3 +1,4 @@
+import type { IconName } from './icons'
 // Achievement badges, computed client-side from local progress + streaks.
 // Purely celebratory — no backend required.
 
@@ -7,7 +8,7 @@ import { getStreak } from './streak'
 
 export interface BadgeDef {
   id: string
-  emoji: string
+  icon: IconName
   title: string
   titleEs: string
   description: string
@@ -33,7 +34,7 @@ const WEEK_SLUGS: readonly (readonly string[])[] = [
 export const BADGES: BadgeDef[] = [
   {
     id: 'first-lesson',
-    emoji: '🌱',
+    icon: 'sprout',
     title: 'First Steps',
     titleEs: 'Primeros pasos',
     description: 'Complete your first lesson.',
@@ -42,7 +43,7 @@ export const BADGES: BadgeDef[] = [
   },
   ...WEEK_SLUGS.map((slugs, i) => ({
     id: `week-${i + 1}`,
-    emoji: ['🥉', '🥈', '🥇', '🏅'][i],
+    icon: (['medal', 'medal', 'medal', 'award'] as const)[i],
     title: `Week ${i + 1} Done`,
     titleEs: `Semana ${i + 1} lista`,
     description: `Finish both Week ${i + 1} lessons.`,
@@ -51,7 +52,7 @@ export const BADGES: BadgeDef[] = [
   })),
   {
     id: 'all-lessons',
-    emoji: '🏆',
+    icon: 'trophy',
     title: 'Academy Graduate',
     titleEs: 'Graduado de la Academia',
     description: 'Complete all 8 BFF Academy lessons.',
@@ -60,7 +61,7 @@ export const BADGES: BadgeDef[] = [
   },
   {
     id: 'perfect-quiz',
-    emoji: '💯',
+    icon: 'perfect',
     title: 'Perfect Score',
     titleEs: 'Puntaje perfecto',
     description: 'Score 100% on any lesson quiz.',
@@ -69,7 +70,7 @@ export const BADGES: BadgeDef[] = [
   },
   {
     id: 'market-survivor',
-    emoji: '🐺',
+    icon: 'market',
     title: 'Market Survivor',
     titleEs: 'Sobreviviente del mercado',
     description: 'Finish Wolf of Wall Street with a profit.',
@@ -81,7 +82,7 @@ export const BADGES: BadgeDef[] = [
   },
   {
     id: 'first-game',
-    emoji: '🎮',
+    icon: 'gamepad',
     title: 'Game On',
     titleEs: 'A jugar',
     description: 'Finish any game or challenge.',
@@ -93,7 +94,7 @@ export const BADGES: BadgeDef[] = [
   },
   {
     id: 'streak-3',
-    emoji: '🔥',
+    icon: 'flame',
     title: 'On a Roll',
     titleEs: 'En racha',
     description: 'Learn 3 days in a row.',
@@ -102,7 +103,7 @@ export const BADGES: BadgeDef[] = [
   },
   {
     id: 'streak-7',
-    emoji: '☄️',
+    icon: 'zap',
     title: 'Unstoppable',
     titleEs: 'Imparable',
     description: 'Learn 7 days in a row.',
