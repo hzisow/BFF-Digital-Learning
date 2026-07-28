@@ -49,8 +49,15 @@ export async function invokeAI<T>(fn: string, body: Record<string, unknown>): Pr
     }
     throw error
   }
-  if (data && (data as { error?: string }).error === 'AI_NOT_CONFIGURED') {
+  const payload = data as { error?: string; reason?: string } | null
+  if (payload?.error === 'AI_NOT_CONFIGURED') {
     throw new AINotConfiguredError('The AI features are not set up yet.')
+  }
+  // The functions answer 200 with { error: 'AI_FAILED', reason } because
+  // supabase-js throws away the body on non-2xx — a status code would hide the
+  // very message we need to show.
+  if (payload?.error === 'AI_FAILED') {
+    throw new Error(payload.reason || 'The AI service returned an error.')
   }
   return data as T
 }

@@ -47,6 +47,8 @@ Answer in ${languageName(lang)}. Keep every reply short and friendly — just a 
           "Let's keep it to money topics — ask me anything about budgeting, saving, credit, and so on!",
       })
     }
-    return json({ error: String(err) }, 500)
+    // 200 on purpose: supabase-js discards the body on non-2xx, which hides
+    // the reason from the UI. Report the failure in the payload instead.
+    return json({ error: 'AI_FAILED', reason: message })
   }
 })

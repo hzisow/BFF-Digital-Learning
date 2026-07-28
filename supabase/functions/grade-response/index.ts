@@ -101,6 +101,8 @@ Deno.serve(async (req) => {
         improve: [],
       })
     }
-    return json({ error: msg }, 500)
+    // 200 on purpose: supabase-js discards the body on non-2xx, which hides
+    // the reason from the UI. Report the failure in the payload instead.
+    return json({ error: 'AI_FAILED', reason: msg })
   }
 })

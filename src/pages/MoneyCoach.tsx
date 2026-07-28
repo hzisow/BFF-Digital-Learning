@@ -15,16 +15,11 @@ interface ChatMessage {
 }
 
 /**
- * Pull a human-readable reason out of a failed edge-function call. Supabase
- * wraps non-2xx responses, so the useful text lives in the parsed body rather
- * than the Error message ("non-2xx status code").
+ * A displayable reason for a failed AI call. The functions report failures in
+ * the response payload (see lib/ai.ts), so the Error message already carries
+ * the upstream text; we only filter out supabase-js's own generic wrapper.
  */
 function serverReason(err: unknown): string | null {
-  const ctx = (err as { context?: unknown })?.context
-  if (ctx && typeof ctx === 'object') {
-    const e = (ctx as { error?: unknown }).error
-    if (typeof e === 'string' && e.trim()) return e
-  }
   const msg = err instanceof Error ? err.message : String(err ?? '')
   if (!msg || /non-2xx/i.test(msg)) return null
   return msg

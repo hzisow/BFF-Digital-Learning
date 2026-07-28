@@ -103,6 +103,8 @@ Output well-structured GitHub-flavored Markdown. Use headings, lists, and tables
     if (message === 'AI_REFUSED') {
       return json({ markdown: '' })
     }
-    return json({ error: String(err) }, 500)
+    // 200 on purpose: supabase-js discards the body on non-2xx, which hides
+    // the reason from the UI. Report the failure in the payload instead.
+    return json({ error: 'AI_FAILED', reason: message })
   }
 })
