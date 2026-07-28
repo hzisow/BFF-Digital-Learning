@@ -66,8 +66,8 @@ function Shell({ code, children }: { code: string; children: ReactNode }) {
   const es = lang === 'es'
   const zh = lang === 'zh'
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3">
+    <div className="min-h-screen bg-paper">
+      <header className="flex items-center justify-between border-b border-ink/10 bg-white px-4 py-3">
         <Logo className="h-8" />
         {code && (
           <span className="chip bg-bff-50 font-display tracking-widest text-bff-700">
@@ -186,8 +186,8 @@ export default function CoPlayPlayer() {
           <p className="text-4xl" aria-hidden="true">
             🤔
           </p>
-          <h1 className="font-display text-xl font-bold text-slate-900">{zh ? '嗯，这没能成功' : es ? 'Mmm, eso no funcionó' : 'Hmm, that did not work'}</h1>
-          <p className="text-sm text-slate-600">{loadError}</p>
+          <h1 className="font-display text-xl font-bold text-ink">{zh ? '嗯，这没能成功' : es ? 'Mmm, eso no funcionó' : 'Hmm, that did not work'}</h1>
+          <p className="text-sm text-ink/70">{loadError}</p>
           <Link to="/" className="btn-primary">
             {zh ? '返回首页' : es ? 'Volver al inicio' : 'Back to home'}
           </Link>
@@ -199,7 +199,7 @@ export default function CoPlayPlayer() {
   if (!session) {
     return (
       <Shell code={code}>
-        <p className="mt-16 text-center font-display text-lg font-semibold text-slate-500">
+        <p className="mt-16 text-center font-display text-lg font-semibold text-ink/60">
           {zh ? '正在寻找你的游戏…' : es ? 'Buscando tu juego…' : 'Finding your game…'}
         </p>
       </Shell>
@@ -218,10 +218,10 @@ export default function CoPlayPlayer() {
             <p className="text-4xl" aria-hidden="true">
               {activity?.emoji ?? '🎮'}
             </p>
-            <h1 className="mt-2 font-display text-xl font-bold text-slate-900">
+            <h1 className="mt-2 font-display text-xl font-bold text-ink">
               {zh ? '你找到游戏啦！' : es ? '¡Encontraste el juego!' : 'You found the game!'}
             </h1>
-            <p className="mt-1 text-sm text-slate-600">
+            <p className="mt-1 text-sm text-ink/70">
               {activity ? activity.title : zh ? '实时挑战' : es ? 'Reto en vivo' : 'Live challenge'}{' '}
               {zh
                 ? '——起个昵称，好让大家知道你是谁。'
@@ -273,7 +273,7 @@ export default function CoPlayPlayer() {
           <p className="text-5xl" aria-hidden="true">
             🏁
           </p>
-          <h1 className="font-display text-2xl font-bold text-slate-900">{zh ? '游戏结束！' : es ? '¡Juego terminado!' : 'Game over!'}</h1>
+          <h1 className="font-display text-2xl font-bold text-ink">{zh ? '游戏结束！' : es ? '¡Juego terminado!' : 'Game over!'}</h1>
           {myRank > 0 ? (
             <p className="font-display text-lg font-bold text-bff-700">
               {zh ? `你在 ${standings.length} 人中排名第 ${myRank}` : es ? `Terminaste en el puesto #${myRank} de ${standings.length}` : `You finished #${myRank} of ${standings.length}`}
@@ -285,7 +285,7 @@ export default function CoPlayPlayer() {
               )}
             </p>
           ) : (
-            <p className="text-slate-600">{zh ? '谢谢你的参与！' : es ? '¡Gracias por jugar!' : 'Thanks for playing!'}</p>
+            <p className="text-ink/70">{zh ? '谢谢你的参与！' : es ? '¡Gracias por jugar!' : 'Thanks for playing!'}</p>
           )}
           <Link to="/activities" className="btn-primary">
             {zh ? '更多活动' : es ? 'Más actividades' : 'More activities'}
@@ -303,10 +303,10 @@ export default function CoPlayPlayer() {
           <p className="text-5xl" aria-hidden="true">
             🎉
           </p>
-          <h1 className="font-display text-2xl font-bold text-slate-900">
+          <h1 className="font-display text-2xl font-bold text-ink">
             {zh ? `你进来啦，${player.nickname}！` : es ? `¡Estás dentro, ${player.nickname}!` : `You're in, ${player.nickname}!`}
           </h1>
-          <p className="text-slate-600">
+          <p className="text-ink/70">
             {zh
               ? '正在等待主持人开始……看大屏幕！'
               : es
@@ -314,7 +314,7 @@ export default function CoPlayPlayer() {
                 : 'Waiting for the host to start… Watch the big screen!'}
           </p>
           {players.length > 1 && (
-            <p className="text-sm font-semibold text-slate-500">
+            <p className="text-sm font-semibold text-ink/60">
               {zh ? `房间里有 ${players.length} 名玩家` : es ? `${players.length} jugadores en la sala` : `${players.length} players in the room`}
             </p>
           )}
@@ -331,10 +331,10 @@ export default function CoPlayPlayer() {
           <p className="text-4xl" aria-hidden="true">
             🚧
           </p>
-          <h1 className="font-display text-xl font-bold text-slate-900">
+          <h1 className="font-display text-xl font-bold text-ink">
             {zh ? '这个游戏还不能实时对战' : es ? 'Este juego todavía no se puede jugar en vivo' : 'This game can’t be played live yet'}
           </h1>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-ink/70">
             {zh
               ? '看大屏幕——接下来交给你的主持人。'
               : es
@@ -354,10 +354,10 @@ export default function CoPlayPlayer() {
           <p className="text-5xl" aria-hidden="true">
             🎉
           </p>
-          <h1 className="font-display text-2xl font-bold text-slate-900">
+          <h1 className="font-display text-2xl font-bold text-ink">
             {myScore !== null ? (zh ? `你得了 ${myScore} 分！` : es ? `¡Obtuviste ${myScore} puntos!` : `You scored ${myScore}!`) : zh ? '搞定！' : es ? '¡Listo!' : 'All done!'}
           </h1>
-          <p className="text-slate-600">{zh ? '在大屏幕上看排行榜吧。' : es ? 'Mira la tabla de posiciones en la pantalla grande.' : 'Watch the leaderboard on the big screen.'}</p>
+          <p className="text-ink/70">{zh ? '在大屏幕上看排行榜吧。' : es ? 'Mira la tabla de posiciones en la pantalla grande.' : 'Watch the leaderboard on the big screen.'}</p>
           {myRank > 0 && (
             <p className="font-display text-lg font-bold text-bff-700">
               {zh ? `你目前在 ${standings.length} 人中排名第 ${myRank}` : es ? `Actualmente estás en el puesto #${myRank} de ${standings.length}` : `You're currently #${myRank} of ${standings.length}`}

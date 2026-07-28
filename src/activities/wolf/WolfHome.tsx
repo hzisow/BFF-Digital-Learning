@@ -58,26 +58,30 @@ export default function WolfHome() {
       {/* Hero */}
       <section className="mb-10 text-center">
         <p className="text-6xl" aria-hidden="true">🐺</p>
-        <h1 className="mt-3 font-display text-3xl font-bold text-slate-900 sm:text-4xl">
-          Wolf of Wall Street
+        <p className="eyebrow mt-4 justify-center">
+          <span className="eyebrow-line" aria-hidden="true" />
+          {zh ? '市场游戏' : es ? 'JUEGO DE MERCADO' : 'MARKET GAME'}
+        </p>
+        <h1 className="mt-3 font-display text-4xl font-extrabold text-ink sm:text-5xl">
+          Wolf of Wall <em>Street</em>
         </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-slate-600">
+        <p className="mx-auto mt-4 max-w-2xl text-ink/70">
           {zh ? (
             <>
-              你有 <strong className="text-slate-900">{money(STARTING_CASH)}</strong> 可以投资在 12 家崭露头角
+              你有 <strong className="text-ink">{money(STARTING_CASH)}</strong> 可以投资在 12 家崭露头角
               （而且完全是虚构）的公司上。研究市场，扛住两轮突发新闻，沉住气，直到收盘钟声揭晓每家公司真正的表现。
               投资组合最棒的人获胜！
             </>
           ) : es ? (
             <>
-              Tienes <strong className="text-slate-900">{money(STARTING_CASH)}</strong> para invertir
+              Tienes <strong className="text-ink">{money(STARTING_CASH)}</strong> para invertir
               en 12 empresas prometedoras (y totalmente ficticias). Estudia el mercado, resiste dos
               rondas de noticias de última hora y mantén la calma hasta que la campana de cierre revele
               cómo le fue de verdad a cada empresa. ¡Gana la mejor cartera!
             </>
           ) : (
             <>
-              You have <strong className="text-slate-900">{money(STARTING_CASH)}</strong> to invest
+              You have <strong className="text-ink">{money(STARTING_CASH)}</strong> to invest
               across 12 up-and-coming (and totally fictional) companies. Study the market, ride out two
               rounds of breaking news, and hold your nerve until the closing-bell reveal shows how every
               company really performed. Best portfolio wins!
@@ -91,8 +95,8 @@ export default function WolfHome() {
         {/* Solo */}
         <div className="card flex flex-col gap-3 text-center">
           <p className="text-4xl" aria-hidden="true">🎯</p>
-          <h2 className="font-display text-lg font-bold text-slate-900">{zh ? '单人游戏' : es ? 'Juega individual' : 'Play solo'}</h2>
-          <p className="flex-1 text-sm text-slate-600">
+          <h2 className="font-display text-lg font-bold text-ink">{zh ? '单人游戏' : es ? 'Juega individual' : 'Play solo'}</h2>
+          <p className="flex-1 text-sm text-ink/70">
             {zh
               ? '按自己的节奏练习——玩完每一轮交易，看看你的直觉有多准。'
               : es
@@ -107,8 +111,8 @@ export default function WolfHome() {
         {/* Join */}
         <div className="card flex flex-col gap-3 text-center">
           <p className="text-4xl" aria-hidden="true">📱</p>
-          <h2 className="font-display text-lg font-bold text-slate-900">{zh ? '加入实时对战' : es ? 'Únete a un juego en vivo' : 'Join a live game'}</h2>
-          <p className="flex-1 text-sm text-slate-600">
+          <h2 className="font-display text-lg font-bold text-ink">{zh ? '加入实时对战' : es ? 'Únete a un juego en vivo' : 'Join a live game'}</h2>
+          <p className="flex-1 text-sm text-ink/70">
             {zh
               ? '拿到了主持人给的 6 位游戏代码？加入进来，和全场一起交易比拼。'
               : es
@@ -136,16 +140,16 @@ export default function WolfHome() {
               {zh ? '进入游戏' : es ? 'Entrar al juego' : 'Join the game'}
             </button>
           </form>
-          {!BACKEND_ENABLED && <p className="text-xs text-slate-500">{offlineNote}</p>}
+          {!BACKEND_ENABLED && <p className="text-xs text-ink/60">{offlineNote}</p>}
         </div>
 
         {/* Host */}
         <div className="card flex flex-col gap-3 text-center">
           <p className="text-4xl" aria-hidden="true">🖥️</p>
-          <h2 className="font-display text-lg font-bold text-slate-900">{zh ? '主持实时对战' : es ? 'Organiza un juego en vivo' : 'Host a live game'}</h2>
+          <h2 className="font-display text-lg font-bold text-ink">{zh ? '主持实时对战' : es ? 'Organiza un juego en vivo' : 'Host a live game'}</h2>
           {!BACKEND_ENABLED ? (
             <>
-              <p className="flex-1 text-sm text-slate-600">
+              <p className="flex-1 text-sm text-ink/70">
                 {zh
                   ? '把游戏投到大屏幕上，为全班同学主持这个市场。'
                   : es
@@ -155,11 +159,11 @@ export default function WolfHome() {
               <button className="btn-secondary w-full" disabled>
                 {zh ? '主持一场游戏' : es ? 'Organizar un juego' : 'Host a game'}
               </button>
-              <p className="text-xs text-slate-500">{offlineNote}</p>
+              <p className="text-xs text-ink/60">{offlineNote}</p>
             </>
           ) : adminUser ? (
             <>
-              <p className="flex-1 text-sm text-slate-600">
+              <p className="flex-1 text-sm text-ink/70">
                 {zh
                   ? '创建一场游戏，把加入代码投到投影仪上，实时主持这个市场。'
                   : es
@@ -177,7 +181,7 @@ export default function WolfHome() {
             </>
           ) : (
             <>
-              <p className="flex-1 text-sm text-slate-600">
+              <p className="flex-1 text-sm text-ink/70">
                 {zh
                   ? 'BFF 导师会在大屏幕上主持实时对战。在团队页面登录即可开始。'
                   : es
@@ -194,8 +198,8 @@ export default function WolfHome() {
 
       {/* Companies */}
       <section>
-        <h2 className="mb-1 font-display text-xl font-bold text-slate-900">{zh ? '认识这个市场' : es ? 'Conoce el mercado' : 'Meet the market'}</h2>
-        <p className="mb-4 text-sm text-slate-500">
+        <h2 className="mb-1 font-display text-xl font-bold text-ink">{zh ? '认识这个市场' : es ? 'Conoce el mercado' : 'Meet the market'}</h2>
+        <p className="mb-4 text-sm text-ink/60">
           {zh
             ? '十二家公司，十二个故事——你会押注哪几家？'
             : es
@@ -205,9 +209,9 @@ export default function WolfHome() {
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {COMPANIES.map((c) => (
             <div key={c.ticker} className="card p-4">
-              <p className="font-display text-sm font-bold text-slate-900">{c.name}</p>
+              <p className="font-display text-sm font-bold text-ink">{c.name}</p>
               <p className="text-xs font-semibold text-bff-700">{c.ticker}</p>
-              <p className="mt-1 text-xs text-slate-500">{zh ? c.industryZh : es ? c.industryEs : c.industry}</p>
+              <p className="mt-1 text-xs text-ink/60">{zh ? c.industryZh : es ? c.industryEs : c.industry}</p>
             </div>
           ))}
         </div>

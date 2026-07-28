@@ -60,10 +60,10 @@ export default function WolfSolo() {
     <div className="mx-auto max-w-4xl px-4 py-8">
       <div className="mb-6 flex items-center justify-between gap-3">
         <div>
-          <h1 className="font-display text-2xl font-bold text-slate-900">
-            <span aria-hidden="true">🐺</span> Wolf of Wall Street
+          <h1 className="font-display text-2xl font-bold text-ink">
+            <span aria-hidden="true">🐺</span> Wolf of Wall <em>Street</em>
           </h1>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-ink/60">
             <span aria-hidden="true">{STAGE_TITLES[Math.min(stage, 4)].emoji}</span>{' '}
             {zh ? STAGE_TITLES[Math.min(stage, 4)].titleZh : es ? STAGE_TITLES[Math.min(stage, 4)].titleEs : STAGE_TITLES[Math.min(stage, 4)].title}
           </p>
@@ -92,7 +92,7 @@ export default function WolfSolo() {
       </div>
 
       {stage === 1 && (
-        <p className="card mb-4 border-bff-200 bg-bff-50 text-sm text-slate-700">
+        <p className="card mb-4 border-bff-200 bg-bff-50 text-sm text-ink/75">
           {zh ? (
             <>
               你有 <strong>{money(STARTING_CASH)}</strong> 可以投资在 12 家公司上。研究下面的市场信息，
@@ -120,7 +120,7 @@ export default function WolfSolo() {
 
       {stage === 4 && (
         <div className="space-y-3">
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-ink/70">
             {zh
               ? '市场已经收盘。点一下，揭晓每家公司的表现……'
               : es
@@ -134,13 +134,13 @@ export default function WolfSolo() {
               return (
                 <div key={c.ticker} className="card animate-pop-in flex items-start justify-between gap-3 p-4">
                   <div>
-                    <p className="font-display font-bold text-slate-900">
-                      {c.name} <span className="text-xs text-slate-500">{c.ticker}</span>
+                    <p className="font-display font-bold text-ink">
+                      {c.name} <span className="text-xs text-ink/60">{c.ticker}</span>
                       {shares > 0 && (
                         <span className="chip ml-2 bg-bff-50 text-bff-700">{zh ? `你持有 ${shares}` : es ? `tienes ${shares}` : `you own ${shares}`}</span>
                       )}
                     </p>
-                    <p className="text-sm text-slate-600">{zh ? c.summaryZh : es ? c.summaryEs : c.summary}</p>
+                    <p className="text-sm text-ink/70">{zh ? c.summaryZh : es ? c.summaryEs : c.summary}</p>
                   </div>
                   <p className={`whitespace-nowrap font-display text-lg font-bold ${change >= 0 ? 'text-green-700' : 'text-red-600'}`}>
                     ${c.prices[3]}{' '}
@@ -188,7 +188,7 @@ export default function WolfSolo() {
       {stage === 5 && (
         <div className="card animate-pop-in space-y-4 text-center" role="status">
           <p className="text-5xl" aria-hidden="true">{finalValue >= STARTING_CASH ? '🎉' : '📉'}</p>
-          <h2 className="font-display text-2xl font-bold text-slate-900">
+          <h2 className="font-display text-2xl font-bold text-ink">
             {zh ? '最终投资组合：' : es ? 'Cartera final:' : 'Final portfolio:'} {money(finalValue)}
           </h2>
           <p className={`font-display text-lg font-bold ${finalValue >= STARTING_CASH ? 'text-green-700' : 'text-red-600'}`}>
@@ -199,7 +199,7 @@ export default function WolfSolo() {
                 ? `de ${finalValue >= STARTING_CASH ? 'ganancia' : 'pérdida'} sobre tu inicio de ${money(STARTING_CASH)}`
                 : `${finalValue >= STARTING_CASH ? 'profit' : 'loss'} on your ${money(STARTING_CASH)} start`}
           </p>
-          <p className="mx-auto max-w-md text-sm text-slate-600">
+          <p className="mx-auto max-w-md text-sm text-ink/70">
             {zh
               ? '真正的投资者也面对同样的挑战：热度会消退（抱歉了，Snacksy），稳健的趋势才能笑到最后，而分散投资能在某家公司某个月表现不佳时保护你。换个新策略再玩一次吧！'
               : es

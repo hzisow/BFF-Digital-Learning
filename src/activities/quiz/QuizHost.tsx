@@ -22,7 +22,7 @@ const QUESTION_SECONDS = 20
 const OPTION_COLORS = [
   'bg-red-600 text-white',
   'bg-blue-600 text-white',
-  'bg-amber-400 text-slate-900',
+  'bg-amber-400 text-ink',
   'bg-green-700 text-white',
 ]
 
@@ -35,7 +35,7 @@ function optionLetter(i: number): string {
 
 function HostShell({ code, children }: { code?: string; children: ReactNode }) {
   return (
-    <div className="min-h-screen bg-bff-950 text-white">
+    <div className="min-h-screen bg-ink text-white">
       <header className="flex items-center justify-between px-6 py-4">
         <Logo reversed className="h-10" />
         {code && (
@@ -51,7 +51,7 @@ function HostShell({ code, children }: { code?: string; children: ReactNode }) {
 
 function ControlBar({ children }: { children: ReactNode }) {
   return (
-    <div className="fixed inset-x-0 bottom-0 border-t border-white/10 bg-bff-950/95 px-6 py-4 backdrop-blur">
+    <div className="fixed inset-x-0 bottom-0 border-t border-white/10 bg-ink/95 px-6 py-4 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-end gap-4">{children}</div>
     </div>
   )
@@ -194,10 +194,10 @@ export default function QuizHost() {
       <HostShell>
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
           <p className="text-4xl" aria-hidden="true">🖥️</p>
-          <h1 className="font-display text-xl font-bold text-slate-900">
+          <h1 className="font-display text-xl font-bold text-ink">
             {zh ? '测验主持人屏幕' : es ? 'Pantalla del anfitrión del quiz' : 'Quiz host screen'}
           </h1>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-ink/70">
             {!BACKEND_ENABLED
               ? zh
                 ? '实时测验会在班级后台连接后开启。'
@@ -223,10 +223,10 @@ export default function QuizHost() {
       <HostShell>
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
           <p className="text-4xl" aria-hidden="true">🤔</p>
-          <h1 className="font-display text-xl font-bold text-slate-900">
+          <h1 className="font-display text-xl font-bold text-ink">
             {zh ? '无法加载测验' : es ? 'No se pudo cargar el quiz' : 'Could not load the quiz'}
           </h1>
-          <p className="text-sm text-slate-600">{error}</p>
+          <p className="text-sm text-ink/70">{error}</p>
           <Link to="/activities" className="btn-primary">
             {zh ? '返回活动' : es ? 'Volver a las actividades' : 'Back to activities'}
           </Link>
@@ -251,14 +251,14 @@ export default function QuizHost() {
       <HostShell code={session.code}>
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
           <p className="text-4xl" aria-hidden="true">📚</p>
-          <h1 className="font-display text-xl font-bold text-slate-900">
+          <h1 className="font-display text-xl font-bold text-ink">
             {zh
               ? '这节课暂时无法使用'
               : es
                 ? 'Esa lección no está disponible'
                 : 'That lesson is not available'}
           </h1>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-ink/70">
             {zh ? (
               <>
                 这个测验指向的课程（{session.lesson_slug}）没有任何题目。请从当前的课程重新开始一个测验。
@@ -297,6 +297,10 @@ export default function QuizHost() {
       {/* Lobby */}
       {session.state === 'lobby' && (
         <div className="flex flex-col items-center gap-8 pt-8 text-center">
+          <p className="eyebrow justify-center text-bff-300">
+            <span className="eyebrow-line" aria-hidden="true" />
+            {zh ? '实时测验' : es ? 'QUIZ EN VIVO' : 'LIVE QUIZ'}
+          </p>
           <h1 className="font-display text-4xl font-bold sm:text-5xl">
             <span aria-hidden="true">{lesson.emoji}</span>{' '}
             {zh ? '实时测验' : es ? 'Quiz en vivo' : 'Live Quiz'} — {lesson.title}
@@ -386,7 +390,7 @@ export default function QuizHost() {
                 key={i}
                 className={`flex items-center gap-4 rounded-2xl p-6 ${OPTION_COLORS[i % OPTION_COLORS.length]}`}
               >
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white font-display text-2xl font-bold text-slate-900">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white font-display text-2xl font-bold text-ink">
                   {optionLetter(i)}
                 </span>
                 <span className="font-display text-2xl font-semibold leading-snug">{opt}</span>
@@ -432,7 +436,7 @@ export default function QuizHost() {
                     correct ? 'animate-pop-in ring-4 ring-white' : 'opacity-40'
                   }`}
                 >
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white font-display text-2xl font-bold text-slate-900">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white font-display text-2xl font-bold text-ink">
                     {optionLetter(i)}
                   </span>
                   <span className="font-display text-2xl font-semibold leading-snug">
@@ -518,7 +522,7 @@ export default function QuizHost() {
             {standings.slice(0, 3).map((p, i) => (
               <div
                 key={p.id}
-                className={`animate-pop-in rounded-3xl p-8 ${
+                className={`animate-pop-in rounded-2xl p-8 ${
                   i === 0
                     ? 'bg-white/20 ring-2 ring-gold-400 sm:order-2'
                     : i === 1

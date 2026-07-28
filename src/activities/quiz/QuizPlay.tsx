@@ -23,7 +23,7 @@ const QUESTION_SECONDS = 20
 const OPTION_COLORS = [
   'bg-red-600 text-white',
   'bg-blue-600 text-white',
-  'bg-amber-400 text-slate-900',
+  'bg-amber-400 text-ink',
   'bg-green-700 text-white',
 ]
 
@@ -43,8 +43,8 @@ function errorMessage(err: unknown, zh: boolean, es: boolean): string {
 
 function Shell({ code, children }: { code: string; children: ReactNode }) {
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3">
+    <div className="min-h-screen bg-paper">
+      <header className="flex items-center justify-between border-b border-ink/10 bg-white px-4 py-3">
         <Logo className="h-8" />
         {code && (
           <span className="chip bg-bff-50 font-display tracking-widest text-bff-700">
@@ -171,14 +171,14 @@ export default function QuizPlay() {
       <Shell code={code}>
         <div className="card mx-auto mt-10 max-w-md space-y-3 text-center">
           <p className="text-4xl" aria-hidden="true">🔌</p>
-          <h1 className="font-display text-xl font-bold text-slate-900">
+          <h1 className="font-display text-xl font-bold text-ink">
             {zh
               ? '实时测验还没有连接'
               : es
                 ? 'Los quiz en vivo aún no están conectados'
                 : 'Live quizzes are not connected yet'}
           </h1>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-ink/70">
             {zh
               ? '实时测验会在班级后台连接后开启——课程还是可以自己单独学习哦！'
               : es
@@ -198,10 +198,10 @@ export default function QuizPlay() {
       <Shell code={code}>
         <div className="card mx-auto mt-10 max-w-md space-y-3 text-center">
           <p className="text-4xl" aria-hidden="true">🤔</p>
-          <h1 className="font-display text-xl font-bold text-slate-900">
+          <h1 className="font-display text-xl font-bold text-ink">
             {zh ? '嗯，这次没成功' : es ? 'Mmm, eso no funcionó' : 'Hmm, that did not work'}
           </h1>
-          <p className="text-sm text-slate-600">{loadError}</p>
+          <p className="text-sm text-ink/70">{loadError}</p>
           <Link to="/activities" className="btn-primary">
             {zh ? '返回活动' : es ? 'Volver a las actividades' : 'Back to activities'}
           </Link>
@@ -213,7 +213,7 @@ export default function QuizPlay() {
   if (!session) {
     return (
       <Shell code={code}>
-        <p className="mt-16 text-center font-display text-lg font-semibold text-slate-500">
+        <p className="mt-16 text-center font-display text-lg font-semibold text-ink/60">
           {zh ? '正在查找你的测验……' : es ? 'Buscando tu quiz…' : 'Finding your quiz…'}
         </p>
       </Shell>
@@ -225,10 +225,10 @@ export default function QuizPlay() {
       <Shell code={session.code}>
         <div className="card mx-auto mt-10 max-w-md space-y-3 text-center">
           <p className="text-4xl" aria-hidden="true">📚</p>
-          <h1 className="font-display text-xl font-bold text-slate-900">
+          <h1 className="font-display text-xl font-bold text-ink">
             {zh ? '这个测验暂时无法使用' : es ? 'Este quiz no está disponible' : 'This quiz is not available'}
           </h1>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-ink/70">
             {zh
               ? '找不到这个测验对应的课程。请让主持人重新开始一个吧。'
               : es
@@ -249,10 +249,10 @@ export default function QuizPlay() {
         <div className="card mx-auto mt-10 max-w-md space-y-4">
           <div className="text-center">
             <p className="text-4xl" aria-hidden="true">{lesson.emoji}</p>
-            <h1 className="mt-2 font-display text-xl font-bold text-slate-900">
+            <h1 className="mt-2 font-display text-xl font-bold text-ink">
               {zh ? '你找到测验啦！' : es ? '¡Encontraste el quiz!' : 'You found the quiz!'}
             </h1>
-            <p className="mt-1 text-sm text-slate-600">
+            <p className="mt-1 text-sm text-ink/70">
               {zh
                 ? '取一个昵称，让大家都知道排行榜上的你是谁。'
                 : es
@@ -319,14 +319,14 @@ export default function QuizPlay() {
       {session.state === 'lobby' && (
         <div className="card animate-pop-in mt-6 space-y-4 text-center" role="status">
           <p className="text-5xl" aria-hidden="true">🎉</p>
-          <h1 className="font-display text-2xl font-bold text-slate-900">
+          <h1 className="font-display text-2xl font-bold text-ink">
             {zh
               ? `你加入啦，${player.nickname}！`
               : es
                 ? `¡Estás dentro, ${player.nickname}!`
                 : `You're in, ${player.nickname}!`}
           </h1>
-          <p className="text-slate-600">
+          <p className="text-ink/70">
             {zh
               ? '看大屏幕，测验马上就要开始了。'
               : es
@@ -340,14 +340,14 @@ export default function QuizPlay() {
       {session.state === 'question' && (
         <div className="space-y-4">
           <div>
-            <h1 className="font-display text-xl font-bold text-slate-900">
+            <h1 className="font-display text-xl font-bold text-ink">
               {zh
                 ? `第 ${qIndex + 1} 题，共 ${total} 题`
                 : es
                   ? `Pregunta ${qIndex + 1} de ${total}`
                   : `Question ${qIndex + 1} of ${total}`}
             </h1>
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-ink/60">
               {zh
                 ? '答得又快又对能拿到更多分数。看大屏幕吧！'
                 : es
@@ -372,7 +372,7 @@ export default function QuizPlay() {
                     : 'hover:scale-[1.01] active:scale-[0.99]'
                 } disabled:cursor-not-allowed`}
               >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white font-display text-xl font-bold text-slate-900">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white font-display text-xl font-bold text-ink">
                   {optionLetter(i)}
                 </span>
                 <span className="font-display text-xl font-semibold leading-snug">{opt}</span>
@@ -397,7 +397,7 @@ export default function QuizPlay() {
           <p className="text-5xl" aria-hidden="true">
             {myAnswer === undefined ? '⏰' : gotIt ? '✅' : '❌'}
           </p>
-          <h1 className="font-display text-2xl font-bold text-slate-900">
+          <h1 className="font-display text-2xl font-bold text-ink">
             {myAnswer === undefined
               ? zh
                 ? '时间到啦，这一轮你没有作答'
@@ -416,7 +416,7 @@ export default function QuizPlay() {
                     ? 'Esta vez no'
                     : 'Not this time'}
           </h1>
-          <p className="text-slate-600">
+          <p className="text-ink/70">
             {zh ? '正确答案是 ' : es ? 'La respuesta era ' : 'The answer was '}
             <strong>{optionLetter(q.answerIndex)}</strong>:{' '}
             <strong>{q.options[q.answerIndex]}</strong>
@@ -440,7 +440,7 @@ export default function QuizPlay() {
             {myRank === 1 ? '🥇' : myRank === 2 ? '🥈' : myRank === 3 ? '🥉' : '🎊'}
           </p>
           <div>
-            <h1 className="font-display text-2xl font-bold text-slate-900">
+            <h1 className="font-display text-2xl font-bold text-ink">
               {zh
                 ? `你排在第 ${myRank || standings.length} 名，共 ${standings.length} 人`
                 : es
@@ -457,7 +457,7 @@ export default function QuizPlay() {
           </div>
           {standings.length > 0 && (
             <div className="mx-auto max-w-sm text-left">
-              <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-ink/60">
                 {zh ? '最佳玩家' : es ? 'Mejores jugadores' : 'Top players'}
               </p>
               <ol className="space-y-1.5">
@@ -467,7 +467,7 @@ export default function QuizPlay() {
                     className={`flex items-center justify-between rounded-xl px-3 py-2 text-sm ${
                       p.id === player.id
                         ? 'bg-bff-50 font-bold text-bff-800'
-                        : 'bg-slate-50 text-slate-700'
+                        : 'bg-paper text-ink/75'
                     }`}
                   >
                     <span>

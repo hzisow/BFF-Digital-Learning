@@ -40,8 +40,8 @@ function Shell({ code, children }: { code: string; children: ReactNode }) {
   const es = lang === 'es'
   const zh = lang === 'zh'
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3">
+    <div className="min-h-screen bg-paper">
+      <header className="flex items-center justify-between border-b border-ink/10 bg-white px-4 py-3">
         <Logo className="h-8" />
         {code && (
           <span className="chip bg-bff-50 font-display tracking-widest text-bff-700">
@@ -183,10 +183,10 @@ export default function WolfPlayer() {
       <Shell code={code}>
         <div className="card mx-auto mt-10 max-w-md space-y-3 text-center">
           <p className="text-4xl" aria-hidden="true">🔌</p>
-          <h1 className="font-display text-xl font-bold text-slate-900">
+          <h1 className="font-display text-xl font-bold text-ink">
             {zh ? '实时对战还没有接通' : es ? 'Los juegos en vivo aún no están conectados' : 'Live games are not connected yet'}
           </h1>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-ink/70">
             {zh
               ? '当班级后端接通后，实时对战就会解锁——单人模式现在就能玩！'
               : es
@@ -206,8 +206,8 @@ export default function WolfPlayer() {
       <Shell code={code}>
         <div className="card mx-auto mt-10 max-w-md space-y-3 text-center">
           <p className="text-4xl" aria-hidden="true">🤔</p>
-          <h1 className="font-display text-xl font-bold text-slate-900">{zh ? '嗯，这没能成功' : es ? 'Mmm, eso no funcionó' : 'Hmm, that did not work'}</h1>
-          <p className="text-sm text-slate-600">{loadError}</p>
+          <h1 className="font-display text-xl font-bold text-ink">{zh ? '嗯，这没能成功' : es ? 'Mmm, eso no funcionó' : 'Hmm, that did not work'}</h1>
+          <p className="text-sm text-ink/70">{loadError}</p>
           <Link to="/wolf" className="btn-primary">
             {zh ? '返回 Wolf of Wall Street' : es ? 'Volver a Wolf of Wall Street' : 'Back to Wolf of Wall Street'}
           </Link>
@@ -219,7 +219,7 @@ export default function WolfPlayer() {
   if (!session) {
     return (
       <Shell code={code}>
-        <p className="mt-16 text-center font-display text-lg font-semibold text-slate-500">
+        <p className="mt-16 text-center font-display text-lg font-semibold text-ink/60">
           {zh ? '正在寻找你的游戏…' : es ? 'Buscando tu juego…' : 'Finding your game…'}
         </p>
       </Shell>
@@ -232,10 +232,10 @@ export default function WolfPlayer() {
         <div className="card mx-auto mt-10 max-w-md space-y-4">
           <div className="text-center">
             <p className="text-4xl" aria-hidden="true">🐺</p>
-            <h1 className="mt-2 font-display text-xl font-bold text-slate-900">
+            <h1 className="mt-2 font-display text-xl font-bold text-ink">
               {zh ? '你找到游戏啦！' : es ? '¡Encontraste el juego!' : 'You found the game!'}
             </h1>
-            <p className="mt-1 text-sm text-slate-600">
+            <p className="mt-1 text-sm text-ink/70">
               {zh
                 ? '起个昵称，好让大家知道是谁在交易。'
                 : es
@@ -281,10 +281,10 @@ export default function WolfPlayer() {
       {stage === 0 && (
         <div className="card animate-pop-in mt-6 space-y-4 text-center">
           <p className="text-5xl" aria-hidden="true">🎉</p>
-          <h1 className="font-display text-2xl font-bold text-slate-900">
+          <h1 className="font-display text-2xl font-bold text-ink">
             {zh ? `你进来啦，${player.nickname}！` : es ? `¡Estás dentro, ${player.nickname}!` : `You're in, ${player.nickname}!`}
           </h1>
-          <p className="text-slate-600">
+          <p className="text-ink/70">
             {zh
               ? '看大屏幕——主持人敲响钟声时，市场就开盘。'
               : es
@@ -293,7 +293,7 @@ export default function WolfPlayer() {
           </p>
           {others.length > 0 && (
             <div>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-ink/60">
                 {zh ? '和你一起交易的人' : es ? 'Negociando junto a ti' : 'Trading alongside you'}
               </p>
               <div className="flex flex-wrap justify-center gap-2">
@@ -311,8 +311,8 @@ export default function WolfPlayer() {
       {stage >= 1 && stage <= 3 && (
         <div className="space-y-4">
           <div>
-            <h1 className="font-display text-xl font-bold text-slate-900">Wolf of Wall Street</h1>
-            <p className="text-sm text-slate-500">
+            <h1 className="font-display text-xl font-bold text-ink">Wolf of Wall Street</h1>
+            <p className="text-sm text-ink/60">
               <span aria-hidden="true">{STAGE_TITLES[stage].emoji}</span> {zh ? STAGE_TITLES[stage].titleZh : es ? STAGE_TITLES[stage].titleEs : STAGE_TITLES[stage].title}
             </p>
           </div>
@@ -322,7 +322,7 @@ export default function WolfPlayer() {
 
       {stage === 4 && (
         <div className="space-y-3">
-          <div className="card border-bff-200 bg-bff-50 p-4 text-center text-sm text-slate-700">
+          <div className="card border-bff-200 bg-bff-50 p-4 text-center text-sm text-ink/75">
             <span aria-hidden="true">🔒</span>{' '}
             {zh
               ? '市场已经收盘！盯着大屏幕，结果正在揭晓……'
@@ -340,13 +340,13 @@ export default function WolfPlayer() {
                   className="card animate-pop-in flex items-start justify-between gap-3 p-4"
                 >
                   <div>
-                    <p className="font-display font-bold text-slate-900">
-                      {c.name} <span className="text-xs text-slate-500">{c.ticker}</span>
+                    <p className="font-display font-bold text-ink">
+                      {c.name} <span className="text-xs text-ink/60">{c.ticker}</span>
                       {shares > 0 && (
                         <span className="chip ml-2 bg-bff-50 text-bff-700">{zh ? `你持有 ${shares}` : es ? `tienes ${shares}` : `you own ${shares}`}</span>
                       )}
                     </p>
-                    <p className="text-sm text-slate-600">{zh ? c.summaryZh : es ? c.summaryEs : c.summary}</p>
+                    <p className="text-sm text-ink/70">{zh ? c.summaryZh : es ? c.summaryEs : c.summary}</p>
                   </div>
                   <p
                     className={`whitespace-nowrap font-display text-lg font-bold ${change >= 0 ? 'text-green-700' : 'text-red-600'}`}
@@ -378,7 +378,7 @@ export default function WolfPlayer() {
         <div className="card animate-pop-in mt-6 space-y-5 text-center" role="status">
           <p className="text-5xl" aria-hidden="true">{finalValue >= STARTING_CASH ? '🎊' : '📉'}</p>
           <div>
-            <h1 className="font-display text-2xl font-bold text-slate-900">
+            <h1 className="font-display text-2xl font-bold text-ink">
               {zh ? '最终投资组合：' : es ? 'Cartera final:' : 'Final portfolio:'} {money(finalValue)}
             </h1>
             <p
@@ -405,7 +405,7 @@ export default function WolfPlayer() {
           )}
           {standings.length > 0 && (
             <div className="mx-auto max-w-sm text-left">
-              <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-ink/60">
                 {zh ? '顶尖投资者' : es ? 'Mejores inversionistas' : 'Top traders'}
               </p>
               <ol className="space-y-1.5">
@@ -415,7 +415,7 @@ export default function WolfPlayer() {
                     className={`flex items-center justify-between rounded-xl px-3 py-2 text-sm ${
                       p.id === player.id
                         ? 'bg-bff-50 font-bold text-bff-800'
-                        : 'bg-slate-50 text-slate-700'
+                        : 'bg-paper text-ink/75'
                     }`}
                   >
                     <span>

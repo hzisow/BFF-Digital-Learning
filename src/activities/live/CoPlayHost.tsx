@@ -41,7 +41,7 @@ function rankPlayers(players: LivePlayer[]): LivePlayer[] {
 
 function HostShell({ code, children }: { code?: string; children: ReactNode }) {
   return (
-    <div className="min-h-screen bg-bff-950 text-white">
+    <div className="min-h-screen bg-ink text-white">
       <header className="flex items-center justify-between px-6 py-4">
         <Logo reversed className="h-10" />
         {code && (
@@ -57,7 +57,7 @@ function HostShell({ code, children }: { code?: string; children: ReactNode }) {
 
 function ControlBar({ children }: { children: ReactNode }) {
   return (
-    <div className="fixed inset-x-0 bottom-0 border-t border-white/10 bg-bff-950/95 px-6 py-4 backdrop-blur">
+    <div className="fixed inset-x-0 bottom-0 border-t border-white/10 bg-ink/95 px-6 py-4 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-end gap-4">{children}</div>
     </div>
   )
@@ -131,8 +131,8 @@ export default function CoPlayHost() {
           <p className="text-4xl" aria-hidden="true">
             🤔
           </p>
-          <h1 className="font-display text-xl font-bold text-slate-900">{zh ? '无法加载游戏' : es ? 'No se pudo cargar el juego' : 'Could not load the game'}</h1>
-          <p className="text-sm text-slate-600">{error}</p>
+          <h1 className="font-display text-xl font-bold text-ink">{zh ? '无法加载游戏' : es ? 'No se pudo cargar el juego' : 'Could not load the game'}</h1>
+          <p className="text-sm text-ink/70">{error}</p>
           <Link to="/" className="btn-primary">
             {zh ? '返回首页' : es ? 'Volver al inicio' : 'Back to home'}
           </Link>
@@ -160,8 +160,8 @@ export default function CoPlayHost() {
           <p className="text-4xl" aria-hidden="true">
             🧩
           </p>
-          <h1 className="font-display text-xl font-bold text-slate-900">{zh ? '未知的游戏' : es ? 'Juego desconocido' : 'Unknown game'}</h1>
-          <p className="text-sm text-slate-600">
+          <h1 className="font-display text-xl font-bold text-ink">{zh ? '未知的游戏' : es ? 'Juego desconocido' : 'Unknown game'}</h1>
+          <p className="text-sm text-ink/70">
             {zh ? (
               <>
                 我们找不到名为“{session.activity_slug}”的活动。仔细核对一下你启动的挑战吧。
@@ -194,6 +194,10 @@ export default function CoPlayHost() {
       {/* Lobby */}
       {session.state === 'lobby' && (
         <div className="flex flex-col items-center gap-8 pt-8 text-center">
+          <p className="eyebrow justify-center text-bff-300">
+            <span className="eyebrow-line" aria-hidden="true" />
+            {zh ? '实时对战' : es ? 'JUEGO EN VIVO' : 'LIVE GAME'}
+          </p>
           <h1 className="font-display text-4xl font-bold sm:text-5xl">
             <span aria-hidden="true">{activity.emoji}</span> {activity.title}
           </h1>
@@ -309,7 +313,7 @@ export default function CoPlayHost() {
             {standings.slice(0, 3).map((p, i) => (
               <div
                 key={p.id}
-                className={`animate-pop-in rounded-3xl p-8 ${
+                className={`animate-pop-in rounded-2xl p-8 ${
                   i === 0
                     ? 'bg-white/20 ring-2 ring-gold-400 sm:order-2'
                     : i === 1
