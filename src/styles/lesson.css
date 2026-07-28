@@ -351,7 +351,7 @@
   background: var(--lz-blue);
   color: #fff;
   padding: 15px 26px;
-  clip-path: polygon(9px 0, 100% 0, calc(100% - 9px) 100%, 0 100%);
+  border-radius: 4px;
 }
 .lz-btn--primary:hover { background: #0086cc; color: #fff; transform: translateY(-1px); }
 .lz-btn--primary:active { transform: translateY(0) scale(0.98); }

@@ -18,8 +18,17 @@ export default {
           950: '#072b43',
         },
         gold: {
-          400: '#fbbf24',
-          500: '#f59e0b',
+          400: '#f0b35a',
+          500: '#e09a33',
+        },
+        // Editorial base — warm cream "paper" and near-black navy "ink".
+        paper: {
+          DEFAULT: '#f5f3ec',
+          deep: '#e9e5db',
+        },
+        ink: {
+          DEFAULT: '#0c1a27',
+          soft: '#12283a',
         },
       },
       fontFamily: {

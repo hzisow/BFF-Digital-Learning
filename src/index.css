@@ -4,27 +4,31 @@
 
 @layer base {
   html {
-    @apply font-body text-slate-800 antialiased;
+    @apply font-body text-ink antialiased;
   }
   body {
-    @apply bg-slate-50;
+    @apply bg-paper text-ink;
   }
   h1, h2, h3, h4 {
     @apply font-display tracking-tightish;
   }
-
-  /* Visible keyboard-focus ring on every interactive element, including the
-     bare buttons/links (icon buttons, path nodes) that don't use .btn-*. */
-  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-    @apply outline-none ring-2 ring-bff-500 ring-offset-2 ring-offset-white;
-    border-radius: 0.5rem;
+  /* Serif-italic emphasis word inside display headings — an editorial signature. */
+  h1 em, h2 em, h3 em, .display em {
+    font-family: Georgia, "Times New Roman", serif;
+    font-style: italic;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    color: #0077b5;
   }
 
-  /* Respect users who ask for less motion: neutralize animations/transitions. */
+  /* Visible keyboard-focus ring on every interactive element. */
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    @apply outline-none ring-2 ring-bff-500 ring-offset-2 ring-offset-paper;
+    border-radius: 0.375rem;
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
+    *, *::before, *::after {
       animation-duration: 0.001ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.001ms !important;
@@ -34,29 +38,94 @@
 }
 
 @layer components {
-  /* active:scale gives buttons a physical "press" — a small human touch that
-     un-customized output almost never has. transition-transform keeps it snappy. */
+  /* Editorial buttons: sharp corners (no clip-path, so focus rings stay
+     visible), flat brand color, a tactile active press. */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-bff-600 px-5 py-2.5 font-display font-semibold text-white shadow-sm transition-[transform,background-color,box-shadow] duration-150 hover:bg-bff-700 active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-bff-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100;
+    @apply inline-flex items-center justify-center gap-2 rounded-[5px] bg-bff-600 px-5 py-2.5 font-display font-semibold tracking-tight text-white transition-[transform,background-color] duration-150 hover:bg-bff-700 active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-bff-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100;
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl border-2 border-bff-600 bg-white px-5 py-2.5 font-display font-semibold text-bff-700 transition-[transform,background-color] duration-150 hover:bg-bff-50 active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-bff-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100;
+    @apply inline-flex items-center justify-center gap-2 rounded-[5px] border border-ink bg-transparent px-5 py-2.5 font-display font-semibold tracking-tight text-ink transition-[transform,background-color,color] duration-150 hover:bg-ink hover:text-white active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-bff-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100;
   }
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 font-display font-medium text-slate-600 transition-[transform,background-color,color] duration-150 hover:bg-slate-100 hover:text-slate-900 active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-bff-400 focus-visible:ring-offset-2;
+    @apply inline-flex items-center justify-center gap-2 rounded-[5px] px-4 py-2 font-display font-semibold tracking-tight text-ink/70 transition-[transform,background-color,color] duration-150 hover:bg-ink/5 hover:text-ink active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-bff-400 focus-visible:ring-offset-2;
   }
+  /* Flat editorial card — thin ink hairline, sharp-ish corner, no puffy shadow. */
   .card {
-    @apply rounded-2xl border border-slate-200/80 bg-white p-6 shadow-card;
-  }
-  /* An eyebrow: a small, tracked, uppercase label above a heading. A staple of
-     editorial/human layouts; signals hierarchy the generic centered-hero lacks. */
-  .eyebrow {
-    @apply inline-flex items-center gap-1.5 font-display text-xs font-bold uppercase tracking-[0.12em] text-bff-600;
+    @apply rounded-[8px] border border-ink/10 bg-white p-6 shadow-card;
   }
   .input {
-    @apply w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-900 placeholder-slate-400 focus:border-bff-500 focus:outline-none focus:ring-2 focus:ring-bff-200;
+    @apply w-full rounded-[5px] border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder-ink/40 focus:border-bff-500 focus:outline-none focus:ring-2 focus:ring-bff-200;
   }
   .chip {
     @apply inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold;
   }
+  /* Eyebrow: small tracked uppercase label above a heading. */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 font-display text-[11px] font-extrabold uppercase tracking-[0.18em] text-bff-600;
+  }
+  .eyebrow-line {
+    @apply inline-block h-px w-6 bg-current opacity-50;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Editorial toolkit — reusable primitives for the whole app, matching
+ * the lesson canvas: dark ink heroes, chamfered decorative panels,
+ * accent bars, orbit rings. Raw CSS (outside @layer) so clip-paths and
+ * ::before bars are predictable. Never applied to focusable elements.
+ * ------------------------------------------------------------------ */
+
+.chamfer {
+  clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+}
+
+/* Dark hero band */
+.ed-hero {
+  position: relative;
+  overflow: hidden;
+  background: #0c1a27;
+  color: #fff;
+}
+.ed-hero-orbit {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  border: 1px solid rgba(38, 164, 221, 0.16);
+}
+.ed-hero-orbit.gold { border-color: rgba(240, 179, 90, 0.1); }
+
+/* Editorial panel: flat surface with a colored top accent bar */
+.panel {
+  position: relative;
+  background: #fff;
+  border: 1px solid rgba(12, 26, 39, 0.1);
+}
+.panel::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; right: 0;
+  height: 4px;
+  background: #0077b5;
+}
+.panel.gold::before { background: #f0b35a; }
+.panel.ink::before { background: #0c1a27; }
+
+/* Left accent bar variant */
+.accent-left { position: relative; }
+.accent-left::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: #0077b5;
+}
+
+/* Card hover lift shared by interactive cards */
+.lift {
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+.lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 2px 4px rgba(12, 26, 39, 0.08), 0 12px 26px rgba(12, 26, 39, 0.1);
+  border-color: rgba(0, 119, 181, 0.4);
 }

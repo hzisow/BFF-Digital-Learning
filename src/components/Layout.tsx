@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
-import { Volume2, VolumeX, Menu, X } from 'lucide-react'
+import { Volume2, VolumeX, Menu, X, ArrowRight } from 'lucide-react'
 import { Logo } from './Logo'
 import { useAdmin, useStudent } from '../lib/session'
 import { useLang } from '../lib/i18n'
@@ -239,7 +239,7 @@ export default function Layout() {
       >
         {t('a11y.skip')}
       </a>
-      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
+      <header className="sticky top-0 z-40 border-b-2 border-bff-600 bg-paper/95 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4">
           <Link
             to="/"
@@ -330,24 +330,25 @@ export default function Layout() {
         <Outlet />
       </main>
 
-      <footer className="border-t border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-4 py-8 text-center sm:flex-row sm:justify-between sm:text-left">
+      <footer className="bg-ink text-white">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-4 py-10 text-center sm:flex-row sm:justify-between sm:text-left">
           <div className="flex items-center gap-3">
-            <Logo className="h-8" />
+            <Logo reversed className="h-8" />
             <div>
-              <p className="font-display text-sm font-bold text-bff-800">
+              <p className="font-display text-sm font-bold text-white">
                 Building Financial Futures of America
               </p>
-              <p className="text-xs text-slate-500">{t('footer.tagline')}</p>
+              <p className="text-xs text-white/55">{t('footer.tagline')}</p>
             </div>
           </div>
           <a
             href="https://www.bffofamerica.org"
             target="_blank"
             rel="noreferrer"
-            className="text-sm font-semibold text-bff-600 hover:text-bff-700"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-bff-200 transition-colors hover:text-white"
           >
-            bffofamerica.org →
+            bffofamerica.org
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </a>
         </div>
       </footer>
