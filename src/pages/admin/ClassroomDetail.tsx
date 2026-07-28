@@ -432,7 +432,10 @@ export default function ClassroomDetail() {
                   type="button"
                   className={lightBtn}
                   onClick={() => {
-                    const link = `${window.location.href.split('#')[0]}#/join?code=${classroom.code}`
+                    // Clean URL built from the app's base path, so the link
+                    // works on the Pages project path and a custom domain alike.
+                    const base = import.meta.env.BASE_URL.replace(/\/$/, '')
+                    const link = `${window.location.origin}${base}/join?code=${classroom.code}`
                     void navigator.clipboard?.writeText(link)
                     toast(zh ? '加入链接已复制！' : es ? '¡Enlace para unirse copiado!' : 'Join link copied!', 'success')
                   }}

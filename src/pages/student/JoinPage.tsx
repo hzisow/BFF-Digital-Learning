@@ -57,7 +57,7 @@ function JoinForm() {
   const es = lang === 'es'
   const zh = lang === 'zh'
   const [params] = useSearchParams()
-  // A shared join link (…/#/join?code=ABC123) pre-fills the code.
+  // A shared join link (…/join?code=ABC123) pre-fills the code.
   const prefilledCode = cleanCode(params.get('code') ?? '')
   const [code, setCode] = useState(prefilledCode)
   const [nickname, setNickname] = useState('')

@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { HashRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App'
 import { SessionProvider } from './lib/session'
@@ -11,7 +11,9 @@ import ErrorBoundary from './components/ErrorBoundary'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ErrorBoundary>
-      <HashRouter>
+      {/* basename comes from Vite's base, so the same code works on the
+          GitHub Pages project path and on a custom domain at the root. */}
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <LanguageProvider>
           <SessionProvider>
             <ToastProvider>
@@ -19,7 +21,7 @@ createRoot(document.getElementById('root')!).render(
             </ToastProvider>
           </SessionProvider>
         </LanguageProvider>
-      </HashRouter>
+      </BrowserRouter>
     </ErrorBoundary>
   </StrictMode>,
 )
