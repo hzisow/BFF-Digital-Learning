@@ -183,9 +183,11 @@ export default function Landing() {
             const Icon = step.icon
             return (
               <div key={step.num} className="card relative overflow-hidden">
+                {/* Inset from the edges so the numeral reads as a deliberate
+                    watermark rather than something clipped by the corner. */}
                 <span
                   aria-hidden="true"
-                  className="pointer-events-none absolute -right-1 -top-3 font-display text-6xl font-extrabold text-ink/5"
+                  className="pointer-events-none absolute right-5 top-4 font-display text-5xl font-extrabold leading-none text-ink/[0.07]"
                 >
                   {step.num}
                 </span>

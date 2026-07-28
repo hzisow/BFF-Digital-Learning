@@ -112,6 +112,15 @@ function ruledLines(doc: jsPDF, y: number, count: number): number {
   return cursor + 10
 }
 
+/** Vertical space a question needs, used for page-break and fill decisions. */
+function questionHeight(doc: jsPDF, q: WorksheetQuestion): number {
+  doc.setFont('helvetica', 'bold')
+  doc.setFontSize(11)
+  const promptLines = doc.splitTextToSize(q.prompt, CONTENT_W - 22)
+  const optionsHeight = q.type === 'multiple-choice' ? q.options.length * 20 + 24 : 0
+  return promptLines.length * 14 + optionsHeight + (LINES_FOR[q.type] ?? 3) * RULE_GAP + 34
+}
+
 /** An empty square a student can tick. */
 function checkbox(doc: jsPDF, x: number, y: number) {
   doc.setDrawColor(...MUTED)
@@ -119,16 +128,69 @@ function checkbox(doc: jsPDF, x: number, y: number) {
   doc.rect(x, y - 8, 10, 10)
 }
 
-function footer(doc: jsPDF, labels: WorksheetLabels, latinOnly: boolean) {
+/**
+ * Fetch the BFF logo and return it as a data URL, which is the only image form
+ * jsPDF accepts. Returns null if it cannot be loaded so branding degrades to
+ * the wordmark rather than failing the whole export.
+ */
+export async function loadLogo(): Promise<{ data: string; ratio: number } | null> {
+  try {
+    const res = await fetch(`${import.meta.env.BASE_URL}brand/logo.png`)
+    if (!res.ok) return null
+    const blob = await res.blob()
+    const data = await new Promise<string>((resolve, reject) => {
+      const fr = new FileReader()
+      fr.onload = () => resolve(String(fr.result))
+      fr.onerror = () => reject(fr.error)
+      fr.readAsDataURL(blob)
+    })
+    const ratio = await new Promise<number>((resolve) => {
+      const img = new Image()
+      img.onload = () => resolve(img.naturalWidth / img.naturalHeight || 3)
+      img.onerror = () => resolve(3)
+      img.src = data
+    })
+    return { data, ratio }
+  } catch {
+    return null
+  }
+}
+
+/** Brand rule + logo across every page footer, plus page numbers. */
+function footer(
+  doc: jsPDF,
+  labels: WorksheetLabels,
+  latinOnly: boolean,
+  logo: { data: string; ratio: number } | null,
+) {
   const pages = doc.getNumberOfPages()
   for (let i = 1; i <= pages; i++) {
     doc.setPage(i)
-    doc.setFont('helvetica', 'normal')
+    const baseline = PAGE_H - 34
+
+    // Hairline above the footer ties the page together.
+    doc.setDrawColor(...RULE)
+    doc.setLineWidth(0.5)
+    doc.line(MARGIN, baseline - 14, PAGE_W - MARGIN, baseline - 14)
+
+    let x = MARGIN
+    if (logo) {
+      const h = 24
+      const w = h * logo.ratio
+      doc.addImage(logo.data, 'PNG', x, baseline - 16, w, h, undefined, 'FAST')
+      x += w + 6
+    }
+    doc.setFont('helvetica', 'bold')
     doc.setFontSize(8)
+    doc.setTextColor(...BLUE)
+    doc.text('BFF Classroom', x, baseline)
+    doc.setFont('helvetica', 'normal')
     doc.setTextColor(...MUTED)
-    doc.text('BFF Classroom', MARGIN, PAGE_H - 30)
+    doc.text('Building Financial Futures of America', x, baseline + 10)
+
     const word = latinOnly ? EN_LABELS.page : labels.page
-    doc.text(`${word} ${i} / ${pages}`, PAGE_W - MARGIN, PAGE_H - 30, { align: 'right' })
+    doc.setTextColor(...MUTED)
+    doc.text(`${word} ${i} / ${pages}`, PAGE_W - MARGIN, baseline, { align: 'right' })
   }
 }
 
@@ -141,6 +203,7 @@ export function buildWorksheetPdf(
   worksheet: Worksheet,
   lang: string,
   meta: { topic: string; gradeBand: string },
+  logo: { data: string; ratio: number } | null = null,
 ): jsPDF {
   // Built-in fonts have no CJK glyphs; fall back to Latin chrome so a Chinese
   // worksheet still prints its structure instead of empty boxes.
@@ -152,6 +215,19 @@ export function buildWorksheetPdf(
   // ---- Header ----
   doc.setFillColor(...INK)
   doc.rect(0, 0, PAGE_W, 8, 'F')
+
+  // Brand lockup above the title so the sheet is identifiable at a glance.
+  if (logo) {
+    const h = 42
+    doc.addImage(logo.data, 'PNG', MARGIN, y - 8, h * logo.ratio, h, undefined, 'FAST')
+    y += h - 2
+  } else {
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(10)
+    doc.setTextColor(...BLUE)
+    doc.text('BFF CLASSROOM', MARGIN, y + 6)
+    y += 18
+  }
 
   doc.setFont('helvetica', 'bold')
   doc.setFontSize(17)
@@ -206,8 +282,7 @@ export function buildWorksheetPdf(
     // How much vertical room this question needs, so we never split one across
     // a page break mid-answer.
     const lineCount = LINES_FOR[q.type] ?? 3
-    const optionsHeight = q.type === 'multiple-choice' ? q.options.length * 20 + 24 : 0
-    const needed = promptLines.length * 14 + optionsHeight + lineCount * RULE_GAP + 34
+    const needed = questionHeight(doc, q)
 
     if (y + needed > PAGE_H - 60) {
       doc.addPage()
@@ -240,13 +315,16 @@ export function buildWorksheetPdf(
       doc.line(MARGIN + 24 + 52, y + 2, MARGIN + 190, y + 2)
       y += 22
     } else {
-      // The last written question expands to fill whatever page is left, so a
-      // question pushed onto a fresh page becomes extra writing room rather
-      // than dead space.
+      // A written question that is the last to fit on its page expands into
+      // whatever space is left, so a page break turns into extra writing room
+      // instead of a half-empty sheet.
       let lines = lineCount
-      if (i === worksheet.questions.length - 1) {
+      const next = worksheet.questions[i + 1]
+      const afterBase = y + lineCount * RULE_GAP + 16
+      const nextFits = next ? afterBase + questionHeight(doc, next) <= PAGE_H - 60 : false
+      if (!nextFits) {
         const room = Math.floor((PAGE_H - 70 - y) / RULE_GAP)
-        lines = Math.max(lineCount, Math.min(room, 14))
+        lines = Math.max(lineCount, Math.min(room, 16))
       }
       y = ruledLines(doc, y, lines)
       y += 6
@@ -283,7 +361,7 @@ export function buildWorksheetPdf(
     y += ansLines.length * 13 + 8
   })
 
-  footer(doc, labels, latinOnly)
+  footer(doc, labels, latinOnly, logo)
   return doc
 }
 

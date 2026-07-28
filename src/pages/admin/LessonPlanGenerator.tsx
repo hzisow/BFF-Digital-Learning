@@ -10,7 +10,7 @@ import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import { Navigate } from 'react-router-dom'
 import { Check, Copy, Download, Printer, Sparkles, Wand2 } from 'lucide-react'
 import { invokeAI, AI_ENABLED, AINotConfiguredError } from '../../lib/ai'
-import { buildWorksheetPdf, worksheetFilename } from '../../lib/worksheetPdf'
+import { buildWorksheetPdf, worksheetFilename, loadLogo } from '../../lib/worksheetPdf'
 import type { Worksheet } from '../../lib/worksheetPdf'
 import { useLang } from '../../lib/i18n'
 import { useAdmin } from '../../lib/session'
@@ -264,9 +264,9 @@ export default function LessonPlanGenerator() {
    * preview. jsPDF is imported on demand so it never lands in the main bundle.
    */
   async function renderPdf(ws: Worksheet) {
-    const { jsPDF } = await import('jspdf')
+    const [{ jsPDF }, logo] = await Promise.all([import('jspdf'), loadLogo()])
     const doc = new jsPDF({ unit: 'pt', format: 'letter' })
-    buildWorksheetPdf(doc, ws, lang, { topic: topic.trim(), gradeBand: gradeBand.trim() })
+    buildWorksheetPdf(doc, ws, lang, { topic: topic.trim(), gradeBand: gradeBand.trim() }, logo)
     const url = URL.createObjectURL(doc.output('blob'))
     setPdfUrl((prev) => {
       if (prev) URL.revokeObjectURL(prev)
@@ -289,12 +289,15 @@ export default function LessonPlanGenerator() {
     // Worksheets download as a print-ready PDF; lesson plans stay Markdown so
     // mentors can paste them into their own docs.
     if (isWorksheet && worksheet) {
-      const { jsPDF } = await import('jspdf')
+      const [{ jsPDF }, logo] = await Promise.all([import('jspdf'), loadLogo()])
       const doc = new jsPDF({ unit: 'pt', format: 'letter' })
-      buildWorksheetPdf(doc, worksheet, lang, {
-        topic: topic.trim(),
-        gradeBand: gradeBand.trim(),
-      })
+      buildWorksheetPdf(
+        doc,
+        worksheet,
+        lang,
+        { topic: topic.trim(), gradeBand: gradeBand.trim() },
+        logo,
+      )
       doc.save(worksheetFilename(topic.trim()))
       return
     }
