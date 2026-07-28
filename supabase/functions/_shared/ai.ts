@@ -2,7 +2,7 @@
 // The API key lives ONLY here, server-side. Get a free key at
 //   https://aistudio.google.com/apikey
 // then set it in Supabase:
-//   Project Settings → Edge Functions → Secrets → GEMINI_API_KEY
+//   Project Settings, then Edge Functions, then Secrets: GEMINI_API_KEY
 // The public repo never contains the key.
 
 // Candidate models, tried in order. A key/project that doesn't recognise the
