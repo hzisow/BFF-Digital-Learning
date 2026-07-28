@@ -2,10 +2,10 @@
 // A lesson poses a short free-text question about personal finance; the student
 // writes a sentence or two; this function returns warm, specific, structured
 // feedback (score + summary + strengths + improvements) in the student's
-// language. The Anthropic key stays server-side (see _shared/anthropic.ts).
+// language. The AI key stays server-side (see _shared/ai.ts).
 
 import { corsHeaders, json } from '../_shared/cors.ts'
-import { callClaude, languageName } from '../_shared/anthropic.ts'
+import { callAI, languageName } from '../_shared/ai.ts'
 
 interface GradeRequest {
   prompt: string
@@ -78,7 +78,7 @@ Deno.serve(async (req) => {
       .filter(Boolean)
       .join('\n')
 
-    const raw = await callClaude({
+    const raw = await callAI({
       system,
       messages: [{ role: 'user', content: userContent }],
       maxTokens: 700,

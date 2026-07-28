@@ -1,14 +1,14 @@
 // AI-Generated Practice — personalized multiple-choice practice questions
 // targeting the topics a student is weak in. The client computes the weak
-// topics from local progress and sends them here; this function asks Claude to
-// write fresh, age-appropriate MCQs on those topics, in the student's language.
+// topics from local progress and sends them here; this function asks the model
+// to write fresh, age-appropriate MCQs on those topics, in the student's language.
 //
 // Output is FORCED to a strict JSON Schema so the client always receives a
-// predictable { questions: [...] } shape. The Anthropic key stays server-side;
-// see ../_shared/anthropic.ts for how it's read from Supabase secrets.
+// predictable { questions: [...] } shape. The AI key stays server-side;
+// see ../_shared/ai.ts for how it's read from Supabase secrets.
 
 import { corsHeaders, json } from '../_shared/cors.ts'
-import { callClaude, languageName } from '../_shared/anthropic.ts'
+import { callAI, languageName } from '../_shared/ai.ts'
 
 // Keep sets short so a practice round stays quick and the request stays cheap.
 const DEFAULT_COUNT = 4
@@ -69,7 +69,7 @@ Deno.serve(async (req) => {
       n === 1 ? '' : 's'
     } that help a student review these topics they are struggling with: ${topicsText}. Spread the questions across the topics when there is more than one. Each question needs exactly 4 options and a single correct answer. Set answerIndex to the 0-based index of the correct option.`
 
-    const text = await callClaude({
+    const text = await callAI({
       system,
       messages: [{ role: 'user', content: prompt }],
       maxTokens: 1500,

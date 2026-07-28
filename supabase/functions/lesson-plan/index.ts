@@ -6,11 +6,11 @@
 //
 // This function requires a valid Supabase JWT by default (verify_jwt). As a
 // best-effort extra guard it also checks the caller is an APPROVED profile, so
-// only vetted BFF mentors can spend AI credits here. The Anthropic key stays
-// server-side; see ../_shared/anthropic.ts for how it's read from secrets.
+// only vetted BFF mentors can use it. The AI key stays server-side; see
+// ../_shared/ai.ts for how it's read from secrets.
 
 import { corsHeaders, json } from '../_shared/cors.ts'
-import { callClaude, languageName } from '../_shared/anthropic.ts'
+import { callAI, languageName } from '../_shared/ai.ts'
 import { createClient } from 'jsr:@supabase/supabase-js@2'
 
 const DEFAULT_GRADE_BAND = 'middle/high school'
@@ -88,7 +88,7 @@ Output well-structured GitHub-flavored Markdown. Use headings, lists, and tables
       ? `Create a student worksheet on the topic: "${cleanTopic}". Grade band: ${band}.`
       : `Create a ${mins}-minute lesson plan on the topic: "${cleanTopic}". Grade band: ${band}.`
 
-    const markdown = await callClaude({
+    const markdown = await callAI({
       system,
       messages: [{ role: 'user', content: prompt }],
       maxTokens: 2000,

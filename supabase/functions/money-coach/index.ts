@@ -1,11 +1,11 @@
 // AI Money Coach — a chat tutor students ask personal-finance questions.
 // Scoped strictly to the BFF personal-finance curriculum, replies in the
 // student's language, and gives general education only (never individualized
-// investment/tax/legal advice). The Anthropic key stays server-side; see
-// ../_shared/anthropic.ts for how it's read from Supabase secrets.
+// investment/tax/legal advice). The AI key stays server-side; see
+// ../_shared/ai.ts for how it's read from Supabase secrets.
 
 import { corsHeaders, json } from '../_shared/cors.ts'
-import { callClaude, languageName, type ClaudeMessage } from '../_shared/anthropic.ts'
+import { callAI, languageName, type AIMessage } from '../_shared/ai.ts'
 
 // Keep the request small and cheap: only the tail of the conversation matters
 // for a short tutoring reply, and it bounds prompt cost.
@@ -18,7 +18,7 @@ Deno.serve(async (req) => {
 
   try {
     const { messages, lang } = (await req.json()) as {
-      messages: ClaudeMessage[]
+      messages: AIMessage[]
       lang: string
     }
 
@@ -34,7 +34,7 @@ If a question is off-topic, unsafe, or inappropriate, kindly decline and steer t
 
 Answer in ${languageName(lang)}. Keep every reply short and friendly — just a few sentences.`
 
-    const reply = await callClaude({ system, messages: history, maxTokens: 600 })
+    const reply = await callAI({ system, messages: history, maxTokens: 600 })
     return json({ reply })
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err)
