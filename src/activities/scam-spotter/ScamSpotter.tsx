@@ -1,12 +1,27 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, Check, X, AlertTriangle } from 'lucide-react'
+import {
+  ArrowLeft, Check, X, AlertTriangle, Mail, MessageSquare, Smartphone,
+  UserSearch, ShieldCheck, Siren, Handshake, Search, Eye, Fish,
+} from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
 import type { LiveGameProps } from '../live/types'
 
 const SLUG = 'scam-spotter'
+
+/** Local icon lookup: data below stores a lucide icon NAME, never a glyph. */
+const ITEM_ICONS: Record<string, LucideIcon> = {
+  Mail, MessageSquare, ShieldCheck, Search, Eye, Fish,
+}
+
+/** Message-type marker: envelope for email, speech bubble for a text. */
+function KindMark({ kind }: { kind: 'email' | 'text' }) {
+  const Icon = kind === 'email' ? ITEM_ICONS.Mail : ITEM_ICONS.MessageSquare
+  return <Icon className="mr-1 inline-block h-4 w-4 align-[-0.15em] text-slate-500" aria-hidden="true" />
+}
 
 // ---------- Inbox data ----------
 //
@@ -576,11 +591,11 @@ const MESSAGES: InboxMessage[] = [
 
 type Verdict = 'legit' | 'scam'
 
-function tierFor(score: number, es: boolean, zh: boolean): { title: string; emoji: string } {
-  if (score >= 100) return { title: zh ? '防骗金钟罩' : es ? 'Escudo Antiestafas' : 'Scam-Proof Shield', emoji: '🛡️' }
-  if (score >= 75) return { title: zh ? '火眼金睛怀疑派' : es ? 'Escéptico de Ojo Agudo' : 'Sharp-Eyed Skeptic', emoji: '🔍' }
-  if (score >= 50) return { title: zh ? '开始起疑心' : es ? 'Empezando a Sospechar' : 'Getting Suspicious', emoji: '🤨' }
-  return { title: zh ? '钓鱼诱饵' : es ? 'Carnada de Phishing' : 'Phish Food', emoji: '🎣' }
+function tierFor(score: number, es: boolean, zh: boolean): { title: string; icon: string } {
+  if (score >= 100) return { title: zh ? '防骗金钟罩' : es ? 'Escudo Antiestafas' : 'Scam-Proof Shield', icon: 'ShieldCheck' }
+  if (score >= 75) return { title: zh ? '火眼金睛怀疑派' : es ? 'Escéptico de Ojo Agudo' : 'Sharp-Eyed Skeptic', icon: 'Search' }
+  if (score >= 50) return { title: zh ? '开始起疑心' : es ? 'Empezando a Sospechar' : 'Getting Suspicious', icon: 'Eye' }
+  return { title: zh ? '钓鱼诱饵' : es ? 'Carnada de Phishing' : 'Phish Food', icon: 'Fish' }
 }
 
 function cuesOf(m: InboxMessage, es: boolean, zh: boolean): { cue: string; why: string }[] {
@@ -644,6 +659,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
   ).length
   const score = Math.round((correctCount / MESSAGES.length) * 100)
   const tier = tierFor(score, es, zh)
+  const TierIcon = ITEM_ICONS[tier.icon]
 
   function mark(id: string, v: Verdict) {
     setVerdicts((prev) => ({ ...prev, [id]: v }))
@@ -686,7 +702,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
               : "Case closed. Here's what the messages were hiding."}
           </p>
           <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-            <span aria-hidden="true">🕵️</span>{' '}
+            <UserSearch className="inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
             {zh ? (
               <>识骗<em>高手</em></>
             ) : es ? (
@@ -694,12 +710,12 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
             ) : (
               <>Scam <em>Spotter</em></>
             )}{' '}
-            <span aria-hidden="true">📱</span>
+            <Smartphone className="inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />
           </h1>
         </header>
 
         <div className="card animate-pop-in mt-4 space-y-2 text-center" role="status">
-          <p className="text-5xl" aria-hidden="true">{tier.emoji}</p>
+          <TierIcon className="mx-auto h-14 w-14 text-bff-600" aria-hidden="true" />
           <h2 className="font-display text-3xl font-bold text-slate-900">{tier.title}</h2>
           <p className="font-display text-lg font-bold text-bff-700">{score} / 100</p>
           <p className="text-sm text-slate-600">
@@ -723,7 +739,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="text-sm font-semibold text-slate-800">
-                    <span className="mr-1" aria-hidden="true">{m.kind === 'email' ? '📧' : '💬'}</span>
+                    <KindMark kind={m.kind} />
                     {zh ? m.senderZh : es ? m.senderEs : m.sender} — {zh ? m.subjectZh : es ? m.subjectEs : m.subject}
                   </p>
                   <span
@@ -764,7 +780,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
                       </>
                     ) : (
                       <>
-                        <span aria-hidden="true">🤝</span> {zh ? '可信信号' : es ? 'Señales de confianza' : 'Trust signals'}
+                        <Handshake className="mr-1 inline-block h-4 w-4 align-[-0.15em] text-green-700" aria-hidden="true" /> {zh ? '可信信号' : es ? 'Señales de confianza' : 'Trust signals'}
                       </>
                     )}
                   </p>
@@ -787,7 +803,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
           style={{ animationDelay: `${MESSAGES.length * 0.12}s` }}
         >
           <p className="font-display font-bold text-slate-900">
-            <span aria-hidden="true">🛡️</span>{' '}
+            <ShieldCheck className="inline-block h-4 w-4 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
             {zh ? '举好你的 S.H.I.E.L.D. 盾牌' : es ? 'Mantén tu S.H.I.E.L.D. en alto' : 'Keep your S.H.I.E.L.D. up'}
           </p>
           {zh ? (
@@ -843,7 +859,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
               : 'Read closely. Is this message legit, or a scam?'}
           </p>
           <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-            <span aria-hidden="true">🕵️</span>{' '}
+            <UserSearch className="inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
             {zh ? (
               <>识骗<em>高手</em></>
             ) : es ? (
@@ -851,7 +867,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
             ) : (
               <>Scam <em>Spotter</em></>
             )}{' '}
-            <span aria-hidden="true">📱</span>
+            <Smartphone className="inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />
           </h1>
         </header>
 
@@ -861,7 +877,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
           </button>
           <div className="mt-3 border-b border-slate-200 pb-3">
             <p className="text-sm font-semibold text-slate-800">
-              <span className="mr-1" aria-hidden="true">{open.kind === 'email' ? '📧' : '💬'}</span>
+              <KindMark kind={open.kind} />
               {zh ? open.senderZh : es ? open.senderEs : open.sender}
             </p>
             <p className="text-xs text-slate-500">{zh ? open.addressZh : es ? open.addressEs : open.address}</p>
@@ -883,7 +899,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
                   : 'border-slate-200 bg-white text-slate-700 hover:border-green-400'
               }`}
             >
-              {zh ? '合法' : es ? 'Legítimo' : 'Legit'} <span aria-hidden="true">✅</span>
+              {zh ? '合法' : es ? 'Legítimo' : 'Legit'} <ShieldCheck className="inline-block h-4 w-4 align-[-0.15em]" aria-hidden="true" />
             </button>
             <button
               type="button"
@@ -895,7 +911,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
                   : 'border-slate-200 bg-white text-slate-700 hover:border-red-400'
               }`}
             >
-              {zh ? '骗局' : es ? 'Estafa' : 'Scam'} <span aria-hidden="true">🚨</span>
+              {zh ? '骗局' : es ? 'Estafa' : 'Scam'} <Siren className="inline-block h-4 w-4 align-[-0.15em]" aria-hidden="true" />
             </button>
           </div>
           <p className="mt-3 text-center text-xs text-slate-500" role="status" aria-live="polite">
@@ -929,7 +945,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
             : 'Your inbox has 8 new messages. Some of them are traps.'}
         </p>
         <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-          <span aria-hidden="true">🕵️</span>{' '}
+          <UserSearch className="inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
           {zh ? (
             <>识骗<em>高手</em></>
           ) : es ? (
@@ -937,7 +953,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
           ) : (
             <>Scam <em>Spotter</em></>
           )}{' '}
-          <span aria-hidden="true">📱</span>
+          <Smartphone className="inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />
         </h1>
       </header>
 
@@ -946,11 +962,11 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
           <p>
             打开每一条消息，像侦探一样读它，然后把它标记为{' '}
             <strong>
-              合法 <span aria-hidden="true">✅</span>
+              合法 <ShieldCheck className="inline-block h-4 w-4 align-[-0.15em]" aria-hidden="true" />
             </strong>{' '}
             或{' '}
             <strong>
-              骗局 <span aria-hidden="true">🚨</span>
+              骗局 <Siren className="inline-block h-4 w-4 align-[-0.15em]" aria-hidden="true" />
             </strong>
             。留意紧迫感、奇怪的发件人地址、天上掉下来的奖品、索要礼品卡，以及任何索取密码或卡号的人。把这 8 条都分类好，然后提交。
           </p>
@@ -958,11 +974,11 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
           <p>
             Abre cada mensaje, léelo como un detective y márcalo{' '}
             <strong>
-              Legítimo <span aria-hidden="true">✅</span>
+              Legítimo <ShieldCheck className="inline-block h-4 w-4 align-[-0.15em]" aria-hidden="true" />
             </strong>{' '}
             o{' '}
             <strong>
-              Estafa <span aria-hidden="true">🚨</span>
+              Estafa <Siren className="inline-block h-4 w-4 align-[-0.15em]" aria-hidden="true" />
             </strong>
             . Vigila la urgencia, las direcciones de remitente raras, los premios sorpresa, las
             exigencias de tarjetas de regalo y a cualquiera que pida contraseñas o números de
@@ -972,11 +988,11 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
           <p>
             Open each message, read it like a detective, and mark it{' '}
             <strong>
-              Legit <span aria-hidden="true">✅</span>
+              Legit <ShieldCheck className="inline-block h-4 w-4 align-[-0.15em]" aria-hidden="true" />
             </strong>{' '}
             or{' '}
             <strong>
-              Scam <span aria-hidden="true">🚨</span>
+              Scam <Siren className="inline-block h-4 w-4 align-[-0.15em]" aria-hidden="true" />
             </strong>
             . Watch for urgency, weird sender addresses, surprise prizes, gift-card demands, and
             anyone asking for passwords or card numbers. Classify all 8, then submit.
@@ -1004,7 +1020,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
               >
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold text-slate-800">
-                    <span className="mr-1" aria-hidden="true">{m.kind === 'email' ? '📧' : '💬'}</span>
+                    <KindMark kind={m.kind} />
                     {zh ? m.senderZh : es ? m.senderEs : m.sender}
                   </p>
                   <p className="truncate text-xs text-slate-600">{zh ? m.subjectZh : es ? m.subjectEs : m.subject}</p>
@@ -1020,11 +1036,11 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
                 >
                   {v === 'scam' ? (
                     <>
-                      {zh ? '骗局' : es ? 'Estafa' : 'Scam'} <span aria-hidden="true">🚨</span>
+                      {zh ? '骗局' : es ? 'Estafa' : 'Scam'} <Siren className="inline-block h-4 w-4 align-[-0.15em]" aria-hidden="true" />
                     </>
                   ) : v === 'legit' ? (
                     <>
-                      {zh ? '合法' : es ? 'Legítimo' : 'Legit'} <span aria-hidden="true">✅</span>
+                      {zh ? '合法' : es ? 'Legítimo' : 'Legit'} <ShieldCheck className="inline-block h-4 w-4 align-[-0.15em]" aria-hidden="true" />
                     </>
                   ) : zh ? (
                     '未读'

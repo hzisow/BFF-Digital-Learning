@@ -1,12 +1,23 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Check } from 'lucide-react'
+import {
+  Check, CupSoda, Boxes, Container, Salad, Headphones, Pill, Shirt, Disc3,
+  Repeat, Swords, ShoppingCart, Tag, Megaphone, Scale, Calculator,
+  PartyPopper, TrendingDown,
+} from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
 import type { LiveGameProps } from '../live/types'
 
 const SLUG = 'smart-shopper'
+
+/** Local icon lookup: data below stores a lucide icon NAME, never a glyph. */
+const ITEM_ICONS: Record<string, LucideIcon> = {
+  CupSoda, Boxes, Container, Salad, Headphones, Pill, Shirt, Disc3, Repeat,
+  Swords, ShoppingCart, Tag, Megaphone,
+}
 
 // ---------- Rounds ----------
 
@@ -20,7 +31,8 @@ interface MathLine {
 }
 
 interface Offer {
-  emoji: string
+  /** Key into ITEM_ICONS. */
+  icon: string
   name: string
   nameEs: string
   nameZh: string
@@ -62,7 +74,7 @@ const ROUNDS: Round[] = [
     scenarioZh: '你想买汽水看电影。哪个按每盎司算才真的更便宜？',
     offers: [
       {
-        emoji: '🥤',
+        icon: 'CupSoda',
         name: '2-liter bottle',
         nameEs: 'Botella de 2 litros',
         nameZh: '2 升瓶装',
@@ -81,7 +93,7 @@ const ROUNDS: Round[] = [
         bottomLineZh: '每 oz 3.7¢',
       },
       {
-        emoji: '🥫',
+        icon: 'Boxes',
         name: 'Six 12-oz cans',
         nameEs: 'Seis latas de 12 oz',
         nameZh: '六罐 12 oz 装',
@@ -121,7 +133,7 @@ const ROUNDS: Round[] = [
       '你一周大约吃 1 磅沙拉，而混合嫩叶菜大约一周就坏。你买哪个？',
     offers: [
       {
-        emoji: '🛢️',
+        icon: 'Container',
         name: '5-lb warehouse tub of spring mix',
         nameEs: 'Recipiente de mayoreo de 5 lb de mezcla de hojas',
         nameZh: '5 磅仓储装混合嫩叶菜',
@@ -142,7 +154,7 @@ const ROUNDS: Round[] = [
         bottomLineZh: '你真正用到的部分花了 $8.99',
       },
       {
-        emoji: '🥗',
+        icon: 'Salad',
         name: '1-lb box of spring mix',
         nameEs: 'Caja de 1 lb de mezcla de hojas',
         nameZh: '1 磅盒装混合嫩叶菜',
@@ -180,7 +192,7 @@ const ROUNDS: Round[] = [
     scenarioZh: '同一款一模一样的耳机，在两家店。哪个价格才真的更低？',
     offers: [
       {
-        emoji: '🎧',
+        icon: 'Headphones',
         name: 'Store A headphones',
         nameEs: 'Audífonos de la Tienda A',
         nameZh: 'A 店的耳机',
@@ -199,7 +211,7 @@ const ROUNDS: Round[] = [
         bottomLineZh: '你付 $60',
       },
       {
-        emoji: '🎧',
+        icon: 'Headphones',
         name: 'Store B headphones',
         nameEs: 'Audífonos de la Tienda B',
         nameZh: 'B 店的耳机',
@@ -239,7 +251,7 @@ const ROUNDS: Round[] = [
       '布洛芬，200 毫克，100 片。看看"活性成分"那一行——两个盒子上是一模一样的。',
     offers: [
       {
-        emoji: '💊',
+        icon: 'Pill',
         name: 'BrandName ibuprofen',
         nameEs: 'Ibuprofeno de MarcaFamosa',
         nameZh: 'BrandName 布洛芬',
@@ -259,7 +271,7 @@ const ROUNDS: Round[] = [
         bottomLineZh: '每片 9.5¢',
       },
       {
-        emoji: '💊',
+        icon: 'Pill',
         name: 'Store-brand ibuprofen',
         nameEs: 'Ibuprofeno de marca de la tienda',
         nameZh: '店铺自有品牌布洛芬',
@@ -297,7 +309,7 @@ const ROUNDS: Round[] = [
     scenarioZh: '你想买两件 $20 的 T 恤。两家店，两种"优惠"——哪个折扣更大？',
     offers: [
       {
-        emoji: '👕',
+        icon: 'Shirt',
         name: 'Store A: BOGO 50% off',
         nameEs: 'Tienda A: la segunda al 50%',
         nameZh: 'A 店：第二件半价',
@@ -318,7 +330,7 @@ const ROUNDS: Round[] = [
         bottomLineZh: '合计 $30 = 只省了 25%',
       },
       {
-        emoji: '👕',
+        icon: 'Shirt',
         name: 'Store B: 30% off everything',
         nameEs: 'Tienda B: 30% de descuento en todo',
         nameZh: 'B 店：全场 7 折',
@@ -360,7 +372,7 @@ const ROUNDS: Round[] = [
       '你为了一个 3 个月的课堂项目需要一款修图软件。之后就用不上了。',
     offers: [
       {
-        emoji: '💿',
+        icon: 'Disc3',
         name: 'Lifetime license',
         nameEs: 'Licencia de por vida',
         nameZh: '终身授权',
@@ -379,7 +391,7 @@ const ROUNDS: Round[] = [
         bottomLineZh: '$60 换来 3 个月的实际使用',
       },
       {
-        emoji: '🔁',
+        icon: 'Repeat',
         name: 'Monthly subscription',
         nameEs: 'Suscripción mensual',
         nameZh: '按月订阅',
@@ -411,11 +423,11 @@ const ROUNDS: Round[] = [
 
 // ---------- Scoring ----------
 
-function tierFor(score: number, es: boolean, zh: boolean): { title: string; emoji: string } {
-  if (score >= 100) return { title: zh ? '单价忍者' : es ? 'Ninja del Precio por Unidad' : 'Unit-Price Ninja', emoji: '🥷' }
-  if (score >= 67) return { title: zh ? '精明买手' : es ? 'Comprador Astuto' : 'Savvy Shopper', emoji: '🛒' }
-  if (score >= 50) return { title: zh ? '标签阅读者' : es ? 'Lector de Etiquetas' : 'Label Reader', emoji: '🏷️' }
-  return { title: zh ? '营销的最佳损友' : es ? 'El Mejor Amigo del Marketing' : "Marketing's Best Friend", emoji: '🎈' }
+function tierFor(score: number, es: boolean, zh: boolean): { title: string; icon: string } {
+  if (score >= 100) return { title: zh ? '单价忍者' : es ? 'Ninja del Precio por Unidad' : 'Unit-Price Ninja', icon: 'Swords' }
+  if (score >= 67) return { title: zh ? '精明买手' : es ? 'Comprador Astuto' : 'Savvy Shopper', icon: 'ShoppingCart' }
+  if (score >= 50) return { title: zh ? '标签阅读者' : es ? 'Lector de Etiquetas' : 'Label Reader', icon: 'Tag' }
+  return { title: zh ? '营销的最佳损友' : es ? 'El Mejor Amigo del Marketing' : "Marketing's Best Friend", icon: 'Megaphone' }
 }
 
 // ---------- Component ----------
@@ -439,6 +451,7 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
   const round = ROUNDS[roundIndex]
   const score = Math.round((correctCount / ROUNDS.length) * 100)
   const tier = tierFor(score, es, zh)
+  const TierIcon = ITEM_ICONS[tier.icon]
 
   function pick(i: 0 | 1) {
     if (picked !== null) return
@@ -482,7 +495,7 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
             {zh ? '结账完成。来算算你的捡漏雷达有多准。' : es ? 'Compra terminada. Sumemos tu radar de ofertas.' : "Checkout complete. Let's total up your deal radar."}
           </p>
           <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-            <span aria-hidden="true">🛒</span>{' '}
+            <ShoppingCart className="inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
             {zh ? (
               <>聪明<em>购物者</em></>
             ) : es ? (
@@ -490,12 +503,12 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
             ) : (
               <>Smart <em>Shopper</em></>
             )}{' '}
-            <span aria-hidden="true">⚖️</span>
+            <Scale className="inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />
           </h1>
         </header>
 
         <div className="card animate-pop-in mt-4 space-y-2 text-center" role="status">
-          <p className="text-5xl" aria-hidden="true">{tier.emoji}</p>
+          <TierIcon className="mx-auto h-14 w-14 text-bff-600" aria-hidden="true" />
           <h2 className="font-display text-3xl font-bold text-slate-900">{tier.title}</h2>
           <p className="font-display text-lg font-bold text-bff-700">{score} / 100</p>
           <p className="text-sm text-slate-600">
@@ -509,7 +522,7 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
 
         <div className="card animate-slide-up mt-4 border-bff-200 bg-bff-50 text-sm text-slate-700">
           <p className="font-display font-bold text-slate-900">
-            <span aria-hidden="true">🧮</span> {zh ? '要点' : es ? 'La lección' : 'The takeaway'}
+            <Calculator className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-bff-600" aria-hidden="true" />{zh ? '要点' : es ? 'La lección' : 'The takeaway'}
           </p>
           <p className="mt-1">
             {zh
@@ -548,7 +561,7 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
             : `Round ${roundIndex + 1} of ${ROUNDS.length} · Score so far: ${correctCount} right`}
         </p>
         <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-          <span aria-hidden="true">🛒</span>{' '}
+          <ShoppingCart className="inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
           {zh ? (
             <>聪明<em>购物者</em></>
           ) : es ? (
@@ -556,7 +569,7 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
           ) : (
             <>Smart <em>Shopper</em></>
           )}{' '}
-          <span aria-hidden="true">⚖️</span>
+          <Scale className="inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />
         </h1>
       </header>
 
@@ -580,6 +593,7 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
           {round.offers.map((offer, i) => {
             const isPicked = picked === i
             const isBetter = i === round.betterIndex
+            const OfferIcon = ITEM_ICONS[offer.icon]
             return (
               <button
                 key={offer.name}
@@ -599,7 +613,7 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
                       : 'border-slate-200 bg-white hover:border-bff-300'
                 }`}
               >
-                <p className="text-3xl" aria-hidden="true">{offer.emoji}</p>
+                <OfferIcon className="h-8 w-8 text-bff-600" aria-hidden="true" />
                 <p className="mt-1 text-sm font-semibold text-slate-800">{zh ? offer.nameZh : es ? offer.nameEs : offer.name}</p>
                 <p className="mt-1 inline-block rounded bg-gold-400/30 px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-slate-800">
                   {zh ? offer.shelfTagZh : es ? offer.shelfTagEs : offer.shelfTag}
@@ -647,11 +661,11 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
             >
               {pickedRight ? (
                 <>
-                  <span aria-hidden="true">🎉</span> {zh ? '答对了！' : es ? '¡Lo lograste!' : 'Nailed it!'}
+                  <PartyPopper className="mr-1 inline-block h-5 w-5 align-[-0.2em]" aria-hidden="true" />{zh ? '答对了！' : es ? '¡Lo lograste!' : 'Nailed it!'}
                 </>
               ) : (
                 <>
-                  <span aria-hidden="true">💸</span> {zh ? '这次被标签给套路了。' : es ? 'La etiqueta te ganó esta vez.' : 'The tag got you this time.'}
+                  <TrendingDown className="mr-1 inline-block h-5 w-5 align-[-0.2em]" aria-hidden="true" />{zh ? '这次被标签给套路了。' : es ? 'La etiqueta te ganó esta vez.' : 'The tag got you this time.'}
                 </>
               )}
             </p>

@@ -1,10 +1,19 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Lightbulb, Check, Clock } from 'lucide-react'
+import {
+  Lightbulb, Check, Clock, Siren, Bike, Mic, Popcorn, Target, Rocket, MoonStar,
+  FerrisWheel, Smartphone, Baby, Bus, PiggyBank, PartyPopper, Banknote,
+} from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
 import type { LiveGameProps } from '../live/types'
+
+/** Icon components referenced by name from the local data below. */
+const ITEM_ICONS: Record<string, LucideIcon> = {
+  Siren, Bike, Mic, Popcorn, Target, Rocket, MoonStar, FerrisWheel, Smartphone, Baby, Bus,
+}
 
 const SLUG = 'goal-getter'
 const TOTAL_MONTHS = 6
@@ -22,7 +31,7 @@ type Bucket = GoalId | 'fun'
 
 interface Goal {
   id: GoalId
-  emoji: string
+  icon: string
   label: string
   labelEs: string
   labelZh: string
@@ -32,14 +41,14 @@ interface Goal {
 }
 
 const GOALS: Goal[] = [
-  { id: 'emergency', emoji: '🚨', label: 'Emergency fund', labelEs: 'Fondo de emergencia', labelZh: '应急基金', target: 300, deadline: 6, weight: 40 },
-  { id: 'bike', emoji: '🚲', label: 'New bike', labelEs: 'Bicicleta nueva', labelZh: '新自行车', target: 240, deadline: 4, weight: 35 },
-  { id: 'concert', emoji: '🎤', label: 'Concert tickets', labelEs: 'Entradas para el concierto', labelZh: '演唱会门票', target: 120, deadline: 3, weight: 25 },
+  { id: 'emergency', icon: 'Siren', label: 'Emergency fund', labelEs: 'Fondo de emergencia', labelZh: '应急基金', target: 300, deadline: 6, weight: 40 },
+  { id: 'bike', icon: 'Bike', label: 'New bike', labelEs: 'Bicicleta nueva', labelZh: '新自行车', target: 240, deadline: 4, weight: 35 },
+  { id: 'concert', icon: 'Mic', label: 'Concert tickets', labelEs: 'Entradas para el concierto', labelZh: '演唱会门票', target: 120, deadline: 3, weight: 25 },
 ]
 
-const BUCKETS: { id: Bucket; emoji: string; label: string; labelEs: string; labelZh: string }[] = [
-  ...GOALS.map((g) => ({ id: g.id as Bucket, emoji: g.emoji, label: g.label, labelEs: g.labelEs, labelZh: g.labelZh })),
-  { id: 'fun', emoji: '🍿', label: 'Spend on fun', labelEs: 'Gastar en diversión', labelZh: '花在娱乐上' },
+const BUCKETS: { id: Bucket; icon: string; label: string; labelEs: string; labelZh: string }[] = [
+  ...GOALS.map((g) => ({ id: g.id as Bucket, icon: g.icon, label: g.label, labelEs: g.labelEs, labelZh: g.labelZh })),
+  { id: 'fun', icon: 'Popcorn', label: 'Spend on fun', labelEs: 'Gastar en diversión', labelZh: '花在娱乐上' },
 ]
 
 type Balances = Record<Bucket, number>
@@ -50,7 +59,7 @@ const ZERO_ALLOC: Alloc = { emergency: 0, bike: 0, concert: 0, fun: 0 }
 // ---------- Life events ----------
 
 interface EventCard {
-  emoji: string
+  icon: string
   title: string
   lines: string[]
   kind: 'info' | 'trip'
@@ -66,11 +75,11 @@ const PLAIN_MONTH: MonthInfo = { income: BASE_INCOME, minFun: 0, note: null }
 
 // ---------- Scoring ----------
 
-function tierFor(score: number, es: boolean, zh: boolean): { title: string; emoji: string } {
-  if (score >= 90) return { title: zh ? '至尊目标达成者' : es ? 'Cazametas Supremo' : 'Goal Getter Supreme', emoji: '🎯' }
-  if (score >= 70) return { title: zh ? '稳步前进' : es ? 'En Buen Camino' : 'On Track', emoji: '🚀' }
-  if (score >= 45) return { title: zh ? '走到一半的英雄' : es ? 'Héroe a Medio Camino' : 'Halfway Hero', emoji: '🌗' }
-  return { title: zh ? '娱乐优先族' : es ? 'Primero la Diversión' : 'Fun-First Spender', emoji: '🎢' }
+function tierFor(score: number, es: boolean, zh: boolean): { title: string; icon: string } {
+  if (score >= 90) return { title: zh ? '至尊目标达成者' : es ? 'Cazametas Supremo' : 'Goal Getter Supreme', icon: 'Target' }
+  if (score >= 70) return { title: zh ? '稳步前进' : es ? 'En Buen Camino' : 'On Track', icon: 'Rocket' }
+  if (score >= 45) return { title: zh ? '走到一半的英雄' : es ? 'Héroe a Medio Camino' : 'Halfway Hero', icon: 'MoonStar' }
+  return { title: zh ? '娱乐优先族' : es ? 'Primero la Diversión' : 'Fun-First Spender', icon: 'FerrisWheel' }
 }
 
 function usd(n: number): string {
@@ -129,24 +138,24 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
             : `Your emergency fund paid the ${usd(REPAIR_COST)} repair — this month's paycheck is untouched.`,
         })
         setEventCard({
-          emoji: '📱',
+          icon: 'Smartphone',
           title: zh ? '咔嚓。你的手机屏幕碎了。' : es ? 'CRAC. La pantalla de tu teléfono se rompe.' : 'CRACK. Your phone screen shatters.',
           lines: zh
             ? [
                 `维修要花 ${usd(REPAIR_COST)}。`,
                 `好消息：你的应急基金有 ${usd(currentBalances.emergency)}，所以它扛下了这一击。它存在的意义正是如此。`,
-                `应急基金：${usd(currentBalances.emergency)} → ${usd(currentBalances.emergency - REPAIR_COST)}。`,
+                `应急基金：从 ${usd(currentBalances.emergency)} 降到 ${usd(currentBalances.emergency - REPAIR_COST)}。`,
               ]
             : es
             ? [
                 `La reparación cuesta ${usd(REPAIR_COST)}.`,
                 `Buenas noticias: tu fondo de emergencia tiene ${usd(currentBalances.emergency)}, así que absorbe el golpe. Para eso es exactamente.`,
-                `Fondo de emergencia: ${usd(currentBalances.emergency)} → ${usd(currentBalances.emergency - REPAIR_COST)}.`,
+                `Fondo de emergencia: de ${usd(currentBalances.emergency)} a ${usd(currentBalances.emergency - REPAIR_COST)}.`,
               ]
             : [
                 `The repair costs ${usd(REPAIR_COST)}.`,
                 `Good news: your emergency fund has ${usd(currentBalances.emergency)}, so it absorbs the hit. That is exactly what it is for.`,
-                `Emergency fund: ${usd(currentBalances.emergency)} → ${usd(currentBalances.emergency - REPAIR_COST)}.`,
+                `Emergency fund: ${usd(currentBalances.emergency)} down to ${usd(currentBalances.emergency - REPAIR_COST)}.`,
               ],
           kind: 'info',
         })
@@ -165,7 +174,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
             : `The repair took ${usd(fromIncome)} straight out of this month's paycheck (including a ${usd(PLAN_FEE)} payment-plan fee).`,
         })
         setEventCard({
-          emoji: '📱',
+          icon: 'Smartphone',
           title: zh ? '咔嚓。你的手机屏幕碎了。' : es ? 'CRAC. La pantalla de tu teléfono se rompe.' : 'CRACK. Your phone screen shatters.',
           lines: zh
             ? [
@@ -206,7 +215,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
           : `Babysitting bonus: ${usd(WINDFALL)} extra to allocate this month.`,
       })
       setEventCard({
-        emoji: '🍼',
+        icon: 'Baby',
         title: zh
           ? `意外之财！一个周末帮人看孩子挣了 ${usd(WINDFALL)} 的奖金。`
           : es
@@ -233,7 +242,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
       setBalances(currentBalances)
       setMonthInfo(PLAIN_MONTH) // finalized by the trip choice
       setEventCard({
-        emoji: '🚌',
+        icon: 'Bus',
         title: zh
           ? `你的朋友们邀你参加一次 ${usd(TRIP_COST)} 的一日游。`
           : es
@@ -359,14 +368,15 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
     return (
       <div className="mt-4 grid gap-3 sm:grid-cols-3">
         {GOALS.map((g) => {
+          const GoalIcon = ITEM_ICONS[g.icon]
           const saved = balances[g.id]
           const pct = Math.min(100, Math.round((saved / g.target) * 100))
           const reached = saved >= g.target
           const missed = !reached && month > g.deadline
           return (
             <div key={g.id} className="card p-4">
-              <p className="text-sm font-semibold text-slate-800">
-                <span className="mr-1" aria-hidden="true">{g.emoji}</span>
+              <p className="flex items-center gap-1.5 text-sm font-semibold text-slate-800">
+                <GoalIcon className="h-4 w-4 shrink-0 text-bff-600" aria-hidden="true" />
                 {zh ? g.labelZh : es ? g.labelEs : g.label}
               </p>
               <p className="mt-0.5 text-xs text-slate-500">
@@ -432,6 +442,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
   if (phase === 'results') {
     const score = computeScore(snapshots)
     const tier = tierFor(score, es, zh)
+    const TierIcon = ITEM_ICONS[tier.icon]
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
         <header className="mb-2">
@@ -440,7 +451,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
             {zh ? '六个月结束了。你的计划撑住了吗？' : es ? 'Se acabaron los seis meses. ¿Aguantó tu plan?' : 'Six months are up. Did your plan hold?'}
           </p>
           <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-            <span aria-hidden="true">🎯</span>{' '}
+            <Target className="mr-1 inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
             {zh ? (
               <>目标<em>达成者</em></>
             ) : es ? (
@@ -448,12 +459,13 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
             ) : (
               <>Goal <em>Getter</em></>
             )}{' '}
-            <span aria-hidden="true">💰</span>
+            <PiggyBank className="ml-1 inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />
           </h1>
         </header>
 
         <div className="mt-4 space-y-3">
           {GOALS.map((g, i) => {
+            const GoalIcon = ITEM_ICONS[g.icon]
             const saved = snapshots[g.id] ?? 0
             const hit = saved >= g.target
             return (
@@ -463,8 +475,8 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
                 style={{ animationDelay: `${i * 0.25}s` }}
               >
                 <div>
-                  <p className="text-sm font-semibold text-slate-800">
-                    <span className="mr-1" aria-hidden="true">{g.emoji}</span>
+                  <p className="flex items-center gap-1.5 text-sm font-semibold text-slate-800">
+                    <GoalIcon className="h-4 w-4 shrink-0 text-bff-600" aria-hidden="true" />
                     {zh ? g.labelZh : es ? g.labelEs : g.label}
                   </p>
                   <p className="mt-0.5 text-xs text-slate-500">
@@ -480,7 +492,8 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
                 >
                   {hit ? (
                     <>
-                      {zh ? '目标达成' : es ? 'Meta lograda' : 'Goal hit'} <span aria-hidden="true">🎉</span>
+                      {zh ? '目标达成' : es ? 'Meta lograda' : 'Goal hit'}{' '}
+                      <PartyPopper className="inline-block h-3.5 w-3.5 align-[-0.15em]" aria-hidden="true" />
                     </>
                   ) : (
                     <>
@@ -498,7 +511,9 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
           style={{ animationDelay: '0.8s' }}
           role="status"
         >
-          <p className="text-5xl" aria-hidden="true">{tier.emoji}</p>
+          <p className="flex justify-center" aria-hidden="true">
+            <TierIcon className="h-14 w-14 text-bff-600" />
+          </p>
           <h2 className="font-display text-3xl font-bold text-slate-900">{tier.title}</h2>
           <p className="font-display text-lg font-bold text-bff-700">{score} / 100</p>
           <p className="text-sm text-slate-600">
@@ -555,6 +570,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
 
   // ---------- Event view ----------
   if (phase === 'event' && eventCard) {
+    const EventIcon = ITEM_ICONS[eventCard.icon]
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
         <header className="mb-2">
@@ -564,7 +580,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
             {zh ? '生活总有意外……' : es ? 'la vida pasa…' : 'life happens…'}
           </p>
           <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-            <span aria-hidden="true">🎯</span>{' '}
+            <Target className="mr-1 inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
             {zh ? (
               <>目标<em>达成者</em></>
             ) : es ? (
@@ -572,12 +588,14 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
             ) : (
               <>Goal <em>Getter</em></>
             )}{' '}
-            <span aria-hidden="true">💰</span>
+            <PiggyBank className="ml-1 inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />
           </h1>
         </header>
 
         <div className="card animate-pop-in mt-4" role="status">
-          <p className="text-5xl" aria-hidden="true">{eventCard.emoji}</p>
+          <p className="flex" aria-hidden="true">
+            <EventIcon className="h-12 w-12 text-bff-600" />
+          </p>
           <h2 className="mt-2 font-display text-xl font-bold text-slate-900">{eventCard.title}</h2>
           <div className="mt-2 space-y-2 text-sm text-slate-700">
             {eventCard.lines.map((line) => (
@@ -614,7 +632,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
           {zh ? '第' : es ? 'Mes' : 'Month'} {month} {zh ? '个月，共' : es ? 'de' : 'of'} {TOTAL_MONTHS}{zh ? ' 个月' : ''}
         </p>
         <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-          <span aria-hidden="true">🎯</span>{' '}
+          <Target className="mr-1 inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
           {zh ? (
             <>目标<em>达成者</em></>
           ) : es ? (
@@ -622,7 +640,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
           ) : (
             <>Goal <em>Getter</em></>
           )}{' '}
-          <span aria-hidden="true">💰</span>
+          <PiggyBank className="ml-1 inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />
         </h1>
       </header>
 
@@ -653,7 +671,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
       <section className="card mt-4 p-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="font-display text-lg font-bold text-slate-900">
-            <span aria-hidden="true">💵</span>{' '}
+            <Banknote className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-bff-600" aria-hidden="true" />{' '}
             {zh
               ? `第 ${month} 个月工资：${usd(monthInfo.income)}`
               : es
@@ -665,6 +683,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
 
         <div className="mt-3 space-y-2">
           {BUCKETS.map((b) => {
+            const BucketIcon = ITEM_ICONS[b.icon]
             const value = alloc[b.id]
             const min = b.id === 'fun' ? monthInfo.minFun : 0
             return (
@@ -672,8 +691,8 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
                 key={b.id}
                 className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-2.5"
               >
-                <p className="text-sm font-semibold text-slate-800">
-                  <span className="mr-1" aria-hidden="true">{b.emoji}</span>
+                <p className="flex flex-wrap items-center gap-1.5 text-sm font-semibold text-slate-800">
+                  <BucketIcon className="h-4 w-4 shrink-0 text-bff-600" aria-hidden="true" />
                   {zh ? b.labelZh : es ? b.labelEs : b.label}
                   {b.id === 'fun' && min > 0 && (
                     <span className="ml-2 text-xs font-normal text-slate-500">

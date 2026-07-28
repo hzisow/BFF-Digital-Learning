@@ -1,10 +1,20 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { AlertTriangle, Check } from 'lucide-react'
+import {
+  AlertTriangle, Check, Hospital, Luggage, Turtle, Home, Fingerprint, Smartphone,
+  TreeDeciduous, Car, TreePalm, Thermometer, Smile, ShieldCheck, ThumbsUp, Bandage, Dices,
+} from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
 import type { LiveGameProps } from '../live/types'
+
+/** Icon components referenced by name from the local data below. */
+const ITEM_ICONS: Record<string, LucideIcon> = {
+  Hospital, Luggage, Turtle, Home, Fingerprint, Smartphone, TreeDeciduous,
+  Car, TreePalm, Thermometer, Smile, ShieldCheck, ThumbsUp, Bandage, Dices,
+}
 
 // ---------- The official numbers (from the BFF of America paper activity) ----------
 
@@ -14,7 +24,7 @@ type PolicyId = 'health' | 'travel' | 'pet' | 'home' | 'identity' | 'phone' | 'l
 
 interface Policy {
   id: PolicyId
-  emoji: string
+  icon: string
   label: string
   labelEs: string
   labelZh: string
@@ -25,13 +35,13 @@ interface Policy {
 }
 
 const POLICIES: Policy[] = [
-  { id: 'health', emoji: '🏥', label: 'Health insurance', labelEs: 'Seguro médico', labelZh: '医疗保险', cost: 240, note: 'Covers the whole family', noteEs: 'Cubre a toda la familia', noteZh: '保障全家人' },
-  { id: 'travel', emoji: '🧳', label: 'Travel insurance', labelEs: 'Seguro de viaje', labelZh: '旅行保险', cost: 60, note: 'The beach trip is THIS month!', noteEs: '¡El viaje a la playa es ESTE mes!', noteZh: '海滩之旅就在这个月！' },
-  { id: 'pet', emoji: '🦎', label: 'Pet insurance', labelEs: 'Seguro para mascotas', labelZh: '宠物保险', cost: 70, note: 'For the iguana. Yes, really.', noteEs: 'Para la iguana. Sí, en serio.', noteZh: '给那只鬣蜥买的。是的，真的。' },
-  { id: 'home', emoji: '🏠', label: 'Home insurance', labelEs: 'Seguro de vivienda', labelZh: '房屋保险', cost: 210, note: 'Protects the house and everything in it', noteEs: 'Protege la casa y todo lo que hay adentro', noteZh: '保障房子和里面的一切' },
-  { id: 'identity', emoji: '🕵️', label: 'Identity theft insurance', labelEs: 'Seguro contra robo de identidad', labelZh: '身份盗窃保险', cost: 60, note: 'In case someone pretends to be Ben', noteEs: 'Por si alguien se hace pasar por Ben', noteZh: '以防有人冒充 Ben' },
-  { id: 'phone', emoji: '📱', label: 'Phone protection plan', labelEs: 'Plan de protección del teléfono', labelZh: '手机保障计划', cost: 30, note: 'Three kids. Many drops.', noteEs: 'Tres niños. Muchas caídas.', noteZh: '三个孩子。摔了无数次。' },
-  { id: 'life', emoji: '🌳', label: 'Life insurance', labelEs: 'Seguro de vida', labelZh: '人寿保险', cost: 90, note: "Protects the family's future", noteEs: 'Protege el futuro de la familia', noteZh: '保障这个家的未来' },
+  { id: 'health', icon: 'Hospital', label: 'Health insurance', labelEs: 'Seguro médico', labelZh: '医疗保险', cost: 240, note: 'Covers the whole family', noteEs: 'Cubre a toda la familia', noteZh: '保障全家人' },
+  { id: 'travel', icon: 'Luggage', label: 'Travel insurance', labelEs: 'Seguro de viaje', labelZh: '旅行保险', cost: 60, note: 'The beach trip is THIS month!', noteEs: '¡El viaje a la playa es ESTE mes!', noteZh: '海滩之旅就在这个月！' },
+  { id: 'pet', icon: 'Turtle', label: 'Pet insurance', labelEs: 'Seguro para mascotas', labelZh: '宠物保险', cost: 70, note: 'For the iguana. Yes, really.', noteEs: 'Para la iguana. Sí, en serio.', noteZh: '给那只鬣蜥买的。是的，真的。' },
+  { id: 'home', icon: 'Home', label: 'Home insurance', labelEs: 'Seguro de vivienda', labelZh: '房屋保险', cost: 210, note: 'Protects the house and everything in it', noteEs: 'Protege la casa y todo lo que hay adentro', noteZh: '保障房子和里面的一切' },
+  { id: 'identity', icon: 'Fingerprint', label: 'Identity theft insurance', labelEs: 'Seguro contra robo de identidad', labelZh: '身份盗窃保险', cost: 60, note: 'In case someone pretends to be Ben', noteEs: 'Por si alguien se hace pasar por Ben', noteZh: '以防有人冒充 Ben' },
+  { id: 'phone', icon: 'Smartphone', label: 'Phone protection plan', labelEs: 'Plan de protección del teléfono', labelZh: '手机保障计划', cost: 30, note: 'Three kids. Many drops.', noteEs: 'Tres niños. Muchas caídas.', noteZh: '三个孩子。摔了无数次。' },
+  { id: 'life', icon: 'TreeDeciduous', label: 'Life insurance', labelEs: 'Seguro de vida', labelZh: '人寿保险', cost: 90, note: "Protects the family's future", noteEs: 'Protege el futuro de la familia', noteZh: '保障这个家的未来' },
 ]
 
 type CarChoice = 'none' | 'one' | 'both'
@@ -44,7 +54,7 @@ const CAR_COST: Record<CarChoice, number> = { none: 0, one: 80, both: 120 }
 type Tone = 'good' | 'bad' | 'neutral'
 
 interface StoryEvent {
-  emoji: string
+  icon: string
   title: string
   outcome: string
   tone: Tone
@@ -63,7 +73,7 @@ interface Results {
   surpriseCosts: number
   score: number
   grade: string
-  gradeEmoji: string
+  gradeIcon: string
 }
 
 function premiumsTotal(picks: Picks): number {
@@ -79,20 +89,20 @@ function computeResults(picks: Picks, es: boolean, zh: boolean): Results {
 
   const events: StoryEvent[] = [
     {
-      emoji: '🚗',
+      icon: 'Car',
       title: zh
         ? '全家开着他妻子的车去海滩……结果车抛锚了！'
         : es
         ? '¡La familia se lleva el carro de su ESPOSA a la playa… y se descompone!'
         : "The family takes his WIFE'S car to the beach… and it breaks down!",
       outcome: wifeCarCovered
-        ? (zh ? '有保障！拖车和维修都报销了。😅' : es ? '¡Cubierto! Grúa y reparaciones pagadas. 😅' : 'Covered! Towing and repairs paid. 😅')
+        ? (zh ? '有保障！拖车和维修都报销了。' : es ? '¡Cubierto! Grúa y reparaciones pagadas.' : 'Covered! Towing and repairs paid.')
         : (zh ? '−$500 的意外维修账单。' : es ? '−$500 de factura sorpresa por la reparación.' : '−$500 surprise repair bill.'),
       tone: wifeCarCovered ? 'good' : 'bad',
       cost: wifeCarCovered ? 0 : 500,
     },
     {
-      emoji: '🏖️',
+      icon: 'TreePalm',
       title: zh
         ? '他们顺利到了海滩。没丢行李，没有延误——这个月旅行保险没派上用场。'
         : es
@@ -105,7 +115,7 @@ function computeResults(picks: Picks, es: boolean, zh: boolean): Results {
       cost: 0,
     },
     {
-      emoji: '🤧',
+      icon: 'Thermometer',
       title: zh
         ? '春季过敏在海滩上把 Ben 的女儿折腾得很惨。'
         : es
@@ -116,7 +126,7 @@ function computeResults(picks: Picks, es: boolean, zh: boolean): Results {
       cost: has('health') ? 0 : 200,
     },
     {
-      emoji: '🏠',
+      icon: 'Home',
       title: zh
         ? 'Ben 的房子？完全没事。这个月房屋保险没派上用场。'
         : es
@@ -127,18 +137,18 @@ function computeResults(picks: Picks, es: boolean, zh: boolean): Results {
       cost: 0,
     },
     {
-      emoji: '🦎',
+      icon: 'Turtle',
       title: zh
-        ? '全家把鬣蜥也带上了。它在海里走丢了！！🦎🌊'
+        ? '全家把鬣蜥也带上了。它在海里走丢了！！'
         : es
-        ? '¡La familia llevó a la iguana. Se perdió en el océano!! 🦎🌊'
-        : 'The family brought the iguana. It got lost in the ocean!! 🦎🌊',
+        ? '¡La familia llevó a la iguana. Se perdió en el océano!!'
+        : 'The family brought the iguana. It got lost in the ocean!!',
       outcome: has('pet') ? (zh ? '有保障——搜救 + 兽医检查都报销了。' : es ? 'Cubierto — rescate + revisión veterinaria pagados.' : 'Covered — rescue + vet check paid.') : '−$40.',
       tone: has('pet') ? 'good' : 'bad',
       cost: has('pet') ? 0 : 40,
     },
     {
-      emoji: '😌',
+      icon: 'Smile',
       title: zh
         ? '没有手机摔坏，没有身份盗窃，没人用上人寿保险。其余方面，平静的一个月。'
         : es
@@ -171,16 +181,16 @@ function computeResults(picks: Picks, es: boolean, zh: boolean): Results {
   score -= Math.min(15, Math.round(unneeded / 25))
 
   score = Math.max(0, Math.min(100, score))
-  const [grade, gradeEmoji] =
+  const [grade, gradeIcon] =
     score >= 85
-      ? [zh ? '全面保障' : es ? 'Totalmente Cubierto' : 'Fully Covered', '🛡️']
+      ? [zh ? '全面保障' : es ? 'Totalmente Cubierto' : 'Fully Covered', 'ShieldCheck']
       : score >= 65
-        ? [zh ? '基本有保障' : es ? 'Bastante Protegido' : 'Mostly Protected', '👍']
+        ? [zh ? '基本有保障' : es ? 'Bastante Protegido' : 'Mostly Protected', 'ThumbsUp']
         : score >= 40
-          ? [zh ? '哎哟' : es ? 'Ay' : 'Ouch', '🤕']
-          : [zh ? '没保险又倒霉' : es ? 'Sin Seguro y Sin Suerte' : 'Uninsured & Unlucky', '🎲']
+          ? [zh ? '哎哟' : es ? 'Ay' : 'Ouch', 'Bandage']
+          : [zh ? '没保险又倒霉' : es ? 'Sin Seguro y Sin Suerte' : 'Uninsured & Unlucky', 'Dices']
 
-  return { events, premiums, surpriseCosts, score, grade, gradeEmoji }
+  return { events, premiums, surpriseCosts, score, grade, gradeIcon }
 }
 
 // ---------- Small helpers ----------
@@ -259,6 +269,7 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
   // ---------- Results view: the month unfolds ----------
   if (results) {
     const tallyDelay = results.events.length * EVENT_DELAY + 0.3
+    const GradeIcon = ITEM_ICONS[results.gradeIcon]
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
         <header className="mb-2">
@@ -267,7 +278,7 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
             {zh ? '保障已确定。来看看这个月过得怎么样……' : es ? 'Cobertura confirmada. Veamos cómo va el mes…' : "Coverage locked. Let's see how the month goes…"}
           </p>
           <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-            <span aria-hidden="true">🛡️</span>{' '}
+            <ShieldCheck className="mr-1 inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
             {zh ? (
               <>Ben 的保险<em>挑战</em></>
             ) : es ? (
@@ -279,19 +290,22 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
         </header>
 
         <div className="mt-4 space-y-3">
-          {results.events.map((e, i) => (
+          {results.events.map((e, i) => {
+            const EventIcon = ITEM_ICONS[e.icon]
+            return (
             <div
               key={e.title}
               className="card animate-slide-up flex items-start gap-3 p-4"
               style={{ animationDelay: `${i * EVENT_DELAY}s` }}
             >
-              <span className="text-2xl" aria-hidden="true">{e.emoji}</span>
+              <EventIcon className="mt-0.5 h-6 w-6 shrink-0 text-bff-600" aria-hidden="true" />
               <div>
                 <p className="text-sm font-semibold text-slate-800">{e.title}</p>
                 <p className={`mt-1 text-sm font-bold ${outcomeClasses(e.tone)}`}>{e.outcome}</p>
               </div>
             </div>
-          ))}
+            )
+          })}
         </div>
 
         <div
@@ -299,7 +313,9 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
           style={{ animationDelay: `${tallyDelay}s` }}
           role="status"
         >
-          <p className="text-5xl" aria-hidden="true">{results.gradeEmoji}</p>
+          <p className="flex justify-center" aria-hidden="true">
+            <GradeIcon className="h-14 w-14 text-bff-600" />
+          </p>
           <h2 className="font-display text-3xl font-bold text-slate-900">{results.grade}</h2>
           <p className="font-display text-lg font-bold text-bff-700">{results.score} / 100</p>
           <div className="mx-auto max-w-sm rounded-xl bg-slate-50 p-4 text-sm text-slate-700">
@@ -360,7 +376,7 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
           {zh ? 'Ben 理财冒险的第 2 部分' : es ? 'Parte 2 de la aventura financiera de Ben' : "Part 2 of Ben's money adventure"}
         </p>
         <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-          <span aria-hidden="true">🛡️</span>{' '}
+          <ShieldCheck className="mr-1 inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
           {zh ? (
             <>Ben 的保险<em>挑战</em></>
           ) : es ? (
@@ -425,7 +441,8 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
       {/* Car insurance (radio) */}
       <section className="mt-6">
         <h2 className="font-display text-lg font-bold text-slate-900">
-          <span aria-hidden="true">🚗</span> {zh ? '汽车保险' : es ? 'Seguro del carro' : 'Car insurance'}
+          <Car className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-bff-600" aria-hidden="true" />{' '}
+          {zh ? '汽车保险' : es ? 'Seguro del carro' : 'Car insurance'}
         </h2>
         <p className="text-xs text-slate-500">{zh ? '这家人有两辆车——Ben 的车和他妻子的车。' : es ? 'La familia tiene dos carros — el de Ben y el de su esposa.' : "The family has two cars — Ben's and his wife's."}</p>
         <div className="mt-2 space-y-2" role="radiogroup" aria-label={zh ? '汽车保险' : es ? 'Seguro del carro' : 'Car insurance'}>
@@ -509,6 +526,7 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
         <div className="mt-2 grid gap-2 sm:grid-cols-2">
           {POLICIES.map((p) => {
             const on = policies.has(p.id)
+            const PolicyIcon = ITEM_ICONS[p.icon]
             return (
               <button
                 key={p.id}
@@ -520,8 +538,8 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
                 }`}
               >
                 <div>
-                  <p className="text-sm font-semibold text-slate-800">
-                    <span className="mr-1" aria-hidden="true">{p.emoji}</span>
+                  <p className="flex items-center gap-1.5 text-sm font-semibold text-slate-800">
+                    <PolicyIcon className="h-4 w-4 shrink-0 text-bff-600" aria-hidden="true" />
                     {zh ? p.labelZh : es ? p.labelEs : p.label}
                   </p>
                   <p className="mt-0.5 text-xs text-slate-600">{zh ? p.noteZh : es ? p.noteEs : p.note}</p>

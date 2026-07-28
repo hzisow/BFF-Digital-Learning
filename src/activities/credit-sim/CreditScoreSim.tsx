@@ -1,10 +1,21 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Lightbulb } from 'lucide-react'
+import {
+  ArrowRight, Lightbulb, Mail, ShoppingBag, TrendingUp, Archive, Handshake,
+  AlarmClock, Search, Laptop, BrickWall, Smartphone, Trophy, Medal, TrafficCone,
+  Wrench, Star, TrendingDown, CreditCard,
+} from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
 import type { LiveGameProps } from '../live/types'
+
+/** Icon components referenced by name from the local data below. */
+const ITEM_ICONS: Record<string, LucideIcon> = {
+  Mail, ShoppingBag, TrendingUp, Archive, Handshake, AlarmClock, Search, Laptop,
+  BrickWall, Smartphone, Trophy, Medal, TrafficCone, Wrench,
+}
 
 // ---------- Score bands (standard FICO ranges) ----------
 
@@ -77,7 +88,7 @@ interface Choice {
 }
 
 interface MonthCard {
-  emoji: string
+  icon: string
   title: string
   titleEs: string
   titleZh: string
@@ -89,7 +100,7 @@ interface MonthCard {
 
 const MONTHS: MonthCard[] = [
   {
-    emoji: '💌',
+    icon: 'Mail',
     title: 'The first bill',
     titleEs: 'La primera factura',
     titleZh: '第一张账单',
@@ -145,7 +156,7 @@ const MONTHS: MonthCard[] = [
     ],
   },
   {
-    emoji: '🛍️',
+    icon: 'ShoppingBag',
     title: 'The checkout counter',
     titleEs: 'La caja registradora',
     titleZh: '收银台',
@@ -201,7 +212,7 @@ const MONTHS: MonthCard[] = [
     ],
   },
   {
-    emoji: '📈',
+    icon: 'TrendingUp',
     title: 'Limit raised',
     titleEs: 'Subió el límite',
     titleZh: '额度提高了',
@@ -243,7 +254,7 @@ const MONTHS: MonthCard[] = [
     ],
   },
   {
-    emoji: '🗃️',
+    icon: 'Archive',
     title: 'The forgotten card',
     titleEs: 'La tarjeta olvidada',
     titleZh: '被遗忘的那张卡',
@@ -285,7 +296,7 @@ const MONTHS: MonthCard[] = [
     ],
   },
   {
-    emoji: '🤝',
+    icon: 'Handshake',
     title: 'The co-sign ask',
     titleEs: 'La petición de ser aval',
     titleZh: '请你做担保人',
@@ -327,7 +338,7 @@ const MONTHS: MonthCard[] = [
     ],
   },
   {
-    emoji: '⏰',
+    icon: 'AlarmClock',
     title: 'Autopilot',
     titleEs: 'Piloto automático',
     titleZh: '自动挡',
@@ -382,7 +393,7 @@ const MONTHS: MonthCard[] = [
     ],
   },
   {
-    emoji: '🔎',
+    icon: 'Search',
     title: 'The free checkup',
     titleEs: 'La revisión gratis',
     titleZh: '免费体检',
@@ -424,7 +435,7 @@ const MONTHS: MonthCard[] = [
     ],
   },
   {
-    emoji: '💻',
+    icon: 'Laptop',
     title: 'The laptop',
     titleEs: 'La laptop',
     titleZh: '那台笔记本电脑',
@@ -479,7 +490,7 @@ const MONTHS: MonthCard[] = [
     ],
   },
   {
-    emoji: '🧱',
+    icon: 'BrickWall',
     title: 'Builder move',
     titleEs: 'Jugada para construir crédito',
     titleZh: '养信用的一招',
@@ -521,7 +532,7 @@ const MONTHS: MonthCard[] = [
     ],
   },
   {
-    emoji: '📱',
+    icon: 'Smartphone',
     title: 'The cracked screen finale',
     titleEs: 'El gran final de la pantalla rota',
     titleZh: '碎屏大结局',
@@ -580,36 +591,36 @@ const MONTHS: MonthCard[] = [
 
 // ---------- Final titles ----------
 
-function titleFor(score: number, es: boolean, zh: boolean): [title: string, emoji: string, blurb: string] {
+function titleFor(score: number, es: boolean, zh: boolean): [title: string, icon: string, blurb: string] {
   if (score >= 800)
     return zh
-      ? ['信用传奇', '🏆', '一个极佳的分数。放贷方会为你铺上红地毯——所有产品都给你最优利率。']
+      ? ['信用传奇', 'Trophy', '一个极佳的分数。放贷方会为你铺上红地毯——所有产品都给你最优利率。']
       : es
-      ? ['Leyenda del crédito', '🏆', 'Un puntaje excepcional. Los prestamistas te alfombrarán el camino: las mejores tasas en todo.']
-      : ['Credit Legend', '🏆', 'An exceptional score. Lenders will roll out the red carpet — best rates on everything.']
+      ? ['Leyenda del crédito', 'Trophy', 'Un puntaje excepcional. Los prestamistas te alfombrarán el camino: las mejores tasas en todo.']
+      : ['Credit Legend', 'Trophy', 'An exceptional score. Lenders will roll out the red carpet — best rates on everything.']
   if (score >= 740)
     return zh
-      ? ['信用分大师', '🥋', '很好。你养成了大多数成年人一辈子都没弄明白的好习惯。']
+      ? ['信用分大师', 'Medal', '很好。你养成了大多数成年人一辈子都没弄明白的好习惯。']
       : es
-      ? ['Maestro del puntaje', '🥋', 'Muy bueno. Formaste hábitos que la mayoría de los adultos nunca logra entender.']
-      : ['Score Sensei', '🥋', 'Very good. You built habits most adults never figure out.']
+      ? ['Maestro del puntaje', 'Medal', 'Muy bueno. Formaste hábitos que la mayoría de los adultos nunca logra entender.']
+      : ['Score Sensei', 'Medal', 'Very good. You built habits most adults never figure out.']
   if (score >= 670)
     return zh
-      ? ['稳健的建设者', '🧱', '一个良好的分数——习惯稳定，成长稳定。继续一笔一笔地累积按时还款吧。']
+      ? ['稳健的建设者', 'BrickWall', '一个良好的分数——习惯稳定，成长稳定。继续一笔一笔地累积按时还款吧。']
       : es
-      ? ['Constructor sólido', '🧱', 'Un buen puntaje: hábitos constantes, crecimiento constante. Sigue acumulando pagos a tiempo.']
-      : ['Solid Builder', '🧱', 'A good score — steady habits, steady growth. Keep stacking on-time payments.']
+      ? ['Constructor sólido', 'BrickWall', 'Un buen puntaje: hábitos constantes, crecimiento constante. Sigue acumulando pagos a tiempo.']
+      : ['Solid Builder', 'BrickWall', 'A good score — steady habits, steady growth. Keep stacking on-time payments.']
   if (score >= 580)
     return zh
-      ? ['仍在努力中', '🚧', '一般。有些选择让你付出了代价，但没有什么是持续按时还款修复不了的。']
+      ? ['仍在努力中', 'TrafficCone', '一般。有些选择让你付出了代价，但没有什么是持续按时还款修复不了的。']
       : es
-      ? ['Trabajo en progreso', '🚧', 'Regular. Algunas decisiones te costaron, pero nada que los pagos constantes a tiempo no puedan reparar.']
-      : ['Work in Progress', '🚧', "Fair. Some choices cost you, but nothing that consistent on-time payments can't repair."]
+      ? ['Trabajo en progreso', 'TrafficCone', 'Regular. Algunas decisiones te costaron, pero nada que los pagos constantes a tiempo no puedan reparar.']
+      : ['Work in Progress', 'TrafficCone', "Fair. Some choices cost you, but nothing that consistent on-time payments can't repair."]
   return zh
-    ? ['重建模式', '🔧', '信用分受到了实实在在的损伤。好消息是：还款记录会随时间慢慢愈合，从今天就开始。']
+    ? ['重建模式', 'Wrench', '信用分受到了实实在在的损伤。好消息是：还款记录会随时间慢慢愈合，从今天就开始。']
     : es
-    ? ['Modo reconstrucción', '🔧', 'El puntaje sufrió un daño real. La buena noticia: el historial de pagos sana con el tiempo, empezando hoy.']
-    : ['Rebuild Mode', '🔧', 'The score took real damage — the good news: payment history heals with time, starting today.']
+    ? ['Modo reconstrucción', 'Wrench', 'El puntaje sufrió un daño real. La buena noticia: el historial de pagos sana con el tiempo, empezando hoy.']
+    : ['Rebuild Mode', 'Wrench', 'The score took real damage — the good news: payment history heals with time, starting today.']
 }
 
 function clampScore(n: number): number {
@@ -709,6 +720,7 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
   }, [])
 
   const month = MONTHS[monthIndex]
+  const MonthIcon = ITEM_ICONS[month.icon]
   const band = bandFor(score)
 
   function choose(choice: Choice) {
@@ -760,14 +772,17 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
 
   // ---------- Final screen ----------
   if (done) {
-    const [title, emoji, blurb] = titleFor(score, es, zh)
+    const [title, iconName, blurb] = titleFor(score, es, zh)
+    const TitleIcon = ITEM_ICONS[iconName]
     const best = history.reduce((a, b) => (b.delta > a.delta ? b : a), history[0])
     const worst = history.reduce((a, b) => (b.delta < a.delta ? b : a), history[0])
     const pts = zh ? '分' : es ? 'puntos' : 'points'
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
         <div className="card animate-pop-in space-y-4 text-center" role="status">
-          <p className="text-5xl" aria-hidden="true">{emoji}</p>
+          <p className="flex justify-center" aria-hidden="true">
+            <TitleIcon className="h-14 w-14 text-bff-600" />
+          </p>
           <h1 className="font-display text-3xl font-bold text-slate-900">{title}</h1>
           <p className="font-display text-lg font-bold text-bff-700">
             {zh ? '最终分数' : es ? 'Puntaje final' : 'Final score'}: {score} — {zh ? band.nameZh : es ? band.nameEs : band.name}
@@ -787,7 +802,8 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <div className="card animate-slide-up border-green-200 bg-green-50">
             <h2 className="font-display text-base font-bold text-slate-900">
-              <span aria-hidden="true">🌟</span> {zh ? '最佳操作' : es ? 'Mejor jugada' : 'Best move'}
+              <Star className="mr-1 inline-block h-4 w-4 align-[-0.15em] text-green-600" aria-hidden="true" />{' '}
+              {zh ? '最佳操作' : es ? 'Mejor jugada' : 'Best move'}
             </h2>
             <p className="mt-1 text-sm font-semibold text-slate-800">
               {zh ? '第' : es ? 'Mes' : 'Month'} {best.month}{zh ? ' 个月' : ''}: {zh ? best.choiceLabelZh : es ? best.choiceLabelEs : best.choiceLabel}
@@ -799,7 +815,8 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
           </div>
           <div className="card animate-slide-up border-red-200 bg-red-50">
             <h2 className="font-display text-base font-bold text-slate-900">
-              <span aria-hidden="true">🕳️</span> {zh ? '代价最大的操作' : es ? 'Jugada más costosa' : 'Costliest move'}
+              <TrendingDown className="mr-1 inline-block h-4 w-4 align-[-0.15em] text-red-600" aria-hidden="true" />{' '}
+              {zh ? '代价最大的操作' : es ? 'Jugada más costosa' : 'Costliest move'}
             </h2>
             <p className="mt-1 text-sm font-semibold text-slate-800">
               {zh ? '第' : es ? 'Mes' : 'Month'} {worst.month}{zh ? ' 个月' : ''}: {zh ? worst.choiceLabelZh : es ? worst.choiceLabelEs : worst.choiceLabel}
@@ -854,7 +871,7 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
           {zh ? '模拟' : es ? 'Simulación' : 'Simulation'}
         </p>
         <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-          <span aria-hidden="true">💳📈</span>{' '}
+          <CreditCard className="mr-1 inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
           {zh ? (
             <>信用分<em>养成记</em></>
           ) : es ? (
@@ -891,7 +908,7 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
       {/* Decision card */}
       <section className="card mt-4">
         <h2 className="font-display text-lg font-bold text-slate-900">
-          <span className="mr-1" aria-hidden="true">{month.emoji}</span>
+          <MonthIcon className="mr-1.5 inline-block h-5 w-5 align-[-0.2em] text-bff-600" aria-hidden="true" />
           {zh ? '第' : es ? 'Mes' : 'Month'} {monthIndex + 1}{zh ? ' 个月' : ''}: {zh ? month.titleZh : es ? month.titleEs : month.title}
         </h2>
         <p className="mt-2 text-sm text-slate-700">{zh ? month.scenarioZh : es ? month.scenarioEs : month.scenario}</p>

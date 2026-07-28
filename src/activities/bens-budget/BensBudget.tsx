@@ -1,10 +1,21 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Wallet, Info, Check } from 'lucide-react'
+import {
+  Wallet, Info, Check, ArrowRight, CreditCard, Pill, Guitar, Wrench, Turtle,
+  Goal, Footprints, Pencil, UtensilsCrossed, Sandwich, Crown, BicepsFlexed,
+  Mountain, NotebookPen, Speech, TreePalm,
+} from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
 import type { LiveGameProps } from '../live/types'
+
+/** Icon components referenced by name from the local data below. */
+const ITEM_ICONS: Record<string, LucideIcon> = {
+  CreditCard, Pill, Guitar, Wrench, Turtle, Goal, Footprints, Pencil,
+  UtensilsCrossed, Sandwich, Crown, BicepsFlexed, Mountain, NotebookPen,
+}
 
 // ---------- The official numbers (from the BFF of America paper activity) ----------
 
@@ -32,7 +43,7 @@ const NEEDS_TOTAL = NEEDS.reduce((sum, n) => sum + n.cost, 0)
 
 interface ChoiceItem {
   id: string
-  emoji: string
+  icon: string
   label: string
   labelEs: string
   labelZh: string
@@ -45,7 +56,7 @@ interface ChoiceItem {
 const CHOICES: ChoiceItem[] = [
   {
     id: 'credit-card',
-    emoji: '💳',
+    icon: 'CreditCard',
     label: 'Credit card minimum payment',
     labelEs: 'Pago mínimo de la tarjeta de crédito',
     labelZh: '信用卡最低还款',
@@ -56,7 +67,7 @@ const CHOICES: ChoiceItem[] = [
   },
   {
     id: 'allergy-meds',
-    emoji: '🤧',
+    icon: 'Pill',
     label: "Daughter's allergy medicine",
     labelEs: 'Medicina para la alergia de su hija',
     labelZh: '女儿的过敏药',
@@ -67,7 +78,7 @@ const CHOICES: ChoiceItem[] = [
   },
   {
     id: 'guitar',
-    emoji: '🎸',
+    icon: 'Guitar',
     label: "Son's optional guitar lesson",
     labelEs: 'Clase opcional de guitarra de su hijo',
     labelZh: '儿子的选修吉他课',
@@ -78,7 +89,7 @@ const CHOICES: ChoiceItem[] = [
   },
   {
     id: 'heater',
-    emoji: '🔧',
+    icon: 'Wrench',
     label: 'Car heater repair',
     labelEs: 'Reparación de la calefacción del carro',
     labelZh: '汽车暖气维修',
@@ -89,7 +100,7 @@ const CHOICES: ChoiceItem[] = [
   },
   {
     id: 'iguana',
-    emoji: '🦎',
+    icon: 'Turtle',
     label: 'Pet iguana',
     labelEs: 'Iguana de mascota',
     labelZh: '宠物鬣蜥',
@@ -100,7 +111,7 @@ const CHOICES: ChoiceItem[] = [
   },
   {
     id: 'soccer',
-    emoji: '⚽',
+    icon: 'Goal',
     label: 'Soccer registration (13-year-old)',
     labelEs: 'Inscripción de fútbol (el de 13 años)',
     labelZh: '足球报名费（13 岁的孩子）',
@@ -111,7 +122,7 @@ const CHOICES: ChoiceItem[] = [
   },
   {
     id: 'sneakers',
-    emoji: '👟',
+    icon: 'Footprints',
     label: 'New sneakers (9-year-old)',
     labelEs: 'Tenis nuevos (el de 9 años)',
     labelZh: '新运动鞋（9 岁的孩子）',
@@ -122,7 +133,7 @@ const CHOICES: ChoiceItem[] = [
   },
   {
     id: 'supplies',
-    emoji: '✏️',
+    icon: 'Pencil',
     label: "Classroom supplies for Ben's school",
     labelEs: 'Útiles para el salón de la escuela de Ben',
     labelZh: 'Ben 学校教室的用品',
@@ -133,7 +144,7 @@ const CHOICES: ChoiceItem[] = [
   },
   {
     id: 'dinner',
-    emoji: '🍝',
+    icon: 'UtensilsCrossed',
     label: 'Family dinner out',
     labelEs: 'Cena en familia fuera de casa',
     labelZh: '全家下馆子',
@@ -144,7 +155,7 @@ const CHOICES: ChoiceItem[] = [
   },
   {
     id: 'chipotle',
-    emoji: '🌯',
+    icon: 'Sandwich',
     label: 'Chipotle on the way home',
     labelEs: 'Chipotle camino a casa',
     labelZh: '回家路上买 Chipotle',
@@ -200,7 +211,7 @@ interface FeedbackLine {
 interface Results {
   score: number
   grade: string
-  gradeEmoji: string
+  gradeIcon: string
   lines: FeedbackLine[]
   spent: number
   saved: SavingsAmount
@@ -226,10 +237,10 @@ function computeResults(picked: ReadonlySet<string>, saved: SavingsAmount, es: b
     lines.push({
       points: 0,
       text: zh
-        ? '没交最低还款 → 滞纳金 + 信用分受损。这一项以后会很贵。'
+        ? '没交最低还款：滞纳金 + 信用分受损。这一项以后会很贵。'
         : es
-        ? 'Pago mínimo no realizado → recargo por mora + daño al puntaje de crédito. Este sale caro después.'
-        : "Missed minimum payment → late fee + credit score damage. This one's expensive later.",
+        ? 'Pago mínimo no realizado: recargo por mora + daño al puntaje de crédito. Este sale caro después.'
+        : "Missed minimum payment: late fee + credit score damage. This one's expensive later.",
       tone: 'warn',
     })
   }
@@ -305,16 +316,16 @@ function computeResults(picked: ReadonlySet<string>, saved: SavingsAmount, es: b
   }
 
   const score = Math.min(100, lines.reduce((sum, l) => sum + l.points, 0))
-  const [grade, gradeEmoji] =
+  const [grade, gradeIcon] =
     score >= 85
-      ? [zh ? '预算大师' : es ? 'Jefe del Presupuesto' : 'Budget Boss', '👑']
+      ? [zh ? '预算大师' : es ? 'Jefe del Presupuesto' : 'Budget Boss', 'Crown']
       : score >= 65
-        ? [zh ? '理财能手' : es ? 'Administrador de Dinero' : 'Money Manager', '💪']
+        ? [zh ? '理财能手' : es ? 'Administrador de Dinero' : 'Money Manager', 'BicepsFlexed']
         : score >= 40
-          ? [zh ? '正在入门' : es ? 'Aprendiendo el Oficio' : 'Learning the Ropes', '🧗']
-          : [zh ? '回到起点重来' : es ? 'De Vuelta a la Mesa de Dibujo' : 'Back to the Drawing Board', '📝']
+          ? [zh ? '正在入门' : es ? 'Aprendiendo el Oficio' : 'Learning the Ropes', 'Mountain']
+          : [zh ? '回到起点重来' : es ? 'De Vuelta a la Mesa de Dibujo' : 'Back to the Drawing Board', 'NotebookPen']
 
-  return { score, grade, gradeEmoji, lines, spent, saved }
+  return { score, grade, gradeIcon, lines, spent, saved }
 }
 
 // ---------- Small helpers ----------
@@ -382,10 +393,13 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
   // ---------- Results view ----------
   if (results) {
     const leftover = INCOME - results.spent
+    const GradeIcon = ITEM_ICONS[results.gradeIcon]
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
         <div className="card animate-pop-in space-y-4 text-center" role="status">
-          <p className="text-5xl" aria-hidden="true">{results.gradeEmoji}</p>
+          <p className="flex justify-center" aria-hidden="true">
+            <GradeIcon className="h-14 w-14 text-bff-600" />
+          </p>
           <h1 className="font-display text-3xl font-bold text-slate-900">{results.grade}</h1>
           <p className="font-display text-lg font-bold text-bff-700">{results.score} / 100</p>
           <div className="mx-auto flex max-w-md flex-wrap justify-center gap-2 text-sm">
@@ -413,7 +427,8 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
 
         <div className="card mt-4 border-bff-200 bg-bff-50">
           <h2 className="font-display text-lg font-bold text-slate-900">
-            <span aria-hidden="true">🗣️</span> {zh ? '反思' : es ? 'Reflexión' : 'Reflection'}
+            <Speech className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-bff-600" aria-hidden="true" />{' '}
+            {zh ? '反思' : es ? 'Reflexión' : 'Reflection'}
           </h2>
           <p className="mt-1 text-sm font-semibold text-slate-700">
             {zh ? '准备好解释你保留了什么、砍掉了什么，以及为什么。' : es ? 'Prepárate para explicar qué conservaste, qué recortaste y por qué.' : 'Be ready to explain what you kept, what you cut, and why.'}
@@ -435,7 +450,8 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
             {zh ? '再试一次' : es ? 'Intentar de nuevo' : 'Try again'}
           </button>
           <Link to="/challenge/bens-insurance" className="btn-primary">
-            {zh ? '第 2 部分：Ben 需要保险 →' : es ? 'Parte 2: Ben necesita un seguro →' : 'Part 2: Ben needs insurance →'}
+            {zh ? '第 2 部分：Ben 需要保险' : es ? 'Parte 2: Ben necesita un seguro' : 'Part 2: Ben needs insurance'}{' '}
+            <ArrowRight className="inline-block h-4 w-4 align-[-0.15em]" aria-hidden="true" />
           </Link>
         </div>
       </div>
@@ -560,6 +576,7 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
         <div className="mt-2 grid gap-2 sm:grid-cols-2">
           {CHOICES.map((c) => {
             const on = picked.has(c.id)
+            const ChoiceIcon = ITEM_ICONS[c.icon]
             return (
               <button
                 key={c.id}
@@ -573,8 +590,8 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
                 }`}
               >
                 <div>
-                  <p className="text-sm font-semibold text-slate-800">
-                    <span className="mr-1" aria-hidden="true">{c.emoji}</span>
+                  <p className="flex items-center gap-1.5 text-sm font-semibold text-slate-800">
+                    <ChoiceIcon className="h-4 w-4 shrink-0 text-bff-600" aria-hidden="true" />
                     {zh ? c.labelZh : es ? c.labelEs : c.label}
                   </p>
                   <p className="mt-0.5 text-xs text-slate-600">{zh ? c.noteZh : es ? c.noteEs : c.note}</p>
@@ -602,7 +619,8 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
       {/* Savings */}
       <section className="mt-6">
         <h2 className="font-display text-lg font-bold text-slate-900">
-          <span aria-hidden="true">🏖️</span> {zh ? '海滩基金' : es ? 'El fondo para la playa' : 'The beach fund'}
+          <TreePalm className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-bff-600" aria-hidden="true" />{' '}
+          {zh ? '海滩基金' : es ? 'El fondo para la playa' : 'The beach fund'}
         </h2>
         <div className="mt-2 space-y-2" role="radiogroup" aria-label={zh ? '存钱选择' : es ? 'Elección de ahorro' : 'Savings choice'}>
           {SAVINGS_OPTIONS.map((opt) => {

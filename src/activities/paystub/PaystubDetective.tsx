@@ -1,10 +1,19 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Lightbulb } from 'lucide-react'
+import {
+  ArrowRight, Lightbulb, Receipt, Search, SearchCheck, Glasses, Frown, Flag,
+  IceCream, Joystick, Sprout,
+} from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { saveProgress } from '../../lib/progress'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
 import type { LiveGameProps } from '../live/types'
+
+/** Local icon lookup: data below stores a lucide icon NAME, never a glyph. */
+const ITEM_ICONS: Record<string, LucideIcon> = {
+  IceCream, Joystick, Sprout, SearchCheck, Search, Glasses, Frown,
+}
 
 // ---------- Round data (all numbers hand-checked for consistency) ----------
 //
@@ -43,7 +52,8 @@ interface StubLine {
 interface StubRound {
   id: string
   worker: string
-  emoji: string
+  /** Key into ITEM_ICONS. */
+  icon: string
   employer: string
   period: string
   periodEs: string
@@ -59,7 +69,7 @@ const ROUNDS: StubRound[] = [
   {
     id: 'maya',
     worker: 'Maya Chen',
-    emoji: '🍦',
+    icon: 'IceCream',
     employer: 'Scoop City Ice Cream',
     period: 'Jun 1 – Jun 14, 2026',
     periodEs: '1 – 14 de junio de 2026',
@@ -191,7 +201,7 @@ const ROUNDS: StubRound[] = [
   {
     id: 'darius',
     worker: 'Darius Webb',
-    emoji: '🕹️',
+    icon: 'Joystick',
     employer: 'Pixel Palace Arcade',
     period: 'Jun 15 – Jun 28, 2026',
     periodEs: '15 – 28 de junio de 2026',
@@ -338,7 +348,7 @@ const ROUNDS: StubRound[] = [
   {
     id: 'sofia',
     worker: 'Sofia Ramirez',
-    emoji: '🪴',
+    icon: 'Sprout',
     employer: 'Green Thumb Garden Center',
     period: 'Jul 1 – Jul 14, 2026',
     periodEs: '1 – 14 de julio de 2026',
@@ -394,11 +404,11 @@ const ROUNDS: StubRound[] = [
         isError: false,
         aliasOf: 'sofia-state-2',
         reveal:
-          '2.5% of $435.00 = $10.875 → $10.88, so this line’s own math is fine — but the SAME tax appears twice on this stub. Flagging either copy counts as the catch.',
+          '2.5% of $435.00 = $10.875, which rounds to $10.88, so this line’s own math is fine — but the SAME tax appears twice on this stub. Flagging either copy counts as the catch.',
         revealEs:
-          '2.5% de $435.00 = $10.875 → $10.88, así que la matemática de esta línea está bien — pero el MISMO impuesto aparece dos veces en este comprobante. Marcar cualquiera de las dos copias cuenta como acierto.',
+          '2.5% de $435.00 = $10.875, que se redondea a $10.88, así que la matemática de esta línea está bien — pero el MISMO impuesto aparece dos veces en este comprobante. Marcar cualquiera de las dos copias cuenta como acierto.',
         revealZh:
-          '$435.00 的 2.5% = $10.875 → $10.88，所以这一行本身的算法没错——但同一笔税在这张工资单上出现了两次。标记其中任意一份都算抓到。',
+          '$435.00 的 2.5% = $10.875，四舍五入为 $10.88，所以这一行本身的算法没错——但同一笔税在这张工资单上出现了两次。标记其中任意一份都算抓到。',
       },
       {
         id: 'sofia-state-2',
@@ -534,30 +544,30 @@ function scoreRound(round: StubRound, selected: ReadonlySet<string>): RoundResul
   }
 }
 
-function gradeFor(score: number, es: boolean, zh: boolean): [title: string, emoji: string, blurb: string] {
+function gradeFor(score: number, es: boolean, zh: boolean): [title: string, icon: string, blurb: string] {
   if (score >= 90)
     return zh
-      ? ['首席工资单稽查员', '🕵️', '工资部门都怕你。什么都逃不过那把放大镜。']
+      ? ['首席工资单稽查员', 'SearchCheck', '工资部门都怕你。什么都逃不过那把放大镜。']
       : es
-      ? ['Inspector Jefe de Comprobantes', '🕵️', 'Los departamentos de nómina te temen. Nada se le escapa a esa lupa.']
-      : ['Chief Paystub Inspector', '🕵️', 'Payroll departments fear you. Nothing gets past that magnifying glass.']
+      ? ['Inspector Jefe de Comprobantes', 'SearchCheck', 'Los departamentos de nómina te temen. Nada se le escapa a esa lupa.']
+      : ['Chief Paystub Inspector', 'SearchCheck', 'Payroll departments fear you. Nothing gets past that magnifying glass.']
   if (score >= 70)
     return zh
-      ? ['火眼金睛审计员', '🔎', '大部分猫腻你都抓到了——你未来的工资单有着落了。']
+      ? ['火眼金睛审计员', 'Search', '大部分猫腻你都抓到了——你未来的工资单有着落了。']
       : es
-      ? ['Auditor de Ojo Agudo', '🔎', 'Atrapaste la mayoría de los enredos — tus futuros cheques están en buenas manos.']
-      : ['Sharp-Eyed Auditor', '🔎', 'You caught most of the funny business — your future paychecks are in good hands.']
+      ? ['Auditor de Ojo Agudo', 'Search', 'Atrapaste la mayoría de los enredos — tus futuros cheques están en buenas manos.']
+      : ['Sharp-Eyed Auditor', 'Search', 'You caught most of the funny business — your future paychecks are in good hands.']
   if (score >= 45)
     return zh
-      ? ['新手侦探', '🧢', '你嗅出了一些错误——继续练习"小时数 × 时薪"的算法。']
+      ? ['新手侦探', 'Glasses', '你嗅出了一些错误——继续练习"小时数 × 时薪"的算法。']
       : es
-      ? ['Detective Novato', '🧢', 'Olfateaste algunos errores — sigue practicando esa matemática de horas × tarifa.']
-      : ['Rookie Detective', '🧢', 'You sniffed out some errors — keep practicing that hours × rate math.']
+      ? ['Detective Novato', 'Glasses', 'Olfateaste algunos errores — sigue practicando esa matemática de horas × tarifa.']
+      : ['Rookie Detective', 'Glasses', 'You sniffed out some errors — keep practicing that hours × rate math.']
   return zh
-    ? ['工资部门蒙混过关了', '😅', '这次错误溜走了。再来一次——你的钱值得你多核对一遍。']
+    ? ['工资部门蒙混过关了', 'Frown', '这次错误溜走了。再来一次——你的钱值得你多核对一遍。']
     : es
-    ? ['La Nómina Se Salió con la Suya', '😅', 'Los errores se escaparon esta vez. Inténtalo otra vez — tu dinero merece la doble revisión.']
-    : ['Payroll Got Away With It', '😅', 'The errors slipped by this time. Run it back — your money is worth the double-check.']
+    ? ['La Nómina Se Salió con la Suya', 'Frown', 'Los errores se escaparon esta vez. Inténtalo otra vez — tu dinero merece la doble revisión.']
+    : ['Payroll Got Away With It', 'Frown', 'The errors slipped by this time. Run it back — your money is worth the double-check.']
 }
 
 // ---------- Presentational helpers ----------
@@ -589,7 +599,7 @@ function statusChip(status: LineStatus, es: boolean, zh: boolean): { text: strin
     case 'false':
       return { text: `${zh ? '误报' : es ? 'Falsa alarma' : 'False alarm'} −${FALSE_ALARM_PENALTY}`, classes: 'bg-amber-100 text-amber-700' }
     case 'twin':
-      return { text: `${zh ? '同一处，算对' : es ? 'Mismo acierto' : 'Same catch'} ✓`, classes: 'bg-green-100 text-green-700' }
+      return { text: zh ? '同一处，算对' : es ? 'Mismo acierto' : 'Same catch', classes: 'bg-green-100 text-green-700' }
     case 'clean':
       return null
   }
@@ -688,11 +698,12 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
 
   // ---------- Final screen ----------
   if (phase === 'done') {
-    const [title, emoji, blurb] = gradeFor(score, es, zh)
+    const [title, gradeIcon, blurb] = gradeFor(score, es, zh)
+    const GradeIcon = ITEM_ICONS[gradeIcon]
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
         <div className="card animate-pop-in space-y-4 text-center" role="status">
-          <p className="text-5xl" aria-hidden="true">{emoji}</p>
+          <GradeIcon className="mx-auto h-14 w-14 text-bff-600" aria-hidden="true" />
           <h1 className="font-display text-3xl font-bold text-slate-900">{title}</h1>
           <p className="font-display text-lg font-bold text-bff-700">{score} / 100</p>
           <p className="mx-auto max-w-md text-sm text-slate-700">{blurb}</p>
@@ -748,6 +759,7 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
   // ---------- Round view (picking or reveal) ----------
   const revealing = phase === 'reveal' && roundResult !== null
   const sections: Section[] = ['earnings', 'deductions', 'summary']
+  const RoundIcon = ITEM_ICONS[round.icon]
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
@@ -758,7 +770,8 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
             {zh ? '第' : es ? 'Ronda' : 'Round'} {roundIndex + 1} {zh ? `轮，共 ${ROUNDS.length} 轮` : es ? 'de' : 'of'} {zh ? '' : ROUNDS.length}
           </p>
           <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-            <span aria-hidden="true">🧾🔍</span>{' '}
+            <Receipt className="inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />
+            <Search className="ml-1 inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
             {zh ? (
               <>工资单<em>侦探</em></>
             ) : es ? (
@@ -800,7 +813,7 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
       {/* Case briefing */}
       <div className="card mt-4">
         <p className="text-sm text-slate-700">
-          <span className="mr-1" aria-hidden="true">{round.emoji}</span>
+          <RoundIcon className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-bff-600" aria-hidden="true" />
           <strong>{zh ? '案件' : es ? 'Caso' : 'Case'} #{roundIndex + 1}: {round.worker}</strong> — {zh ? round.storyZh : es ? round.storyEs : round.story}
         </p>
       </div>
@@ -878,7 +891,8 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
                             <p className={`text-xs font-semibold ${on ? 'text-red-600' : 'text-slate-500'}`}>
                               {on ? (
                                 <>
-                                  {zh ? '已标记' : es ? 'Marcado' : 'Flagged'} <span aria-hidden="true">🚩</span>
+                                  {zh ? '已标记' : es ? 'Marcado' : 'Flagged'}{' '}
+                                  <Flag className="inline-block h-3.5 w-3.5 align-[-0.15em]" aria-hidden="true" />
                                 </>
                               ) : (
                                 zh ? '看起来没问题' : es ? 'Se ve bien' : 'Looks fine'
