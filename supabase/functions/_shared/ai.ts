@@ -9,9 +9,9 @@
 // keeps the same call shape the functions already used, so swapping providers
 // later (or back to another API) only touches this one module.
 
-// One place to change the model. gemini-2.0-flash is fast, capable, and free.
-// For even more free headroom, 'gemini-2.0-flash-lite' trades a little quality.
-export const MODEL = 'gemini-2.0-flash'
+// One place to change the model. Overridable with a GEMINI_MODEL secret so the
+// model can be swapped from the dashboard without a redeploy.
+export const MODEL = Deno.env.get('GEMINI_MODEL') || 'gemini-2.0-flash'
 
 const ENDPOINT = (model: string, key: string) =>
   `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`
@@ -57,7 +57,10 @@ function toGeminiSchema(node: unknown): unknown {
  */
 export async function callAI(opts: CallAIOptions): Promise<string> {
   const key = Deno.env.get('GEMINI_API_KEY')
-  if (!key) throw new Error('AI_NOT_CONFIGURED')
+  if (!key) {
+    console.error('GEMINI_API_KEY secret is not set on this project.')
+    throw new Error('AI_NOT_CONFIGURED')
+  }
 
   const contents = opts.messages.map((m) => ({
     role: m.role === 'assistant' ? 'model' : m.role,
@@ -87,8 +90,12 @@ export async function callAI(opts: CallAIOptions): Promise<string> {
 
   if (!res.ok) {
     const detail = await res.text().catch(() => '')
-    // A bad key reads as 400/403 — surface the status, kept generic.
-    throw new Error(`Gemini API error ${res.status}: ${detail.slice(0, 500)}`)
+    // Log upstream failures so they show up in the edge-function logs. The key
+    // is never part of the body, only the URL, which we don't log.
+    console.error(
+      `Gemini API error: status=${res.status} model=${MODEL} body=${detail.slice(0, 800)}`,
+    )
+    throw new Error(`Gemini API error ${res.status}: ${detail.slice(0, 300)}`)
   }
 
   const data = await res.json()

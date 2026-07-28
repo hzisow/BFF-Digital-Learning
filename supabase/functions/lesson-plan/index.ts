@@ -1,8 +1,8 @@
 // Lesson Plan & Worksheet Generator — a mentor/admin tool that drafts
 // classroom-ready materials aligned to the BFF Academy financial-literacy
-// curriculum. Given a topic (plus optional grade band + minutes), Claude writes
-// either a full timed lesson plan or a student worksheet with an answer key, as
-// GitHub-flavored Markdown, in the mentor's language.
+// curriculum. Given a topic (plus optional grade band + minutes), the model
+// writes either a full timed lesson plan or a student worksheet with an answer
+// key, as GitHub-flavored Markdown, in the mentor's language.
 //
 // This function requires a valid Supabase JWT by default (verify_jwt). As a
 // best-effort extra guard it also checks the caller is an APPROVED profile, so
