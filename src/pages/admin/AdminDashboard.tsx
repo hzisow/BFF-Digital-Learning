@@ -425,10 +425,10 @@ export default function AdminDashboard() {
                 </p>
                 <p className="mt-1 text-sm text-slate-500">
                   {zh
-                    ? '创建您的第一个班级 → 分享其 6 位字母代码 → 学生几秒内即可加入，无需电子邮箱。'
+                    ? '创建您的第一个班级，分享其 6 位字母代码，学生几秒内即可加入，无需电子邮箱。'
                     : es
-                      ? 'Crea tu primera clase → comparte su código de 6 letras → los estudiantes se unen en segundos, sin correo electrónico.'
-                      : 'Create your first class → share its 6-letter code → students join in seconds, no email needed.'}
+                      ? 'Crea tu primera clase, comparte su código de 6 letras y los estudiantes se unen en segundos, sin correo electrónico.'
+                      : 'Create your first class, share its 6-letter code, and students join in seconds — no email needed.'}
                 </p>
               </div>
             )}

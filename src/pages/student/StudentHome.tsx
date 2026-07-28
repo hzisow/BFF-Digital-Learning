@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
-import { ArrowRight, BookOpen, Check, Clock, Lock, MessageSquare, School, Umbrella } from 'lucide-react'
+import { ArrowRight, BookOpen, Check, Clock, Flame, Lock, MessageSquare, PartyPopper, School, Umbrella } from 'lucide-react'
 import { ACTIVITIES, getActivity, kindLabel, localizeActivity } from '../../lib/activities'
+import { AppIcon } from '../../lib/icons'
 import { BACKEND_ENABLED } from '../../lib/config'
 import type { ActivityProgress } from '../../lib/progress'
 import { loadLocalProgress } from '../../lib/progress'
@@ -270,19 +271,24 @@ export default function StudentHome() {
       {/* Level + XP */}
       <div className="mt-8 grid gap-4 lg:grid-cols-2">
         <LevelCard xp={xp} />
-        <div className="card flex items-center">
+        <div className="card flex items-center gap-3">
+          {completedCount > 0 ? (
+            <PartyPopper className="h-6 w-6 shrink-0 text-bff-500" aria-hidden="true" />
+          ) : (
+            <Flame className="h-6 w-6 shrink-0 text-bff-500" aria-hidden="true" />
+          )}
           <p className="font-display font-semibold text-slate-700">
             {completedCount > 0
               ? zh
-                ? `你已经完成了 ${completedCount} / ${allActivities.length} 个活动 🎉`
+                ? `你已经完成了 ${completedCount} / ${allActivities.length} 个活动`
                 : es
-                ? `Has completado ${completedCount} de ${allActivities.length} actividades 🎉`
-                : `You've completed ${completedCount} of ${allActivities.length} activities 🎉`
+                ? `Has completado ${completedCount} de ${allActivities.length} actividades`
+                : `You've completed ${completedCount} of ${allActivities.length} activities`
               : zh
-                ? `${allActivities.length} 个活动在等着你——一起把第一个搞定吧！💪`
+                ? `${allActivities.length} 个活动在等着你——一起把第一个搞定吧！`
                 : es
-                ? `${allActivities.length} actividades te esperan — ¡vamos a completar la primera! 💪`
-                : `${allActivities.length} activities are waiting for you — let's get that first one done! 💪`}
+                ? `${allActivities.length} actividades te esperan — ¡vamos a completar la primera!`
+                : `${allActivities.length} activities are waiting for you — let's get that first one done!`}
           </p>
         </div>
       </div>
@@ -387,7 +393,9 @@ export default function StudentHome() {
                 <div key={asg.activity_slug} className="card lift flex flex-col">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3">
-                      <span className="text-3xl" aria-hidden="true">{activity.emoji}</span>
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-bff-50 text-bff-700">
+                        <AppIcon name={activity.icon} className="h-6 w-6" />
+                      </span>
                       <div>
                         <p className="font-display font-bold text-slate-900">{local.title}</p>
                         <p className="text-xs font-semibold text-slate-500">
@@ -480,7 +488,9 @@ export default function StudentHome() {
                 className="card lift group flex flex-col p-5"
               >
                 <div className="flex items-start justify-between gap-2">
-                  <span className="text-3xl" aria-hidden="true">{a.emoji}</span>
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-bff-50 text-bff-700">
+                    <AppIcon name={a.icon} className="h-6 w-6" />
+                  </span>
                   <span className="chip bg-bff-50 text-bff-700">{kindLabel(a.kind, lang)}</span>
                 </div>
                 <p className="mt-3 font-display font-bold text-slate-900 group-hover:text-bff-700">

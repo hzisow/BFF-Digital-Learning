@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { Ticket, BookOpen, Gamepad2 } from 'lucide-react'
+import { Ticket, BookOpen, Gamepad2, Smile } from 'lucide-react'
 import { BACKEND_ENABLED } from '../../lib/config'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
@@ -180,7 +180,7 @@ function JoinForm() {
                 : es
                 ? 'Tu mentor ve este apodo — que sea fácil de reconocer (y apropiado para la escuela '
                 : 'Your mentor sees this nickname — keep it recognizable (and school-appropriate '}
-              <span aria-hidden="true">😄</span>).
+              <Smile className="inline-block h-3.5 w-3.5 align-[-0.15em]" aria-hidden="true" />).
             </p>
           </div>
           <div>

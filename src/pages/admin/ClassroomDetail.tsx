@@ -20,6 +20,7 @@ import { BACKEND_ENABLED } from '../../lib/config'
 import { useAdmin } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
 import { ACTIVITIES, getActivity } from '../../lib/activities'
+import { AppIcon } from '../../lib/icons'
 import { toCsv, downloadCsv } from '../../lib/csv'
 import HostLauncher from '../../components/HostLauncher'
 import ClassLeaderboard from '../../components/ClassLeaderboard'
@@ -281,7 +282,8 @@ export default function ClassroomDetail() {
         : null
     return {
       slug: a.activity_slug,
-      title: meta ? `${meta.emoji} ${meta.title}` : a.activity_slug,
+      icon: meta?.icon ?? 'help',
+      title: meta?.title ?? a.activity_slug,
       completed: rows.length,
       total: students.length,
       avg,
@@ -496,8 +498,8 @@ export default function ClassroomDetail() {
                 const meta = getActivity(a.activity_slug)
                 return (
                   <li key={a.id} className="card flex items-start gap-3 p-4">
-                    <span className="text-2xl" aria-hidden>
-                      {meta?.emoji ?? '📄'}
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-bff-50 text-bff-700">
+                      <AppIcon name={meta?.icon ?? 'help'} className="h-5 w-5" />
                     </span>
                     <div className="min-w-0 flex-1">
                       <p className="font-display font-semibold text-slate-900">
@@ -555,7 +557,7 @@ export default function ClassroomDetail() {
                     <optgroup label={zh ? '课程' : es ? 'Lecciones' : 'Lessons'}>
                       {unassignedLessons.map((a) => (
                         <option key={a.slug} value={a.slug}>
-                          {a.emoji} {a.title}
+                          {a.title}
                         </option>
                       ))}
                     </optgroup>
@@ -564,7 +566,7 @@ export default function ClassroomDetail() {
                     <optgroup label={zh ? '游戏与挑战' : es ? 'Juegos y retos' : 'Games & Challenges'}>
                       {unassignedOther.map((a) => (
                         <option key={a.slug} value={a.slug}>
-                          {a.emoji} {a.title}
+                          {a.title}
                         </option>
                       ))}
                     </optgroup>
@@ -700,8 +702,8 @@ export default function ClassroomDetail() {
               {zh
                 ? '——学生在本网站上点击「加入班级」，只需一个昵称即可加入。无需电子邮箱。'
                 : es
-                  ? '— los estudiantes entran en este sitio → Unirse a la clase, solo con un apodo. Sin correo electrónico.'
-                  : '— students join at this site → Join Class, with just a nickname. No email needed.'}
+                  ? '— los estudiantes entran en este sitio y pulsan "Unirse a la clase", solo con un apodo. Sin correo electrónico.'
+                  : '— students join at this site by tapping "Join Class", with just a nickname. No email needed.'}
             </p>
           </div>
         ) : (
@@ -731,7 +733,10 @@ export default function ClassroomDetail() {
                           scope="col"
                           className="whitespace-nowrap px-4 py-3 font-semibold"
                         >
-                          <span aria-hidden>{meta?.emoji ?? '📄'}</span>{' '}
+                          <AppIcon
+                            name={meta?.icon ?? 'help'}
+                            className="mr-1.5 inline-block h-4 w-4 align-[-0.2em]"
+                          />
                           {meta?.title ?? a.activity_slug}
                         </th>
                       )
@@ -781,7 +786,8 @@ export default function ClassroomDetail() {
                   return (
                     <div key={sm.slug} className="card p-4">
                       <div className="flex items-baseline justify-between gap-3">
-                        <p className="font-display text-sm font-semibold text-slate-800">
+                        <p className="flex items-center gap-2 font-display text-sm font-semibold text-slate-800">
+                          <AppIcon name={sm.icon} className="h-4 w-4 shrink-0 text-bff-600" />
                           {sm.title}
                         </p>
                         <p className="whitespace-nowrap text-xs text-slate-500">

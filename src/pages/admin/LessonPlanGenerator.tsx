@@ -15,7 +15,7 @@ import { useAdmin } from '../../lib/session'
 
 type Kind = 'lesson-plan' | 'worksheet'
 
-// ---------- Tiny, safe Markdown → HTML renderer ----------
+// ---------- Tiny, safe Markdown-to-HTML renderer ----------
 // We deliberately avoid a Markdown npm dependency. Everything is HTML-escaped
 // FIRST, then a small, fixed set of block/inline patterns is applied, so no raw
 // user/model HTML can ever reach the DOM.
@@ -45,7 +45,7 @@ function renderMarkdown(md: string): string {
   while (i < lines.length) {
     const line = lines[i]
 
-    // Blank line → paragraph break.
+    // Blank line starts a paragraph break.
     if (/^\s*$/.test(line)) {
       i++
       continue

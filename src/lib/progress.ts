@@ -49,7 +49,7 @@ function mergeEntry(
 }
 
 /**
- * Reconcile local ⇄ server progress when a student (re)joins a class: pull the
+ * Reconcile local and server progress when a student (re)joins a class: pull the
  * server's records, merge with whatever is on this device (best-of), write the
  * union back to both. This is what makes an in-class record durable and
  * portable across devices and browser wipes.
@@ -116,7 +116,7 @@ export async function saveProgress(
 ): Promise<void> {
   const all = loadLocalProgress()
   const prev = all[activitySlug]
-  // Never downgrade completed → started, and keep the best score.
+  // Never downgrade completed back to started, and keep the best score.
   const status: ProgressStatus =
     prev?.status === 'completed' ? 'completed' : patch.status
   const score =
