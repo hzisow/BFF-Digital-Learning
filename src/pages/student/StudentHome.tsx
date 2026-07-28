@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
-import { ArrowRight, BookOpen, Check, Clock, Lock } from 'lucide-react'
+import { ArrowRight, BookOpen, Check, Clock, Lock, MessageSquare, School, Umbrella } from 'lucide-react'
 import { ACTIVITIES, getActivity, kindLabel, localizeActivity } from '../../lib/activities'
 import { BACKEND_ENABLED } from '../../lib/config'
 import type { ActivityProgress } from '../../lib/progress'
 import { loadLocalProgress } from '../../lib/progress'
-import { totalXp } from '../../lib/xp'
+import { levelInfo, totalXp } from '../../lib/xp'
 import { resumeLesson } from '../../lib/resume'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
@@ -124,6 +124,7 @@ export default function StudentHome() {
     (a) => progress[a.slug]?.status === 'completed',
   ).length
   const xp = useMemo(() => totalXp(progress), [progress])
+  const level = useMemo(() => levelInfo(xp).level, [xp])
   const resume = useMemo(() => resumeLesson(), [])
 
   if (!student) {
@@ -147,26 +148,38 @@ export default function StudentHome() {
   if (classClosed) {
     return (
       <div className="mx-auto max-w-lg px-4 py-16">
-        <div className="card animate-pop-in text-center">
-          <Lock className="mx-auto h-12 w-12 text-slate-400" strokeWidth={1.5} aria-hidden="true" />
-          <h1 className="mt-4 font-display text-2xl font-bold text-slate-900">
-            {zh ? '这个班级已关闭' : es ? 'Esta clase está cerrada' : 'This class is closed'}
+        <div className="animate-pop-in text-center">
+          <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-ink text-white shadow-sm">
+            <Lock className="h-7 w-7" strokeWidth={1.75} aria-hidden="true" />
+          </span>
+          <p className="eyebrow mt-6 justify-center text-ink/50">
+            <span className="eyebrow-line" aria-hidden="true" />
+            {zh ? '班级' : es ? 'Clase' : 'Class'}
+          </p>
+          <h1 className="mt-3 font-display text-4xl font-extrabold leading-[1.05] text-ink sm:text-5xl">
+            {zh ? (
+              <>这个班级已<em>关闭</em></>
+            ) : es ? (
+              <>Esta clase está <em>cerrada</em></>
+            ) : (
+              <>This class is <em>closed</em></>
+            )}
           </h1>
-          <p className="mt-3 leading-relaxed text-slate-600">
+          <p className="mx-auto mt-4 max-w-md leading-relaxed text-ink/70">
             {zh ? (
               <>
-                你的导师关闭了 <span className="font-semibold">{student.classroomName}</span>
+                你的导师关闭了 <span className="font-semibold text-ink">{student.classroomName}</span>
                 ，所以它已不再活跃。你的进度仍然保存着——而且每一节课、每个游戏和挑战都依然开放，你可以自己去探索。
               </>
             ) : es ? (
               <>
-                Tu mentor cerró <span className="font-semibold">{student.classroomName}</span>, así
+                Tu mentor cerró <span className="font-semibold text-ink">{student.classroomName}</span>, así
                 que ya no está activa. Tu progreso sigue guardado — y cada lección, juego y desafío
                 sigue abierto para que lo explores por tu cuenta.
               </>
             ) : (
               <>
-                Your mentor closed <span className="font-semibold">{student.classroomName}</span>, so
+                Your mentor closed <span className="font-semibold text-ink">{student.classroomName}</span>, so
                 it's no longer active. Your progress is still saved — and every lesson, game, and
                 challenge is still open to explore on your own.
               </>
@@ -194,30 +207,70 @@ export default function StudentHome() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
-      {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 className="font-display text-3xl font-extrabold text-slate-900 sm:text-4xl">
-            {zh ? '你好' : es ? '¡Hola' : 'Hey'} {student.nickname}! <span aria-hidden="true">👋</span>
-          </h1>
-          <div className="mt-2 flex flex-wrap items-center gap-2">
-            <span className="chip bg-bff-100 text-bff-800">
-              <span aria-hidden="true">🏫</span> {student.classroomName}
-            </span>
-            <span className="chip bg-slate-100 text-slate-600">
-              {zh ? '代码' : es ? 'Código' : 'Code'}: {student.classCode}
-            </span>
+      {/* Editorial hero: greeting + bold stats */}
+      <div className="ed-hero rounded-3xl px-6 py-9 sm:px-10 sm:py-11">
+        <span aria-hidden="true" className="ed-hero-orbit -right-24 -top-32 h-[420px] w-[420px]" />
+        <span aria-hidden="true" className="ed-hero-orbit gold -left-32 bottom-[-9rem] h-[360px] w-[360px]" />
+        <div className="relative z-[1]">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <p className="eyebrow text-bff-200">
+                <span className="eyebrow-line" aria-hidden="true" />
+                {zh ? '你的主页' : es ? 'Tu panel' : 'Your dashboard'}
+              </p>
+              <h1 className="mt-3 font-display text-4xl font-extrabold leading-[1.05] text-white sm:text-5xl">
+                {zh ? '你好 ' : es ? '¡Hola ' : 'Hey '}
+                <span className="text-gold-400">{student.nickname}</span>!
+              </h1>
+              <div className="mt-4 flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white ring-1 ring-white/15">
+                  <School className="h-3.5 w-3.5" aria-hidden="true" /> {student.classroomName}
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-bff-100 ring-1 ring-white/15">
+                  {zh ? '代码' : es ? 'Código' : 'Code'}: {student.classCode}
+                </span>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={handleLeave}
+              className="inline-flex items-center justify-center gap-2 rounded-[5px] px-4 py-2 font-display text-sm font-semibold text-white/70 transition-colors duration-150 hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-bff-400 focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+            >
+              {zh ? '离开班级' : es ? 'Salir de la clase' : 'Leave class'}
+            </button>
+          </div>
+
+          {/* Bold stats */}
+          <div className="mt-8 grid grid-cols-3 gap-4 border-t border-white/10 pt-6">
+            <div>
+              <p className="font-display text-3xl font-extrabold text-gold-400 sm:text-4xl">
+                {xp.toLocaleString()}
+              </p>
+              <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.15em] text-bff-200">XP</p>
+            </div>
+            <div>
+              <p className="font-display text-3xl font-extrabold text-white sm:text-4xl">{level}</p>
+              <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.15em] text-bff-200">
+                {zh ? '等级' : es ? 'Nivel' : 'Level'}
+              </p>
+            </div>
+            <div>
+              <p className="font-display text-3xl font-extrabold text-white sm:text-4xl">
+                {completedCount}
+                <span className="text-xl font-bold text-bff-200">/{allActivities.length}</span>
+              </p>
+              <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.15em] text-bff-200">
+                {zh ? '已完成' : es ? 'Completadas' : 'Completed'}
+              </p>
+            </div>
           </div>
         </div>
-        <button type="button" onClick={handleLeave} className="btn-ghost text-sm">
-          {zh ? '离开班级' : es ? 'Salir de la clase' : 'Leave class'}
-        </button>
       </div>
 
       {/* Level + XP */}
       <div className="mt-8 grid gap-4 lg:grid-cols-2">
         <LevelCard xp={xp} />
-        <div className="flex items-center rounded-2xl border border-slate-200 bg-white px-6 py-4">
+        <div className="card flex items-center">
           <p className="font-display font-semibold text-slate-700">
             {completedCount > 0
               ? zh
@@ -238,10 +291,10 @@ export default function StudentHome() {
       {resume && (
         <Link
           to={resume.path}
-          className="mt-6 flex items-center justify-between gap-4 rounded-2xl border border-bff-200 bg-bff-50 px-6 py-4 transition hover:border-bff-300 hover:bg-bff-100"
+          className="card lift accent-left mt-6 flex items-center justify-between gap-4 pl-7"
         >
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-bff-600">
+            <p className="eyebrow">
               {resume.inProgress
                 ? zh
                   ? '从上次离开的地方继续'
@@ -254,7 +307,7 @@ export default function StudentHome() {
                   ? 'Tu próxima lección'
                   : 'Your next lesson'}
             </p>
-            <p className="mt-0.5 font-display text-lg font-bold text-slate-900">
+            <p className="mt-1 font-display text-lg font-bold text-ink">
               {(() => {
                 const meta = getActivity(resume.slug)
                 return meta ? localizeActivity(meta, lang).title : resume.title
@@ -276,9 +329,19 @@ export default function StudentHome() {
       )}
 
       {/* Assigned work */}
-      <section className="mt-10">
-        <h2 className="font-display text-xl font-bold text-slate-900">
-          {zh ? '你的作业' : es ? 'Tus tareas asignadas' : 'Your assigned work'}
+      <section className="mt-12">
+        <p className="eyebrow">
+          <span className="eyebrow-line" aria-hidden="true" />
+          {zh ? '作业' : es ? 'Tareas' : 'Assignments'}
+        </p>
+        <h2 className="mt-2 font-display text-2xl font-bold text-ink sm:text-3xl">
+          {zh ? (
+            <>你的<em>作业</em></>
+          ) : es ? (
+            <>Tus tareas <em>asignadas</em></>
+          ) : (
+            <>Your <em>assigned</em> work</>
+          )}
         </h2>
         {loadError && (
           <p
@@ -300,8 +363,8 @@ export default function StudentHome() {
         ) : assignments.length === 0 ? (
           !loadError && (
             <div className="card mt-4 text-center">
-              <p className="text-3xl" aria-hidden="true">🏖️</p>
-              <p className="mt-2 font-display font-semibold text-slate-700">
+              <Umbrella className="mx-auto h-10 w-10 text-bff-500" strokeWidth={1.5} aria-hidden="true" />
+              <p className="mt-3 font-display font-semibold text-slate-700">
                 {zh ? '目前还没有布置作业——去下面探索吧！' : es ? 'Nada asignado todavía — ¡explora abajo!' : 'Nothing assigned yet — explore below!'}
               </p>
               <p className="mt-1 text-sm text-slate-500">
@@ -321,7 +384,7 @@ export default function StudentHome() {
               const p = progress[activity.slug]
               const local = localizeActivity(activity, lang)
               return (
-                <div key={asg.activity_slug} className="card flex flex-col">
+                <div key={asg.activity_slug} className="card lift flex flex-col">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3">
                       <span className="text-3xl" aria-hidden="true">{activity.emoji}</span>
@@ -335,9 +398,11 @@ export default function StudentHome() {
                     <ProgressChip progress={p} es={es} zh={zh} />
                   </div>
                   {asg.note && (
-                    <p className="mt-3 rounded-xl bg-bff-50 px-4 py-3 text-sm text-bff-900">
-                      <span aria-hidden="true">💬</span>{' '}
-                      <span className="font-semibold">{zh ? '来自你的导师：' : es ? 'De tu mentor:' : 'From your mentor:'}</span> {asg.note}
+                    <p className="mt-3 flex items-start gap-2 rounded-xl bg-bff-50 px-4 py-3 text-sm text-bff-900">
+                      <MessageSquare className="mt-0.5 h-4 w-4 shrink-0 text-bff-500" aria-hidden="true" />
+                      <span>
+                        <span className="font-semibold">{zh ? '来自你的导师：' : es ? 'De tu mentor:' : 'From your mentor:'}</span> {asg.note}
+                      </span>
                     </p>
                   )}
                   <div className="mt-4 flex items-center justify-between gap-2">
@@ -384,10 +449,20 @@ export default function StudentHome() {
 
       {/* Keep learning */}
       <section className="mt-12">
-        <h2 className="font-display text-xl font-bold text-slate-900">
-          {zh ? '继续学习' : es ? 'Seguir aprendiendo' : 'Keep learning'}
+        <p className="eyebrow">
+          <span className="eyebrow-line" aria-hidden="true" />
+          {zh ? '课程库' : es ? 'Biblioteca' : 'Library'}
+        </p>
+        <h2 className="mt-2 font-display text-2xl font-bold text-ink sm:text-3xl">
+          {zh ? (
+            <>继续<em>学习</em></>
+          ) : es ? (
+            <>Seguir <em>aprendiendo</em></>
+          ) : (
+            <>Keep <em>learning</em></>
+          )}
         </h2>
-        <p className="mt-1 text-sm text-slate-500">
+        <p className="mt-2 text-sm text-ink/60">
           {zh
             ? 'BFF Classroom 里的一切都向你开放——无论是否被布置。'
             : es
@@ -402,7 +477,7 @@ export default function StudentHome() {
               <Link
                 key={a.slug}
                 to={a.path}
-                className="card group flex flex-col p-5 transition hover:-translate-y-0.5 hover:border-bff-300 hover:shadow-md"
+                className="card lift group flex flex-col p-5"
               >
                 <div className="flex items-start justify-between gap-2">
                   <span className="text-3xl" aria-hidden="true">{a.emoji}</span>
