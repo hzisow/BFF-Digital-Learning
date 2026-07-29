@@ -10,7 +10,8 @@
 
 import { useId, useState } from 'react'
 import { Sparkles, Loader2 } from 'lucide-react'
-import { invokeAI, AI_ENABLED, AINotConfiguredError } from '../lib/ai'
+import { invokeAI, AI_ENABLED, AINotConfiguredError, AIOfflineError } from '../lib/ai'
+import { offlineAICopy } from '../lib/offlineCopy'
 import { useLang } from '../lib/i18n'
 
 interface Grade {
@@ -26,7 +27,7 @@ export interface OpenResponseProps {
   id?: string
 }
 
-type Status = 'idle' | 'loading' | 'done' | 'not-configured' | 'error'
+type Status = 'idle' | 'loading' | 'done' | 'not-configured' | 'offline' | 'error'
 
 export default function OpenResponse({ prompt, rubric, id }: OpenResponseProps) {
   const { lang } = useLang()
@@ -57,7 +58,9 @@ export default function OpenResponse({ prompt, rubric, id }: OpenResponseProps) 
       setGrade(result)
       setStatus('done')
     } catch (err) {
-      if (err instanceof AINotConfiguredError) {
+      if (err instanceof AIOfflineError) {
+        setStatus('offline')
+      } else if (err instanceof AINotConfiguredError) {
         setStatus('not-configured')
       } else {
         setStatus('error')
@@ -161,6 +164,24 @@ export default function OpenResponse({ prompt, rubric, id }: OpenResponseProps) 
               : es
                 ? 'Los comentarios con IA aún no están configurados, pero tu mentor todavía puede leer tu respuesta.'
                 : "AI feedback isn't set up yet — your mentor can still read your answer."}
+          </div>
+        )}
+
+        {status === 'offline' && (
+          <div className="mt-4 flex flex-col gap-3 rounded-[6px] border border-ink/20 bg-paper-deep p-4 text-sm text-ink sm:flex-row sm:items-center sm:justify-between">
+            <span>
+              <span className="block font-display font-bold">{offlineAICopy(lang).title}</span>
+              <span className="mt-0.5 block text-ink/70">
+                {zh
+                  ? '你的答案已保留在这里——恢复网络后再提交即可。'
+                  : es
+                    ? 'Tu respuesta sigue aquí — envíala de nuevo cuando vuelvas a tener conexión.'
+                    : 'Your answer is still here — send it again once you are back online.'}
+              </span>
+            </span>
+            <button type="button" onClick={handleSubmit} className="btn-secondary shrink-0">
+              {zh ? '重试' : es ? 'Reintentar' : 'Try again'}
+            </button>
           </div>
         )}
 

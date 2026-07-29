@@ -6,7 +6,8 @@
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { MessageCircle, Send, RefreshCw, Bot } from 'lucide-react'
-import { invokeAI, AI_ENABLED, AINotConfiguredError } from '../lib/ai'
+import { invokeAI, AI_ENABLED, AINotConfiguredError, AIOfflineError } from '../lib/ai'
+import { offlineAICopy } from '../lib/offlineCopy'
 import { useLang } from '../lib/i18n'
 
 interface ChatMessage {
@@ -35,6 +36,7 @@ export default function MoneyCoach() {
   const [busy, setBusy] = useState(false)
   const [notConfigured, setNotConfigured] = useState(false)
   const [failed, setFailed] = useState(false)
+  const [offline, setOffline] = useState(false)
   const [failReason, setFailReason] = useState<string | null>(null)
 
   const inputRef = useRef<HTMLInputElement>(null)
@@ -70,6 +72,7 @@ export default function MoneyCoach() {
   async function runCoach(convo: ChatMessage[]) {
     setBusy(true)
     setFailed(false)
+    setOffline(false)
     setFailReason(null)
     try {
       const { reply } = await invokeAI<{ reply: string }>('money-coach', {
@@ -78,7 +81,11 @@ export default function MoneyCoach() {
       })
       setMessages([...convo, { role: 'assistant', content: reply }])
     } catch (err) {
-      if (err instanceof AINotConfiguredError) {
+      if (err instanceof AIOfflineError) {
+        // The question stays in the thread so Retry resends it verbatim once
+        // the connection comes back.
+        setOffline(true)
+      } else if (err instanceof AINotConfiguredError) {
         setNotConfigured(true)
       } else {
         // Leave the user's message in place so Retry can resend it, and keep
@@ -260,6 +267,29 @@ export default function MoneyCoach() {
                     {failReason}
                   </span>
                 )}
+              </span>
+              <button
+                type="button"
+                className="btn-secondary px-3 py-1.5 text-sm"
+                onClick={() => void runCoach(messages)}
+                disabled={busy}
+              >
+                <RefreshCw className="h-4 w-4" aria-hidden="true" />
+                {retryLabel}
+              </button>
+            </div>
+          )}
+
+          {offline && (
+            <div
+              role="status"
+              className="flex flex-wrap items-center gap-3 self-start rounded-[10px] border border-ink/20 bg-paper-deep px-4 py-3 text-sm text-ink"
+            >
+              <span className="min-w-0">
+                <span className="block font-display font-bold">
+                  {offlineAICopy(lang).title}
+                </span>
+                <span className="mt-0.5 block text-ink/70">{offlineAICopy(lang).body}</span>
               </span>
               <button
                 type="button"

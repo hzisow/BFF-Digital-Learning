@@ -11,6 +11,7 @@
 
 import { supabase } from './supabase'
 import { BACKEND_ENABLED } from './config'
+import { isNetworkError, isOnline } from './online'
 
 /** AI features require the backend (Supabase) to be connected. */
 export const AI_ENABLED = BACKEND_ENABLED && !!supabase
@@ -19,6 +20,14 @@ export class AINotConfiguredError extends Error {}
 
 /** Raised when we cannot obtain a session (e.g. anonymous sign-ins disabled). */
 export class AISignInError extends Error {}
+
+/**
+ * The request never reached the server. This is a separate error type on
+ * purpose: "the wifi dropped" and "the AI service failed" need different words
+ * and lead the student to different actions, and collapsing them into one
+ * generic failure is what made the earlier AI bugs so hard to diagnose.
+ */
+export class AIOfflineError extends Error {}
 
 /** Make sure we have a JWT before calling a verify_jwt function. */
 async function ensureSession(): Promise<void> {
@@ -39,9 +48,27 @@ async function ensureSession(): Promise<void> {
  */
 export async function invokeAI<T>(fn: string, body: Record<string, unknown>): Promise<T> {
   if (!supabase) throw new AINotConfiguredError('AI backend not connected.')
-  await ensureSession()
-  const { data, error } = await supabase.functions.invoke(fn, { body })
+  // Known-offline: fail fast and honestly rather than making the student watch
+  // a spinner time out into a generic error.
+  if (!isOnline()) throw new AIOfflineError('No connection.')
+
+  let data: unknown
+  let error: unknown
+  try {
+    await ensureSession()
+    const res = await supabase.functions.invoke(fn, { body })
+    data = res.data
+    error = res.error
+  } catch (err) {
+    // A thrown error here is almost always the connection giving out — either
+    // during sign-in or mid-request.
+    if (isNetworkError(err)) throw new AIOfflineError('Lost connection.')
+    throw err
+  }
+
   if (error) {
+    // The request itself failed to reach the function.
+    if (isNetworkError(error)) throw new AIOfflineError('Lost connection.')
     // Edge function returns 503 + { error: 'AI_NOT_CONFIGURED' } when no key.
     const ctx = (error as { context?: { error?: string } }).context
     if (ctx?.error === 'AI_NOT_CONFIGURED') {

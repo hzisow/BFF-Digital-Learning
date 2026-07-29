@@ -9,7 +9,8 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import { Navigate } from 'react-router-dom'
 import { Check, Copy, Download, Printer, Sparkles, Wand2 } from 'lucide-react'
-import { invokeAI, AI_ENABLED, AINotConfiguredError } from '../../lib/ai'
+import { invokeAI, AI_ENABLED, AINotConfiguredError, AIOfflineError } from '../../lib/ai'
+import { offlineAICopy } from '../../lib/offlineCopy'
 import { buildWorksheetPdf, worksheetFilename, loadLogo } from '../../lib/worksheetPdf'
 import type { Worksheet } from '../../lib/worksheetPdf'
 import { useLang } from '../../lib/i18n'
@@ -236,7 +237,10 @@ export default function LessonPlanGenerator() {
         else setMarkdown(md)
       }
     } catch (err) {
-      if (err instanceof AINotConfiguredError) {
+      if (err instanceof AIOfflineError) {
+        const copy = offlineAICopy(lang)
+        setError(`${copy.title}. ${copy.body}`)
+      } else if (err instanceof AINotConfiguredError) {
         setNotConfigured(true)
       } else {
         setError(err instanceof Error ? err.message : String(err))

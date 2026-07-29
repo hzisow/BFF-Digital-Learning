@@ -23,6 +23,7 @@ import { AppIcon } from '../lib/icons'
 import { ACTIVITIES, localizeActivity } from '../lib/activities'
 import type { ActivityMeta } from '../lib/activities'
 import { getLesson } from '../content/lessons'
+import { prefetchRoute } from '../lib/routeChunks'
 import { useLang } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
 import type { ActivityProgress } from '../lib/progress'
@@ -253,6 +254,12 @@ export default function LessonsIndex() {
     }
     return count
   }, [progress])
+  // Anyone looking at the course path is about to open a lesson. Warm the
+  // lesson canvas now so tapping a node goes straight to content.
+  useEffect(() => {
+    prefetchRoute('lesson')
+  }, [])
+
   /** Lesson title in the active language (falls back to English). */
   const lessonTitle = (meta: ActivityMeta) =>
     (zh ? getLesson(meta.slug)?.zh?.title : es ? getLesson(meta.slug)?.es?.title : undefined) ??

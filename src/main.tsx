@@ -7,6 +7,11 @@ import { SessionProvider } from './lib/session'
 import { LanguageProvider } from './lib/i18n'
 import { ToastProvider } from './components/ToastProvider'
 import ErrorBoundary from './components/ErrorBoundary'
+import ConnectionBanner from './components/ConnectionBanner'
+import { startProgressSyncRetry } from './lib/progressQueue'
+
+// Retry any classroom progress that failed to reach the server last time.
+startProgressSyncRetry()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -17,6 +22,9 @@ createRoot(document.getElementById('root')!).render(
         <LanguageProvider>
           <SessionProvider>
             <ToastProvider>
+              {/* Above every route — the global layout, the lesson canvas, and
+                  the full-screen live game screens all sit below it. */}
+              <ConnectionBanner />
               <App />
             </ToastProvider>
           </SessionProvider>

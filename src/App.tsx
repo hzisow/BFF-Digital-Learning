@@ -1,38 +1,59 @@
+import { Suspense, lazy } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
 import Landing from './pages/Landing'
-import LessonsIndex from './pages/LessonsIndex'
-import LessonPage from './pages/LessonPage'
-import ActivitiesIndex from './pages/ActivitiesIndex'
-import GlossaryPage from './pages/GlossaryPage'
-import CertificatePage from './pages/CertificatePage'
-import PracticePage from './pages/PracticePage'
-import MoneyCoach from './pages/MoneyCoach'
-import AIPractice from './pages/AIPractice'
-import JoinPage from './pages/student/JoinPage'
-import StudentHome from './pages/student/StudentHome'
-import BensBudget from './activities/bens-budget/BensBudget'
-import BensInsurance from './activities/bens-insurance/BensInsurance'
-import PaystubDetective from './activities/paystub/PaystubDetective'
-import CreditScoreSim from './activities/credit-sim/CreditScoreSim'
-import ScamSpotter from './activities/scam-spotter/ScamSpotter'
-import SmartShopper from './activities/smart-shopper/SmartShopper'
-import GoalGetter from './activities/goal-getter/GoalGetter'
-import QuizHost from './activities/quiz/QuizHost'
-import QuizPlay from './activities/quiz/QuizPlay'
-import CoPlayHost from './activities/live/CoPlayHost'
-import CoPlayPlayer from './activities/live/CoPlayPlayer'
-import LiveJoin from './pages/LiveJoin'
-import WolfHome from './activities/wolf/WolfHome'
-import WolfSolo from './activities/wolf/WolfSolo'
-import WolfPlayer from './activities/wolf/WolfPlayer'
-import WolfHost from './activities/wolf/WolfHost'
-import TeamAuth from './pages/admin/TeamAuth'
-import AdminDashboard from './pages/admin/AdminDashboard'
-import ClassroomDetail from './pages/admin/ClassroomDetail'
-import LessonPlanGenerator from './pages/admin/LessonPlanGenerator'
-import AccountPage from './pages/admin/AccountPage'
 import NotFound from './pages/NotFound'
+import { FullscreenFallback, LessonFallback } from './components/RouteFallback'
+import { routeChunks } from './lib/routeChunks'
+
+// Every route below the landing page is code-split (see src/lib/routeChunks.ts).
+// Landing, Layout, and NotFound stay in the first download: Landing is what most
+// visitors see first, and lazily loading the thing you are already looking at
+// only adds a round-trip.
+//
+// The Suspense boundary for Layout routes lives inside Layout itself, wrapped
+// around <Outlet />, so the header and footer stay painted while a page loads.
+// Routes that render their own full-screen chrome carry their own boundary here.
+
+const LessonsIndex = lazy(routeChunks.lessons)
+const LessonPage = lazy(routeChunks.lesson)
+const ActivitiesIndex = lazy(routeChunks.activities)
+const GlossaryPage = lazy(routeChunks.glossary)
+const CertificatePage = lazy(routeChunks.certificate)
+const PracticePage = lazy(routeChunks.practice)
+const AIPractice = lazy(routeChunks.aiPractice)
+const MoneyCoach = lazy(routeChunks.coach)
+const JoinPage = lazy(routeChunks.join)
+const StudentHome = lazy(routeChunks.student)
+const LiveJoin = lazy(routeChunks.liveJoin)
+
+const BensBudget = lazy(routeChunks.bensBudget)
+const BensInsurance = lazy(routeChunks.bensInsurance)
+const PaystubDetective = lazy(routeChunks.paystub)
+const CreditScoreSim = lazy(routeChunks.creditSim)
+const ScamSpotter = lazy(routeChunks.scamSpotter)
+const SmartShopper = lazy(routeChunks.smartShopper)
+const GoalGetter = lazy(routeChunks.goalGetter)
+
+const WolfHome = lazy(routeChunks.wolfHome)
+const WolfSolo = lazy(routeChunks.wolfSolo)
+const WolfPlayer = lazy(routeChunks.wolfPlayer)
+const WolfHost = lazy(routeChunks.wolfHost)
+const QuizPlay = lazy(routeChunks.quizPlay)
+const QuizHost = lazy(routeChunks.quizHost)
+const CoPlayPlayer = lazy(routeChunks.coPlayPlayer)
+const CoPlayHost = lazy(routeChunks.coPlayHost)
+
+const TeamAuth = lazy(routeChunks.team)
+const AdminDashboard = lazy(routeChunks.admin)
+const ClassroomDetail = lazy(routeChunks.adminClass)
+const LessonPlanGenerator = lazy(routeChunks.adminGenerate)
+const AccountPage = lazy(routeChunks.account)
+
+/** Wrap a full-screen route in its own loading boundary. */
+function Fullscreen({ children }: { children: React.ReactNode }) {
+  return <Suspense fallback={<FullscreenFallback />}>{children}</Suspense>
+}
 
 export default function App() {
   return (
@@ -66,14 +87,21 @@ export default function App() {
         <Route path="*" element={<NotFound />} />
       </Route>
       {/* Focused module route (own chrome, no global header/footer): the lesson canvas */}
-      <Route path="/lessons/:slug" element={<LessonPage />} />
+      <Route
+        path="/lessons/:slug"
+        element={
+          <Suspense fallback={<LessonFallback />}>
+            <LessonPage />
+          </Suspense>
+        }
+      />
       {/* Full-screen routes (no site chrome): live game screens */}
-      <Route path="/play/:code" element={<WolfPlayer />} />
-      <Route path="/host/:sessionId" element={<WolfHost />} />
-      <Route path="/quiz/:code" element={<QuizPlay />} />
-      <Route path="/quiz-host/:sessionId" element={<QuizHost />} />
-      <Route path="/coplay/:code" element={<CoPlayPlayer />} />
-      <Route path="/coplay-host/:sessionId" element={<CoPlayHost />} />
+      <Route path="/play/:code" element={<Fullscreen><WolfPlayer /></Fullscreen>} />
+      <Route path="/host/:sessionId" element={<Fullscreen><WolfHost /></Fullscreen>} />
+      <Route path="/quiz/:code" element={<Fullscreen><QuizPlay /></Fullscreen>} />
+      <Route path="/quiz-host/:sessionId" element={<Fullscreen><QuizHost /></Fullscreen>} />
+      <Route path="/coplay/:code" element={<Fullscreen><CoPlayPlayer /></Fullscreen>} />
+      <Route path="/coplay-host/:sessionId" element={<Fullscreen><CoPlayHost /></Fullscreen>} />
     </Routes>
   )
 }

@@ -12,6 +12,9 @@ import {
 import type { LiveGameProps } from './types'
 import { getActivity } from '../../lib/activities'
 import { Logo } from '../../components/Logo'
+import { isNetworkError } from '../../lib/online'
+import { useStalledLookup } from '../../lib/useStalledLookup'
+import LiveLookupStalled from '../../components/LiveLookupStalled'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
 import { AppIcon } from '../../lib/icons'
@@ -104,6 +107,10 @@ export default function CoPlayPlayer() {
 
   const fetchedRef = useRef(false)
   const joinRef = useRef(false)
+  const [lookupOffline, setLookupOffline] = useState(false)
+  const stalled = useStalledLookup(
+    session !== null || loadError !== null || lookupOffline,
+  )
 
   // Look the game up by its code (once).
   useEffect(() => {
@@ -111,7 +118,12 @@ export default function CoPlayPlayer() {
     fetchedRef.current = true
     getLiveSessionByCode(code)
       .then(setSession)
-      .catch((err) => setLoadError(errorMessage(err, es, zh)))
+      .catch((err) => {
+        // A dead connection is not a broken game code. Route it to the
+        // connection notice so the student is not told their code failed.
+        if (isNetworkError(err)) setLookupOffline(true)
+        else setLoadError(errorMessage(err, es, zh))
+      })
   }, [code, es, zh])
 
   // Once joined: track session state + fellow players.
@@ -199,9 +211,17 @@ export default function CoPlayPlayer() {
   if (!session) {
     return (
       <Shell code={code}>
-        <p className="mt-16 text-center font-display text-lg font-semibold text-ink/60">
-          {zh ? '正在寻找你的游戏…' : es ? 'Buscando tu juego…' : 'Finding your game…'}
-        </p>
+        {/* Once we know the lookup is not coming, the hopeful line is
+            just noise sitting above the explanation. */}
+        {!stalled && !lookupOffline && (
+          <p className="mt-16 text-center font-display text-lg font-semibold text-ink/60">
+            {zh ? '正在寻找你的游戏…' : es ? 'Buscando tu juego…' : 'Finding your game…'}
+          </p>
+        )}
+        {/* Without this the screen waits forever on a dead connection. */}
+        {(stalled || lookupOffline) && (
+          <LiveLookupStalled onRetry={() => window.location.reload()} />
+        )}
       </Shell>
     )
   }

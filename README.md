@@ -75,6 +75,24 @@ stays server-side and never reaches the browser.
   mentor dashboard, live multiplayer, and the AI features switch on, and student
   progress syncs to the class.
 
+### Built for a school network
+
+Classroom wifi is unreliable, so the app is written to degrade honestly rather
+than break:
+
+- **Routes load on demand.** The first page pulls a small shell instead of the
+  whole app; each page's code arrives when it is opened, and hovering a nav link
+  fetches it a moment early so it still feels instant. The speculative
+  prefetching stands down on Save-Data and slow connections.
+- **Fonts are bundled**, not fetched from Google — nothing third-party sits on
+  the critical path.
+- **Losing the connection says so.** A bar across the top explains what still
+  works, and each feature that genuinely needs the network says so in its own
+  words instead of failing with a generic error.
+- **Progress is never dropped.** It saves to the device first. If the sync to the
+  classroom fails, the write is queued and retried when the connection returns,
+  surviving a refresh or a closed tab.
+
 ### Accessibility
 
 Built to WCAG 2.1 AA: keyboard navigation throughout, visible focus rings,
@@ -236,8 +254,8 @@ contains zero emoji by design; pick an existing key or add one to the registry.
 │       └── lesson-plan/           # Lesson plans + worksheet data
 ├── public/brand/                  # Logo and favicon
 └── src/
-    ├── main.tsx / App.tsx         # Entry + routes (BrowserRouter, clean URLs)
-    ├── index.css                  # Design system: tokens, buttons, cards, motion
+    ├── main.tsx / App.tsx         # Entry + routes (BrowserRouter, code-split)
+    ├── index.css                  # Design system: fonts, tokens, buttons, motion
     ├── styles/lesson.css          # The focused lesson canvas (.lz)
     ├── components/                # Shared UI (Layout, Skeleton, VideoCheckpoint…)
     │   └── lesson/LessonArt.tsx   # Hand-built SVG art per lesson topic
@@ -247,6 +265,9 @@ contains zero emoji by design; pick an existing key or add one to the registry.
     ├── activities/                # One folder per game or challenge
     ├── lib/
     │   ├── icons.tsx              # Icon registry — the reason there are no emoji
+    │   ├── routeChunks.ts         # Code-split routes + prefetch policy
+    │   ├── online.ts              # Connection detection and error classification
+    │   ├── progressQueue.ts       # Retry outbox for classroom progress
     │   ├── config.ts              # Supabase wiring (env or fallback)
     │   ├── supabase.ts            # Client (null in solo mode)
     │   ├── session.tsx            # Student + mentor sessions

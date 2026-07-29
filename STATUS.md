@@ -93,6 +93,46 @@ Edge functions run with `verify_jwt`, but the project uses the newer
 `ensureSession()` (anonymous sign-in) before invoking, so a visitor who never
 joined a class can still use the Coach.
 
+### Routes are code-split; the shell is what loads first
+`src/lib/routeChunks.ts` holds one dynamic `import()` per route, and `App.tsx`
+turns each into a `React.lazy`. Landing, Layout, and NotFound stay eager — lazily
+loading the page you are already looking at only adds a round-trip.
+
+The Suspense boundary for Layout routes lives **inside Layout**, wrapped around
+`<Outlet />`, so the header and footer stay painted during a navigation. The
+lesson canvas and the full-screen live screens carry their own boundaries.
+
+Nav links prefetch on hover/focus (`PrefetchNavLink`). A separate idle prefetch
+warms `lessons` + `activities`, but **only when the connection can afford it** —
+it bails on `saveData` or a 2G/3G `effectiveType`. The lessons chunk is 494KB
+(all 13 lessons × 3 languages), so speculatively pulling it on school wifi would
+compete with what the student actually asked for. Hover prefetch ignores the
+guard, because that is intent rather than a guess.
+
+### Offline is a first-class state, not a generic failure
+`src/lib/online.ts` is the single source of truth. `navigator.onLine === false`
+is trusted (definitely offline); `true` is **not** trusted, because captive
+portals and dead uplinks report online — so a network-shaped failure is
+classified after the fact by `isNetworkError()`.
+
+Three separate mistakes this prevents, all of which looked identical before:
+- "You're offline" vs. "the AI service failed" (`AIOfflineError` vs. a real error)
+- "no live game with that code" vs. "we cannot reach the server"
+- a raw `TypeError: Failed to fetch` shown to a student
+
+A Gemini 429 must **not** classify as a network error. There is a test for this.
+
+### Progress writes are queued, not dropped
+`saveProgress` used to swallow a failed upsert, so a completed lesson could
+simply never reach the mentor's dashboard. Failures now go to a localStorage
+outbox (`src/lib/progressQueue.ts`) that is drained on `online`, on
+`visibilitychange`, on a 60s timer, and at startup. One entry per
+(student, activity) — a later write already contains the earlier one.
+
+Deliberately **not** a service worker: this cannot sync after the tab closes,
+but it works identically on iOS (no Background Sync there), needs no caching
+layer, and is removable by deleting one file. See "Ideas worth considering".
+
 ### The lesson canvas is its own world
 `/lessons/:slug` renders **outside** the global `Layout` (see `src/App.tsx`) with
 its own focused chrome, styled by `src/styles/lesson.css` (all classes prefixed
@@ -117,6 +157,12 @@ its own focused chrome, styled by `src/styles/lesson.css` (all classes prefixed
 - **Micro-interactions** app-wide, built on shared motion tokens
 - **Accessibility**: WCAG 2.1 AA pass, focus rings, `prefers-reduced-motion`
   honored (transitions collapse to 0.001ms), screen-reader announcements
+- **Self-hosted fonts** — Bricolage Grotesque + Inter bundled via
+  `@fontsource-variable`; zero requests to Google Fonts, verified in the browser
+- **Code-split routes** — first load went from a single 1,546KB chunk to a
+  ~266KB critical path; 26 routes verified rendering, no console errors
+- **Flaky-network resilience** — connection bar, per-feature offline states,
+  live screens that stop waiting after 6s, and a progress outbox that retries
 
 ---
 
@@ -175,11 +221,37 @@ Roughly ordered by value per unit of effort.
   not "which question did the class get wrong?" Per-question breakdowns would
   tell a mentor what to reteach. The data is already stored in
   `progress.data.answers`.
-- **Offline / flaky-wifi resilience.** School wifi is unreliable and progress is
-  already local-first. A service worker would make the whole app work offline and
-  sync when it reconnects.
+- **Per-lesson content splitting.** `lessons-*.js` is 494KB because
+  `content/lessons/index.ts` statically imports all 13 lessons in 3 languages, so
+  opening the course path downloads every lesson. `LessonsIndex` only needs
+  localized titles and quiz answer keys; `LessonPage` needs one lesson. Splitting
+  per slug would take a first lesson visit from ~494KB to ~45KB. It needs
+  `getLesson` to become async across 7 call sites, so it was left for a dedicated
+  pass. Glossary and Practice legitimately need all lessons and would still pull
+  the full set.
+- **Defer the Supabase client (205KB).** It is on the critical path only because
+  `session.tsx` imports it statically for session restore. Solo mode never needs
+  it at all. Would cut the first load by roughly a fifth.
 - **Printable certificates and progress reports** for mentors to hand out — the
   PDF pipeline now exists and could be reused.
+
+**Deliberately not done — a service worker / PWA**
+Considered and declined for now. It would make the app boot offline and let
+progress sync after the tab closes, but the trade-offs were judged not worth it
+*yet*:
+- A misconfigured worker serves a stale build **indefinitely**, and the normal
+  fix ("just refresh") is exactly the thing that stops working. Recovery means
+  shipping a self-unregistering worker and waiting for each device to return.
+- Safari drops registrations after ~7 days of no visits, and has **no Background
+  Sync at all** — so iPhone/iPad students lose the headline feature.
+- It does nothing for a first visit, which is the common case for "mentor shares
+  a link during class".
+- Caching an authenticated Supabase response on a shared classroom Chromebook
+  would leak one student's data to the next.
+
+The cheaper 80% was built instead: code splitting, honest offline states, and
+the progress outbox. Revisit once a real class has used the app and there is
+evidence the network is what hurts.
 
 **Medium value**
 - **Assignment due-date reminders** on the student home.
@@ -233,6 +305,12 @@ git push origin claude/educational-tool-student-outreach-qkqnle:main
 | Path | What it is |
 |---|---|
 | `src/lib/icons.tsx` | Icon registry — the reason there are no emoji |
+| `src/lib/routeChunks.ts` | Every code-split route + the prefetch policy |
+| `src/lib/online.ts` | Connection truth: `isOnline`, `isNetworkError`, `useOnline` |
+| `src/lib/progressQueue.ts` | The outbox that stops progress writes being lost |
+| `src/lib/offlineCopy.ts` | Shared trilingual offline wording |
+| `src/components/ConnectionBanner.tsx` | The top strip shown while offline |
+| `src/components/RouteFallback.tsx` | What shows while a route chunk downloads |
 | `src/index.css` | Design system: tokens, buttons, cards, micro-interactions |
 | `src/styles/lesson.css` | The `.lz` lesson canvas |
 | `src/components/lesson/LessonArt.tsx` | Hand-built SVG motifs per lesson topic |

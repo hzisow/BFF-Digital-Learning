@@ -3,6 +3,8 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { Ticket, BookOpen, Gamepad2, Smile } from 'lucide-react'
 import { BACKEND_ENABLED } from '../../lib/config'
 import { useStudent } from '../../lib/session'
+import { isNetworkError, isOnline } from '../../lib/online'
+import { offlineLiveCopy } from '../../lib/offlineCopy'
 import { useLang } from '../../lib/i18n'
 
 function cleanCode(raw: string): string {
@@ -93,11 +95,24 @@ function JoinForm() {
       return
     }
     setError(null)
+    // Joining a class writes to the server, so it genuinely cannot work
+    // offline. Say so plainly rather than surfacing a lookup failure that reads
+    // like "your code is wrong".
+    if (!isOnline()) {
+      const copy = offlineLiveCopy(lang)
+      setError(`${copy.title}. ${copy.body}`)
+      return
+    }
     setBusy(true)
     try {
       await joinClass(code, nickname, pin)
       navigate('/student')
     } catch (err) {
+      if (isNetworkError(err)) {
+        const copy = offlineLiveCopy(lang)
+        setError(`${copy.title}. ${copy.body}`)
+        return
+      }
       setError(
         err instanceof Error
           ? err.message

@@ -1,6 +1,8 @@
 import { supabase } from './supabase'
 import type { StudentSession } from './session'
 import { recordActivity } from './streak'
+import { enqueueProgress, flushProgressQueue } from './progressQueue'
+import { isOnline } from './online'
 
 export type ProgressStatus = 'started' | 'completed'
 
@@ -98,9 +100,14 @@ export async function reconcileProgress(student: StudentSession | null): Promise
   }))
   if (upserts.length > 0) {
     try {
-      await supabase.from('progress').upsert(upserts, { onConflict: 'student_id,activity_slug' })
+      const { error } = await supabase
+        .from('progress')
+        .upsert(upserts, { onConflict: 'student_id,activity_slug' })
+      if (error) upserts.forEach(enqueueProgress)
     } catch {
-      // best-effort — local already holds the merged truth
+      // Local already holds the merged truth; queue the push for later so the
+      // class record catches up rather than staying permanently behind.
+      upserts.forEach(enqueueProgress)
     }
   }
 }
@@ -136,20 +143,33 @@ export async function saveProgress(
   recordActivity() // any saved progress keeps the daily streak alive
 
   if (supabase && student) {
+    const row = {
+      student_id: student.studentId,
+      activity_slug: activitySlug,
+      status: entry.status,
+      score: entry.score,
+      data: entry.data,
+      updated_at: entry.updatedAt,
+    }
+
+    // Known-offline: do not burn a request that cannot succeed. Queue and move
+    // on so the student is never left waiting on a dead network.
+    if (!isOnline()) {
+      enqueueProgress(row)
+      return
+    }
+
     try {
-      await supabase.from('progress').upsert(
-        {
-          student_id: student.studentId,
-          activity_slug: activitySlug,
-          status: entry.status,
-          score: entry.score,
-          data: entry.data,
-          updated_at: entry.updatedAt,
-        },
-        { onConflict: 'student_id,activity_slug' },
-      )
+      const { error } = await supabase
+        .from('progress')
+        .upsert(row, { onConflict: 'student_id,activity_slug' })
+      // supabase-js reports failures in `error` rather than throwing, so this
+      // branch is the one that used to silently drop a student's work.
+      if (error) enqueueProgress(row)
+      else void flushProgressQueue() // a success proves the network is back
     } catch {
-      // Offline or RLS hiccup — local copy is still saved.
+      // Connection died mid-request. The local copy is safe; retry later.
+      enqueueProgress(row)
     }
   }
 }

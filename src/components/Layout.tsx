@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
+import type { NavLinkProps } from 'react-router-dom'
 import { Volume2, VolumeX, Menu, X, ArrowRight, ChevronDown } from 'lucide-react'
 import { Logo } from './Logo'
 import { AppIcon } from '../lib/icons'
@@ -12,8 +13,24 @@ import { titleForPath } from '../lib/pageTitle'
 import { isSoundOn, setSoundOn, playSound } from '../lib/sound'
 import { celebrate } from '../lib/celebrate'
 import { useToast } from './ToastProvider'
+import { PageFallback } from './RouteFallback'
+import { prefetchLikelyRoutes, prefetchRoute, type RouteChunk } from '../lib/routeChunks'
 
 const LEVEL_KEY = 'bff_last_level'
+
+/**
+ * A NavLink that starts downloading its route's code as soon as the pointer
+ * lands on it (or it takes keyboard focus). By the time the click registers the
+ * chunk is usually already there, so a split route feels no slower than a
+ * bundled one. `import()` dedupes, so hovering repeatedly costs nothing.
+ */
+function PrefetchNavLink({
+  chunk,
+  ...props
+}: NavLinkProps & { chunk: RouteChunk }) {
+  const warm = () => prefetchRoute(chunk)
+  return <NavLink {...props} onMouseEnter={warm} onFocus={warm} onTouchStart={warm} />
+}
 
 function SoundToggle() {
   const [on, setOn] = useState(() => isSoundOn())
@@ -174,20 +191,20 @@ function MoreMenu({
       </button>
       {open && (
         <div className="absolute right-0 top-full z-50 mt-1 w-52 rounded-[8px] border border-ink/10 bg-white p-1.5 shadow-card">
-          <NavLink to="/glossary" className={itemClass}>
+          <PrefetchNavLink chunk="glossary" to="/glossary" className={itemClass}>
             {t('nav.glossary')}
-          </NavLink>
-          <NavLink to="/practice" className={itemClass}>
+          </PrefetchNavLink>
+          <PrefetchNavLink chunk="practice" to="/practice" className={itemClass}>
             {t('nav.practice')}
-          </NavLink>
+          </PrefetchNavLink>
           {adminUser ? (
-            <NavLink to="/admin" className={itemClass}>
+            <PrefetchNavLink chunk="admin" to="/admin" className={itemClass}>
               {t('nav.dashboard')}
-            </NavLink>
+            </PrefetchNavLink>
           ) : (
-            <NavLink to="/team" className={itemClass}>
+            <PrefetchNavLink chunk="team" to="/team" className={itemClass}>
               {t('nav.team')}
-            </NavLink>
+            </PrefetchNavLink>
           )}
           <div className="my-1 h-px bg-ink/10" />
           <div className="px-1 py-0.5">
@@ -211,6 +228,14 @@ export default function Layout() {
   useEffect(() => {
     setMenuOpen(false)
   }, [location.pathname])
+
+  // Once the first paint is done and the browser is idle, quietly fetch the two
+  // routes almost everyone opens next. Hovering a nav link does the same thing
+  // on demand; this covers the visitor who scrolls the landing page and then
+  // clicks straight through.
+  useEffect(() => {
+    prefetchLikelyRoutes()
+  }, [])
 
   // Keep the browser tab title in sync with the route.
   useEffect(() => {
@@ -264,24 +289,25 @@ export default function Layout() {
   // of links competing with the page.
   const primaryLinks = (
     <>
-      <NavLink to="/lessons" className={navLinkClass}>
+      <PrefetchNavLink chunk="lessons" to="/lessons" className={navLinkClass}>
         {t('nav.lessons')}
-      </NavLink>
-      <NavLink to="/activities" className={navLinkClass}>
+      </PrefetchNavLink>
+      <PrefetchNavLink chunk="activities" to="/activities" className={navLinkClass}>
         {t('nav.activities')}
-      </NavLink>
-      <NavLink to="/game" className={navLinkClass}>
+      </PrefetchNavLink>
+      <PrefetchNavLink chunk="liveJoin" to="/game" className={navLinkClass}>
         {t('nav.playLive')}
-      </NavLink>
-      <NavLink to="/coach" className={navLinkClass}>
+      </PrefetchNavLink>
+      <PrefetchNavLink chunk="coach" to="/coach" className={navLinkClass}>
         {t('nav.coach')}
-      </NavLink>
+      </PrefetchNavLink>
     </>
   )
 
   // The student's own space is the one persistent call to action on the right.
   const accountLink = student ? (
-    <NavLink
+    <PrefetchNavLink
+      chunk="student"
       to="/student"
       className="inline-flex items-center gap-1.5 rounded-[5px] border border-ink/15 px-2.5 py-1.5 font-display text-sm font-semibold text-ink transition-colors hover:bg-ink/5"
     >
@@ -292,11 +318,11 @@ export default function Layout() {
         <AppIcon name={level.tier.icon} className="h-3.5 w-3.5" /> {level.level}
       </span>
       <span className="max-w-[9ch] truncate">{student.nickname}</span>
-    </NavLink>
+    </PrefetchNavLink>
   ) : (
-    <NavLink to="/join" className="btn-primary px-3 py-1.5 text-sm">
+    <PrefetchNavLink chunk="join" to="/join" className="btn-primary px-3 py-1.5 text-sm">
       {t('nav.join')}
-    </NavLink>
+    </PrefetchNavLink>
   )
 
   return (
@@ -357,41 +383,41 @@ export default function Layout() {
             className="animate-slide-up border-t border-slate-200 bg-white px-4 py-3 md:hidden"
           >
             <div className="flex flex-col gap-1">
-              <NavLink to="/lessons" className={mobileLinkClass}>
+              <PrefetchNavLink chunk="lessons" to="/lessons" className={mobileLinkClass}>
                 {t('nav.lessons')}
-              </NavLink>
-              <NavLink to="/activities" className={mobileLinkClass}>
+              </PrefetchNavLink>
+              <PrefetchNavLink chunk="activities" to="/activities" className={mobileLinkClass}>
                 {t('nav.activities')}
-              </NavLink>
-              <NavLink to="/game" className={mobileLinkClass}>
+              </PrefetchNavLink>
+              <PrefetchNavLink chunk="liveJoin" to="/game" className={mobileLinkClass}>
                 {t('nav.playLive')}
-              </NavLink>
-              <NavLink to="/coach" className={mobileLinkClass}>
+              </PrefetchNavLink>
+              <PrefetchNavLink chunk="coach" to="/coach" className={mobileLinkClass}>
                 {t('nav.coach')}
-              </NavLink>
-              <NavLink to="/glossary" className={mobileLinkClass}>
+              </PrefetchNavLink>
+              <PrefetchNavLink chunk="glossary" to="/glossary" className={mobileLinkClass}>
                 {t('nav.glossary')}
-              </NavLink>
-              <NavLink to="/practice" className={mobileLinkClass}>
+              </PrefetchNavLink>
+              <PrefetchNavLink chunk="practice" to="/practice" className={mobileLinkClass}>
                 {t('nav.practice')}
-              </NavLink>
+              </PrefetchNavLink>
               {student ? (
-                <NavLink to="/student" className={mobileLinkClass}>
+                <PrefetchNavLink chunk="student" to="/student" className={mobileLinkClass}>
                   {t('nav.myClass')} · {student.nickname}
-                </NavLink>
+                </PrefetchNavLink>
               ) : (
-                <NavLink to="/join" className={mobileLinkClass}>
+                <PrefetchNavLink chunk="join" to="/join" className={mobileLinkClass}>
                   {t('nav.join')}
-                </NavLink>
+                </PrefetchNavLink>
               )}
               {adminUser ? (
-                <NavLink to="/admin" className={mobileLinkClass}>
+                <PrefetchNavLink chunk="admin" to="/admin" className={mobileLinkClass}>
                   {t('nav.dashboard')}
-                </NavLink>
+                </PrefetchNavLink>
               ) : (
-                <NavLink to="/team" className={mobileLinkClass}>
+                <PrefetchNavLink chunk="team" to="/team" className={mobileLinkClass}>
                   {t('nav.team')}
-                </NavLink>
+                </PrefetchNavLink>
               )}
               <div className="mt-1 flex items-center gap-2 border-t border-ink/10 px-4 pt-3">
                 <SoundToggle />
@@ -403,7 +429,11 @@ export default function Layout() {
       </header>
 
       <main id="main-content" className="flex-1">
-        <Outlet />
+        {/* Loading boundary for the code-split routes. Scoped to the content
+            area so the header and footer never blink during a navigation. */}
+        <Suspense fallback={<PageFallback />}>
+          <Outlet />
+        </Suspense>
       </main>
 
       <footer className="bg-ink text-white">

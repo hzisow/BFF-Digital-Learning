@@ -11,7 +11,8 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Sparkles, Check, X, ArrowRight } from 'lucide-react'
-import { invokeAI, AI_ENABLED, AINotConfiguredError } from '../lib/ai'
+import { invokeAI, AI_ENABLED, AINotConfiguredError, AIOfflineError } from '../lib/ai'
+import { offlineAICopy } from '../lib/offlineCopy'
 import { useLang } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
 import { getLesson } from '../content/lessons'
@@ -76,7 +77,9 @@ export default function AIPractice() {
 
   const [questions, setQuestions] = useState<Q[] | null>(null)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<null | 'notConfigured' | 'failed' | 'empty'>(null)
+  const [error, setError] = useState<null | 'notConfigured' | 'failed' | 'empty' | 'offline'>(
+    null,
+  )
 
   // Quiz state
   const [step, setStep] = useState(0)
@@ -112,7 +115,9 @@ export default function AIPractice() {
         setQuestions(valid)
       }
     } catch (err) {
-      if (err instanceof AINotConfiguredError) {
+      if (err instanceof AIOfflineError) {
+        setError('offline')
+      } else if (err instanceof AINotConfiguredError) {
         setError('notConfigured')
       } else {
         setError('failed')
@@ -260,7 +265,12 @@ export default function AIPractice() {
       role="status"
       className="mt-6 rounded-[10px] border border-gold-400 bg-gold-400/10 p-5 text-ink"
     >
-      {error === 'notConfigured' ? (
+      {error === 'offline' ? (
+        <>
+          <p className="font-display text-sm font-bold">{offlineAICopy(lang).title}</p>
+          <p className="mt-1 text-sm leading-relaxed">{offlineAICopy(lang).body}</p>
+        </>
+      ) : error === 'notConfigured' ? (
         <p className="text-sm leading-relaxed">
           {zh
             ? 'AI 练习尚未设置。请稍后再来看看吧。'

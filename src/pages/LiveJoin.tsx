@@ -6,6 +6,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Radio, Play, Users, Loader2 } from 'lucide-react'
 import { BACKEND_ENABLED } from '../lib/config'
 import { findLiveSession } from '../activities/live/coplay'
+import { isNetworkError, isOnline } from '../lib/online'
+import { offlineLiveCopy } from '../lib/offlineCopy'
 import { useLang } from '../lib/i18n'
 
 export default function LiveJoin() {
@@ -21,6 +23,15 @@ export default function LiveJoin() {
     e.preventDefault()
     if (busy) return
     setError(null)
+    // Joining a live game is the one thing on this screen that cannot work
+    // without a connection, so say that instead of letting the lookup fail with
+    // "no live game with that code" — which would send the student off hunting
+    // for a typo that isn't there.
+    if (!isOnline()) {
+      const copy = offlineLiveCopy(lang)
+      setError(`${copy.title}. ${copy.body}`)
+      return
+    }
     setBusy(true)
     try {
       const found = await findLiveSession(code)
@@ -38,6 +49,11 @@ export default function LiveJoin() {
       else if (found.kind === 'quiz') navigate(`/quiz/${found.code}`)
       else navigate(`/coplay/${found.code}`)
     } catch (err) {
+      if (isNetworkError(err)) {
+        const copy = offlineLiveCopy(lang)
+        setError(`${copy.title}. ${copy.body}`)
+        return
+      }
       setError(
         err instanceof Error
           ? err.message
