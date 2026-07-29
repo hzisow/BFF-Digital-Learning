@@ -1,6 +1,8 @@
 # BFF Classroom — Project Status
 
-Working notes for picking the project back up. Last verified at commit `358bcc0`.
+Working notes for picking the project back up cold. Last verified at commit
+`1844704`. Everything below has been checked against the code or a running
+build, not remembered.
 
 ---
 
@@ -14,6 +16,9 @@ platform for **BFF of America**, a student-founded 501(c)(3).
 - Everything also works **solo**, with no backend, straight from the browser.
 
 **Live:** https://hzisow.github.io/BFF-Digital-Learning/
+
+Scale, so you know what you are dealing with: **98 source files, ~33,000 lines**,
+13 lessons × 3 languages, 10 activities, 32 routes, 7 database tables.
 
 ---
 
@@ -49,6 +54,58 @@ platform for **BFF of America**, a student-founded 501(c)(3).
 | Deps | `@supabase/supabase-js`, `lucide-react`, `jspdf`, react, react-dom, react-router-dom |
 
 Supabase project ref: `xrlmxpmaykldvbjnoapk`
+
+### Routes (all 32)
+
+Everything except Landing / Layout / NotFound is code-split — see
+`src/lib/routeChunks.ts`.
+
+| Group | Paths |
+|---|---|
+| Public | `/` · `/lessons` · `/activities` · `/glossary` · `/practice` · `/coach` · `/join` · `/game` |
+| Student | `/student` · `/certificate` · `/practice/ai` |
+| Challenges | `/challenge/{bens-budget, bens-insurance, paystub-detective, credit-score, scam-spotter, smart-shopper, goal-getter}` |
+| Wolf | `/wolf` · `/wolf/solo` |
+| Mentor | `/team` · `/admin` · `/admin/class/:id` · `/admin/generate` · `/account` |
+| Own chrome | `/lessons/:slug` (lesson canvas, outside `Layout`) |
+| Full screen | `/play/:code` · `/host/:sessionId` · `/quiz/:code` · `/quiz-host/:sessionId` · `/coplay/:code` · `/coplay-host/:sessionId` |
+| Catch-all | `*` → NotFound (inside `Layout`) |
+
+### Database tables
+
+`supabase/migrations/0001_init.sql` is the whole schema. RLS on everything.
+
+| Table | Holds |
+|---|---|
+| `profiles` | Mentor accounts, incl. the `approved` gate |
+| `classrooms` | A class + its join code |
+| `students` | Nickname + classroom link. **No email, no real name.** |
+| `progress` | One row per (student, activity): status, score, `data` jsonb |
+| `assignments` | What a mentor assigned to a class |
+| `game_sessions` | Live Wolf / quiz / co-play sessions |
+| `game_players` | Who is in a live session, and their score |
+
+`progress` is uniquely keyed on `(student_id, activity_slug)`, which is what
+makes the outbox's upsert-with-`onConflict` safe to retry.
+
+### localStorage keys
+
+The app is local-first, so this is real state, not a cache. All prefixed `bff_`.
+
+| Key | Written by | Holds |
+|---|---|---|
+| `bff_progress_v1` | `lib/progress.ts` | The authoritative local progress record |
+| `bff_progress_outbox_v1` | `lib/progressQueue.ts` | Failed server writes waiting to retry |
+| `bff_lesson_pos_v1` | `lib/lessonPosition.ts` | Where the student is inside each lesson |
+| `bff_student_session` | `lib/session.tsx` | Joined-class session (id + nickname) |
+| `bff_streak_v1` | `lib/streak.ts` | Daily streak counter |
+| `bff_last_level` | `components/Layout.tsx` | Last seen XP level, to detect a level-up |
+| `bff_lang` | `lib/i18n.tsx` | Chosen language |
+| `bff_sound` | `lib/sound.ts` | Sound on/off |
+| `bff_live_nick` / `bff_quiz_nick` / `bff_wolf_nick` | live screens | Remembered nickname per game type |
+
+Bumping a `_v1` suffix silently discards every student's data on that key. If a
+shape has to change, migrate in place instead.
 
 ---
 
@@ -243,14 +300,34 @@ Roughly ordered by value per unit of effort.
   not "which question did the class get wrong?" Per-question breakdowns would
   tell a mentor what to reteach. The data is already stored in
   `progress.data.answers`.
-- **Per-lesson content splitting.** `lessons-*.js` is 494KB because
-  `content/lessons/index.ts` statically imports all 13 lessons in 3 languages, so
-  opening the course path downloads every lesson. `LessonsIndex` only needs
-  localized titles and quiz answer keys; `LessonPage` needs one lesson. Splitting
-  per slug would take a first lesson visit from ~494KB to ~45KB. It needs
-  `getLesson` to become async across 7 call sites, so it was left for a dedicated
-  pass. Glossary and Practice legitimately need all lessons and would still pull
-  the full set.
+- **Per-lesson content splitting — now the measured #1 load-time problem.**
+  `content/lessons/index.ts` statically imports all 13 lessons × 3 languages, so
+  `lessons-*.js` is 494 KB raw / 181 KB gzip and *any* page touching lesson data
+  pulls all of it. Measured cost on a bad school connection: **course path 10.1 s
+  and a lesson 8.0 s, against 3.5–4.0 s for every page that does not need it.**
+
+  Each lesson file is ~40 KB of source, so one lesson is roughly 1/13th of what
+  is currently shipped.
+
+  What each consumer actually needs:
+  - `LessonPage` — one lesson. Wants `getLessonAsync(slug)` with a per-slug
+    dynamic import.
+  - `LessonsIndex` — only localized titles (line ~276) and quiz answer keys for
+    `missedCount` (line ~249). Both are tiny.
+  - `QuizPlay` / `QuizHost` / `AIPractice` — one lesson each.
+  - `GlossaryPage` / `PracticePage` — genuinely need every lesson. These would
+    still pull the full set, which is fine; they are secondary pages.
+
+  The design problem is where the titles and answer keys live without drifting
+  from the lesson files. Three options, roughly best-first:
+  1. Store enough in `progress.data` at save time (`finishQuiz` already writes
+     `answers`; adding the answer key or a `wrong: number[]` would let
+     `missedCount` need no lesson content at all), and put localized titles in
+     `src/lib/activities.ts`, which is already the documented "register a lesson
+     here" catalog. Needs a fallback for progress saved before the change.
+  2. Generate a `summary.ts` at build time — accurate, but someone will forget
+     to regenerate it.
+  3. Hand-maintain a summary table — will drift. Avoid.
 - **Defer the Supabase client (205KB).** It is on the critical path only because
   `session.tsx` imports it statically for session restore. Solo mode never needs
   it at all. Would cut the first load by roughly a fifth.
@@ -294,6 +371,131 @@ Checked and already fine — don't spend time here:
 
 ---
 
+## Performance baseline
+
+Measured in Chromium against a production build (`npm run build` + `vite
+preview`), reading real transferred bytes from the Performance API. Re-measure
+with the scripts described under "How this gets verified" before claiming a
+regression.
+
+| What | Bytes over the wire |
+|---|---|
+| **Critical path** (landing renders and is interactive) | **~266 KB** |
+| Main app chunk `index-*.js` | ~96 KB gzip |
+| Supabase client `supabase-*.js` | ~51 KB gzip — **eager, and it should not be** |
+| Fonts (Latin subsets only) | 41 KB Bricolage + 47 KB Inter |
+| CSS | ~11 KB gzip |
+| Lesson content `lessons-*.js` | **181 KB gzip / 494 KB raw** — lazy, prefetched on idle only when the connection allows |
+| jsPDF + html2canvas | ~176 KB gzip — lazy, only on the worksheet/certificate paths |
+
+Before code splitting this was a single **1,546 KB** chunk (500 KB gzip) on the
+critical path. The two remaining wins are listed under "Ideas worth considering":
+per-lesson content splitting, and deferring the Supabase client.
+
+Rules that keep this from regressing:
+- A new page must be added to `src/lib/routeChunks.ts` as a dynamic import, not
+  imported statically into `App.tsx`.
+- Never statically import `content/lessons` from anything eager — that alone
+  would drag 494 KB back onto first paint.
+- Heavy libraries (`jspdf`) must stay behind a dynamic `import()` at the call
+  site.
+
+### Time to real content on a throttled connection
+
+Measured with CDP network emulation, waiting for a string unique to each route's
+actual content — **not** `load` or a character count, because the shell's header
+and footer alone are over 200 characters and will mask the thing being measured.
+
+| Route | Bad school wifi (500 kbps / 300 ms) | Mediocre (2 Mbps / 100 ms) | Bytes |
+|---|---|---|---|
+| Landing | 3.5 s | 1.0 s | 167 KB |
+| AI Coach | 4.0 s | 1.4 s | 175 KB |
+| Activities | 3.9 s | 1.4 s | 170 KB |
+| **Course path** | **10.1 s** | 2.8 s | 446 KB |
+| **A lesson** | **8.0 s** | 2.2 s | 417 KB |
+
+**The two pages that are the product are 2–3× slower than everything else**, and
+the entire difference is the 181 KB lesson-content chunk. This is the single
+biggest remaining load-time problem and it has a known fix (see "Ideas worth
+considering" → per-lesson content splitting).
+
+### Audit results — checked and clean
+
+Run against a production build. These were suspected and cleared, so don't
+re-investigate them without new evidence:
+
+- **No duplicate asset requests** on any route.
+- **No long tasks** (>50 ms) while stepping through a lesson with the keyboard.
+- **No memory or listener leak** across 10 real click-through navigations with
+  forced GC: nodes and listeners return to baseline, heap +0.5 MB.
+  - A naive version of this test (synthetic `pushState` + no GC) reports a large
+    leak. It is measuring detached nodes that have not been collected yet.
+- **The lesson player's `keydown` listener is removed on unmount** — verified by
+  patching `window.addEventListener`, and behaviourally: after 7 visits one
+  ArrowRight still advances exactly one step.
+- **jsPDF and its 148 KB dependency chain are genuinely lazy** — only reachable
+  from the worksheet and certificate paths.
+- **Images are not a problem.** The whole `public/` folder is 116 KB.
+- **Icons tree-shake per-icon** (`lock-*.js`, `rotate-ccw-*.js` are separate
+  sub-KB chunks), so `lucide-react` is not bulk-imported.
+
+Minor, not worth fixing on its own:
+- `bff_progress_v1` is read and `JSON.parse`d ~2–3 times per navigation, because
+  several components each call `loadLocalProgress()` independently. Cheap today;
+  would matter if progress ever grows large.
+- On a deep link to a lesson, the display font is only requested once the lazy
+  lesson CSS applies (~445 ms vs ~137 ms on the landing page), so the lesson
+  title paints in a fallback face and swaps. Fixable with a font preload.
+
+---
+
+## How this gets verified
+
+There is **no test runner in this project**. Verification is done by driving a
+real production build in headless Chromium and asserting on what the browser
+actually does. Scripts are written ad hoc into the session scratchpad rather than
+committed, because they are throwaway and depend on `playwright-core`, which is
+**not an app dependency**.
+
+The pattern, if you need to redo it:
+
+```bash
+npm run build
+npx vite preview --port 4200 --strictPort &
+npm i --no-save playwright-core      # ad hoc; uninstall before committing
+node your-check.mjs                  # launches /opt/pw-browsers/chromium-1194/chrome-linux/chrome
+npm uninstall --no-save playwright-core
+```
+
+Checks that have been run and passed, worth repeating after big changes:
+- **All 32 routes render** with no console errors, no Suspense boundary stuck.
+- **Payload measurement** via `performance.getEntriesByType('resource')` —
+  `content-length` is absent on gzipped preview responses and undercounts.
+- **Landing still renders with the lesson chunk blocked** (`page.route(...abort)`)
+  — proves it is genuinely off the critical path.
+- **Save-Data and 3G suppress the idle prefetch**, injected via
+  `Object.defineProperty(navigator, 'connection', …)`, while hover prefetch still
+  fires.
+- **Offline states**: `context.setOffline(true)` plus a synthetic `offline`
+  event; the Coach must say "You're offline", not "Something went wrong".
+- **Progress outbox**: imported directly from the dev server
+  (`import('/BFF-Digital-Learning/src/lib/progressQueue.ts')`) to exercise the real
+  module — persists, dedupes by activity, caps at 200, survives reload, refuses
+  to clear while offline.
+- **Lesson resume**: drive a lesson to its results screen and confirm the saved
+  position is cleared and reopening does not offer to resume.
+- **Mobile**: 390 × 844 with `isMobile`, checking
+  `documentElement.scrollWidth > innerWidth` for horizontal overflow.
+
+Two traps found the hard way while writing these:
+- A route smoke test that samples at 250 ms will report the live game screens as
+  failures — they are legitimately still loading, and only resolve after the 6 s
+  stall timeout.
+- `navigator.connection` must be faked with `addInitScript`, before page scripts
+  run, or the prefetch decision is already made.
+
+---
+
 ## Useful commands
 
 ```bash
@@ -319,11 +521,39 @@ git push origin claude/educational-tool-student-outreach-qkqnle:main
 
 **Gotchas**
 - `npx tsc --noEmit` silently misses errors here. Always use `npx tsc -b --force`.
+  This is not a style preference — it once reported 0 errors while every `.emoji`
+  reference in the app was broken.
 - Screenshot tooling (`playwright-core`) is installed ad hoc for verification and
   **must be uninstalled before committing** — it is not an app dependency.
   Chromium lives at `/opt/pw-browsers/chromium-1194/chrome-linux/chrome`.
+  Check with `grep -c playwright package.json` before every commit.
 - This container cannot reach `supabase.co` or Google directly (network policy),
-  so edge functions can only be debugged through the Supabase MCP logs.
+  so edge functions can only be debugged through the Supabase MCP logs, and any
+  live-game screen in a local build will always fail its lookup.
+- `vite preview` keeps running in the background; `pkill -f "vite preview"`
+  returns exit code 144 through this shell but does work. Use a fresh port
+  rather than fighting it.
+- Never put an inline `# comment` on a line of shell you are asking the user to
+  paste — their zsh passes it through as arguments and the command fails with
+  something unhelpful like `cd: too many arguments`.
+
+---
+
+## Recent history
+
+Newest first. Each of these has a detailed commit message worth reading if you
+are wondering *why* something is the way it is.
+
+| Commit | What changed |
+|---|---|
+| `1844704` | Lesson resume, time estimates, position-aware Continue, arrow-key navigation |
+| `20aaaca` | Route code splitting, offline states, progress outbox |
+| `6d182ba` | Self-hosted Bricolage Grotesque + Inter, dropped the Google Fonts CDN |
+| `a0ebfe4` | Recorded the commit-author convention |
+| `846d8b1` | Added STATUS.md, rewrote the README |
+| `358bcc0` | Skeleton loaders + app-wide micro-interactions |
+| `141a5d7` | Inset the card numerals, BFF branding on worksheet pages |
+| `e7d5c6a` | Worksheet generator emits a printable PDF with writing space |
 
 ---
 
