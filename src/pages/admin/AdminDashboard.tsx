@@ -20,7 +20,7 @@ import {
 } from 'lucide-react'
 import type { User } from '@supabase/supabase-js'
 import { BACKEND_ENABLED } from '../../lib/config'
-import { supabase } from '../../lib/supabase'
+import { getSupabase } from '../../lib/supabase'
 import { useAdmin } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
 import HostLauncher from '../../components/HostLauncher'
@@ -195,6 +195,7 @@ export default function AdminDashboard() {
   if (!adminUser) return <Navigate to="/team" replace />
 
   async function handleSignOut() {
+    const supabase = await getSupabase()
     if (supabase) await supabase.auth.signOut()
     navigate('/')
   }

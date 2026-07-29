@@ -48,7 +48,7 @@ export async function createQuizSession(
   lessonSlug: string,
   classroomId: string | null,
 ): Promise<QuizSession> {
-  const sb = requireSupabase()
+  const sb = await requireSupabase()
   const { data: auth } = await sb.auth.getUser()
   if (!auth.user) throw new Error('Sign in to host a live quiz.')
   const { data, error } = await sb
@@ -66,14 +66,14 @@ export async function createQuizSession(
 }
 
 export async function getQuizSession(id: string): Promise<QuizSession> {
-  const sb = requireSupabase()
+  const sb = await requireSupabase()
   const { data, error } = await sb.from('quiz_sessions').select().eq('id', id).single()
   if (error) throw new Error(error.message)
   return data as QuizSession
 }
 
 export async function getQuizSessionByCode(code: string): Promise<QuizSession> {
-  const sb = requireSupabase()
+  const sb = await requireSupabase()
   const { data, error } = await sb
     .from('quiz_sessions')
     .select()
@@ -85,7 +85,7 @@ export async function getQuizSessionByCode(code: string): Promise<QuizSession> {
 }
 
 export async function joinQuizSession(sessionId: string, nickname: string): Promise<QuizPlayer> {
-  const sb = requireSupabase()
+  const sb = await requireSupabase()
   const { data: auth } = await sb.auth.getSession()
   if (!auth.session) {
     const { error } = await sb.auth.signInAnonymously()
@@ -112,7 +112,7 @@ export async function joinQuizSession(sessionId: string, nickname: string): Prom
 }
 
 export async function listQuizPlayers(sessionId: string): Promise<QuizPlayer[]> {
-  const sb = requireSupabase()
+  const sb = await requireSupabase()
   const { data, error } = await sb
     .from('quiz_players')
     .select()
@@ -126,7 +126,7 @@ export async function updateQuizSession(
   id: string,
   patch: Partial<Pick<QuizSession, 'state' | 'question_index' | 'question_started_at'>>,
 ): Promise<void> {
-  const sb = requireSupabase()
+  const sb = await requireSupabase()
   const { error } = await sb.from('quiz_sessions').update(patch).eq('id', id)
   if (error) throw new Error(error.message)
 }
@@ -135,7 +135,7 @@ export async function updateQuizPlayer(
   id: string,
   patch: { score: number; answers: Record<string, unknown> },
 ): Promise<void> {
-  const sb = requireSupabase()
+  const sb = await requireSupabase()
   const { error } = await sb.from('quiz_players').update(patch).eq('id', id)
   if (error) throw new Error(error.message)
 }
@@ -146,21 +146,35 @@ export function subscribeToQuiz(
   onSession: (s: QuizSession) => void,
   onPlayers: () => void,
 ): () => void {
-  const sb = requireSupabase()
-  const channel: RealtimeChannel = sb
+  // The client is loaded on demand, but callers assign this function's return
+  // value straight to an unsubscribe slot, so it has to stay synchronous. Open
+  // the channel once the client arrives and hand back a teardown that works
+  // whether or not that has happened yet — a component can unmount while the
+  // client is still downloading.
+  let teardown: (() => void) | null = null
+  let cancelled = false
+  void requireSupabase().then((sb) => {
+    if (cancelled) return
+    const channel: RealtimeChannel = sb
     .channel(`quiz-${sessionId}`)
-    .on(
-      'postgres_changes',
-      { event: 'UPDATE', schema: 'public', table: 'quiz_sessions', filter: `id=eq.${sessionId}` },
-      (payload) => onSession(payload.new as QuizSession),
-    )
-    .on(
-      'postgres_changes',
-      { event: '*', schema: 'public', table: 'quiz_players', filter: `session_id=eq.${sessionId}` },
-      () => onPlayers(),
-    )
-    .subscribe()
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'quiz_sessions', filter: `id=eq.${sessionId}` },
+        (payload) => onSession(payload.new as QuizSession),
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'quiz_players', filter: `session_id=eq.${sessionId}` },
+        () => onPlayers(),
+      )
+      .subscribe()
+    teardown = () => {
+      void sb.removeChannel(channel)
+    }
+    if (cancelled) teardown()
+  })
   return () => {
-    void sb.removeChannel(channel)
+    cancelled = true
+    teardown?.()
   }
 }

@@ -1,4 +1,4 @@
-import { supabase } from './supabase'
+import { getSupabase } from './supabase'
 import type { StudentSession } from './session'
 import { recordActivity } from './streak'
 import { enqueueProgress, flushProgressQueue } from './progressQueue'
@@ -57,7 +57,9 @@ function mergeEntry(
  * portable across devices and browser wipes.
  */
 export async function reconcileProgress(student: StudentSession | null): Promise<void> {
-  if (!supabase || !student) return
+  if (!student) return
+  const supabase = await getSupabase()
+  if (!supabase) return
   const local = loadLocalProgress()
   let serverRows: Array<{
     activity_slug: string
@@ -142,7 +144,7 @@ export async function saveProgress(
   localStorage.setItem(LOCAL_KEY, JSON.stringify(all))
   recordActivity() // any saved progress keeps the daily streak alive
 
-  if (supabase && student) {
+  if (student) {
     const row = {
       student_id: student.studentId,
       activity_slug: activitySlug,
@@ -152,12 +154,16 @@ export async function saveProgress(
       updated_at: entry.updatedAt,
     }
 
-    // Known-offline: do not burn a request that cannot succeed. Queue and move
-    // on so the student is never left waiting on a dead network.
+    // Known-offline: queue and return *before* touching getSupabase(). Loading
+    // the client first would mean a student on a dead network downloads 51KB to
+    // do something that is purely local.
     if (!isOnline()) {
       enqueueProgress(row)
       return
     }
+
+    const supabase = await getSupabase()
+    if (!supabase) return
 
     try {
       const { error } = await supabase

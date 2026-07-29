@@ -30,7 +30,7 @@ function makeCode(): string {
 }
 
 export async function createSession(classroomId: string | null): Promise<GameSession> {
-  const sb = requireSupabase()
+  const sb = await requireSupabase()
   const { data: auth } = await sb.auth.getUser()
   if (!auth.user) throw new Error('Sign in to host a game.')
   const { data, error } = await sb
@@ -43,14 +43,14 @@ export async function createSession(classroomId: string | null): Promise<GameSes
 }
 
 export async function getSession(id: string): Promise<GameSession> {
-  const sb = requireSupabase()
+  const sb = await requireSupabase()
   const { data, error } = await sb.from('game_sessions').select().eq('id', id).single()
   if (error) throw new Error(error.message)
   return data as GameSession
 }
 
 export async function getSessionByCode(code: string): Promise<GameSession> {
-  const sb = requireSupabase()
+  const sb = await requireSupabase()
   const { data, error } = await sb
     .from('game_sessions')
     .select()
@@ -62,7 +62,7 @@ export async function getSessionByCode(code: string): Promise<GameSession> {
 }
 
 export async function joinSession(sessionId: string, nickname: string): Promise<GamePlayer> {
-  const sb = requireSupabase()
+  const sb = await requireSupabase()
   const { data: auth } = await sb.auth.getSession()
   if (!auth.session) {
     const { error } = await sb.auth.signInAnonymously()
@@ -89,7 +89,7 @@ export async function joinSession(sessionId: string, nickname: string): Promise<
 }
 
 export async function listPlayers(sessionId: string): Promise<GamePlayer[]> {
-  const sb = requireSupabase()
+  const sb = await requireSupabase()
   const { data, error } = await sb
     .from('game_players')
     .select()
@@ -103,7 +103,7 @@ export async function updateSession(
   id: string,
   patch: Partial<Pick<GameSession, 'stage' | 'reveal_index'>>,
 ): Promise<void> {
-  const sb = requireSupabase()
+  const sb = await requireSupabase()
   const { error } = await sb.from('game_sessions').update(patch).eq('id', id)
   if (error) throw new Error(error.message)
 }
@@ -112,7 +112,7 @@ export async function updatePlayer(
   id: string,
   patch: { cash: number; holdings: Holdings },
 ): Promise<void> {
-  const sb = requireSupabase()
+  const sb = await requireSupabase()
   const { error } = await sb.from('game_players').update(patch).eq('id', id)
   if (error) throw new Error(error.message)
 }
@@ -123,21 +123,35 @@ export function subscribeToGame(
   onSession: (s: GameSession) => void,
   onPlayers: () => void,
 ): () => void {
-  const sb = requireSupabase()
-  const channel: RealtimeChannel = sb
+  // The client is loaded on demand, but callers assign this function's return
+  // value straight to an unsubscribe slot, so it has to stay synchronous. Open
+  // the channel once the client arrives and hand back a teardown that works
+  // whether or not that has happened yet — a component can unmount while the
+  // client is still downloading.
+  let teardown: (() => void) | null = null
+  let cancelled = false
+  void requireSupabase().then((sb) => {
+    if (cancelled) return
+    const channel: RealtimeChannel = sb
     .channel(`game-${sessionId}`)
-    .on(
-      'postgres_changes',
-      { event: 'UPDATE', schema: 'public', table: 'game_sessions', filter: `id=eq.${sessionId}` },
-      (payload) => onSession(payload.new as GameSession),
-    )
-    .on(
-      'postgres_changes',
-      { event: '*', schema: 'public', table: 'game_players', filter: `session_id=eq.${sessionId}` },
-      () => onPlayers(),
-    )
-    .subscribe()
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'game_sessions', filter: `id=eq.${sessionId}` },
+        (payload) => onSession(payload.new as GameSession),
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'game_players', filter: `session_id=eq.${sessionId}` },
+        () => onPlayers(),
+      )
+      .subscribe()
+    teardown = () => {
+      void sb.removeChannel(channel)
+    }
+    if (cancelled) teardown()
+  })
   return () => {
-    void sb.removeChannel(channel)
+    cancelled = true
+    teardown?.()
   }
 }

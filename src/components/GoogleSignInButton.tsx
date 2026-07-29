@@ -6,7 +6,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { Loader2 } from 'lucide-react'
 import { GOOGLE_CLIENT_ID } from '../lib/config'
-import { supabase } from '../lib/supabase'
+import { getSupabase } from '../lib/supabase'
+import { BACKEND_ENABLED } from '../lib/config'
 import { useLang } from '../lib/i18n'
 
 // ---- Minimal typings for the GIS client ----
@@ -74,7 +75,7 @@ export default function GoogleSignInButton({
   const zh = lang === 'zh'
 
   useEffect(() => {
-    if (!GOOGLE_CLIENT_ID || !supabase) {
+    if (!GOOGLE_CLIENT_ID || !BACKEND_ENABLED) {
       setLoading(false)
       return
     }
@@ -91,7 +92,8 @@ export default function GoogleSignInButton({
           client_id: GOOGLE_CLIENT_ID,
           nonce: hashedNonce,
           callback: async (res) => {
-            const sb = supabase
+            // Signing in is exactly when the client is worth loading.
+            const sb = await getSupabase()
             if (!sb) return
             const { error } = await sb.auth.signInWithIdToken({
               provider: 'google',

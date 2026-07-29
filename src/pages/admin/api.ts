@@ -105,7 +105,7 @@ export function useCopy(): { copied: boolean; copy: (text: string) => void } {
 
 /** The signed-in team member's own profile (null if not created yet). */
 export async function fetchMyProfile(uid: string): Promise<ProfileRow | null> {
-  const db = requireSupabase()
+  const db = await requireSupabase()
   const { data, error } = await db
     .from('profiles')
     .select('*')
@@ -117,7 +117,7 @@ export async function fetchMyProfile(uid: string): Promise<ProfileRow | null> {
 
 /** Pending (un-approved) team members — visible only to approved admins. */
 export async function fetchPendingAdmins(): Promise<ProfileRow[]> {
-  const db = requireSupabase()
+  const db = await requireSupabase()
   const { data, error } = await db
     .from('profiles')
     .select('*')
@@ -129,7 +129,7 @@ export async function fetchPendingAdmins(): Promise<ProfileRow[]> {
 
 /** Approve a pending member (approved admins only; enforced server-side). */
 export async function approveTeamMember(userId: string): Promise<void> {
-  const db = requireSupabase()
+  const db = await requireSupabase()
   const { error } = await db.rpc('approve_team_member', { p_user_id: userId })
   if (error) throw new Error(error.message)
 }
@@ -139,7 +139,7 @@ export async function approveTeamMember(userId: string): Promise<void> {
 export async function fetchClassrooms(
   uid: string,
 ): Promise<{ classrooms: Classroom[]; studentCounts: Record<string, number> }> {
-  const db = requireSupabase()
+  const db = await requireSupabase()
   const { data, error } = await db
     .from('classrooms')
     .select('*')
@@ -171,7 +171,7 @@ export async function createClassroom(
   name: string,
   school: string,
 ): Promise<void> {
-  const db = requireSupabase()
+  const db = await requireSupabase()
   const { error } = await db.from('classrooms').insert({
     name: name.trim(),
     school: school.trim() || null,
@@ -183,7 +183,7 @@ export async function createClassroom(
 
 /** Returns null when the class doesn't exist — or RLS hid it (not yours). */
 export async function fetchClassroom(id: string): Promise<Classroom | null> {
-  const db = requireSupabase()
+  const db = await requireSupabase()
   const { data, error } = await db
     .from('classrooms')
     .select('*')
@@ -194,7 +194,7 @@ export async function fetchClassroom(id: string): Promise<Classroom | null> {
 }
 
 export async function archiveClassroom(id: string): Promise<void> {
-  const db = requireSupabase()
+  const db = await requireSupabase()
   const { error } = await db.from('classrooms').update({ archived: true }).eq('id', id)
   if (error) throw new Error(error.message)
 }
@@ -202,7 +202,7 @@ export async function archiveClassroom(id: string): Promise<void> {
 // ---------- Assignments ----------
 
 export async function fetchAssignments(classroomId: string): Promise<AssignmentRow[]> {
-  const db = requireSupabase()
+  const db = await requireSupabase()
   const { data, error } = await db
     .from('assignments')
     .select('*')
@@ -219,7 +219,7 @@ export async function addAssignment(input: {
   dueAt: string | null
   uid: string
 }): Promise<void> {
-  const db = requireSupabase()
+  const db = await requireSupabase()
   const { error } = await db.from('assignments').insert({
     classroom_id: input.classroomId,
     activity_slug: input.activitySlug,
@@ -231,7 +231,7 @@ export async function addAssignment(input: {
 }
 
 export async function deleteAssignment(id: string): Promise<void> {
-  const db = requireSupabase()
+  const db = await requireSupabase()
   const { error } = await db.from('assignments').delete().eq('id', id)
   if (error) throw new Error(error.message)
 }
@@ -241,7 +241,7 @@ export async function deleteAssignment(id: string): Promise<void> {
 export async function fetchRoster(
   classroomId: string,
 ): Promise<{ students: StudentRow[]; progress: ProgressRow[] }> {
-  const db = requireSupabase()
+  const db = await requireSupabase()
   const { data, error } = await db
     .from('students')
     .select('*')

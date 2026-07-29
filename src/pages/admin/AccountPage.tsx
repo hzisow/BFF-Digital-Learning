@@ -5,7 +5,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { ArrowLeft, Check, UserCog } from 'lucide-react'
 import { BACKEND_ENABLED } from '../../lib/config'
-import { supabase } from '../../lib/supabase'
+import { getSupabase } from '../../lib/supabase'
 import { useAdmin } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
 import { Loading, Skeleton } from '../../components/Skeleton'
@@ -75,7 +75,9 @@ export default function AccountPage() {
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (!supabase || !uid) return
+    if (!uid) return
+    const supabase = await getSupabase()
+    if (!supabase) return
     setError(null)
     setDone(false)
     setBusy(true)

@@ -39,7 +39,7 @@ function makeCode(): string {
 
 /** Look up a code across all live game types, telling the join screen where to go. */
 export async function findLiveSession(code: string): Promise<FoundSession | null> {
-  const sb = requireSupabase()
+  const sb = await requireSupabase()
   // Anonymous students need a session before the RPC (it's granted to authenticated).
   const { data: auth } = await sb.auth.getSession()
   if (!auth.session) {
@@ -56,7 +56,7 @@ export async function createLiveSession(
   activitySlug: string,
   classroomId: string | null,
 ): Promise<LiveSession> {
-  const sb = requireSupabase()
+  const sb = await requireSupabase()
   const { data: auth } = await sb.auth.getUser()
   if (!auth.user) throw new Error('Sign in to host a game.')
   const { data, error } = await sb
@@ -69,14 +69,14 @@ export async function createLiveSession(
 }
 
 export async function getLiveSession(id: string): Promise<LiveSession> {
-  const sb = requireSupabase()
+  const sb = await requireSupabase()
   const { data, error } = await sb.from('live_sessions').select().eq('id', id).single()
   if (error) throw new Error(error.message)
   return data as LiveSession
 }
 
 export async function getLiveSessionByCode(code: string): Promise<LiveSession> {
-  const sb = requireSupabase()
+  const sb = await requireSupabase()
   const { data, error } = await sb
     .from('live_sessions')
     .select()
@@ -88,7 +88,7 @@ export async function getLiveSessionByCode(code: string): Promise<LiveSession> {
 }
 
 export async function joinLiveSession(sessionId: string, nickname: string): Promise<LivePlayer> {
-  const sb = requireSupabase()
+  const sb = await requireSupabase()
   const { data: auth } = await sb.auth.getSession()
   if (!auth.session) {
     const { error } = await sb.auth.signInAnonymously()
@@ -109,7 +109,7 @@ export async function joinLiveSession(sessionId: string, nickname: string): Prom
 }
 
 export async function listLivePlayers(sessionId: string): Promise<LivePlayer[]> {
-  const sb = requireSupabase()
+  const sb = await requireSupabase()
   const { data, error } = await sb
     .from('live_players')
     .select()
@@ -120,14 +120,14 @@ export async function listLivePlayers(sessionId: string): Promise<LivePlayer[]> 
 }
 
 export async function updateLiveSession(id: string, patch: { state: LiveState }): Promise<void> {
-  const sb = requireSupabase()
+  const sb = await requireSupabase()
   const { error } = await sb.from('live_sessions').update(patch).eq('id', id)
   if (error) throw new Error(error.message)
 }
 
 /** A player reports their final score (0-100) when they finish the activity. */
 export async function reportScore(playerId: string, score: number): Promise<void> {
-  const sb = requireSupabase()
+  const sb = await requireSupabase()
   const { error } = await sb
     .from('live_players')
     .update({ score: Math.round(score), finished: true })
@@ -141,21 +141,35 @@ export function subscribeToLive(
   onSession: (s: LiveSession) => void,
   onPlayers: () => void,
 ): () => void {
-  const sb = requireSupabase()
-  const channel: RealtimeChannel = sb
+  // The client is loaded on demand, but callers assign this function's return
+  // value straight to an unsubscribe slot, so it has to stay synchronous. Open
+  // the channel once the client arrives and hand back a teardown that works
+  // whether or not that has happened yet — a component can unmount while the
+  // client is still downloading.
+  let teardown: (() => void) | null = null
+  let cancelled = false
+  void requireSupabase().then((sb) => {
+    if (cancelled) return
+    const channel: RealtimeChannel = sb
     .channel(`live-${sessionId}`)
-    .on(
-      'postgres_changes',
-      { event: 'UPDATE', schema: 'public', table: 'live_sessions', filter: `id=eq.${sessionId}` },
-      (payload) => onSession(payload.new as LiveSession),
-    )
-    .on(
-      'postgres_changes',
-      { event: '*', schema: 'public', table: 'live_players', filter: `session_id=eq.${sessionId}` },
-      () => onPlayers(),
-    )
-    .subscribe()
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'live_sessions', filter: `id=eq.${sessionId}` },
+        (payload) => onSession(payload.new as LiveSession),
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'live_players', filter: `session_id=eq.${sessionId}` },
+        () => onPlayers(),
+      )
+      .subscribe()
+    teardown = () => {
+      void sb.removeChannel(channel)
+    }
+    if (cancelled) teardown()
+  })
   return () => {
-    void sb.removeChannel(channel)
+    cancelled = true
+    teardown?.()
   }
 }

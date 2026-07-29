@@ -9,12 +9,15 @@
 // directly does not — so we lazily start an anonymous session first. This keeps
 // the endpoints authenticated instead of opening them to the world.
 
-import { supabase } from './supabase'
+import type { SupabaseClient } from '@supabase/supabase-js'
+import { getSupabase } from './supabase'
 import { BACKEND_ENABLED } from './config'
 import { isNetworkError, isOnline } from './online'
 
-/** AI features require the backend (Supabase) to be connected. */
-export const AI_ENABLED = BACKEND_ENABLED && !!supabase
+/** AI features require the backend (Supabase) to be connected.
+ *  Derived from config alone so that screens can gate their UI synchronously
+ *  without loading the client just to ask whether it exists. */
+export const AI_ENABLED = BACKEND_ENABLED
 
 export class AINotConfiguredError extends Error {}
 
@@ -30,8 +33,7 @@ export class AISignInError extends Error {}
 export class AIOfflineError extends Error {}
 
 /** Make sure we have a JWT before calling a verify_jwt function. */
-async function ensureSession(): Promise<void> {
-  if (!supabase) return
+async function ensureSession(supabase: SupabaseClient): Promise<void> {
   const { data } = await supabase.auth.getSession()
   if (data.session) return
   const { error } = await supabase.auth.signInAnonymously()
@@ -47,15 +49,16 @@ async function ensureSession(): Promise<void> {
  * AI key set yet, so the UI can show a friendly "not set up" message.
  */
 export async function invokeAI<T>(fn: string, body: Record<string, unknown>): Promise<T> {
-  if (!supabase) throw new AINotConfiguredError('AI backend not connected.')
-  // Known-offline: fail fast and honestly rather than making the student watch
-  // a spinner time out into a generic error.
+  // Known-offline: fail fast, before loading the client. A dead network is not
+  // a reason to download 51KB of Supabase to discover the request cannot go.
   if (!isOnline()) throw new AIOfflineError('No connection.')
+  const supabase = await getSupabase()
+  if (!supabase) throw new AINotConfiguredError('AI backend not connected.')
 
   let data: unknown
   let error: unknown
   try {
-    await ensureSession()
+    await ensureSession(supabase)
     const res = await supabase.functions.invoke(fn, { body })
     data = res.data
     error = res.error

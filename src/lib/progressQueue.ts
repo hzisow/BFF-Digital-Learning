@@ -20,7 +20,7 @@
 // identically on iOS, needs no new caching layer, and can be removed by
 // deleting one file. See STATUS.md for the trade-off that led here.
 
-import { supabase } from './supabase'
+import { getSupabase } from './supabase'
 import { isOnline, onConnectionChange } from './online'
 
 const QUEUE_KEY = 'bff_progress_outbox_v1'
@@ -83,9 +83,13 @@ let draining = false
  * next attempt. Safe to call at any time — concurrent calls collapse into one.
  */
 export async function flushProgressQueue(): Promise<void> {
-  if (draining || !supabase || !isOnline()) return
+  if (draining || !isOnline()) return
   const queue = readQueue()
+  // Check the queue before loading the client: an empty outbox is the normal
+  // case, and it must not be a reason to download 51KB of Supabase.
   if (queue.length === 0) return
+  const supabase = await getSupabase()
+  if (!supabase) return
 
   draining = true
   try {

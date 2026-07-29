@@ -79,7 +79,8 @@ export default function StudentHome() {
     if (!BACKEND_ENABLED || !classroomId || !studentId) return
     let cancelled = false
     async function load() {
-      const { supabase } = await import('../../lib/supabase')
+      const { getSupabase } = await import('../../lib/supabase')
+      const supabase = await getSupabase()
       if (!supabase) {
         if (!cancelled) setAssignments([])
         return
