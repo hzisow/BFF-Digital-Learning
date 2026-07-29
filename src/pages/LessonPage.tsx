@@ -11,6 +11,12 @@ import { ACTIVITIES } from '../lib/activities'
 import { useLang, localizeLesson } from '../lib/i18n'
 import type { Lang } from '../lib/i18n'
 import { saveProgress } from '../lib/progress'
+import {
+  clearPosition,
+  loadPosition,
+  savePosition,
+  type LessonPosition,
+} from '../lib/lessonPosition'
 import { useStudent } from '../lib/session'
 import { playSound } from '../lib/sound'
 import { celebrate } from '../lib/celebrate'
@@ -316,6 +322,13 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
   const [quizAnswers, setQuizAnswers] = useState<Record<number, AnswerState>>({})
   const [videoDone, setVideoDone] = useState<Record<number, boolean>>({})
 
+  // A position saved on a previous visit, waiting for the student to choose
+  // between picking up and starting fresh. Read once, on mount — asking later
+  // would race the effect below that keeps the position up to date.
+  const [pendingResume, setPendingResume] = useState<LessonPosition | null>(() =>
+    loadPosition(lesson.slug),
+  )
+
   const studentRef = useRef(student)
   studentRef.current = student
 
@@ -344,11 +357,62 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
       : phase === 'quiz'
         ? loc.sections.length + quizIndex + 1
         : totalSteps
-  const percent = totalSteps > 0 ? Math.round((currentStep / totalSteps) * 100) : 100
+  // While the resume card is up the player is still parked on step 1, but the
+  // bar should show the progress being offered — otherwise the header reads
+  // "just started" next to a card saying "you stopped at step 12".
+  const shownStep = pendingResume ? pendingResume.step : currentStep
+  const percent = totalSteps > 0 ? Math.round((shownStep / totalSteps) * 100) : 100
 
   const section = loc.sections[sectionIndex]
   const quizQuestion = loc.quiz[quizIndex]
   const isHero = phase === 'lesson' && section?.type === 'intro'
+
+  // Keep the saved position current as the student moves. Skipped while the
+  // resume card is up (they have not chosen yet, so overwriting the stored
+  // position with step 1 would destroy the very thing being offered) and once
+  // they reach the results, which clears it instead.
+  useEffect(() => {
+    if (pendingResume || phase === 'results') return
+    savePosition(lesson.slug, {
+      phase,
+      sectionIndex,
+      quizIndex,
+      checkpointAnswers,
+      quizAnswers,
+      videoDone,
+      step: currentStep,
+      totalSteps,
+    })
+  }, [
+    pendingResume,
+    lesson.slug,
+    phase,
+    sectionIndex,
+    quizIndex,
+    checkpointAnswers,
+    quizAnswers,
+    videoDone,
+    currentStep,
+    totalSteps,
+  ])
+
+  /** Put the player back exactly where the student left it. */
+  function resumeHere(pos: LessonPosition) {
+    // Guard against content changing under a saved position (a lesson edited
+    // between visits): never restore past the end of what exists now.
+    setPhase(pos.phase)
+    setSectionIndex(Math.min(pos.sectionIndex, Math.max(0, loc.sections.length - 1)))
+    setQuizIndex(Math.min(pos.quizIndex, Math.max(0, loc.quiz.length - 1)))
+    setCheckpointAnswers(pos.checkpointAnswers ?? {})
+    setQuizAnswers(pos.quizAnswers ?? {})
+    setVideoDone(pos.videoDone ?? {})
+    setPendingResume(null)
+  }
+
+  function startOver() {
+    clearPosition(lesson.slug)
+    setPendingResume(null)
+  }
 
   const canContinue =
     phase === 'lesson'
@@ -366,6 +430,10 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
     const correct = loc.quiz.filter((q, i) => answers[i]?.chosen === q.answerIndex).length
     const pct = total > 0 ? Math.round((correct / total) * 100) : 100
     setPhase('results')
+    // Finished: there is nothing left to resume into, and leaving the position
+    // behind would offer to drop them back into the middle of a lesson they
+    // have already completed.
+    clearPosition(lesson.slug)
     celebrate(pct === 100 ? 'perfect' : 'complete')
     void saveProgress(studentRef.current, lesson.slug, {
       status: 'completed',
@@ -397,16 +465,48 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
     if (phase === 'lesson' && sectionIndex > 0) setSectionIndex(sectionIndex - 1)
   }
 
+  // Keyboard navigation. Advancing a 21-step lesson otherwise means 21 trips to
+  // the same button with a mouse; arrow keys make it one hand and no aiming,
+  // which also helps anyone who cannot use a pointer comfortably.
   const goNextRef = useRef<(() => void) | null>(null)
+  const goBackRef = useRef<(() => void) | null>(null)
   goNextRef.current = canContinue && phase !== 'results' ? goNext : null
+  goBackRef.current = phase === 'lesson' && sectionIndex > 0 ? goBack : null
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.key !== 'Enter' || e.repeat) return
-      const tag = (e.target as HTMLElement | null)?.tagName
-      if (tag === 'BUTTON' || tag === 'A' || tag === 'INPUT' || tag === 'TEXTAREA') return
-      if (goNextRef.current) {
-        e.preventDefault()
-        goNextRef.current()
+      if (e.repeat || e.metaKey || e.ctrlKey || e.altKey) return
+      const el = e.target as HTMLElement | null
+      const tag = el?.tagName
+      // Never steal a keystroke meant for text entry, a select, or anything
+      // the student is editing (the open-response box lives inside a lesson).
+      const typing =
+        tag === 'INPUT' ||
+        tag === 'TEXTAREA' ||
+        tag === 'SELECT' ||
+        el?.isContentEditable === true
+      if (typing) return
+
+      if (e.key === 'Enter') {
+        // Enter on a focused control already does the right thing.
+        if (tag === 'BUTTON' || tag === 'A') return
+        if (goNextRef.current) {
+          e.preventDefault()
+          goNextRef.current()
+        }
+        return
+      }
+      if (e.key === 'ArrowRight') {
+        if (goNextRef.current) {
+          e.preventDefault()
+          goNextRef.current()
+        }
+        return
+      }
+      if (e.key === 'ArrowLeft') {
+        if (goBackRef.current) {
+          e.preventDefault()
+          goBackRef.current()
+        }
       }
     }
     window.addEventListener('keydown', onKey)
@@ -452,6 +552,13 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
   const myIndex = lessonOrder.findIndex((a) => a.slug === lesson.slug)
   const nextLesson =
     myIndex >= 0 && myIndex + 1 < lessonOrder.length ? lessonOrder[myIndex + 1] : undefined
+
+  // Looked up across all activities, not just `lessonOrder` — electives are a
+  // different `kind` and would otherwise come back without a duration.
+  const durationMin = useMemo(
+    () => ACTIVITIES.find((a) => a.slug === lesson.slug)?.durationMin ?? 0,
+    [lesson.slug],
+  )
 
   const unitLabel = tr({
     en: `Week ${lesson.week} · Day ${lesson.day}`,
@@ -603,6 +710,63 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
     )
   }
 
+  // ---------- Resume offer ----------
+  // Shown instead of the lesson when a previous visit left off partway through.
+  // Deliberately a decision rather than an automatic jump: dropping someone
+  // straight into step 12 with no explanation is disorienting, and a student
+  // who wants to review from the top should not have to click Back eleven times.
+
+  if (pendingResume) {
+    const pos = pendingResume
+    return (
+      <div className="lz">
+        {topbar}
+        <div className="lz-stage">
+          <div className="lz-panel animate-slide-up">
+            <p className="lz-eyebrow">
+              {tr({ en: 'Welcome back', es: 'Bienvenido de nuevo', zh: '欢迎回来' })}
+              <span className="lz-eyebrow-line" aria-hidden="true" />
+            </p>
+            <h2 className="lz-h" style={{ fontSize: '28px', marginTop: '10px' }}>
+              {tr({
+                en: 'Pick up where you left off?',
+                es: '¿Continuar donde lo dejaste?',
+                zh: '要从上次的地方继续吗？',
+              })}
+            </h2>
+            <p className="lz-body" style={{ marginTop: '12px' }}>
+              {tr({
+                en: `You stopped at step ${pos.step} of ${pos.totalSteps}. Your answers so far are saved.`,
+                es: `Te quedaste en el paso ${pos.step} de ${pos.totalSteps}. Tus respuestas están guardadas.`,
+                zh: `你上次停在第 ${pos.step} 步（共 ${pos.totalSteps} 步）。你的答案已保存。`,
+              })}
+            </p>
+            <div
+              style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '22px' }}
+            >
+              <button
+                type="button"
+                onClick={() => resumeHere(pos)}
+                className="lz-btn lz-btn--primary"
+              >
+                {tr({
+                  en: `Resume at step ${pos.step}`,
+                  es: `Continuar en el paso ${pos.step}`,
+                  zh: `从第 ${pos.step} 步继续`,
+                })}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </button>
+              <button type="button" onClick={startOver} className="lz-btn">
+                <RotateCcw className="h-4 w-4" aria-hidden="true" />
+                {tr({ en: 'Start over', es: 'Empezar de nuevo', zh: '重新开始' })}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   // ---------- Lesson / quiz steps ----------
 
   return (
@@ -622,7 +786,18 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
                 </p>
                 <h1>{loc.title}</h1>
                 <p className="lz-hero-lede">{section.body}</p>
+                {/* Time first. "21 steps" is an internal unit — a student
+                    cannot tell from it whether this fits in a class period,
+                    and the step counter already lives in the bottom bar. */}
                 <div className="lz-hero-meta">
+                  {durationMin > 0 && (
+                    <>
+                      <span>
+                        {durationMin} {tr({ en: 'min', es: 'min', zh: '分钟' })}
+                      </span>
+                      <span className="dot" aria-hidden="true" />
+                    </>
+                  )}
                   <span>
                     {totalSteps} {tr({ en: 'steps', es: 'pasos', zh: '步' })}
                   </span>
@@ -674,6 +849,13 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
               {tr({ en: 'Step', es: 'Paso', zh: '第' })} <b>{currentStep}</b> / {totalSteps}
             </span>
           )}
+          {/* Discoverability for the arrow-key shortcut. Hidden on touch, where
+              there is no keyboard and it would just be clutter. */}
+          <span className="lz-kbd-hint" aria-hidden="true">
+            <kbd>←</kbd>
+            <kbd>→</kbd>
+            {tr({ en: 'to move', es: 'para navegar', zh: '切换步骤' })}
+          </span>
           <button type="button" onClick={goNext} disabled={!canContinue} className="lz-btn lz-btn--primary">
             {continueLabel} <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </button>

@@ -319,6 +319,16 @@ export default function StudentHome() {
                 return meta ? localizeActivity(meta, lang).title : resume.title
               })()}
             </p>
+            {/* Naming the step turns a vague nudge into a specific promise. */}
+            {resume.step != null && resume.totalSteps != null && (
+              <p className="mt-0.5 text-sm text-ink/60">
+                {zh
+                  ? `第 ${resume.step} 步，共 ${resume.totalSteps} 步`
+                  : es
+                    ? `Paso ${resume.step} de ${resume.totalSteps}`
+                    : `Step ${resume.step} of ${resume.totalSteps}`}
+              </p>
+            )}
           </div>
           <span className="btn-primary shrink-0 px-4 py-2 text-sm">
             {resume.inProgress ? (zh ? '继续' : es ? 'Continuar' : 'Continue') : zh ? '开始' : es ? 'Empezar' : 'Start'}{' '}

@@ -338,6 +338,33 @@
 .lz-step-label { font-size: 10px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--lz-muted); }
 .lz-step-label b { color: var(--lz-ink); }
 
+/* Arrow-key hint. A shortcut nobody knows about is not a feature, so it is
+   stated once, quietly, next to the button it replaces. Hidden wherever there
+   is no keyboard to press — on a phone it would be pure noise. */
+.lz-kbd-hint {
+  display: none;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--lz-muted);
+  white-space: nowrap;
+}
+.lz-kbd-hint kbd {
+  font-family: inherit;
+  font-size: 11px;
+  line-height: 1;
+  padding: 3px 5px;
+  border: 1px solid var(--lz-line);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  background: #fff;
+  color: var(--lz-ink);
+}
+@media (min-width: 640px) and (pointer: fine) {
+  .lz-kbd-hint { display: inline-flex; }
+}
+
 .lz-btn {
   display: inline-flex;
   align-items: center;

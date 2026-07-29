@@ -30,8 +30,13 @@ progress, host live games, and generate classroom materials.
   moments and quizzes the student before continuing, with no skipping ahead. If
   YouTube is blocked on the school network, the questions appear as regular
   cards so nobody gets stuck.
+- **Lessons remember where you were.** A class period ends before a lesson does,
+  so closing the tab saves your place. Coming back offers *"Resume at step 12"*
+  or a clean restart, with your answers so far intact.
 - **Read-aloud** on every lesson step, plus a searchable glossary of every key
   term in the curriculum.
+- **Arrow keys move through a lesson**, so a 21-step lesson isn't 21 trips to
+  the same button.
 
 ### Activities
 

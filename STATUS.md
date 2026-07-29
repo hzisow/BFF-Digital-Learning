@@ -133,6 +133,23 @@ Deliberately **not** a service worker: this cannot sync after the tab closes,
 but it works identically on iOS (no Background Sync there), needs no caching
 layer, and is removable by deleting one file. See "Ideas worth considering".
 
+### Lesson position is device-local, progress is not
+`src/lib/lessonPosition.ts` stores where a student is inside a lesson
+(step, phase, checkpoint answers, which videos are done) in localStorage. It is
+**scratch state, not a record** — the authoritative "finished / scored" still
+goes through `saveProgress` to the database. A student on a new device starts
+the lesson fresh, which is the right trade: better to lose a scroll position
+than to show someone a half-finished lesson they never opened on that machine.
+
+Rules that matter:
+- Step 1 is never offered as a resume point ("resume from the beginning" is the
+  beginning).
+- Positions expire after 30 days.
+- `finishQuiz` calls `clearPosition`, or a completed lesson would offer to drop
+  the student back into the middle of it. There is an end-to-end test for this.
+- The save effect is skipped while the resume card is up — otherwise it would
+  overwrite the stored position with step 1 and destroy the offer.
+
 ### The lesson canvas is its own world
 `/lessons/:slug` renders **outside** the global `Layout` (see `src/App.tsx`) with
 its own focused chrome, styled by `src/styles/lesson.css` (all classes prefixed
@@ -163,6 +180,11 @@ its own focused chrome, styled by `src/styles/lesson.css` (all classes prefixed
   ~266KB critical path; 26 routes verified rendering, no console errors
 - **Flaky-network resilience** — connection bar, per-feature offline states,
   live screens that stop waiting after 6s, and a progress outbox that retries
+- **Lesson resume** — closing the tab mid-lesson no longer restarts from step 1;
+  returning offers "Resume at step N" or "Start over"
+- **Time estimates** on the lesson hero (the course path already had them)
+- **Arrow-key navigation** through lesson steps, gated by the same rules as the
+  Continue button, and never stealing keys from a text field
 
 ---
 
@@ -261,9 +283,14 @@ evidence the network is what hurts.
 - **More electives** — the content model makes this cheap.
 
 **Polish**
-- Empty states with real guidance rather than a line of text.
-- Keyboard shortcuts for the lesson player (arrow keys to advance).
 - A print stylesheet for lesson pages so a mentor can hand out a lesson.
+- Per-question mentor analytics (listed above) is the biggest remaining gap.
+
+Checked and already fine — don't spend time here:
+- **Empty states.** `/certificate` says "You're at 0 of 8 — keep going!",
+  `/practice` says "Nothing to review!" with a way out. These are good.
+- **Mobile.** No horizontal overflow at 390px on the home, course path, or
+  lesson canvas.
 
 ---
 
@@ -309,6 +336,8 @@ git push origin claude/educational-tool-student-outreach-qkqnle:main
 | `src/lib/online.ts` | Connection truth: `isOnline`, `isNetworkError`, `useOnline` |
 | `src/lib/progressQueue.ts` | The outbox that stops progress writes being lost |
 | `src/lib/offlineCopy.ts` | Shared trilingual offline wording |
+| `src/lib/lessonPosition.ts` | Where a student is inside a lesson (resume) |
+| `src/lib/resume.ts` | Which lesson "Continue where you left off" points at |
 | `src/components/ConnectionBanner.tsx` | The top strip shown while offline |
 | `src/components/RouteFallback.tsx` | What shows while a route chunk downloads |
 | `src/index.css` | Design system: tokens, buttons, cards, micro-interactions |

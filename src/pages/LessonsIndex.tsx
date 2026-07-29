@@ -23,6 +23,7 @@ import { AppIcon } from '../lib/icons'
 import { ACTIVITIES, localizeActivity } from '../lib/activities'
 import type { ActivityMeta } from '../lib/activities'
 import { getLesson } from '../content/lessons'
+import { mostRecentPosition } from '../lib/lessonPosition'
 import { prefetchRoute } from '../lib/routeChunks'
 import { useLang } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
@@ -260,6 +261,16 @@ export default function LessonsIndex() {
     prefetchRoute('lesson')
   }, [])
 
+  // A lesson left unfinished mid-way beats "the next lesson you have not
+  // started" as the thing to offer — it is where the student actually was, and
+  // it is the one they are most likely to have meant to come back to.
+  const resume = useMemo(() => {
+    const found = mostRecentPosition()
+    if (!found) return null
+    const meta = ACTIVITIES.find((a) => a.slug === found.slug)
+    return meta ? { meta, position: found.position } : null
+  }, [])
+
   /** Lesson title in the active language (falls back to English). */
   const lessonTitle = (meta: ActivityMeta) =>
     (zh ? getLesson(meta.slug)?.zh?.title : es ? getLesson(meta.slug)?.es?.title : undefined) ??
@@ -420,6 +431,23 @@ export default function LessonsIndex() {
                 {zh ? '领取我的证书' : es ? 'Obtener mi certificado' : 'Get my certificate'} <Award className="h-4 w-4" aria-hidden="true" />
               </Link>
             </p>
+          ) : resume ? (
+            // Mid-lesson: name the step, so the button is a promise about where
+            // they will land rather than a vague "keep going".
+            <div className="mt-6">
+              <Link to={resume.meta.path} className="btn-primary inline-flex">
+                {zh ? '继续上次的课程' : es ? 'Continuar donde lo dejaste' : 'Continue where you left off'}:{' '}
+                <AppIcon name={resume.meta.icon} className="h-4 w-4" /> {lessonTitle(resume.meta)}{' '}
+                <ArrowRight className="nudge h-4 w-4" aria-hidden="true" />
+              </Link>
+              <p className="mt-2 text-sm text-white/70">
+                {zh
+                  ? `第 ${resume.position.step} 步，共 ${resume.position.totalSteps} 步——你的答案已保存。`
+                  : es
+                    ? `Paso ${resume.position.step} de ${resume.position.totalSteps} — tus respuestas están guardadas.`
+                    : `Step ${resume.position.step} of ${resume.position.totalSteps} — your answers are saved.`}
+              </p>
+            </div>
           ) : (
             current && (
               <Link to={current.path} className="btn-primary mt-6 inline-flex">
