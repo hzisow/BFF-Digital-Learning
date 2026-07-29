@@ -23,10 +23,15 @@ platform for **BFF of America**, a student-founded 501(c)(3).
    The Gemini key lives only as a Supabase Edge Function secret.
 2. **Never put the assistant's model identifier** in commits, PR bodies, code, or
    comments. Chat only.
-3. **Branch:** develop on `claude/educational-tool-student-outreach-qkqnle`.
+3. **Commits are authored by the repo owner**, not the assistant:
+   `hzisow <255225107+hzisow@users.noreply.github.com>`. The GitHub noreply
+   address links commits to the account without publishing a personal email in
+   a public repo. Set with `git config user.name` / `user.email` if a fresh
+   container ever resets it.
+4. **Branch:** develop on `claude/educational-tool-student-outreach-qkqnle`.
    Deploying means fast-forwarding `main` to it — GitHub Pages only builds from
    `main`. The user has authorized this; do not open PRs unless asked.
-4. **Zero emoji anywhere in the app.** Enforced by the icon registry (below).
+5. **Zero emoji anywhere in the app.** Enforced by the icon registry (below).
    Verify with the scan in "Useful commands".
 
 ---
