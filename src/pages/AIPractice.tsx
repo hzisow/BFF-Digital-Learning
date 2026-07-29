@@ -15,7 +15,6 @@ import { invokeAI, AI_ENABLED, AINotConfiguredError, AIOfflineError } from '../l
 import { offlineAICopy } from '../lib/offlineCopy'
 import { useLang } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
-import { getLesson } from '../content/lessons'
 import { ACTIVITIES } from '../lib/activities'
 import { Loading, SkeletonQuestion } from '../components/Skeleton'
 
@@ -35,15 +34,13 @@ function detectWeakTopics(): string[] {
   const weakSlugs = new Set<string>()
 
   for (const [slug, entry] of Object.entries(progress)) {
-    // 1) Lessons: any quiz answer that doesn't match the lesson's key.
-    const lesson = getLesson(slug)
-    const answers = entry.data?.answers
-    if (lesson && Array.isArray(answers)) {
-      const missed = answers.some((chosen, i) => {
-        const q = lesson.quiz[i]
-        return q != null && chosen !== q.answerIndex
-      })
-      if (missed) weakSlugs.add(slug)
+    // 1) Lessons: any quiz where they did not get everything right.
+    //    `finishQuiz` stores `correct` and `total`, so this needs no lesson
+    //    content — loading a lesson just to re-derive a number we already saved
+    //    was pulling the whole curriculum onto this page.
+    const data = entry.data as { correct?: unknown; total?: unknown } | undefined
+    if (typeof data?.correct === 'number' && typeof data?.total === 'number') {
+      if (data.correct < data.total) weakSlugs.add(slug)
     }
     // 2) Any completed activity finished below the mastery bar.
     if (

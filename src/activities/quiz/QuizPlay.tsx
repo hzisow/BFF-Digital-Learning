@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { getLesson } from '../../content/lessons'
+import { useLesson } from '../../lib/useLesson'
 import { isNetworkError } from '../../lib/online'
 import { useStalledLookup } from '../../lib/useStalledLookup'
 import LiveLookupStalled from '../../components/LiveLookupStalled'
@@ -178,7 +178,7 @@ export default function QuizPlay() {
     }
   }
 
-  const lesson = session ? getLesson(session.lesson_slug) : undefined
+  const { lesson, loading: lessonLoading } = useLesson(session?.lesson_slug)
 
   function answer(choice: number) {
     if (!session || !player || !lesson) return
@@ -262,6 +262,17 @@ export default function QuizPlay() {
         {(stalled || lookupOffline) && (
           <LiveLookupStalled onRetry={() => window.location.reload()} />
         )}
+      </Shell>
+    )
+  }
+
+  // Do not claim the lesson is missing while its chunk is still downloading.
+  if (lessonLoading) {
+    return (
+      <Shell code={code}>
+        <p className="mt-16 text-center font-display text-lg font-semibold text-ink/60">
+          {zh ? '正在加载课程……' : es ? 'Cargando la lección…' : 'Loading the lesson…'}
+        </p>
       </Shell>
     )
   }

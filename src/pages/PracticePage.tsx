@@ -2,15 +2,17 @@
 // in progress.data.answers) so they can master it. Local-only, counts toward
 // the daily streak.
 
-import { useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, RefreshCw, Star, Sparkles, Trophy, Check } from 'lucide-react'
-import { LESSONS } from '../content/lessons'
+import { isLessonSlug, loadLesson } from '../content/lessons'
+import type { Lesson } from '../content/types'
 import { AppIcon } from '../lib/icons'
 import type { IconName } from '../lib/icons'
 import { useLang, localizeLesson } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
 import { recordActivity } from '../lib/streak'
+import { Loading, SkeletonQuestion } from '../components/Skeleton'
 
 interface PracticeItem {
   lessonSlug: string
@@ -24,34 +26,68 @@ export default function PracticePage() {
   const es = lang === 'es'
   const zh = lang === 'zh'
 
-  const deck = useMemo<PracticeItem[]>(() => {
+  // Only the lessons this student has actually answered questions in get
+  // loaded — one chunk each. Someone two lessons into the course pulls two
+  // lessons, not the whole curriculum, which is what the old static registry
+  // forced. The review deck also needs the real questions, so unlike the
+  // course path this genuinely cannot be answered from stored progress alone.
+  const [loaded, setLoaded] = useState<{
+    deck: PracticeItem[]
+    lessons: Record<string, Lesson>
+  } | null>(null)
+
+  useEffect(() => {
+    let live = true
     const progress = loadLocalProgress()
-    const items: PracticeItem[] = []
-    for (const lesson of Object.values(LESSONS)) {
-      const p = progress[lesson.slug]
-      const answers = p?.data?.answers
-      if (!Array.isArray(answers)) continue
-      const loc = localizeLesson(lesson, lang)
-      answers.forEach((chosen, i) => {
-        const q = lesson.quiz[i]
-        if (q && chosen !== q.answerIndex) {
-          items.push({
-            lessonSlug: lesson.slug,
-            lessonIcon: lesson.icon,
-            lessonTitle: loc.title,
-            questionIndex: i,
-          })
-        }
-      })
+    const slugs = Object.keys(progress).filter(
+      (slug) => isLessonSlug(slug) && Array.isArray(progress[slug]?.data?.answers),
+    )
+    void Promise.all(slugs.map((slug) => loadLesson(slug))).then((results) => {
+      if (!live) return
+      const lessons: Record<string, Lesson> = {}
+      const items: PracticeItem[] = []
+      for (const lesson of results) {
+        if (!lesson) continue
+        lessons[lesson.slug] = lesson
+        const answers = progress[lesson.slug]?.data?.answers
+        if (!Array.isArray(answers)) continue
+        const loc = localizeLesson(lesson, lang)
+        answers.forEach((chosen, i) => {
+          const q = lesson.quiz[i]
+          if (q && chosen !== q.answerIndex) {
+            items.push({
+              lessonSlug: lesson.slug,
+              lessonIcon: lesson.icon,
+              lessonTitle: loc.title,
+              questionIndex: i,
+            })
+          }
+        })
+      }
+      setLoaded({ deck: items, lessons })
+    })
+    return () => {
+      live = false
     }
-    return items
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang])
 
+  const deck = loaded?.deck ?? []
   const [step, setStep] = useState(0)
   const [chosen, setChosen] = useState<number | null>(null)
   const [correctCount, setCorrectCount] = useState(0)
-  const done = step >= deck.length
+  const done = loaded != null && step >= deck.length
+
+  // Distinguish "still fetching" from "nothing to review" — collapsing them
+  // would tell a student they had aced everything before we had looked.
+  if (loaded === null) {
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-10">
+        <Loading label="Loading your review">
+          <SkeletonQuestion />
+        </Loading>
+      </div>
+    )
+  }
 
   if (deck.length === 0) {
     return (
@@ -151,7 +187,7 @@ export default function PracticePage() {
   }
 
   const item = deck[step]
-  const lesson = LESSONS[item.lessonSlug]
+  const lesson = loaded.lessons[item.lessonSlug]
   const loc = localizeLesson(lesson, lang)
   const q = loc.quiz[item.questionIndex] ?? lesson.quiz[item.questionIndex]
   const revealed = chosen != null

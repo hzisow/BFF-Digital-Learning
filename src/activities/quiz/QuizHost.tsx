@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { getLesson } from '../../content/lessons'
+import { useLesson } from '../../lib/useLesson'
 import {
   getQuizSession,
   listQuizPlayers,
@@ -155,6 +155,11 @@ export default function QuizHost() {
   const [players, setPlayers] = useState<QuizPlayer[]>([])
   const [error, setError] = useState<string | null>(null)
 
+  // Called up here because the lesson is used well past several early returns,
+  // and hooks cannot live below those. The slug is undefined until the session
+  // row lands, which the hook handles.
+  const { lesson, loading: lessonLoading } = useLesson(session?.lesson_slug)
+
   const adminId = adminUser?.id
 
   useEffect(() => {
@@ -273,7 +278,16 @@ export default function QuizHost() {
     )
   }
 
-  const lesson = getLesson(session.lesson_slug)
+  if (lessonLoading) {
+    return (
+      <HostShell code={session.code}>
+        <p className="mt-24 text-center font-display text-lg font-semibold text-ink/60">
+          {zh ? '正在加载课程……' : es ? 'Cargando la lección…' : 'Loading the lesson…'}
+        </p>
+      </HostShell>
+    )
+  }
+
   if (!lesson || lesson.quiz.length === 0) {
     return (
       <HostShell code={session.code}>

@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, Check, X, Lightbulb, SearchX, RotateCcw } from 'lucide-react'
-import { getLesson } from '../content/lessons'
+import { isLessonSlug, loadLesson, peekLesson } from '../content/lessons'
 import type { Lesson, LessonSection } from '../content/types'
 import VideoCheckpoint from '../components/VideoCheckpoint'
 import ReadAloud from '../components/ReadAloud'
 import OpenResponse from '../components/OpenResponse'
 import { LessonArt } from '../components/lesson/LessonArt'
+import { LessonFallback } from '../components/RouteFallback'
 import { ACTIVITIES } from '../lib/activities'
 import { useLang, localizeLesson } from '../lib/i18n'
 import type { Lang } from '../lib/i18n'
@@ -870,7 +871,39 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
 export default function LessonPage() {
   const { slug } = useParams<{ slug: string }>()
   const { tr } = useLang()
-  const lesson = slug ? getLesson(slug) : undefined
+
+  // Lesson content arrives as its own chunk (see content/lessons/index.ts), so
+  // this is async. `peekLesson` makes a second visit in the same session render
+  // synchronously with no loading flash — import() has already cached it.
+  const [lesson, setLesson] = useState(() => (slug ? peekLesson(slug) : undefined))
+  const [notFound, setNotFound] = useState(() => !slug || !isLessonSlug(slug))
+
+  useEffect(() => {
+    if (!slug || !isLessonSlug(slug)) {
+      setNotFound(true)
+      return
+    }
+    setNotFound(false)
+    const already = peekLesson(slug)
+    if (already) {
+      setLesson(already)
+      return
+    }
+    let live = true
+    setLesson(undefined)
+    void loadLesson(slug).then((l) => {
+      if (!live) return
+      if (l) setLesson(l)
+      else setNotFound(true)
+    })
+    return () => {
+      live = false
+    }
+  }, [slug])
+
+  // Downloading one lesson, not the whole curriculum. Reuses the same shape the
+  // router shows while the page's own code loads, so the two are indistinguishable.
+  if (!notFound && !lesson) return <LessonFallback />
 
   if (!lesson) {
     return (

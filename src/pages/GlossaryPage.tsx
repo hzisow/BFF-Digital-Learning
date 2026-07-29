@@ -2,13 +2,15 @@
 // runtime — add a lesson and its terms appear here automatically. Searchable,
 // and follows the site language (Spanish terms come from lesson translations).
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { BookOpen, Search } from 'lucide-react'
-import { LESSONS } from '../content/lessons'
+import { loadAllLessons } from '../content/lessons'
+import type { Lesson } from '../content/types'
 import { AppIcon } from '../lib/icons'
 import type { IconName } from '../lib/icons'
 import { useLang, localizeLesson } from '../lib/i18n'
+import { Loading, Skeleton, SkeletonText } from '../components/Skeleton'
 
 interface GlossaryEntry {
   term: string
@@ -22,9 +24,23 @@ export default function GlossaryPage() {
   const { lang, t } = useLang()
   const [query, setQuery] = useState('')
 
+  // The glossary is one of only two screens that genuinely needs every lesson —
+  // it collects key terms from all of them — so it knowingly pulls the whole
+  // curriculum. Everywhere else loads a single lesson.
+  const [lessons, setLessons] = useState<Record<string, Lesson> | null>(null)
+  useEffect(() => {
+    let live = true
+    void loadAllLessons().then((all) => {
+      if (live) setLessons(all)
+    })
+    return () => {
+      live = false
+    }
+  }, [])
+
   const entries = useMemo(() => {
     const list: GlossaryEntry[] = []
-    for (const lesson of Object.values(LESSONS)) {
+    for (const lesson of Object.values(lessons ?? {})) {
       const localized = localizeLesson(lesson, lang)
       for (const section of localized.sections) {
         if (section.type !== 'terms') continue
@@ -40,7 +56,7 @@ export default function GlossaryPage() {
       }
     }
     return list.sort((a, b) => a.term.localeCompare(b.term, lang))
-  }, [lang])
+  }, [lang, lessons])
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -109,7 +125,18 @@ export default function GlossaryPage() {
         </div>
       </section>
 
-      {filtered.length === 0 ? (
+      {lessons === null ? (
+        // Curriculum still downloading — a skeleton, not "no terms found",
+        // which is what an empty-state check alone would have shown.
+        <Loading label={t('glossary.title')} className="mt-8 space-y-4">
+          {Array.from({ length: 6 }, (_, i) => (
+            <div key={i} className="card accent-left p-5 pl-6">
+              <Skeleton className="h-5 w-40" />
+              <SkeletonText lines={2} className="mt-3" />
+            </div>
+          ))}
+        </Loading>
+      ) : filtered.length === 0 ? (
         <p className="mt-10 text-center text-ink/60">{t('glossary.empty')}</p>
       ) : (
         <div className="mt-8 space-y-8">

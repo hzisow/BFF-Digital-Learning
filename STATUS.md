@@ -166,6 +166,43 @@ it bails on `saveData` or a 2G/3G `effectiveType`. The lessons chunk is 494KB
 compete with what the student actually asked for. Hover prefetch ignores the
 guard, because that is intent rather than a guess.
 
+### Lesson content is one chunk per lesson, and loading it is async-only
+`src/content/lessons/index.ts` exposes **`loadLesson(slug)`**, `loadAllLessons()`,
+`peekLesson(slug)`, `isLessonSlug(slug)` and `ALL_LESSON_SLUGS`. There is
+deliberately **no synchronous `getLesson` and no `LESSONS` record** any more.
+
+That is the whole mechanism. A sync accessor can only exist if something
+statically imports all thirteen lesson files, which is exactly what produced a
+494 KB chunk that every page touching lesson data had to download. The
+async-only surface is what keeps the split from being silently undone — and
+removing the old exports made the compiler point at all seven call sites.
+
+Who loads what now:
+- `LessonPage` — one lesson, via `loadLesson`. `peekLesson` makes a repeat visit
+  in the same session render with no loading flash.
+- `QuizPlay` / `QuizHost` — one lesson, via the `useLesson(slug)` hook in
+  `src/lib/useLesson.ts`, because the slug only arrives with the session row.
+  The hook reports `loading` separately so the screen does not flash "lesson not
+  found" during a perfectly normal fetch.
+- `LessonsIndex` (the course path) — **nothing**. Verified: zero lesson chunks.
+- `AIPractice` — **nothing**.
+- `PracticePage` — only the lessons the student has actually answered questions
+  in, one chunk each.
+- `GlossaryPage` — all thirteen, knowingly, via `loadAllLessons()`. It aggregates
+  every key term, so it genuinely needs them.
+
+Two things stopped needing lesson content at all, which is where most of the win
+came from:
+- **Localized lesson titles** come from `localizeActivity()` in
+  `src/lib/activities.ts`, which already carries all three languages. Reading
+  them off the lesson file meant loading the lesson to render a title.
+  (One user-visible consequence: the Spanish title for `entrepreneurship` is now
+  the catalog's "Emprendimiento y Trabajos Extra" rather than the lesson file's
+  "Emprendimiento y Negocios Paralelos".)
+- **Missed-question counts** (`LessonsIndex` and `AIPractice`) come from
+  `progress.data.correct` / `.total`, which `finishQuiz` already writes. The old
+  code loaded every lesson to re-derive a number that was already stored.
+
 ### Offline is a first-class state, not a generic failure
 `src/lib/online.ts` is the single source of truth. `navigator.onLine === false`
 is trusted (definitely offline); `true` is **not** trusted, because captive
@@ -300,37 +337,11 @@ Roughly ordered by value per unit of effort.
   not "which question did the class get wrong?" Per-question breakdowns would
   tell a mentor what to reteach. The data is already stored in
   `progress.data.answers`.
-- **Per-lesson content splitting — now the measured #1 load-time problem.**
-  `content/lessons/index.ts` statically imports all 13 lessons × 3 languages, so
-  `lessons-*.js` is 494 KB raw / 181 KB gzip and *any* page touching lesson data
-  pulls all of it. Measured cost on a bad school connection: **course path 10.1 s
-  and a lesson 8.0 s, against 3.5–4.0 s for every page that does not need it.**
-
-  Each lesson file is ~40 KB of source, so one lesson is roughly 1/13th of what
-  is currently shipped.
-
-  What each consumer actually needs:
-  - `LessonPage` — one lesson. Wants `getLessonAsync(slug)` with a per-slug
-    dynamic import.
-  - `LessonsIndex` — only localized titles (line ~276) and quiz answer keys for
-    `missedCount` (line ~249). Both are tiny.
-  - `QuizPlay` / `QuizHost` / `AIPractice` — one lesson each.
-  - `GlossaryPage` / `PracticePage` — genuinely need every lesson. These would
-    still pull the full set, which is fine; they are secondary pages.
-
-  The design problem is where the titles and answer keys live without drifting
-  from the lesson files. Three options, roughly best-first:
-  1. Store enough in `progress.data` at save time (`finishQuiz` already writes
-     `answers`; adding the answer key or a `wrong: number[]` would let
-     `missedCount` need no lesson content at all), and put localized titles in
-     `src/lib/activities.ts`, which is already the documented "register a lesson
-     here" catalog. Needs a fallback for progress saved before the change.
-  2. Generate a `summary.ts` at build time — accurate, but someone will forget
-     to regenerate it.
-  3. Hand-maintain a summary table — will drift. Avoid.
-- **Defer the Supabase client (205KB).** It is on the critical path only because
-  `session.tsx` imports it statically for session restore. Solo mode never needs
-  it at all. Would cut the first load by roughly a fifth.
+- **Defer the Supabase client (205 KB raw / 51 KB gzip).** Now the largest thing
+  on the critical path that does not have to be. It is eager only because
+  `session.tsx` imports it statically for session restore, and `progress.ts`
+  imports it for the classroom sync. Solo mode never needs it at all. Would cut
+  roughly a fifth off the first load of every page.
 - **Printable certificates and progress reports** for mentors to hand out — the
   PDF pipeline now exists and could be reused.
 
@@ -385,7 +396,7 @@ regression.
 | Supabase client `supabase-*.js` | ~51 KB gzip — **eager, and it should not be** |
 | Fonts (Latin subsets only) | 41 KB Bricolage + 47 KB Inter |
 | CSS | ~11 KB gzip |
-| Lesson content `lessons-*.js` | **181 KB gzip / 494 KB raw** — lazy, prefetched on idle only when the connection allows |
+| Lesson content | **one chunk per lesson**, ~15.6 KB gzip / 39 KB raw each. The registry itself is 0.6 KB |
 | jsPDF + html2canvas | ~176 KB gzip — lazy, only on the worksheet/certificate paths |
 
 Before code splitting this was a single **1,546 KB** chunk (500 KB gzip) on the
@@ -395,10 +406,14 @@ per-lesson content splitting, and deferring the Supabase client.
 Rules that keep this from regressing:
 - A new page must be added to `src/lib/routeChunks.ts` as a dynamic import, not
   imported statically into `App.tsx`.
-- Never statically import `content/lessons` from anything eager — that alone
-  would drag 494 KB back onto first paint.
+- Never add a synchronous lesson accessor back to `content/lessons`. It cannot
+  exist without statically importing all thirteen files, which is the thing that
+  was fixed.
 - Heavy libraries (`jspdf`) must stay behind a dynamic `import()` at the call
   site.
+- A new lesson needs a line in `LESSON_LOADERS` **and** an entry in
+  `src/lib/activities.ts` with its title and description in all three languages,
+  or the course path will fall back to the English title.
 
 ### Time to real content on a throttled connection
 
@@ -408,16 +423,23 @@ and footer alone are over 200 characters and will mask the thing being measured.
 
 | Route | Bad school wifi (500 kbps / 300 ms) | Mediocre (2 Mbps / 100 ms) | Bytes |
 |---|---|---|---|
-| Landing | 3.5 s | 1.0 s | 167 KB |
+| Landing | 3.6 s | 1.0 s | 167 KB |
 | AI Coach | 4.0 s | 1.4 s | 175 KB |
-| Activities | 3.9 s | 1.4 s | 170 KB |
-| **Course path** | **10.1 s** | 2.8 s | 446 KB |
-| **A lesson** | **8.0 s** | 2.2 s | 417 KB |
+| Activities | 3.9 s | 1.3 s | 170 KB |
+| Course path | 4.5 s | 1.4 s | 177 KB |
+| A lesson | 5.2 s | 1.5 s | 205 KB |
 
-**The two pages that are the product are 2–3× slower than everything else**, and
-the entire difference is the 181 KB lesson-content chunk. This is the single
-biggest remaining load-time problem and it has a known fix (see "Ideas worth
-considering" → per-lesson content splitting).
+Every page is now within ~1.5 s of every other on a bad connection. Before the
+per-lesson split (commit `e5c8d6d`) the two pages that are the actual product
+were the two slowest in the app:
+
+| Route | Before | After |
+|---|---|---|
+| Course path | 10.1 s / 446 KB | **4.5 s / 177 KB** |
+| A lesson | 8.0 s / 417 KB | **5.2 s / 205 KB** |
+
+The course path now loads **zero** lesson chunks, and opening a lesson loads
+exactly one.
 
 ### Audit results — checked and clean
 
@@ -546,6 +568,8 @@ are wondering *why* something is the way it is.
 
 | Commit | What changed |
 |---|---|
+| `abd0637` | Per-lesson content splitting — course path 10.1 s → 4.5 s, lesson 8.0 s → 5.2 s on a bad connection |
+| `e5c8d6d` | Expanded STATUS.md; measured performance audit that found the above |
 | `1844704` | Lesson resume, time estimates, position-aware Continue, arrow-key navigation |
 | `20aaaca` | Route code splitting, offline states, progress outbox |
 | `6d182ba` | Self-hosted Bricolage Grotesque + Inter, dropped the Google Fonts CDN |
@@ -566,6 +590,8 @@ are wondering *why* something is the way it is.
 | `src/lib/online.ts` | Connection truth: `isOnline`, `isNetworkError`, `useOnline` |
 | `src/lib/progressQueue.ts` | The outbox that stops progress writes being lost |
 | `src/lib/offlineCopy.ts` | Shared trilingual offline wording |
+| `src/content/lessons/index.ts` | Per-lesson dynamic imports — async-only by design |
+| `src/lib/useLesson.ts` | Load one lesson when the slug arrives at runtime |
 | `src/lib/lessonPosition.ts` | Where a student is inside a lesson (resume) |
 | `src/lib/resume.ts` | Which lesson "Continue where you left off" points at |
 | `src/components/ConnectionBanner.tsx` | The top strip shown while offline |

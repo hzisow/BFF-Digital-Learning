@@ -22,7 +22,6 @@ import {
 import { AppIcon } from '../lib/icons'
 import { ACTIVITIES, localizeActivity } from '../lib/activities'
 import type { ActivityMeta } from '../lib/activities'
-import { getLesson } from '../content/lessons'
 import { mostRecentPosition } from '../lib/lessonPosition'
 import { prefetchRoute } from '../lib/routeChunks'
 import { useLang } from '../lib/i18n'
@@ -242,16 +241,20 @@ export default function LessonsIndex() {
   const quests = useMemo(() => dailyQuests(progress), [progress])
   const questsDone = quests.filter((q) => q.done).length
   // Missed quiz questions across all lessons — powers the Practice chip.
+  //
+  // This used to load every lesson just to compare each stored answer against
+  // its answer key, which meant the course path pulled the entire curriculum to
+  // render one number. `finishQuiz` already records `correct` and `total`, and
+  // missed is exactly the difference — so the count needs no lesson content at
+  // all. That is most of why this page no longer downloads 181KB.
   const missedCount = useMemo(() => {
     let count = 0
-    for (const [slug, p] of Object.entries(progress)) {
-      const answers = p.data?.answers
-      const lesson = getLesson(slug)
-      if (!lesson || !Array.isArray(answers)) continue
-      answers.forEach((chosen, i) => {
-        const q = lesson.quiz[i]
-        if (q && chosen !== q.answerIndex) count++
-      })
+    for (const p of Object.values(progress)) {
+      const data = p.data as { correct?: unknown; total?: unknown } | undefined
+      const correct = typeof data?.correct === 'number' ? data.correct : null
+      const total = typeof data?.total === 'number' ? data.total : null
+      if (correct == null || total == null) continue
+      count += Math.max(0, total - correct)
     }
     return count
   }, [progress])
@@ -271,10 +274,10 @@ export default function LessonsIndex() {
     return meta ? { meta, position: found.position } : null
   }, [])
 
-  /** Lesson title in the active language (falls back to English). */
-  const lessonTitle = (meta: ActivityMeta) =>
-    (zh ? getLesson(meta.slug)?.zh?.title : es ? getLesson(meta.slug)?.es?.title : undefined) ??
-    meta.title
+  /** Lesson title in the active language (falls back to English).
+   *  Comes from the activity catalog, which already carries all three
+   *  languages — reading it from the lesson file meant loading the lesson. */
+  const lessonTitle = (meta: ActivityMeta) => localizeActivity(meta, lang).title
   const [jumpTarget, setJumpTarget] = useState<ActivityMeta | null>(null)
   const jumpDialogRef = useRef<HTMLDivElement>(null)
   const jumpTriggerRef = useRef<HTMLElement | null>(null)
