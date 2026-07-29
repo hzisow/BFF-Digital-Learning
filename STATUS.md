@@ -1,8 +1,8 @@
 # BFF Classroom — Project Status
 
-Working notes for picking the project back up cold. Last verified at commit
-`1844704`. Everything below has been checked against the code or a running
-build, not remembered.
+Working notes for picking the project back up cold. Everything below has been
+checked against the code or a running build, not remembered — including every
+performance number, which came from driving a production build in a browser.
 
 ---
 
@@ -568,7 +568,7 @@ are wondering *why* something is the way it is.
 
 | Commit | What changed |
 |---|---|
-| `abd0637` | Per-lesson content splitting — course path 10.1 s → 4.5 s, lesson 8.0 s → 5.2 s on a bad connection |
+| _(most recent)_ | Per-lesson content splitting — course path 10.1 s → 4.5 s, lesson 8.0 s → 5.2 s on a bad connection |
 | `e5c8d6d` | Expanded STATUS.md; measured performance audit that found the above |
 | `1844704` | Lesson resume, time estimates, position-aware Continue, arrow-key navigation |
 | `20aaaca` | Route code splitting, offline states, progress outbox |
