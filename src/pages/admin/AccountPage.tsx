@@ -8,6 +8,7 @@ import { BACKEND_ENABLED } from '../../lib/config'
 import { supabase } from '../../lib/supabase'
 import { useAdmin } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
+import { Loading, Skeleton } from '../../components/Skeleton'
 import { BackendOffCard } from './TeamAuth'
 import { errMsg, fetchMyProfile } from './api'
 
@@ -46,9 +47,28 @@ export default function AccountPage() {
   if (!BACKEND_ENABLED) return <BackendOffCard />
   if (!adminReady) {
     return (
-      <div role="status" className="px-4 py-16 text-center text-slate-500">
-        {zh ? '加载中…' : es ? 'Cargando…' : 'Loading…'}
-      </div>
+      <Loading
+        label={zh ? '加载中…' : es ? 'Cargando…' : 'Loading…'}
+        className="mx-auto max-w-md px-4 py-12"
+      >
+        <div className="mb-6 space-y-3">
+          <Skeleton className="h-3 w-24" />
+          <Skeleton className="h-9 w-2/3" />
+          <Skeleton className="h-4 w-3/4" />
+        </div>
+        <div className="card space-y-5">
+          <Skeleton className="h-5 w-1/3" />
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-11 w-full" />
+          </div>
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-40" />
+            <Skeleton className="h-11 w-full" />
+          </div>
+          <Skeleton className="h-11 w-36" />
+        </div>
+      </Loading>
     )
   }
   if (!adminUser) return <Navigate to="/team" replace />

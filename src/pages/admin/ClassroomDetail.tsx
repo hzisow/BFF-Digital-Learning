@@ -25,6 +25,7 @@ import { toCsv, downloadCsv } from '../../lib/csv'
 import HostLauncher from '../../components/HostLauncher'
 import ClassLeaderboard from '../../components/ClassLeaderboard'
 import { useToast } from '../../components/ToastProvider'
+import { Loading, SkeletonHero, SkeletonPage, SkeletonRow } from '../../components/Skeleton'
 import { BackendOffCard } from './TeamAuth'
 import {
   addAssignment,
@@ -127,11 +128,7 @@ export default function ClassroomDetail() {
 
   if (!BACKEND_ENABLED) return <BackendOffCard />
   if (!adminReady) {
-    return (
-      <div role="status" className="px-4 py-16 text-center text-slate-500">
-        {zh ? '加载中…' : es ? 'Cargando…' : 'Loading…'}
-      </div>
-    )
+    return <SkeletonPage label={zh ? '加载中…' : es ? 'Cargando…' : 'Loading…'} cards={3} />
   }
   if (!adminUser) return <Navigate to="/team" replace />
 
@@ -161,9 +158,18 @@ export default function ClassroomDetail() {
 
   if (loading && !classroom) {
     return (
-      <div role="status" className="px-4 py-16 text-center text-slate-500">
-        {zh ? '正在加载班级…' : es ? 'Cargando la clase…' : 'Loading class…'}
-      </div>
+      <Loading label={zh ? '正在加载班级…' : es ? 'Cargando la clase…' : 'Loading class…'}>
+        <SkeletonHero />
+        <div className="mx-auto max-w-6xl px-4 py-10">
+          <div className="card space-y-4">
+            <SkeletonRow />
+            <SkeletonRow />
+            <SkeletonRow />
+            <SkeletonRow />
+            <SkeletonRow />
+          </div>
+        </div>
+      </Loading>
     )
   }
 

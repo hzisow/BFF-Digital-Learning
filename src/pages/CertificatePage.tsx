@@ -64,7 +64,7 @@ export default function CertificatePage() {
             : `The certificate unlocks when you complete all 8 BFF Academy lessons. You're at ${doneCount} of ${lessons.length} — keep going!`}
         </p>
         <Link to="/lessons" className="btn-primary mt-8 inline-flex">
-          {zh ? '返回我的学习路径' : es ? 'Volver a mi ruta' : 'Back to my path'} <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          {zh ? '返回我的学习路径' : es ? 'Volver a mi ruta' : 'Back to my path'} <ArrowRight className="nudge h-4 w-4" aria-hidden="true" />
         </Link>
       </div>
     )

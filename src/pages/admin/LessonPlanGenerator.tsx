@@ -14,6 +14,7 @@ import { buildWorksheetPdf, worksheetFilename, loadLogo } from '../../lib/worksh
 import type { Worksheet } from '../../lib/worksheetPdf'
 import { useLang } from '../../lib/i18n'
 import { useAdmin } from '../../lib/session'
+import { Skeleton, SkeletonPage, SkeletonText } from '../../components/Skeleton'
 
 type Kind = 'lesson-plan' | 'worksheet'
 
@@ -193,11 +194,7 @@ export default function LessonPlanGenerator() {
   // Guard: mentors only. Wait for auth to resolve before deciding, so we don't
   // redirect a signed-in mentor during the initial session check.
   if (!adminReady) {
-    return (
-      <div role="status" className="px-4 py-16 text-center text-slate-500">
-        {zh ? '加载中…' : es ? 'Cargando…' : 'Loading…'}
-      </div>
-    )
+    return <SkeletonPage label={zh ? '加载中…' : es ? 'Cargando…' : 'Loading…'} cards={2} />
   }
   if (!adminUser) return <Navigate to="/team" replace />
 
@@ -512,6 +509,46 @@ export default function LessonPlanGenerator() {
         aria-live="polite"
         aria-busy={busy}
       >
+        {/* While Claude drafts, hold the shape of the result that is coming.
+            The section above already carries aria-live + aria-busy, and every
+            skeleton shape is aria-hidden, so nothing is announced twice. */}
+        {busy && isWorksheet && !worksheet && (
+          <div className="card">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <div className="space-y-2">
+                <Skeleton className="h-6 w-64" />
+                <Skeleton className="h-4 w-48" />
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <Skeleton className="h-11 w-28" />
+                <Skeleton className="h-11 w-36" />
+              </div>
+            </div>
+            {/* Stands in for the PDF preview iframe. */}
+            <Skeleton className="h-[860px] w-full" />
+            <Skeleton className="mt-3 h-3 w-3/4" />
+          </div>
+        )}
+
+        {busy && !isWorksheet && !markdown && (
+          <div className="card">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <Skeleton className="h-6 w-56" />
+              <div className="flex flex-wrap gap-2">
+                <Skeleton className="h-11 w-24" />
+                <Skeleton className="h-11 w-24" />
+                <Skeleton className="h-11 w-32" />
+              </div>
+            </div>
+            <Skeleton className="h-7 w-2/3" />
+            <SkeletonText lines={4} className="mt-4" />
+            <Skeleton className="mt-6 h-5 w-1/2" />
+            <SkeletonText lines={5} className="mt-4" />
+            <Skeleton className="mt-6 h-5 w-2/5" />
+            <SkeletonText lines={3} className="mt-4" />
+          </div>
+        )}
+
         {/* Worksheet: a real PDF, previewed exactly as it will print. */}
         {worksheet && (
           <div className="card">

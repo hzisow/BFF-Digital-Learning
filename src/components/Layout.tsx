@@ -424,7 +424,7 @@ export default function Layout() {
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-bff-200 transition-colors hover:text-white"
           >
             bffofamerica.org
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            <ArrowRight className="nudge h-4 w-4" aria-hidden="true" />
           </a>
         </div>
       </footer>

@@ -8,6 +8,7 @@ import { BACKEND_ENABLED, GOOGLE_CLIENT_ID } from '../../lib/config'
 import { useAdmin } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
 import GoogleSignInButton from '../../components/GoogleSignInButton'
+import { Loading, Skeleton } from '../../components/Skeleton'
 
 /**
  * Shown on all /team + /admin pages when no Supabase backend is configured.
@@ -50,9 +51,21 @@ export default function TeamAuth() {
   if (!BACKEND_ENABLED) return <BackendOffCard />
   if (!adminReady) {
     return (
-      <div role="status" className="px-4 py-16 text-center text-slate-500">
-        {zh ? '加载中…' : es ? 'Cargando…' : 'Loading…'}
-      </div>
+      <Loading
+        label={zh ? '加载中…' : es ? 'Cargando…' : 'Loading…'}
+        className="mx-auto max-w-md px-4 py-16"
+      >
+        <div className="mb-8 flex flex-col items-center gap-3">
+          <Skeleton className="h-3 w-28" />
+          <Skeleton className="h-9 w-48" />
+          <Skeleton className="h-4 w-64" />
+        </div>
+        <div className="card space-y-4">
+          <Skeleton className="h-11 w-full" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-2/3" />
+        </div>
+      </Loading>
     )
   }
   if (adminUser) return <Navigate to="/admin" replace />

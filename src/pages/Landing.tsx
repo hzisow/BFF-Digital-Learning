@@ -116,7 +116,7 @@ export default function Landing() {
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Link to="/join" className="btn-primary w-full px-7 py-3 sm:w-auto">
                 {zh ? '加入你的班级' : es ? 'Únete a tu clase' : 'Join your class'}
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                <ArrowRight className="nudge h-4 w-4" aria-hidden="true" />
               </Link>
               <Link
                 to={resume ? resume.path : '/lessons'}
@@ -133,7 +133,7 @@ export default function Landing() {
                     : es
                       ? 'Explora las lecciones'
                       : 'Explore lessons'}
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                <ArrowRight className="nudge h-4 w-4" aria-hidden="true" />
               </Link>
             </div>
             <ul className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-medium text-white/60">
@@ -226,7 +226,7 @@ export default function Landing() {
             </div>
             <Link to="/activities" className="btn-ghost shrink-0">
               {zh ? '查看所有活动' : es ? 'Ver todas las actividades' : 'See all activities'}
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              <ArrowRight className="nudge h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
           <div className="mt-8 grid gap-5 sm:grid-cols-3">
@@ -291,7 +291,7 @@ export default function Landing() {
               className="btn-primary mt-8"
             >
               {zh ? '通过 bffofamerica.org 联系我们' : es ? 'Contáctanos en bffofamerica.org' : 'Get in touch at bffofamerica.org'}
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              <ArrowRight className="nudge h-4 w-4" aria-hidden="true" />
             </a>
           </div>
         </div>

@@ -8,6 +8,7 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { Pause, Play, Check, CheckCircle2, AlertCircle, Zap } from 'lucide-react'
 import type { VideoQuestion } from '../content/types'
 import { useLang } from '../lib/i18n'
+import { Loading, Skeleton } from './Skeleton'
 
 // ---------- Minimal YouTube IFrame API typings ----------
 
@@ -470,9 +471,14 @@ export default function VideoCheckpoint({
           <div ref={hostRef} className="h-full w-full" />
         </div>
         {!ready && (
-          <div className="absolute inset-0 flex items-center justify-center text-sm font-semibold text-white/70">
-            {zh ? '正在加载视频…' : es ? 'Cargando video…' : 'Loading video…'}
-          </div>
+          // Player-shaped placeholder: the 16:9 block keeps the frame while the
+          // YouTube iframe boots, instead of a bare line of text.
+          <Loading
+            label={zh ? '正在加载视频…' : es ? 'Cargando video…' : 'Loading video…'}
+            className="absolute inset-0 bg-paper"
+          >
+            <Skeleton className="aspect-video w-full rounded-none" />
+          </Loading>
         )}
         {active != null && (
           <div

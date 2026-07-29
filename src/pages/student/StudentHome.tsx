@@ -12,7 +12,7 @@ import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
 import LevelCard from '../../components/LevelCard'
 import ClassLeaderboard from '../../components/ClassLeaderboard'
-import { SkeletonCard } from '../../components/Skeleton'
+import { Loading, SkeletonCard } from '../../components/Skeleton'
 
 interface AssignmentRow {
   activity_slug: string
@@ -358,14 +358,15 @@ export default function StudentHome() {
           </p>
         )}
         {assignments === null ? (
-          <div
-            className="mt-4 grid gap-4 sm:grid-cols-2"
-            role="status"
-            aria-label={zh ? '正在加载你的作业……' : es ? 'Cargando tus tareas…' : 'Loading your assignments…'}
+          <Loading
+            className="mt-4"
+            label={zh ? '正在加载你的作业……' : es ? 'Cargando tus tareas…' : 'Loading your assignments…'}
           >
-            <SkeletonCard />
-            <SkeletonCard />
-          </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <SkeletonCard />
+              <SkeletonCard />
+            </div>
+          </Loading>
         ) : assignments.length === 0 ? (
           !loadError && (
             <div className="card mt-4 text-center">

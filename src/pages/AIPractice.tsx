@@ -16,6 +16,7 @@ import { useLang } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
 import { getLesson } from '../content/lessons'
 import { ACTIVITIES } from '../lib/activities'
+import { Loading, SkeletonQuestion } from '../components/Skeleton'
 
 interface Q {
   question: string
@@ -227,6 +228,10 @@ export default function AIPractice() {
     </div>
   )
 
+  // Announced to screen readers while the skeleton questions stand in for the
+  // set Claude is still writing. Same wording as the button's busy state.
+  const generatingLabel = zh ? '正在生成…' : es ? 'Generando…' : 'Generating…'
+
   const generateButton = (
     <button
       type="button"
@@ -283,6 +288,18 @@ export default function AIPractice() {
     </div>
   )
 
+  // Generation takes a few seconds, so hold the shape of the question set the
+  // student is about to get instead of leaving the page empty under the button.
+  const generatingSkeleton = (
+    <Loading label={generatingLabel} className="mt-8">
+      <div className="space-y-4">
+        <SkeletonQuestion />
+        <SkeletonQuestion />
+        <SkeletonQuestion />
+      </div>
+    </Loading>
+  )
+
   // ---- No quiz yet: show the setup screen ----
   if (!questions) {
     return (
@@ -290,6 +307,7 @@ export default function AIPractice() {
         {header}
         {topicSummary}
         {generateButton}
+        {loading && generatingSkeleton}
         {errorNotice}
       </div>
     )

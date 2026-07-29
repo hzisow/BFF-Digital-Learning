@@ -24,7 +24,7 @@ import { supabase } from '../../lib/supabase'
 import { useAdmin } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
 import HostLauncher from '../../components/HostLauncher'
-import { SkeletonCard } from '../../components/Skeleton'
+import { SkeletonCard, SkeletonPage } from '../../components/Skeleton'
 import { BackendOffCard } from './TeamAuth'
 import {
   approveTeamMember,
@@ -190,11 +190,7 @@ export default function AdminDashboard() {
 
   if (!BACKEND_ENABLED) return <BackendOffCard />
   if (!adminReady) {
-    return (
-      <div role="status" className="px-4 py-16 text-center text-slate-500">
-        {zh ? '加载中…' : es ? 'Cargando…' : 'Loading…'}
-      </div>
-    )
+    return <SkeletonPage label={zh ? '加载中…' : es ? 'Cargando…' : 'Loading…'} cards={3} />
   }
   if (!adminUser) return <Navigate to="/team" replace />
 

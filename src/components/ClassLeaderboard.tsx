@@ -6,7 +6,7 @@ import { Trophy, Crown, Medal, RefreshCw } from 'lucide-react'
 import { fetchLeaderboard, type LeaderboardRow } from '../lib/leaderboard'
 import { levelInfo } from '../lib/xp'
 import { useLang } from '../lib/i18n'
-import { SkeletonRow } from './Skeleton'
+import { Loading, SkeletonRow } from './Skeleton'
 
 export default function ClassLeaderboard({
   classroomId,
@@ -64,11 +64,13 @@ export default function ClassLeaderboard({
         )}
 
         {loading && rows.length === 0 ? (
-          <div className="space-y-3" role="status" aria-label={zh ? '加载中…' : es ? 'Cargando…' : 'Loading…'}>
-            <SkeletonRow />
-            <SkeletonRow />
-            <SkeletonRow />
-          </div>
+          <Loading label={zh ? '加载中…' : es ? 'Cargando…' : 'Loading…'}>
+            <div className="space-y-3">
+              <SkeletonRow />
+              <SkeletonRow />
+              <SkeletonRow />
+            </div>
+          </Loading>
         ) : rows.length === 0 ? (
           <p className="text-sm text-ink/50">
             {zh

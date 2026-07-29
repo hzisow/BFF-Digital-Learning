@@ -418,7 +418,7 @@ export default function LessonsIndex() {
               <Link to={current.path} className="btn-primary mt-6 inline-flex">
                 {doneCount === 0 ? (zh ? '开始第 1 天' : es ? 'Empezar Día 1' : 'Start Day 1') : zh ? '继续' : es ? 'Continuar' : 'Continue'}:{' '}
                 <AppIcon name={current.icon} className="h-4 w-4" /> {lessonTitle(current)}{' '}
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                <ArrowRight className="nudge h-4 w-4" aria-hidden="true" />
               </Link>
             )
           )}
@@ -737,7 +737,7 @@ export default function LessonsIndex() {
           </div>
           <Link to="/activities" className="btn-secondary shrink-0">
             {zh ? '游戏与挑战' : es ? 'Juegos y desafíos' : 'Games & Challenges'}
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            <ArrowRight className="nudge h-4 w-4" aria-hidden="true" />
           </Link>
         </div>
       </div>
@@ -771,7 +771,7 @@ export default function LessonsIndex() {
             <div className="mt-5 flex flex-col gap-2">
               <Link to={jumpTarget.path} className="btn-primary w-full">
                 {zh ? '还是要开始' : es ? 'Empezar de todos modos' : 'Start it anyway'}{' '}
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                <ArrowRight className="nudge h-4 w-4" aria-hidden="true" />
               </Link>
               {current && (
                 <Link to={current.path} className="btn-secondary w-full">

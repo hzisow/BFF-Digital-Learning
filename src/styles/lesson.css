@@ -67,7 +67,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   text-decoration: none;
-  transition: color 0.2s;
+  transition: color var(--dur-hover, 160ms) var(--ease-out, ease-out);
 }
 .lz-exit:hover { color: var(--lz-ink); }
 .lz-topbar-title {
@@ -100,7 +100,9 @@
 .lz-lang button {
   border: 0; background: none; padding: 4px 8px;
   font-size: 11px; font-weight: 800; letter-spacing: 0.04em;
-  color: var(--lz-muted); transition: color 0.15s, background 0.15s;
+  color: var(--lz-muted);
+  transition: color var(--dur-hover, 160ms) var(--ease-out, ease-out),
+    background var(--dur-hover, 160ms) var(--ease-out, ease-out);
 }
 .lz-lang button.is-active { background: var(--lz-ink); color: #fff; }
 
@@ -274,7 +276,9 @@
   font-size: 15px;
   font-weight: 500;
   color: #2a3340;
-  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+  transition: border-color var(--dur-hover, 160ms) var(--ease-out, ease-out),
+    background var(--dur-hover, 160ms) var(--ease-out, ease-out),
+    transform var(--dur-press, 90ms) var(--ease-out, ease-out);
 }
 .lz-option::before {
   content: attr(data-key);
@@ -344,7 +348,9 @@
   text-decoration: none;
   color: var(--lz-muted);
   padding: 13px 16px;
-  transition: color 0.15s, transform 0.12s, background 0.15s;
+  transition: color var(--dur-hover, 160ms) var(--ease-out, ease-out),
+    transform var(--dur-press, 90ms) var(--ease-out, ease-out),
+    background var(--dur-hover, 160ms) var(--ease-out, ease-out);
 }
 .lz-btn:hover { color: var(--lz-ink); }
 .lz-btn--primary {
