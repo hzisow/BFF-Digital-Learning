@@ -1,3 +1,13 @@
+/* Self-hosted fonts. Previously these came from the Google Fonts CDN via a
+   blocking <link> in index.html, which meant a third-party request on every
+   first paint and system-font fallback whenever a school network was slow or
+   offline. Bundling them makes typography deterministic and removes the
+   dependency. `wght` (weight axis only, no optical sizing) keeps the files
+   small; each subset carries a unicode-range, so a browser downloads only the
+   ranges the page actually uses (~87KB for Latin). */
+@import '@fontsource-variable/bricolage-grotesque/wght.css';
+@import '@fontsource-variable/inter/wght.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

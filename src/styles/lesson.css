@@ -18,13 +18,17 @@
   --lz-line: rgba(12, 26, 39, 0.13);
   --lz-muted: #5c6470;
   --lz-chamfer: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  /* Font stacks live in variables so the self-hosted "… Variable" family names
+     are declared in exactly one place. */
+  --lz-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", system-ui, sans-serif;
+  --lz-body: "Inter Variable", Inter, system-ui, sans-serif;
 
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
   background: var(--lz-paper);
   color: var(--lz-ink);
-  font-family: Inter, system-ui, sans-serif;
+  font-family: var(--lz-body);
 }
 
 /* Emphasis word inside display headings — a serif italic, like the reference. */
@@ -78,7 +82,7 @@
   gap: 10px;
 }
 .lz-topbar-title strong {
-  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-family: var(--lz-display);
   font-size: 15px;
   letter-spacing: -0.01em;
   white-space: nowrap;
@@ -126,7 +130,7 @@
 .lz-eyebrow-line { width: 26px; height: 1px; background: currentColor; opacity: 0.5; }
 
 .lz-h {
-  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-family: var(--lz-display);
   font-weight: 800;
   letter-spacing: -0.025em;
   line-height: 1.02;
@@ -176,7 +180,7 @@
 }
 .lz-hero .lz-eyebrow { color: var(--lz-blue-bright); }
 .lz-hero h1 {
-  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-family: var(--lz-display);
   font-weight: 800;
   letter-spacing: -0.035em;
   line-height: 0.98;
@@ -242,7 +246,7 @@
 .lz-terms { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 22px; }
 .lz-term { position: relative; background: var(--lz-paper); border: 1px solid var(--lz-line); padding: 20px 20px 20px 24px; }
 .lz-term::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--lz-blue); }
-.lz-term strong { font-family: "Bricolage Grotesque", system-ui, sans-serif; font-size: 17px; color: var(--lz-ink); }
+.lz-term strong { font-family: var(--lz-display); font-size: 17px; color: var(--lz-ink); }
 .lz-term p { margin: 8px 0 0; font-size: 14px; line-height: 1.6; color: var(--lz-muted); }
 
 /* Scenario / worked-example — a distinct dark block so examples feel real */
@@ -287,7 +291,7 @@
   width: 36px;
   display: grid;
   place-items: center;
-  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-family: var(--lz-display);
   font-size: 13px;
   font-weight: 800;
   color: var(--lz-muted);
@@ -306,7 +310,7 @@
 .lz-feedback { margin-top: 20px; border: 1px solid var(--lz-line); padding: 18px 20px; background: var(--lz-paper); }
 .lz-feedback.ok { border-color: #b7e0c6; background: #eef8f1; }
 .lz-feedback.no { border-color: #f0d19a; background: #fdf4e3; }
-.lz-feedback strong { font-family: "Bricolage Grotesque", system-ui, sans-serif; display: flex; align-items: center; gap: 8px; }
+.lz-feedback strong { font-family: var(--lz-display); display: flex; align-items: center; gap: 8px; }
 .lz-feedback.ok strong { color: #175f36; }
 .lz-feedback.no strong { color: #8a5a12; }
 .lz-feedback p { margin: 8px 0 0; font-size: 14px; line-height: 1.6; color: #3a4450; }
@@ -340,7 +344,7 @@
   gap: 9px;
   border: 0;
   background: none;
-  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-family: var(--lz-display);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -377,7 +381,7 @@
   padding: 48px 36px;
   clip-path: var(--lz-chamfer);
 }
-.lz-result-score { font-family: "Bricolage Grotesque", system-ui, sans-serif; font-weight: 800; font-size: clamp(58px, 12vw, 88px); line-height: 0.9; letter-spacing: -0.04em; }
+.lz-result-score { font-family: var(--lz-display); font-weight: 800; font-size: clamp(58px, 12vw, 88px); line-height: 0.9; letter-spacing: -0.04em; }
 .lz-result-score em { color: var(--lz-blue-bright); }
 .lz-review-item { position: relative; background: #fff; border: 1px solid var(--lz-line); padding: 20px 22px; }
 .lz-review-item::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }

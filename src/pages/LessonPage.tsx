@@ -545,7 +545,7 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
                     ? `Acertaste ${correct} de ${total} preguntas al primer intento.`
                     : `You got ${correct} of ${total} questions right on the first try.`}
               </p>
-              <p style={{ marginTop: '14px', fontFamily: '"Bricolage Grotesque", sans-serif', fontWeight: 700, fontSize: '17px' }}>
+              <p style={{ marginTop: '14px', fontFamily: 'var(--lz-display)', fontWeight: 700, fontSize: '17px' }}>
                 {tier}
               </p>
             </div>
@@ -561,7 +561,7 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
               return (
                 <div key={i} className={`lz-review-item ${right ? 'ok' : 'no'}`}>
                   <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px' }}>
-                    <p style={{ fontFamily: '"Bricolage Grotesque", sans-serif', fontWeight: 600, margin: 0 }}>
+                    <p style={{ fontFamily: 'var(--lz-display)', fontWeight: 600, margin: 0 }}>
                       {i + 1}. {q.question}
                     </p>
                     <span className={`chip shrink-0 ${right ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>

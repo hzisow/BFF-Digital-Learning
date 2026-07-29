@@ -32,8 +32,11 @@ export default {
         },
       },
       fontFamily: {
-        display: ['"Bricolage Grotesque"', 'system-ui', 'sans-serif'],
-        body: ['Inter', 'system-ui', 'sans-serif'],
+        // The @fontsource variable packages register the family under a
+        // "… Variable" name; the plain name is kept as a fallback in case the
+        // font is also installed locally.
+        display: ['"Bricolage Grotesque Variable"', '"Bricolage Grotesque"', 'system-ui', 'sans-serif'],
+        body: ['"Inter Variable"', 'Inter', 'system-ui', 'sans-serif'],
       },
       // Deliberately tightened off the Tailwind defaults — bubbly, uniform
       // rounding is a giveaway of un-customized output. These crisper radii
