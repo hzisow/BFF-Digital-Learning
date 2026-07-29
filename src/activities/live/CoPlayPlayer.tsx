@@ -17,6 +17,8 @@ import { useStalledLookup } from '../../lib/useStalledLookup'
 import LiveLookupStalled from '../../components/LiveLookupStalled'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
+import StudentNameFields from '../../components/StudentNameFields'
+import { composeStudentName, splitStudentName } from '../../lib/studentName'
 import { AppIcon } from '../../lib/icons'
 import { Construction, Flag, Gamepad2, HelpCircle, PartyPopper } from 'lucide-react'
 
@@ -97,9 +99,14 @@ export default function CoPlayPlayer() {
   const [loadError, setLoadError] = useState<string | null>(null)
   const [player, setPlayer] = useState<LivePlayer | null>(null)
   const [players, setPlayers] = useState<LivePlayer[]>([])
-  const [nickname, setNickname] = useState(
-    () => student?.nickname ?? localStorage.getItem(NICK_KEY) ?? '',
+  // Seeded from the class session or the last name used on this device,
+  // split back into its two parts so the form is already filled in.
+  const seededName = student?.nickname ?? localStorage.getItem(NICK_KEY) ?? ''
+  const [firstName, setFirstName] = useState(() => splitStudentName(seededName).firstName)
+  const [lastInitial, setLastInitial] = useState(
+    () => splitStudentName(seededName).lastInitial,
   )
+  const nickname = composeStudentName(firstName, lastInitial)
   const [joining, setJoining] = useState(false)
   const [joinError, setJoinError] = useState<string | null>(null)
   const [finished, setFinished] = useState(false)
@@ -163,7 +170,7 @@ export default function CoPlayPlayer() {
     if (!session || joinRef.current) return
     const nick = nickname.trim()
     if (!nick) {
-      setJoinError(zh ? '先起个昵称吧！' : es ? '¡Elige un apodo primero!' : 'Pick a nickname first!')
+      setJoinError(zh ? '先填上你的名字吧！' : es ? '¡Primero pon tu nombre!' : 'Add your name first!')
       return
     }
     joinRef.current = true
@@ -248,21 +255,16 @@ export default function CoPlayPlayer() {
               {zh
                 ? '——起个昵称，好让大家知道你是谁。'
                 : es
-                  ? '— elige un apodo para que todos sepan quién eres.'
-                  : '— pick a nickname so everyone knows who you are.'}
+                  ? '— pon tu nombre y la inicial de tu apellido.'
+                  : '— add your first name and last initial so everyone knows who you are.'}
             </p>
           </div>
           <form className="space-y-3" onSubmit={handleJoin}>
-            <label htmlFor="live-nickname" className="sr-only">
-              {zh ? '你的昵称' : es ? 'Tu apodo' : 'Your nickname'}
-            </label>
-            <input
-              id="live-nickname"
-              className="input text-center font-display text-lg"
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
-              placeholder={zh ? '你的昵称' : es ? 'Tu apodo' : 'Your nickname'}
-              maxLength={24}
+            <StudentNameFields
+              firstName={firstName}
+              lastInitial={lastInitial}
+              onFirstName={setFirstName}
+              onLastInitial={setLastInitial}
               autoFocus
             />
             {joinError && (

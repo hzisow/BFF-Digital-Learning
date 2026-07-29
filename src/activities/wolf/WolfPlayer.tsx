@@ -19,6 +19,8 @@ import { BACKEND_ENABLED } from '../../lib/config'
 import { useStudent } from '../../lib/session'
 import { saveProgress } from '../../lib/progress'
 import { useLang } from '../../lib/i18n'
+import StudentNameFields from '../../components/StudentNameFields'
+import { composeStudentName, splitStudentName } from '../../lib/studentName'
 import {
   Award, Bell, Crown, HelpCircle, LineChart, Lock, Medal, Newspaper, PartyPopper,
   Plug, TrendingDown,
@@ -77,9 +79,14 @@ export default function WolfPlayer() {
   const [loadError, setLoadError] = useState<string | null>(null)
   const [player, setPlayer] = useState<GamePlayer | null>(null)
   const [players, setPlayers] = useState<GamePlayer[]>([])
-  const [nickname, setNickname] = useState(
-    () => student?.nickname ?? localStorage.getItem(NICK_KEY) ?? '',
+  // Seeded from the class session or the last name used on this device,
+  // split back into its two parts so the form is already filled in.
+  const seededName = student?.nickname ?? localStorage.getItem(NICK_KEY) ?? ''
+  const [firstName, setFirstName] = useState(() => splitStudentName(seededName).firstName)
+  const [lastInitial, setLastInitial] = useState(
+    () => splitStudentName(seededName).lastInitial,
   )
+  const nickname = composeStudentName(firstName, lastInitial)
   const [joining, setJoining] = useState(false)
   const [joinError, setJoinError] = useState<string | null>(null)
   const [cash, setCash] = useState(STARTING_CASH)
@@ -161,7 +168,7 @@ export default function WolfPlayer() {
     if (!session || joinRef.current) return
     const nick = nickname.trim()
     if (!nick) {
-      setJoinError(zh ? '先起个昵称吧！' : es ? '¡Elige un apodo primero!' : 'Pick a nickname first!')
+      setJoinError(zh ? '先填上你的名字吧！' : es ? '¡Primero pon tu nombre!' : 'Add your name first!')
       return
     }
     joinRef.current = true
@@ -273,21 +280,16 @@ export default function WolfPlayer() {
               {zh
                 ? '起个昵称，好让大家知道是谁在交易。'
                 : es
-                  ? 'Elige un apodo para que todos sepan quién está negociando.'
-                  : 'Pick a nickname so everyone knows who is trading.'}
+                  ? 'Pon tu nombre y la inicial de tu apellido para que todos sepan quién negocia.'
+                  : 'Add your first name and last initial so everyone knows who is trading.'}
             </p>
           </div>
           <form className="space-y-3" onSubmit={handleJoin}>
-            <label htmlFor="wolf-nickname" className="sr-only">
-              {zh ? '你的昵称' : es ? 'Tu apodo' : 'Your nickname'}
-            </label>
-            <input
-              id="wolf-nickname"
-              className="input text-center font-display text-lg"
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
-              placeholder={zh ? '你的昵称' : es ? 'Tu apodo' : 'Your nickname'}
-              maxLength={24}
+            <StudentNameFields
+              firstName={firstName}
+              lastInitial={lastInitial}
+              onFirstName={setFirstName}
+              onLastInitial={setLastInitial}
               autoFocus
             />
             {joinError && (

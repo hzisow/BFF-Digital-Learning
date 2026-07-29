@@ -12,7 +12,11 @@ import { getSupabase, hasStoredSession, requireSupabase } from './supabase'
 import { BACKEND_ENABLED } from './config'
 import { reconcileProgress } from './progress'
 
-// ---------- Student session (class code + nickname, no email) ----------
+// ---------- Student session (class code + first name & last initial) ----------
+//
+// `nickname` holds the composed display name ("Jayden M."). The column name is
+// historical: identity is (classroom, name), which is what lets a student
+// reconnect from another device by typing the same thing again.
 
 export interface StudentSession {
   studentId: string
@@ -26,7 +30,7 @@ const STUDENT_KEY = 'bff_student_session'
 
 interface StudentCtx {
   student: StudentSession | null
-  joinClass: (code: string, nickname: string, pin?: string) => Promise<StudentSession>
+  joinClass: (code: string, displayName: string) => Promise<StudentSession>
   leaveClass: () => void
 }
 
@@ -99,7 +103,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
-  const joinClass = useCallback(async (code: string, nickname: string, pin?: string) => {
+  const joinClass = useCallback(async (code: string, displayName: string) => {
     if (!BACKEND_ENABLED) {
       throw new Error(
         'Class codes are not live yet — ask your BFF mentor, or explore the activities in solo mode!',
@@ -109,9 +113,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     // the right place to pay for the client.
     const supabase = await requireSupabase()
     const cleanCode = code.trim().toUpperCase()
-    const cleanNick = nickname.trim().slice(0, 24)
-    const cleanPin = (pin ?? '').trim()
-    if (!cleanCode || !cleanNick) throw new Error('Enter your class code and a nickname.')
+    const cleanNick = displayName.trim().slice(0, 24)
+    if (!cleanCode || !cleanNick) throw new Error('Enter your class code and your name.')
 
     // Students sign in anonymously — no email or personal info collected.
     const { data: auth } = await supabase.auth.getSession()
@@ -122,18 +125,23 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     const { data, error } = await supabase.rpc('join_classroom', {
       p_code: cleanCode,
       p_nickname: cleanNick,
-      p_pin: cleanPin || null,
+      // The PIN argument still exists on the database function and is left null:
+      // students identify by name now, so nothing sets a PIN, and the reconnect
+      // path only demands one for records that already have a hash stored.
+      p_pin: null,
     })
     if (error) {
       const m = error.message
       if (m.includes('classroom_not_found')) {
         throw new Error('That class code was not found. Double-check it with your mentor!')
       }
-      if (m.includes('pin_required')) {
-        throw new Error(`"${cleanNick}" is protected with a PIN in this class. Enter it to continue.`)
-      }
-      if (m.includes('pin_incorrect')) {
-        throw new Error('That PIN does not match. Try again, or ask your mentor for help.')
+      // Records created before names replaced PINs may still carry a PIN hash.
+      // There is no PIN box any more, so point at the way out rather than
+      // asking for something the screen cannot collect.
+      if (m.includes('pin_required') || m.includes('pin_incorrect')) {
+        throw new Error(
+          `"${cleanNick}" is already taken in this class by an older sign-in. Ask your mentor to clear it, or add another letter of your last name.`,
+        )
       }
       throw new Error(m)
     }

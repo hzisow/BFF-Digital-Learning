@@ -18,6 +18,8 @@ import { Logo } from '../../components/Logo'
 import { BACKEND_ENABLED } from '../../lib/config'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
+import StudentNameFields from '../../components/StudentNameFields'
+import { composeStudentName, splitStudentName } from '../../lib/studentName'
 import { AppIcon } from '../../lib/icons'
 import {
   Award,
@@ -99,9 +101,14 @@ export default function QuizPlay() {
   const [player, setPlayer] = useState<QuizPlayer | null>(null)
   const [players, setPlayers] = useState<QuizPlayer[]>([])
   const [answers, setAnswers] = useState<Record<string, QuizAnswer>>({})
-  const [nickname, setNickname] = useState(
-    () => student?.nickname ?? localStorage.getItem(NICK_KEY) ?? '',
+  // Seeded from the class session or the last name used on this device,
+  // split back into its two parts so the form is already filled in.
+  const seededName = student?.nickname ?? localStorage.getItem(NICK_KEY) ?? ''
+  const [firstName, setFirstName] = useState(() => splitStudentName(seededName).firstName)
+  const [lastInitial, setLastInitial] = useState(
+    () => splitStudentName(seededName).lastInitial,
   )
+  const nickname = composeStudentName(firstName, lastInitial)
   const [joining, setJoining] = useState(false)
   const [joinError, setJoinError] = useState<string | null>(null)
 
@@ -159,7 +166,7 @@ export default function QuizPlay() {
     if (!session || joinRef.current) return
     const nick = nickname.trim()
     if (!nick) {
-      setJoinError(zh ? '先取一个昵称吧！' : es ? '¡Primero elige un apodo!' : 'Pick a nickname first!')
+      setJoinError(zh ? '先填上你的名字吧！' : es ? '¡Primero pon tu nombre!' : 'Add your name first!')
       return
     }
     joinRef.current = true
@@ -311,23 +318,18 @@ export default function QuizPlay() {
             </h1>
             <p className="mt-1 text-sm text-ink/70">
               {zh
-                ? '取一个昵称，让大家都知道排行榜上的你是谁。'
+                ? '填上名字和姓氏首字母，让大家都知道排行榜上的你是谁。'
                 : es
-                  ? 'Elige un apodo para que todos sepan quién está en la tabla de posiciones.'
-                  : 'Pick a nickname so everyone knows who is on the leaderboard.'}
+                  ? 'Pon tu nombre y la inicial de tu apellido para que todos sepan quién está en la tabla.'
+                  : 'Add your first name and last initial so everyone knows who is on the leaderboard.'}
             </p>
           </div>
           <form className="space-y-3" onSubmit={handleJoin}>
-            <label htmlFor="quiz-nickname" className="sr-only">
-              {zh ? '你的昵称' : es ? 'Tu apodo' : 'Your nickname'}
-            </label>
-            <input
-              id="quiz-nickname"
-              className="input text-center font-display text-lg"
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
-              placeholder={zh ? '你的昵称' : es ? 'Tu apodo' : 'Your nickname'}
-              maxLength={24}
+            <StudentNameFields
+              firstName={firstName}
+              lastInitial={lastInitial}
+              onFirstName={setFirstName}
+              onLastInitial={setLastInitial}
               autoFocus
             />
             {joinError && (

@@ -4,6 +4,7 @@ import { Ticket, BookOpen, Gamepad2, Smile } from 'lucide-react'
 import { BACKEND_ENABLED } from '../../lib/config'
 import { useStudent } from '../../lib/session'
 import { isNetworkError, isOnline } from '../../lib/online'
+import { cleanFirstName, cleanLastInitial, composeStudentName } from '../../lib/studentName'
 import { offlineLiveCopy } from '../../lib/offlineCopy'
 import { useLang } from '../../lib/i18n'
 
@@ -62,15 +63,14 @@ function JoinForm() {
   // A shared join link (…/join?code=ABC123) pre-fills the code.
   const prefilledCode = cleanCode(params.get('code') ?? '')
   const [code, setCode] = useState(prefilledCode)
-  const [nickname, setNickname] = useState('')
-  const [pin, setPin] = useState('')
-  const [confirmPin, setConfirmPin] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastInitial, setLastInitial] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
 
   const codeRef = useRef<HTMLInputElement>(null)
   const nickRef = useRef<HTMLInputElement>(null)
-  // Focus the first empty field on load: the nickname if the code came prefilled.
+  // Focus the first empty field on load: the name if the code came prefilled.
   useEffect(() => {
     if (prefilledCode.length === 6) nickRef.current?.focus()
     else codeRef.current?.focus()
@@ -78,22 +78,13 @@ function JoinForm() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const pinMismatch = pin.length > 0 && confirmPin.length > 0 && pin !== confirmPin
+  // "Jayden M." — built in one place so the same student always resolves to the
+  // same record. Identity is matched on this string.
+  const displayName = composeStudentName(firstName, lastInitial)
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     if (busy) return
-    // If they're setting a PIN, both boxes must match so it can't be a typo.
-    if (pin.length > 0 && pin !== confirmPin) {
-      setError(
-        zh
-          ? 'PIN 码不一致——请在两个框里输入相同的 4 位数字。'
-          : es
-          ? 'Tus PIN no coinciden — escribe los mismos 4 dígitos en ambas casillas.'
-          : "Your PINs don't match — type the same 4 digits in both boxes.",
-      )
-      return
-    }
     setError(null)
     // Joining a class writes to the server, so it genuinely cannot work
     // offline. Say so plainly rather than surfacing a lookup failure that reads
@@ -105,7 +96,7 @@ function JoinForm() {
     }
     setBusy(true)
     try {
-      await joinClass(code, nickname, pin)
+      await joinClass(code, displayName)
       navigate('/student')
     } catch (err) {
       if (isNetworkError(err)) {
@@ -148,10 +139,10 @@ function JoinForm() {
         </h1>
         <p className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-ink/70">
           {zh
-            ? '向你的 BFF 导师要一个 6 位字母的班级代码，再取一个昵称。不需要邮箱、账号，也不需要任何个人信息。'
+            ? '向你的 BFF 导师要一个 6 位字母的班级代码，然后填写名字和姓氏首字母。不需要邮箱，也不需要账号。'
             : es
-            ? 'Consigue el código de clase de 6 letras de tu mentor de BFF y elige un apodo. Sin correo, sin cuenta, sin datos personales.'
-            : 'Grab the 6-letter class code from your BFF mentor and pick a nickname. No email, no account, no personal info needed.'}
+            ? 'Consigue el código de clase de 6 letras de tu mentor de BFF y pon tu nombre y la inicial de tu apellido. Sin correo y sin cuenta.'
+            : 'Grab the 6-letter class code from your BFF mentor, then add your first name and last initial. No email, no account.'}
         </p>
       </div>
 
@@ -174,101 +165,61 @@ function JoinForm() {
               spellCheck={false}
             />
           </div>
-          <div>
-            <label htmlFor="nickname" className="font-display text-sm font-semibold text-slate-700">
-              {zh ? '你的昵称' : es ? 'Tu apodo' : 'Your nickname'}
-            </label>
-            <input
-              ref={nickRef}
-              id="nickname"
-              className="input mt-1.5"
-              placeholder={zh ? '例如 SavvySam' : es ? 'p. ej. SavvySam' : 'e.g. SavvySam'}
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
-              maxLength={24}
-              autoComplete="off"
-              aria-describedby="nickname-hint"
-            />
-            <p id="nickname-hint" className="mt-1.5 text-xs text-slate-500">
-              {zh
-                ? '你的导师会看到这个昵称——让它容易辨认（也要适合在学校里使用 '
-                : es
-                ? 'Tu mentor ve este apodo — que sea fácil de reconocer (y apropiado para la escuela '
-                : 'Your mentor sees this nickname — keep it recognizable (and school-appropriate '}
-              <Smile className="inline-block h-3.5 w-3.5 align-[-0.15em]" aria-hidden="true" />).
-            </p>
-          </div>
-          <div>
-            <label htmlFor="pin" className="font-display text-sm font-semibold text-slate-700">
-              PIN <span className="font-normal text-slate-400">{zh ? '（可选）' : es ? '(opcional)' : '(optional)'}</span>
-            </label>
-            <input
-              id="pin"
-              className="input mt-1.5 tracking-[0.3em]"
-              type="text"
-              inputMode="numeric"
-              placeholder={zh ? '4 位数字' : es ? '4 dígitos' : '4 digits'}
-              value={pin}
-              onChange={(e) => setPin(e.target.value.replace(/[^0-9]/g, '').slice(0, 4))}
-              maxLength={4}
-              autoComplete="off"
-              aria-describedby="pin-hint"
-            />
-            <p id="pin-hint" className="mt-1.5 text-xs text-slate-500">
-              {zh ? (
-                <>
-                  设置一个 4 位 PIN 码，你的进度就会和你的名字绑定保存——用相同的昵称 + PIN 码在
-                  <strong>任何设备</strong>上重新登录，就能从上次离开的地方继续。
-                </>
-              ) : es ? (
-                <>
-                  Elige un PIN de 4 dígitos y tu progreso se guardará con tu nombre — vuelve a entrar
-                  con el mismo apodo + PIN en <strong>cualquier dispositivo</strong> para continuar
-                  donde lo dejaste.
-                </>
-              ) : (
-                <>
-                  Pick a 4-digit PIN and it saves your progress to your name — sign back in with the
-                  same nickname + PIN on <strong>any device</strong> to pick up where you left off.
-                </>
-              )}
-            </p>
-          </div>
-          {pin.length > 0 && (
-            <div>
-              <label htmlFor="confirm-pin" className="font-display text-sm font-semibold text-slate-700">
-                {zh ? '确认 PIN 码' : es ? 'Confirma el PIN' : 'Confirm PIN'}
+          <div className="flex gap-3">
+            <div className="flex-1">
+              <label htmlFor="first-name" className="font-display text-sm font-semibold text-slate-700">
+                {zh ? '名字' : es ? 'Nombre' : 'First name'}
               </label>
               <input
-                id="confirm-pin"
-                className={`input mt-1.5 tracking-[0.3em] ${
-                  pinMismatch ? 'border-red-400 focus:border-red-400 focus:ring-red-200' : ''
-                }`}
-                type="text"
-                inputMode="numeric"
-                placeholder={zh ? '再输入一次' : es ? 'escríbelo de nuevo' : 'type it again'}
-                value={confirmPin}
-                onChange={(e) => setConfirmPin(e.target.value.replace(/[^0-9]/g, '').slice(0, 4))}
-                maxLength={4}
-                autoComplete="off"
-                aria-invalid={pinMismatch}
-                aria-describedby="confirm-pin-hint"
+                ref={nickRef}
+                id="first-name"
+                className="input mt-1.5"
+                placeholder={zh ? '例如 小明' : es ? 'p. ej. Jayden' : 'e.g. Jayden'}
+                value={firstName}
+                onChange={(e) => setFirstName(cleanFirstName(e.target.value))}
+                autoComplete="given-name"
+                aria-describedby="name-hint"
               />
-              <p id="confirm-pin-hint" className="mt-1.5 text-xs text-slate-500">
-                {pinMismatch ? (
-                  <span className="font-semibold text-red-600">
-                    {zh ? '两个 PIN 码还不一致。' : es ? 'Los dos PIN aún no coinciden.' : "The two PINs don't match yet."}
-                  </span>
-                ) : zh ? (
-                  '输入相同的 4 位数字，这样就不会忘记。'
-                ) : es ? (
-                  'Escribe los mismos 4 dígitos para que no se te olviden.'
-                ) : (
-                  'Type the same 4 digits so you don’t forget them.'
-                )}
-              </p>
             </div>
-          )}
+            <div className="w-24">
+              <label htmlFor="last-initial" className="font-display text-sm font-semibold text-slate-700">
+                {zh ? '姓氏首字母' : es ? 'Inicial' : 'Last initial'}
+              </label>
+              <input
+                id="last-initial"
+                className="input mt-1.5 text-center uppercase"
+                placeholder={zh ? 'M' : 'M'}
+                value={lastInitial}
+                onChange={(e) => setLastInitial(cleanLastInitial(e.target.value))}
+                maxLength={1}
+                autoComplete="off"
+                aria-describedby="name-hint"
+              />
+            </div>
+          </div>
+          <p id="name-hint" className="-mt-2 text-xs text-slate-500">
+            {zh ? (
+              <>
+                你的导师会看到 <strong>{displayName || '小明 M.'}</strong>
+                ——只需要姓氏的第一个字母，不用填写全名 <Smile className="inline-block h-3.5 w-3.5 align-[-0.15em]" aria-hidden="true" />。
+                用同样的名字在<strong>任何设备</strong>上重新加入，就能继续你的进度。
+              </>
+            ) : es ? (
+              <>
+                Tu mentor verá <strong>{displayName || 'Jayden M.'}</strong> — solo la primera letra
+                del apellido, nunca el nombre completo{' '}
+                <Smile className="inline-block h-3.5 w-3.5 align-[-0.15em]" aria-hidden="true" />. Vuelve
+                a entrar con el mismo nombre en <strong>cualquier dispositivo</strong> para continuar.
+              </>
+            ) : (
+              <>
+                Your mentor sees <strong>{displayName || 'Jayden M.'}</strong> — just the first letter
+                of your last name, never your full name{' '}
+                <Smile className="inline-block h-3.5 w-3.5 align-[-0.15em]" aria-hidden="true" />. Join
+                again with the same name on <strong>any device</strong> to keep your progress.
+              </>
+            )}
+          </p>
 
           {error && (
             <p
@@ -282,12 +233,7 @@ function JoinForm() {
           <button
             type="submit"
             className="btn-primary w-full"
-            disabled={
-              busy ||
-              code.length !== 6 ||
-              nickname.trim().length === 0 ||
-              (pin.length > 0 && confirmPin !== pin)
-            }
+            disabled={busy || code.length !== 6 || displayName.length === 0}
             aria-busy={busy}
           >
             {busy

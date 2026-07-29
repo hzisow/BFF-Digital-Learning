@@ -11,7 +11,8 @@ performance number, which came from driving a production build in a browser.
 A trilingual (English / Spanish / Simplified Chinese) digital financial-literacy
 platform for **BFF of America**, a student-founded 501(c)(3).
 
-- **Students** join a class with a code — no email, no PII collected.
+- **Students** join a class with a code plus a first name and last initial
+  ("Jayden M.") — no email, no password, no full name.
 - **Mentors** sign in with Google and are gated behind an `approved` flag.
 - Everything also works **solo**, with no backend, straight from the browser.
 
@@ -79,7 +80,7 @@ Everything except Landing / Layout / NotFound is code-split — see
 |---|---|
 | `profiles` | Mentor accounts, incl. the `approved` gate |
 | `classrooms` | A class + its join code |
-| `students` | Nickname + classroom link. **No email, no real name.** |
+| `students` | Display name + classroom link. **No email, no full name.** The `nickname` column now holds "Jayden M."; `pin_hash` is vestigial and always null. |
 | `progress` | One row per (student, activity): status, score, `data` jsonb |
 | `assignments` | What a mentor assigned to a class |
 | `game_sessions` | Live Wolf / quiz / co-play sessions |
@@ -97,12 +98,12 @@ The app is local-first, so this is real state, not a cache. All prefixed `bff_`.
 | `bff_progress_v1` | `lib/progress.ts` | The authoritative local progress record |
 | `bff_progress_outbox_v1` | `lib/progressQueue.ts` | Failed server writes waiting to retry |
 | `bff_lesson_pos_v1` | `lib/lessonPosition.ts` | Where the student is inside each lesson |
-| `bff_student_session` | `lib/session.tsx` | Joined-class session (id + nickname) |
+| `bff_student_session` | `lib/session.tsx` | Joined-class session (id + display name) |
 | `bff_streak_v1` | `lib/streak.ts` | Daily streak counter |
 | `bff_last_level` | `components/Layout.tsx` | Last seen XP level, to detect a level-up |
 | `bff_lang` | `lib/i18n.tsx` | Chosen language |
 | `bff_sound` | `lib/sound.ts` | Sound on/off |
-| `bff_live_nick` / `bff_quiz_nick` / `bff_wolf_nick` | live screens | Remembered nickname per game type |
+| `bff_live_nick` / `bff_quiz_nick` / `bff_wolf_nick` | live screens | Remembered display name per game type |
 
 Bumping a `_v1` suffix silently discards every student's data on that key. If a
 shape has to change, migrate in place instead.
@@ -165,6 +166,34 @@ it bails on `saveData` or a 2G/3G `effectiveType`. The lessons chunk is 494KB
 (all 13 lessons × 3 languages), so speculatively pulling it on school wifi would
 compete with what the student actually asked for. Hover prefetch ignores the
 guard, because that is intent rather than a guess.
+
+### Students identify by first name + last initial, not a nickname and a PIN
+A student types **"Jayden"** and **"M"**; `src/lib/studentName.ts` composes
+`"Jayden M."` and that string goes into the existing `students.nickname` column.
+Nothing in the schema changed — identity is still `(classroom_id,
+lower(nickname))`, which is what lets a student reconnect from another device by
+typing the same thing again.
+
+Why: a nickname plus an optional 4-digit PIN (set it, then confirm it) was
+friction at the worst possible moment, and left mentors reading a roster of
+"JayJay" and "xX_money_Xx" with no idea who was who.
+
+Deliberate limits of this choice:
+- **Last initial only.** Full names were considered and rejected — storing
+  children's full names would change what BFF has to promise schools, and a
+  wall-chart name is enough to tell a class apart. Keep it that way.
+- **No PIN means no impersonation barrier.** Anyone with the class code can
+  claim a name in that class. That is accepted: it is a mentor-supervised room,
+  and it is the same protection a paper sign-in sheet offers.
+- `composeStudentName` capitalises **only the first letter**, so "McKenzie"
+  survives. Always build the name through that function — two spellings of the
+  same student create two records.
+
+Migration `0013_name_based_join.sql` removed PIN enforcement from
+`join_classroom` and nulled every stored hash. This was not optional: one live
+record already had a PIN, and with no PIN box left in the app it would have
+raised `pin_required` forever with no way to satisfy it. The function keeps its
+`p_pin` argument (ignored) so a cached older build survives a deploy.
 
 ### Lesson content is one chunk per lesson, and loading it is async-only
 `src/content/lessons/index.ts` exposes **`loadLesson(slug)`**, `loadAllLessons()`,

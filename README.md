@@ -5,9 +5,12 @@ Financial Futures of America), a student-founded 501(c)(3). It brings the BFF
 Academy curriculum to life with interactive lessons, games, and live classroom
 activities.
 
-Students join with a class code and a nickname — **no emails, no accounts, no
-personal information**. Mentors sign in with Google to assign work, track
-progress, host live games, and generate classroom materials.
+Students join with a class code and their **first name and last initial**
+("Jayden M.") — no emails, no accounts, no passwords, and never a full name.
+That is enough for a mentor to read a roster at a glance without the platform
+storing anything that identifies a child outside their own classroom. Mentors
+sign in with Google to assign work, track progress, host live games, and
+generate classroom materials.
 
 **Live site:** https://hzisow.github.io/BFF-Digital-Learning/
 
@@ -172,7 +175,7 @@ it.
    [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql), and
    run it. This creates every table, security rule, and the live-game plumbing.
 3. Go to **Authentication → Sign In / Providers** and enable **Anonymous
-   sign-ins**. This is what lets students join with just a code and a nickname,
+   sign-ins**. This is what lets students join with just a code and a name,
    and it is also required for the AI features to authenticate.
 4. (Recommended) Turn off **Confirm email** so BFF mentors can sign up instantly,
    or configure SMTP if you would rather keep confirmation on.
