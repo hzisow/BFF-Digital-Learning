@@ -6,13 +6,17 @@ import {
   ArrowLeft,
   Backpack,
   Check,
+  ChevronDown,
   ClipboardList,
   Copy,
   Download,
   Link2,
   Play,
   RefreshCw,
+  Merge,
+  Pencil,
   Search,
+  Trash2,
   Users,
   X,
 } from 'lucide-react'
@@ -27,6 +31,7 @@ import ClassLeaderboard from '../../components/ClassLeaderboard'
 import { useToast } from '../../components/ToastProvider'
 import { Loading, SkeletonHero, SkeletonPage, SkeletonRow } from '../../components/Skeleton'
 import { BackendOffCard } from './TeamAuth'
+import QuestionBreakdown from '../../components/admin/QuestionBreakdown'
 import {
   addAssignment,
   archiveClassroom,
@@ -36,6 +41,9 @@ import {
   fetchClassroom,
   fetchRoster,
   formatDate,
+  mergeStudents,
+  removeStudent,
+  renameStudent,
   useCopy,
   type AssignmentRow,
   type Classroom,
@@ -98,6 +106,15 @@ export default function ClassroomDetail() {
   const [assignError, setAssignError] = useState<string | null>(null)
 
   const [archiving, setArchiving] = useState(false)
+
+  // Which lesson's per-question results are open. Null = none.
+  const [breakdownSlug, setBreakdownSlug] = useState<string | null>(null)
+
+  // Roster editing: the student being renamed, and the pending merge source.
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [editName, setEditName] = useState('')
+  const [rosterBusy, setRosterBusy] = useState(false)
+  const [mergeFrom, setMergeFrom] = useState<StudentRow | null>(null)
 
   const load = useCallback(async () => {
     if (!id || !uid) return
@@ -258,7 +275,78 @@ export default function ClassroomDetail() {
     }
   }
 
+  // ---------- Roster editing ----------
+  //
+  // Students type their own name now, so typos are inevitable and produce
+  // duplicate records with split progress. These three are the way back.
+
+  async function handleRename(student: StudentRow) {
+    const next = editName.trim()
+    if (!next || next === student.nickname) {
+      setEditingId(null)
+      return
+    }
+    setRosterBusy(true)
+    try {
+      await renameStudent(student.id, next)
+      setEditingId(null)
+      await load()
+    } catch (err) {
+      setError(errMsg(err))
+    } finally {
+      setRosterBusy(false)
+    }
+  }
+
+  async function handleRemove(student: StudentRow) {
+    const ok = window.confirm(
+      zh
+        ? `确定移除“${student.nickname}”吗？该学生在本班的进度也会一并删除，且无法恢复。`
+        : es
+          ? `¿Quitar a "${student.nickname}"? También se borrará su progreso en esta clase, y no se puede deshacer.`
+          : `Remove "${student.nickname}"? Their progress in this class is deleted too, and this cannot be undone.`,
+    )
+    if (!ok) return
+    setRosterBusy(true)
+    try {
+      await removeStudent(student.id)
+      await load()
+    } catch (err) {
+      setError(errMsg(err))
+    } finally {
+      setRosterBusy(false)
+    }
+  }
+
+  async function handleMergeInto(target: StudentRow) {
+    if (!mergeFrom) return
+    const ok = window.confirm(
+      zh
+        ? `把“${mergeFrom.nickname}”并入“${target.nickname}”吗？两条记录中更好的成绩会保留，然后删除“${mergeFrom.nickname}”。`
+        : es
+          ? `¿Combinar "${mergeFrom.nickname}" con "${target.nickname}"? Se conserva el mejor resultado de cada actividad y luego se elimina "${mergeFrom.nickname}".`
+          : `Merge "${mergeFrom.nickname}" into "${target.nickname}"? The better result for each activity is kept, then "${mergeFrom.nickname}" is deleted.`,
+    )
+    if (!ok) return
+    setRosterBusy(true)
+    try {
+      await mergeStudents(mergeFrom.id, target.id)
+      setMergeFrom(null)
+      await load()
+    } catch (err) {
+      setError(errMsg(err))
+    } finally {
+      setRosterBusy(false)
+    }
+  }
+
   // ---------- Derived data ----------
+
+  // Only lessons carry a quiz, so only they have per-question results.
+  const lessonAssignments = assignments.filter(
+    (a) => getActivity(a.activity_slug)?.kind === 'lesson' ||
+           getActivity(a.activity_slug)?.kind === 'elective',
+  )
 
   const assignedSlugs = new Set(assignments.map((a) => a.activity_slug))
   const unassigned = ACTIVITIES.filter((a) => !assignedSlugs.has(a.slug))
@@ -717,6 +805,23 @@ export default function ClassroomDetail() {
           </div>
         ) : (
           <>
+            {mergeFrom && (
+              <div
+                role="status"
+                className="mb-3 flex flex-wrap items-center justify-between gap-3 rounded-[8px] border border-bff-300 bg-bff-50 px-4 py-3 text-sm"
+              >
+                <span className="text-bff-900">
+                  {zh
+                    ? `选择要把“${mergeFrom.nickname}”并入的同学。两条记录中较好的成绩会保留。`
+                    : es
+                      ? `Elige con quién combinar a "${mergeFrom.nickname}". Se conserva el mejor resultado de cada actividad.`
+                      : `Pick who to merge "${mergeFrom.nickname}" into. The better result for each activity is kept.`}
+                </span>
+                <button type="button" onClick={() => setMergeFrom(null)} className="btn-secondary px-3 py-1.5 text-sm">
+                  {zh ? '取消' : es ? 'Cancelar' : 'Cancel'}
+                </button>
+              </div>
+            )}
             <div className="card mt-4 overflow-x-auto p-0">
               <table className="w-full min-w-max text-left text-sm">
                 <caption className="sr-only">
@@ -761,7 +866,96 @@ export default function ClassroomDetail() {
                           scope="row"
                           className="whitespace-nowrap px-4 py-3 text-left font-semibold text-slate-800"
                         >
-                          {s.nickname}
+                          {editingId === s.id ? (
+                            <span className="flex items-center gap-1.5">
+                              <input
+                                className="input w-40 px-2 py-1 text-sm"
+                                value={editName}
+                                onChange={(e) => setEditName(e.target.value)}
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter') void handleRename(s)
+                                  if (e.key === 'Escape') setEditingId(null)
+                                }}
+                                aria-label={zh ? '学生姓名' : es ? 'Nombre del estudiante' : 'Student name'}
+                                autoFocus
+                              />
+                              <button
+                                type="button"
+                                onClick={() => void handleRename(s)}
+                                disabled={rosterBusy}
+                                className="rounded p-1 text-green-700 hover:bg-green-50"
+                                aria-label={zh ? '保存' : es ? 'Guardar' : 'Save'}
+                              >
+                                <Check className="h-4 w-4" aria-hidden="true" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setEditingId(null)}
+                                className="rounded p-1 text-slate-500 hover:bg-slate-100"
+                                aria-label={zh ? '取消' : es ? 'Cancelar' : 'Cancel'}
+                              >
+                                <X className="h-4 w-4" aria-hidden="true" />
+                              </button>
+                            </span>
+                          ) : mergeFrom && mergeFrom.id !== s.id ? (
+                            // Merge mode: every other row becomes a target.
+                            <button
+                              type="button"
+                              onClick={() => void handleMergeInto(s)}
+                              disabled={rosterBusy}
+                              className="rounded-[5px] border border-bff-400 bg-bff-50 px-2 py-1 text-left text-bff-800 hover:bg-bff-100"
+                            >
+                              {zh ? `并入“${s.nickname}”` : es ? `Combinar con ${s.nickname}` : `Merge into ${s.nickname}`}
+                            </button>
+                          ) : (
+                            <span className="group/name flex items-center gap-1.5">
+                              {s.nickname}
+                              {!mergeFrom && (
+                                <span className="opacity-0 transition-opacity group-hover/name:opacity-100 focus-within:opacity-100">
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setEditName(s.nickname)
+                                      setEditingId(s.id)
+                                    }}
+                                    className="rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                                    aria-label={
+                                      zh ? `重命名 ${s.nickname}` : es ? `Renombrar a ${s.nickname}` : `Rename ${s.nickname}`
+                                    }
+                                  >
+                                    <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setMergeFrom(s)}
+                                    className="rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                                    aria-label={
+                                      zh ? `合并 ${s.nickname}` : es ? `Combinar a ${s.nickname}` : `Merge ${s.nickname}`
+                                    }
+                                    title={
+                                      zh
+                                        ? '把这条记录并入另一名同学（用于重复记录）'
+                                        : es
+                                          ? 'Combinar este registro con otro (para duplicados)'
+                                          : 'Fold this record into another (for duplicates)'
+                                    }
+                                  >
+                                    <Merge className="h-3.5 w-3.5" aria-hidden="true" />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => void handleRemove(s)}
+                                    className="rounded p-1 text-slate-400 hover:bg-red-50 hover:text-red-600"
+                                    aria-label={
+                                      zh ? `移除 ${s.nickname}` : es ? `Quitar a ${s.nickname}` : `Remove ${s.nickname}`
+                                    }
+                                  >
+                                    <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
+                                  </button>
+                                </span>
+                              )}
+                            </span>
+                          )}
                         </th>
                         <td className="whitespace-nowrap px-4 py-3 text-slate-500">
                           {formatDate(s.created_at)}
@@ -813,6 +1007,56 @@ export default function ClassroomDetail() {
                     </div>
                   )
                 })}
+              </div>
+            )}
+
+            {/* ---------- Per-question results ----------
+                The answer data was already being fetched by fetchRoster and
+                then discarded. This is what turns "Jayden scored 71%" into
+                "fourteen students missed the APR question". */}
+            {lessonAssignments.length > 0 && (
+              <div className="mt-8">
+                <p className="eyebrow">
+                  <span className="eyebrow-line" aria-hidden="true" />
+                  {zh ? '逐题结果' : es ? 'Resultados por pregunta' : 'Question by question'}
+                </p>
+                <p className="mt-2 text-sm text-slate-600">
+                  {zh
+                    ? '看看全班在每道测验题上的表现，决定下节课该重点复习什么。'
+                    : es
+                      ? 'Mira cómo le fue a la clase en cada pregunta para decidir qué repasar.'
+                      : 'See how the class did on each quiz question, so you know what to reteach.'}
+                </p>
+                <div className="mt-3 space-y-2">
+                  {lessonAssignments.map((a) => {
+                    const meta = getActivity(a.activity_slug)
+                    const open = breakdownSlug === a.activity_slug
+                    return (
+                      <div key={a.id} className="rounded-[8px] border border-slate-200">
+                        <button
+                          type="button"
+                          onClick={() => setBreakdownSlug(open ? null : a.activity_slug)}
+                          aria-expanded={open}
+                          className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left font-display text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                        >
+                          <span className="flex items-center gap-2">
+                            <AppIcon name={meta?.icon ?? 'help'} className="h-4 w-4 shrink-0 text-bff-600" />
+                            {meta?.title ?? a.activity_slug}
+                          </span>
+                          <ChevronDown
+                            className={`h-4 w-4 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`}
+                            aria-hidden="true"
+                          />
+                        </button>
+                        {open && (
+                          <div className="border-t border-slate-200 px-4 pb-4">
+                            <QuestionBreakdown slug={a.activity_slug} rows={progress} zh={zh} es={es} />
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
             )}
           </>

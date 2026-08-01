@@ -8,6 +8,7 @@ import type { ActivityProgress } from '../../lib/progress'
 import { loadLocalProgress } from '../../lib/progress'
 import { levelInfo, totalXp } from '../../lib/xp'
 import { resumeLesson } from '../../lib/resume'
+import { dueChipClass, dueInfo, dueLabel, isUrgent } from '../../lib/dueDate'
 import { useStudent } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
 import LevelCard from '../../components/LevelCard'
@@ -401,8 +402,20 @@ export default function StudentHome() {
               if (!activity) return null
               const p = progress[activity.slug]
               const local = localizeActivity(activity, lang)
+              const due = dueInfo(asg.due_at)
+              // A deadline only matters if the work is not already done.
+              const pressing = due != null && isUrgent(due) && p?.status !== 'completed'
               return (
-                <div key={asg.activity_slug} className="card lift flex flex-col">
+                <div
+                  key={asg.activity_slug}
+                  className={`card lift flex flex-col ${
+                    pressing
+                      ? due.urgency === 'overdue'
+                        ? 'border-red-300 ring-1 ring-red-200'
+                        : 'border-amber-300 ring-1 ring-amber-200'
+                      : ''
+                  }`}
+                >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3">
                       <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-bff-50 text-bff-700">
@@ -427,9 +440,18 @@ export default function StudentHome() {
                   )}
                   <div className="mt-4 flex items-center justify-between gap-2">
                     <span className="text-xs font-semibold text-slate-500">
-                      {asg.due_at ? (
-                        <span className="inline-flex items-center gap-1">
-                          <Clock className="h-3.5 w-3.5" aria-hidden="true" /> {zh ? '截止' : es ? 'Entrega' : 'Due'} {formatDue(asg.due_at, es, zh)}
+                      {due ? (
+                        // "Fri, Aug 7" reads like a fact. "Due tomorrow" reads
+                        // like a deadline — and the exact date is still there
+                        // for anyone planning further out.
+                        <span className="inline-flex flex-wrap items-center gap-1.5">
+                          <span
+                            className={`chip px-2 py-0.5 text-[11px] ${dueChipClass(due.urgency)}`}
+                          >
+                            <Clock className="h-3 w-3" aria-hidden="true" />
+                            {dueLabel(due, lang)}
+                          </span>
+                          <span className="text-slate-400">{formatDue(asg.due_at!, es, zh)}</span>
                         </span>
                       ) : zh ? (
                         '没有截止日期'

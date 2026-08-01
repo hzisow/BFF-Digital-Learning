@@ -264,3 +264,64 @@ export async function fetchRoster(
   }
   return { students, progress }
 }
+
+// ---------- Roster management ----------
+//
+// Students type their own first name and last initial, so a class of thirty
+// will produce typos: "Jaden M" on Monday and "Jayden M" on Tuesday are two
+// records with split progress. Before these existed a mentor had no way to fix
+// either one — RLS lets them read their students but never write.
+//
+// All three go through SECURITY DEFINER functions (migration 0014) rather than
+// widened policies, because rename has to fail cleanly on the
+// (classroom, lower(nickname)) unique index and merge has to reconcile two sets
+// of progress rows.
+
+/** Turn a Postgres `raise exception 'code'` into something a mentor can read. */
+function rosterError(message: string): Error {
+  if (message.includes('name_taken')) {
+    return new Error('Another student in this class already has that name.')
+  }
+  if (message.includes('name_required')) return new Error('Enter a name.')
+  if (message.includes('not_authorized')) {
+    return new Error('That student is not in one of your classes.')
+  }
+  if (message.includes('different_classrooms')) {
+    return new Error('Those two students are in different classes.')
+  }
+  if (message.includes('same_student')) return new Error('Pick two different students.')
+  // The function is missing entirely — migration 0014 has not been run.
+  if (/function .*(rename_student|remove_student|merge_students)/i.test(message)) {
+    return new Error(
+      'Roster editing is not set up on this project yet. Run migration 0014_roster_management.sql.',
+    )
+  }
+  return new Error(message)
+}
+
+/** Fix a typo, or tell two students with the same name apart. */
+export async function renameStudent(studentId: string, name: string): Promise<void> {
+  const db = await requireSupabase()
+  const { error } = await db.rpc('rename_student', {
+    p_student_id: studentId,
+    p_name: name,
+  })
+  if (error) throw rosterError(error.message)
+}
+
+/** Delete a stray record. Its progress goes with it (ON DELETE CASCADE). */
+export async function removeStudent(studentId: string): Promise<void> {
+  const db = await requireSupabase()
+  const { error } = await db.rpc('remove_student', { p_student_id: studentId })
+  if (error) throw rosterError(error.message)
+}
+
+/**
+ * Fold one duplicate into another, keeping the better record for every activity
+ * (completed beats started, higher score wins), then delete the duplicate.
+ */
+export async function mergeStudents(fromId: string, intoId: string): Promise<void> {
+  const db = await requireSupabase()
+  const { error } = await db.rpc('merge_students', { p_from: fromId, p_into: intoId })
+  if (error) throw rosterError(error.message)
+}

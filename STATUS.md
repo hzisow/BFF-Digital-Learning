@@ -167,6 +167,54 @@ it bails on `saveData` or a 2G/3G `effectiveType`. The lessons chunk is 494KB
 compete with what the student actually asked for. Hover prefetch ignores the
 guard, because that is intent rather than a guess.
 
+### The mentor dashboard answers "what do I reteach?"
+`src/lib/questionAnalytics.ts` aggregates `progress.data.answers` into a
+per-question breakdown, rendered by `components/admin/QuestionBreakdown.tsx`
+under each assigned lesson on the classroom page.
+
+The data was already there and being thrown away: `fetchRoster` pulls every
+progress row including `data`, `finishQuiz` writes `data.answers` as the option
+index each student picked (-1 for unanswered), and `ClassroomDetail` had zero
+references to it. So this needed **no new query, no schema change, no extra
+storage** — only aggregation.
+
+It shows percent correct per question, the full option distribution (so a mentor
+can see *which* misconception the class landed on), the most common wrong answer,
+and a "worth reteaching" summary for anything under 70%.
+
+Guards that matter: answers outside the option range are ignored, because a
+lesson edited after a student took it leaves stale indices; and an empty result
+returns `[]` so the UI says "no quiz results yet" rather than rendering zeroes
+that read like the class failed.
+
+### Mentors can repair their own roster
+`rename_student`, `remove_student`, `merge_students` (migration 0014), surfaced
+as hover controls on each roster row.
+
+This closes a gap that 0013 opened. With PINs gone, students type their own name,
+so "Jaden M" on Monday and "Jayden M" on Tuesday are two records with split
+progress — and RLS only ever let a mentor *read* their students.
+
+They are SECURITY DEFINER functions rather than widened policies because two need
+logic a policy cannot express: rename must fail cleanly on the
+`(classroom, lower(nickname))` unique index, and merge must reconcile two sets of
+progress rows. Merge keeps the better record per activity using the same rule as
+`mergeEntry()` in `progress.ts` — completed beats started, higher score wins,
+jsonb unioned — so server and client never disagree.
+
+Verified against the live project: the merge arithmetic is correct for all four
+combinations, including two NULL scores (the `nullif(greatest(...), -1)` guard
+stops it writing a nonsense `-1`), and an unauthenticated caller cannot rename or
+remove — `mentor_owns_student` returns false and every function raises
+`not_authorized`.
+
+### Due dates read as deadlines
+`src/lib/dueDate.ts` classifies `due_at` as overdue / today / tomorrow / soon /
+later. Comparison is **calendar-day, not elapsed-hours**: something due at 9am is
+still "today" at 5pm, and eleven hours across midnight is "tomorrow". An urgent,
+unfinished assignment also gets a coloured card border on the student home —
+never colour alone, the label always says it in words.
+
 ### Students identify by first name + last initial, not a nickname and a PIN
 A student types **"Jayden"** and **"M"**; `src/lib/studentName.ts` composes
 `"Jayden M."` and that string goes into the existing `students.nickname` column.
