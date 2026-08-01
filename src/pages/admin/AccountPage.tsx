@@ -98,7 +98,7 @@ export default function AccountPage() {
   return (
     <div className="mx-auto max-w-md px-4 py-12">
       <div className="mb-6">
-        <Link to="/admin" className="inline-flex items-center gap-1 text-sm font-semibold text-bff-700 hover:underline">
+        <Link to="/admin" className="inline-flex items-center gap-1 text-sm font-semibold text-ink hover:underline">
           <ArrowLeft className="h-4 w-4" aria-hidden="true" /> {zh ? '返回仪表板' : es ? 'Volver al panel' : 'Back to dashboard'}
         </Link>
         <p className="eyebrow mt-5">
@@ -131,7 +131,7 @@ export default function AccountPage() {
         <h2 className="font-display text-lg font-bold text-ink">{zh ? '您的信息' : es ? 'Tus datos' : 'Your details'}</h2>
         <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-4">
           <label className="block">
-            <span className="mb-1 block text-sm font-semibold text-slate-700">{zh ? '全名' : es ? 'Nombre completo' : 'Full name'}</span>
+            <span className="mb-1 block text-sm font-semibold text-ink">{zh ? '全名' : es ? 'Nombre completo' : 'Full name'}</span>
             <input
               className="input"
               type="text"
@@ -142,7 +142,7 @@ export default function AccountPage() {
             />
           </label>
           <label className="block">
-            <span className="mb-1 block text-sm font-semibold text-slate-700">
+            <span className="mb-1 block text-sm font-semibold text-ink">
               {zh ? 'BFF 分会/地区' : es ? 'Capítulo / región de BFF' : 'BFF chapter / region'}
             </span>
             <input
@@ -153,7 +153,7 @@ export default function AccountPage() {
               placeholder={zh ? '例如 Chicago, IL · 中西部' : es ? 'p. ej. Chicago, IL · Midwest' : 'e.g. Chicago, IL · Midwest'}
               autoComplete="organization"
             />
-            <span className="mt-1 block text-xs text-slate-500">
+            <span className="mt-1 block text-xs text-pebble">
               {zh
                 ? '您作为志愿者参与的 BFF of America 分会或地区。'
                 : es

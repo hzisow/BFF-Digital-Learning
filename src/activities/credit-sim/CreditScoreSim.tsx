@@ -636,7 +636,7 @@ function deltaChip(delta: number, es: boolean, zh: boolean): { text: string; cla
   const pts = zh ? '分' : es ? 'puntos' : 'points'
   if (delta > 0) return { text: `+${delta} ${pts}`, classes: 'bg-green-100 text-green-700' }
   if (delta < 0) return { text: `${delta} ${pts}`, classes: 'bg-red-100 text-red-700' }
-  return { text: `±0 ${pts}`, classes: 'bg-slate-100 text-slate-600' }
+  return { text: `±0 ${pts}`, classes: 'bg-paper-soft text-pebble' }
 }
 
 // ---------- Score meter ----------
@@ -675,7 +675,7 @@ function ScoreMeter({ score, es, zh }: { score: number; es: boolean; zh: boolean
         {BANDS.map((b) => (
           <span
             key={b.name}
-            className={`chip ${b.name === band.name ? b.chipClass : 'bg-slate-100 text-slate-600'}`}
+            className={`chip ${b.name === band.name ? b.chipClass : 'bg-paper-soft text-pebble'}`}
           >
             {zh ? b.nameZh : es ? b.nameEs : b.name} {b.min}–{b.max}
           </span>
@@ -781,17 +781,17 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
       <div className="mx-auto max-w-3xl px-4 py-8">
         <div className="card animate-pop-in space-y-4 text-center" role="status">
           <p className="flex justify-center" aria-hidden="true">
-            <TitleIcon className="h-14 w-14 text-bff-600" />
+            <TitleIcon className="h-14 w-14 text-ink" />
           </p>
-          <h1 className="font-display text-3xl font-bold text-slate-900">{title}</h1>
-          <p className="font-display text-lg font-bold text-bff-700">
+          <h1 className="font-display text-3xl font-bold text-ink">{title}</h1>
+          <p className="font-display text-lg font-bold text-ink">
             {zh ? '最终分数' : es ? 'Puntaje final' : 'Final score'}: {score} — {zh ? band.nameZh : es ? band.nameEs : band.name}
           </p>
-          <p className="mx-auto max-w-md text-sm text-slate-700">{blurb}</p>
+          <p className="mx-auto max-w-md text-sm text-ink">{blurb}</p>
           <div className="px-2 pt-2 text-left">
             <ScoreMeter score={score} es={es} zh={zh} />
           </div>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-pebble">
             {zh ? '起始' : es ? 'Empezaste en' : 'Started at'} {START_SCORE} ·{' '}
             {zh ? '结束' : es ? 'terminaste en' : 'finished at'} {score} (
             {score - START_SCORE >= 0 ? '+' : ''}
@@ -801,39 +801,39 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
 
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <div className="card animate-slide-up border-green-200 bg-green-50">
-            <h2 className="font-display text-base font-bold text-slate-900">
+            <h2 className="font-display text-base font-bold text-ink">
               <Star className="mr-1 inline-block h-4 w-4 align-[-0.15em] text-green-600" aria-hidden="true" />{' '}
               {zh ? '最佳操作' : es ? 'Mejor jugada' : 'Best move'}
             </h2>
-            <p className="mt-1 text-sm font-semibold text-slate-800">
+            <p className="mt-1 text-sm font-semibold text-ink">
               {zh ? '第' : es ? 'Mes' : 'Month'} {best.month}{zh ? ' 个月' : ''}: {zh ? best.choiceLabelZh : es ? best.choiceLabelEs : best.choiceLabel}
             </p>
-            <p className="mt-1 text-sm text-slate-700">
+            <p className="mt-1 text-sm text-ink">
               {best.delta >= 0 ? `+${best.delta}` : best.delta} {pts} —{' '}
               {zh ? best.explanationZh : es ? best.explanationEs : best.explanation}
             </p>
           </div>
           <div className="card animate-slide-up border-red-200 bg-red-50">
-            <h2 className="font-display text-base font-bold text-slate-900">
+            <h2 className="font-display text-base font-bold text-ink">
               <TrendingDown className="mr-1 inline-block h-4 w-4 align-[-0.15em] text-red-600" aria-hidden="true" />{' '}
               {zh ? '代价最大的操作' : es ? 'Jugada más costosa' : 'Costliest move'}
             </h2>
-            <p className="mt-1 text-sm font-semibold text-slate-800">
+            <p className="mt-1 text-sm font-semibold text-ink">
               {zh ? '第' : es ? 'Mes' : 'Month'} {worst.month}{zh ? ' 个月' : ''}: {zh ? worst.choiceLabelZh : es ? worst.choiceLabelEs : worst.choiceLabel}
             </p>
-            <p className="mt-1 text-sm text-slate-700">
+            <p className="mt-1 text-sm text-ink">
               {worst.delta >= 0 ? `+${worst.delta}` : worst.delta} {pts} —{' '}
               {zh ? worst.explanationZh : es ? worst.explanationEs : worst.explanation}
             </p>
           </div>
         </div>
 
-        <div className="card mt-4 border-bff-200 bg-bff-50">
-          <h2 className="font-display text-lg font-bold text-slate-900">
-            <Lightbulb className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-bff-600" aria-hidden="true" />{' '}
+        <div className="card mt-4 border-bff-200 bg-paper-soft">
+          <h2 className="font-display text-lg font-bold text-ink">
+            <Lightbulb className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-ink" aria-hidden="true" />{' '}
             {zh ? '配方永远不变' : es ? 'La receta nunca cambia' : 'The recipe never changes'}
           </h2>
-          <p className="mt-1 text-sm text-slate-700">
+          <p className="mt-1 text-sm text-ink">
             {zh
               ? '每一张账单都按时还，把欠款保持在低位，让账户慢慢变老，少开新的信用账户。这就是全部的通关秘籍——下面这五个因素就是 FICO 衡量它的方式。'
               : es
@@ -842,7 +842,7 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
           </p>
           <ul className="mt-2 flex flex-wrap gap-1.5">
             {(Object.keys(FACTORS) as Factor[]).map((f) => (
-              <li key={f} className="chip bg-white text-bff-700">
+              <li key={f} className="chip bg-white text-ink">
                 {zh ? FACTORS_ZH[f] : es ? FACTORS_ES[f] : FACTORS[f]}
               </li>
             ))}
@@ -871,7 +871,7 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
           {zh ? '模拟' : es ? 'Simulación' : 'Simulation'}
         </p>
         <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-          <CreditCard className="mr-1 inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
+          <CreditCard className="mr-1 inline-block h-7 w-7 align-[-0.15em] text-ink" aria-hidden="true" />{' '}
           {zh ? (
             <>信用分<em>养成记</em></>
           ) : es ? (
@@ -880,7 +880,7 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
             <>Credit Score <em>Builder</em></>
           )}
         </h1>
-        <p className="mt-2 text-sm text-slate-600">
+        <p className="mt-2 text-sm text-pebble">
           {zh
             ? '10 个月，10 个决定。养出那个跟随你一辈子的三位数。'
             : es
@@ -892,11 +892,11 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
       {/* Score meter */}
       <section className="card mt-4">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <p className="font-display text-lg font-bold text-slate-900" aria-live="polite">
+          <p className="font-display text-lg font-bold text-ink" aria-live="polite">
             {zh ? '分数' : es ? 'Puntaje' : 'Score'}: {score}{' '}
-            <span className="font-semibold text-bff-700">— {zh ? band.nameZh : es ? band.nameEs : band.name}</span>
+            <span className="font-semibold text-ink">— {zh ? band.nameZh : es ? band.nameEs : band.name}</span>
           </p>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-pebble">
             {zh ? '第' : es ? 'Mes' : 'Month'} {monthIndex + 1} {zh ? '个月，共' : es ? 'de' : 'of'} {MONTHS.length}{zh ? ' 个月' : ''}
           </p>
         </div>
@@ -907,11 +907,11 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
 
       {/* Decision card */}
       <section className="card mt-4">
-        <h2 className="font-display text-lg font-bold text-slate-900">
-          <MonthIcon className="mr-1.5 inline-block h-5 w-5 align-[-0.2em] text-bff-600" aria-hidden="true" />
+        <h2 className="font-display text-lg font-bold text-ink">
+          <MonthIcon className="mr-1.5 inline-block h-5 w-5 align-[-0.2em] text-ink" aria-hidden="true" />
           {zh ? '第' : es ? 'Mes' : 'Month'} {monthIndex + 1}{zh ? ' 个月' : ''}: {zh ? month.titleZh : es ? month.titleEs : month.title}
         </h2>
-        <p className="mt-2 text-sm text-slate-700">{zh ? month.scenarioZh : es ? month.scenarioEs : month.scenario}</p>
+        <p className="mt-2 text-sm text-ink">{zh ? month.scenarioZh : es ? month.scenarioEs : month.scenario}</p>
 
         {feedback === null ? (
           <div className="mt-4 space-y-2">
@@ -920,23 +920,23 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
                 key={choice.id}
                 type="button"
                 onClick={() => choose(choice)}
-                className="block w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-3 text-left text-sm font-semibold text-slate-800 transition hover:border-bff-400 hover:bg-bff-50 active:scale-[0.98]"
+                className="block w-full rounded-xl border-2 border-stone bg-white px-4 py-3 text-left text-sm font-semibold text-ink transition hover:border-bff-400 hover:bg-paper-soft active:scale-[0.98]"
               >
                 {zh ? choice.labelZh : es ? choice.labelEs : choice.label}
               </button>
             ))}
           </div>
         ) : (
-          <div className="mt-4 animate-pop-in rounded-xl border-2 border-bff-200 bg-bff-50 p-4" role="status">
+          <div className="mt-4 animate-pop-in rounded-xl border-2 border-bff-200 bg-paper-soft p-4" role="status">
             <div className="flex flex-wrap items-center gap-2">
               <span className={`chip ${deltaChip(feedback.delta, es, zh).classes}`}>
                 {deltaChip(feedback.delta, es, zh).text}
               </span>
-              <span className="text-sm font-semibold text-slate-800">
+              <span className="text-sm font-semibold text-ink">
                 {zh ? feedback.labelZh : es ? feedback.labelEs : feedback.label}
               </span>
             </div>
-            <p className="mt-2 text-sm text-slate-700">
+            <p className="mt-2 text-sm text-ink">
               {zh ? feedback.explanationZh : es ? feedback.explanationEs : feedback.explanation}
             </p>
             {feedback.factors.length > 0 && (
@@ -945,7 +945,7 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
                 aria-label={zh ? '涉及的信用分因素' : es ? 'Factores del puntaje de crédito involucrados' : 'Credit score factors involved'}
               >
                 {feedback.factors.map((f) => (
-                  <li key={f} className="chip bg-white text-bff-700">
+                  <li key={f} className="chip bg-white text-ink">
                     {zh ? FACTORS_ZH[f] : es ? FACTORS_ES[f] : FACTORS[f]}
                   </li>
                 ))}
@@ -970,13 +970,13 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
       </section>
 
       {/* Factor legend */}
-      <section className="card mt-4 bg-slate-100/70 p-4">
-        <h2 className="font-display text-sm font-bold text-slate-900">
+      <section className="card mt-4 bg-paper-soft/70 p-4">
+        <h2 className="font-display text-sm font-bold text-ink">
           {zh ? '究竟是什么在左右一个信用分？' : es ? '¿Qué mueve realmente un puntaje de crédito?' : 'What actually moves a credit score?'}
         </h2>
         <ul className="mt-2 flex flex-wrap gap-1.5">
           {(Object.keys(FACTORS) as Factor[]).map((f) => (
-            <li key={f} className="chip bg-white text-slate-600">
+            <li key={f} className="chip bg-white text-pebble">
               {zh ? FACTORS_ZH[f] : es ? FACTORS_ES[f] : FACTORS[f]}
             </li>
           ))}

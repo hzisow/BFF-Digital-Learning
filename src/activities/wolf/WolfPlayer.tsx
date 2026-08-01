@@ -57,7 +57,7 @@ function Shell({ code, children }: { code: string; children: ReactNode }) {
       <header className="flex items-center justify-between border-b border-ink/10 bg-white px-4 py-3">
         <Logo className="h-8" />
         {code && (
-          <span className="chip bg-bff-50 font-display tracking-widest text-bff-700">
+          <span className="chip bg-paper-soft font-display tracking-widest text-ink">
             {zh ? '游戏' : es ? 'JUEGO' : 'GAME'} {code}
           </span>
         )}
@@ -209,7 +209,7 @@ export default function WolfPlayer() {
     return (
       <Shell code={code}>
         <div className="card mx-auto mt-10 max-w-md space-y-3 text-center">
-          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-bff-50 text-bff-700">
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-paper-soft text-ink">
             <Plug className="h-6 w-6" aria-hidden="true" />
           </span>
           <h1 className="font-display text-xl font-bold text-ink">
@@ -234,7 +234,7 @@ export default function WolfPlayer() {
     return (
       <Shell code={code}>
         <div className="card mx-auto mt-10 max-w-md space-y-3 text-center">
-          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-bff-50 text-bff-700">
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-paper-soft text-ink">
             <HelpCircle className="h-6 w-6" aria-hidden="true" />
           </span>
           <h1 className="font-display text-xl font-bold text-ink">{zh ? '嗯，这没能成功' : es ? 'Mmm, eso no funcionó' : 'Hmm, that did not work'}</h1>
@@ -270,7 +270,7 @@ export default function WolfPlayer() {
       <Shell code={session.code}>
         <div className="card mx-auto mt-10 max-w-md space-y-4">
           <div className="text-center">
-            <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-bff-50 text-bff-700">
+            <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-paper-soft text-ink">
               <LineChart className="h-7 w-7" aria-hidden="true" />
             </span>
             <h1 className="mt-2 font-display text-xl font-bold text-ink">
@@ -316,7 +316,7 @@ export default function WolfPlayer() {
     <Shell code={session.code}>
       {stage === 0 && (
         <div className="card animate-pop-in mt-6 space-y-4 text-center">
-          <PartyPopper className="mx-auto h-14 w-14 text-bff-600" aria-hidden="true" />
+          <PartyPopper className="mx-auto h-14 w-14 text-ink" aria-hidden="true" />
           <h1 className="font-display text-2xl font-bold text-ink">
             {zh ? `你进来啦，${player.nickname}！` : es ? `¡Estás dentro, ${player.nickname}!` : `You're in, ${player.nickname}!`}
           </h1>
@@ -334,7 +334,7 @@ export default function WolfPlayer() {
               </p>
               <div className="flex flex-wrap justify-center gap-2">
                 {others.map((p) => (
-                  <span key={p.id} className="chip bg-bff-50 text-bff-700">
+                  <span key={p.id} className="chip bg-paper-soft text-ink">
                     {p.nickname}
                   </span>
                 ))}
@@ -362,7 +362,7 @@ export default function WolfPlayer() {
 
       {stage === 4 && (
         <div className="space-y-3">
-          <div className="card border-bff-200 bg-bff-50 p-4 text-center text-sm text-ink/75">
+          <div className="card border-bff-200 bg-paper-soft p-4 text-center text-sm text-ink/75">
             <Lock className="mr-1.5 inline h-4 w-4 align-[-0.2em]" aria-hidden="true" />
             {zh
               ? '市场已经收盘！盯着大屏幕，结果正在揭晓……'
@@ -380,14 +380,14 @@ export default function WolfPlayer() {
                   className="card animate-pop-in flex items-start justify-between gap-3 p-4"
                 >
                   <div className="flex items-start gap-2.5">
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-bff-50 text-bff-700">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-paper-soft text-ink">
                       <GameIcon name={c.icon} className="h-5 w-5" />
                     </span>
                     <div>
                       <p className="font-display font-bold text-ink">
                         {c.name} <span className="text-xs text-ink/60">{c.ticker}</span>
                         {shares > 0 && (
-                          <span className="chip ml-2 bg-bff-50 text-bff-700">{zh ? `你持有 ${shares}` : es ? `tienes ${shares}` : `you own ${shares}`}</span>
+                          <span className="chip ml-2 bg-paper-soft text-ink">{zh ? `你持有 ${shares}` : es ? `tienes ${shares}` : `you own ${shares}`}</span>
                         )}
                       </p>
                       <p className="text-sm text-ink/70">{zh ? c.summaryZh : es ? c.summaryEs : c.summary}</p>
@@ -443,7 +443,7 @@ export default function WolfPlayer() {
             </p>
           </div>
           {myRank > 0 && (
-            <p className="font-display text-lg font-bold text-bff-700">
+            <p className="font-display text-lg font-bold text-ink">
               <PartyPopper className="mr-1.5 inline h-5 w-5 align-[-0.2em]" aria-hidden="true" />
               {zh
                 ? `你在 ${standings.length} 位投资者中排名第 ${myRank}`
@@ -463,7 +463,7 @@ export default function WolfPlayer() {
                     key={p.id}
                     className={`flex items-center justify-between rounded-xl px-3 py-2 text-sm ${
                       p.id === player.id
-                        ? 'bg-bff-50 font-bold text-bff-800'
+                        ? 'bg-paper-soft font-bold text-ink'
                         : 'bg-paper text-ink/75'
                     }`}
                   >

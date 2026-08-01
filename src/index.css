@@ -54,8 +54,15 @@
     font-style: italic;
     font-weight: 500;
     letter-spacing: -0.02em;
-    color: #0077b5;
+    /* Warm bronze, not brand blue. A cool accent on a cream-and-graphite field
+       is exactly the note that makes a palette sound borrowed, and the system
+       is explicit: "don't use bright or cool grays, blues or cool whites — the
+       palette is warm and stays within the cream-graphite axis." The italic is
+       doing the emphasis; the colour only has to agree with the paper. */
+    color: #8a6a34;
   }
+  /* On the bronze hero the same word needs to lift off the dark field instead. */
+  .ed-hero h1 em, .ed-hero h2 em { color: #e8c98a; }
 
   /* Visible keyboard-focus ring on every interactive element. */
   :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
@@ -99,63 +106,83 @@
 }
 
 @layer components {
-  /* Editorial buttons: sharp corners (no clip-path, so focus rings stay
-     visible), flat brand color, a tactile active press. */
+  /* Buttons are pills. The system calls this non-negotiable — "every
+     interactive element must be a 1600px pill" — and it is the single most
+     recognisable thing about the look.
+
+     The primary action is a DARK pill, not a brand-coloured one. That is the
+     inversion that makes the system read as expensive: colour is withheld from
+     the chrome so the serif headline and the whitespace carry the page, and the
+     one dark mark is unmissable because nothing else competes with it. BFF blue
+     is not deleted — it is demoted to links and accents, which is where a brand
+     colour actually earns its keep. */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-[5px] bg-bff-600 px-5 py-2.5 font-display font-semibold tracking-tight text-white hover:bg-bff-700 focus:outline-none focus:ring-2 focus:ring-bff-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-pill bg-ink-deep px-7 py-3 font-body text-[15px] font-medium text-paper hover:bg-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-40;
+    letter-spacing: 0.025em;
     transition:
       transform var(--dur-press) var(--ease-out),
-      background-color var(--dur-hover) var(--ease-out),
-      box-shadow var(--dur-hover) var(--ease-out);
+      background-color var(--dur-hover) var(--ease-out);
   }
-  .btn-primary:hover:not(:disabled) {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 119, 181, 0.25);
-  }
-  .btn-primary:active:not(:disabled) {
-    transform: translateY(0) scale(0.975);
-    box-shadow: none;
-  }
+  .btn-primary:active:not(:disabled) { transform: scale(0.98); }
+
+  /* Outlined pill. "Lives next to the filled button; never the sole CTA." */
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-[5px] border border-ink bg-transparent px-5 py-2.5 font-display font-semibold tracking-tight text-ink hover:bg-ink hover:text-white focus:outline-none focus:ring-2 focus:ring-bff-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-pill border border-ink bg-transparent px-7 py-3 font-body text-[15px] font-medium text-ink hover:bg-ink hover:text-paper focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-40;
+    letter-spacing: 0.025em;
     transition:
       transform var(--dur-press) var(--ease-out),
       background-color var(--dur-hover) var(--ease-out),
       color var(--dur-hover) var(--ease-out);
   }
-  .btn-secondary:hover:not(:disabled) { transform: translateY(-1px); }
-  .btn-secondary:active:not(:disabled) { transform: translateY(0) scale(0.975); }
+  .btn-secondary:active:not(:disabled) { transform: scale(0.98); }
+
+  /* Ghost pill: a linen fill and no border, "for a single quiet CTA on a light
+     field without competing with the headline serif." */
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-[5px] px-4 py-2 font-display font-semibold tracking-tight text-ink/70 hover:bg-ink/5 hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-bff-400 focus-visible:ring-offset-2;
+    @apply inline-flex items-center justify-center gap-2 rounded-pill bg-transparent px-6 py-2.5 font-body text-[15px] font-medium text-pebble hover:bg-paper-soft hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2;
+    letter-spacing: 0.025em;
     transition:
       transform var(--dur-press) var(--ease-out),
       background-color var(--dur-hover) var(--ease-out),
       color var(--dur-hover) var(--ease-out);
   }
-  .btn-ghost:active { transform: scale(0.975); }
-  /* Flat editorial card — thin ink hairline, sharp-ish corner, no puffy shadow. */
+  .btn-ghost:active { transform: scale(0.98); }
+
+  /* Soft card. Cream fill, big radius, generous padding, and — the part that
+     matters — no border and no shadow. Depth comes from the surface stack
+     alone: paper #fcfcfc canvas, linen #faf8f5 card. */
   .card {
-    @apply rounded-[8px] border border-ink/10 bg-white p-6 shadow-card;
+    @apply rounded-card bg-paper-deep p-6;
   }
+  /* For the rare card that genuinely needs an edge (a modal over a busy page). */
+  .card-outlined {
+    @apply rounded-card border border-stone bg-paper p-8;
+  }
+
   .input {
-    @apply w-full rounded-[5px] border border-ink/15 bg-white px-4 py-2.5 text-ink placeholder-ink/40 focus:border-bff-500 focus:outline-none focus:ring-2 focus:ring-bff-200;
+    @apply w-full rounded-pill border border-stone bg-paper px-5 py-3 text-ink placeholder-pebble focus:border-ink focus:outline-none focus:ring-0;
   }
+
   .chip {
-    @apply inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold;
+    @apply inline-flex items-center gap-1 rounded-pill px-3 py-1 text-xs font-medium;
   }
-  /* An inline text action that is a real choice but not the main one — the
-     "already have an account?" row under a sign-up form. Underlined on hover
-     rather than always, so a row of them does not compete with the submit
-     button. */
+
   .link-quiet {
-    @apply font-semibold text-bff-700 underline-offset-2 hover:text-bff-800 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-bff-400 focus-visible:ring-offset-2;
+    @apply font-medium text-ink underline decoration-stone decoration-1 underline-offset-4 hover:decoration-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2;
   }
-  /* Eyebrow: small tracked uppercase label above a heading. */
+
+  /* Eyebrow. Rewritten from the ground up: it used to be bold, uppercase,
+     letterspaced and brand-blue. The system is explicit that it should be
+     "never bold, never uppercase — the muted warmth of the colour and tight
+     tracking are the styling." Losing the shouty blue label above every heading
+     is a surprisingly large part of why the page stops looking templated. */
   .eyebrow {
-    @apply inline-flex items-center gap-2 font-display text-[11px] font-extrabold uppercase tracking-[0.18em] text-bff-600;
+    @apply inline-flex items-center gap-3 font-body text-[15px] font-normal text-pebble;
+    letter-spacing: 0.005em;
+    text-transform: none;
   }
   .eyebrow-line {
-    @apply inline-block h-px w-6 bg-current opacity-50;
+    @apply inline-block h-px w-8 bg-stone;
   }
 }
 
@@ -170,45 +197,41 @@
   clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
 }
 
-/* Dark hero band */
+/* Dark hero band — now the Bronze Field, "a warm dark khaki that stages
+   artwork without going full-black, maintaining the boutique-warm axis even in
+   dark sections." The old cool navy was the one surface that gave the warm
+   palette away. */
 .ed-hero {
   position: relative;
   overflow: hidden;
-  background: #0c1a27;
-  color: #fff;
+  background: #3a3525;
+  color: #fcfcfc;
 }
 .ed-hero-orbit {
   position: absolute;
   border-radius: 50%;
   pointer-events: none;
-  border: 1px solid rgba(38, 164, 221, 0.16);
+  border: 1px solid rgba(252, 252, 252, 0.14);
 }
-.ed-hero-orbit.gold { border-color: rgba(240, 179, 90, 0.1); }
+.ed-hero-orbit.gold { border-color: rgba(252, 252, 252, 0.08); }
 
 /* ---- Front-page "door": a large image-led entry point ----
-   Two of these carry the whole front page, so they are built to look like
-   printed plates rather than app cards: flat white, one hairline border, no
-   shadow at rest. Elevation is communicated by the accent bar and the image
-   scale, never by a glow — a drop-shadowed rounded card over a tinted photo is
-   the exact look the redesign is getting away from. */
+   Rebuilt on the soft-card rule: linen cream fill, big radius, 32px padding,
+   NO border and NO shadow. "Don't crowd the page with cards, borders or grid
+   lines — the editorial feel depends on generous, un-divided whitespace."
+   The coloured accent bar that used to sit across the top is gone for the same
+   reason: it was chrome announcing a card, and the card should not announce
+   itself. */
 .ed-door {
   position: relative;
-  background: #fff;
-  border: 1px solid rgba(12, 26, 39, 0.12);
+  overflow: hidden;
+  border-radius: 28px;
+  background: #faf8f5;
   transition:
-    border-color var(--dur-hover) var(--ease-out),
+    background-color var(--dur-hover) var(--ease-out),
     transform var(--dur-hover) var(--ease-out);
 }
-.ed-door::before {
-  content: "";
-  position: absolute;
-  left: 0; top: 0; right: 0;
-  height: 4px;
-  background: #0c1a27;
-  z-index: 1;
-}
-.ed-door--primary::before { background: #0077b5; }
-.ed-door:hover { border-color: rgba(12, 26, 39, 0.42); }
+.ed-door:hover { background: #f1f0f0; }
 @media (hover: hover) {
   .ed-door:hover { transform: translateY(-2px); }
 }
@@ -218,8 +241,9 @@
 .ed-door-frame {
   position: relative;
   overflow: hidden;
-  background: #0c1a27;
-  border-bottom: 1px solid rgba(12, 26, 39, 0.12);
+  border-radius: 22px;
+  margin: 10px 10px 0;
+  background: #3a3525;
 }
 .ed-door-frame > * {
   transition: transform 400ms var(--ease-out);
@@ -232,24 +256,19 @@
   .ed-door:hover, .ed-door:hover .ed-door-frame > * { transform: none; }
 }
 
-/* A plain hairline frame for images that are not links. */
-.lz-frame { border: 1px solid rgba(12, 26, 39, 0.12); }
+/* A soft frame for images that are not links. No border — the radius and the
+   warm fill behind it are the whole treatment. */
+.lz-frame { border-radius: 24px; overflow: hidden; }
 
-/* Editorial panel: flat surface with a colored top accent bar */
+/* Editorial panel. The 4px coloured bar across the top is gone: it was the
+   loudest piece of card chrome in the app and the system has no place for it.
+   A linen fill and a large radius separate the panel from the canvas. */
 .panel {
   position: relative;
-  background: #fff;
-  border: 1px solid rgba(12, 26, 39, 0.1);
+  background: #faf8f5;
+  border-radius: 28px;
 }
-.panel::before {
-  content: "";
-  position: absolute;
-  left: 0; top: 0; right: 0;
-  height: 4px;
-  background: #0077b5;
-}
-.panel.gold::before { background: #f0b35a; }
-.panel.ink::before { background: #0c1a27; }
+.panel.gold, .panel.ink { background: #f1f0f0; }
 
 /* Left accent bar variant */
 .accent-left { position: relative; }

@@ -77,7 +77,7 @@ export default function ResetPassword() {
   return (
     <div className="mx-auto max-w-lg px-4 py-14 sm:py-20">
       <div className="panel p-7 sm:p-9">
-        <span className="flex h-11 w-11 items-center justify-center rounded-[6px] bg-bff-600 text-white">
+        <span className="flex h-11 w-11 items-center justify-center rounded-[6px] bg-ink-deep text-white">
           <KeyRound className="h-5 w-5" aria-hidden="true" />
         </span>
         <h1 className="mt-5 font-display text-3xl font-extrabold text-ink">
@@ -136,8 +136,8 @@ export default function ResetPassword() {
                 onChange={(e) => setPassword(e.target.value)}
                 aria-describedby="new-pw-hint"
                 aria-invalid={pwError ? true : undefined}
-                className={`mt-2 w-full rounded-[6px] border px-4 py-2.5 text-ink outline-none transition focus:ring-2 focus:ring-bff-400 ${
-                  pwError ? 'border-red-400' : 'border-ink/20 focus:border-bff-500'
+                className={`mt-2 w-full rounded-[6px] border px-4 py-2.5 text-ink outline-none transition focus:ring-2 focus:ring-ink ${
+                  pwError ? 'border-red-400' : 'border-ink/20 focus:border-ink'
                 }`}
               />
               {pwError && (

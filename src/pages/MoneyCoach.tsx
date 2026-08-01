@@ -197,7 +197,7 @@ export default function MoneyCoach() {
         aria-hidden="true"
       />
       <div className="relative z-[1]">
-        <p className="eyebrow text-bff-300">
+        <p className="eyebrow text-paper/70">
           <span className="eyebrow-line" aria-hidden="true" />
           <MessageCircle className="h-4 w-4" aria-hidden="true" />
           {kicker}
@@ -318,7 +318,7 @@ export default function MoneyCoach() {
         {/* Starter prompts — only before the student has asked anything. */}
         {messages.length === 0 && (
           <div>
-            <p className="eyebrow mb-2 text-bff-600">
+            <p className="eyebrow mb-2 text-ink">
               <span className="eyebrow-line" aria-hidden="true" />
               {startersLabel}
             </p>
@@ -327,7 +327,7 @@ export default function MoneyCoach() {
                 <button
                   key={s}
                   type="button"
-                  className="chip border border-ink/15 bg-white text-ink/80 transition hover:border-bff-400 hover:bg-bff-50 hover:text-bff-700"
+                  className="chip border border-ink/15 bg-white text-ink/80 transition hover:border-bff-400 hover:bg-paper-soft hover:text-ink"
                   onClick={() => send(s)}
                   disabled={busy}
                 >
@@ -379,7 +379,7 @@ function Bubble({ role, children }: { role: 'user' | 'assistant'; children: Reac
   const isUser = role === 'user'
   if (isUser) {
     return (
-      <div className="max-w-[85%] self-end whitespace-pre-wrap rounded-[12px] rounded-br-sm bg-bff-600 px-4 py-2.5 text-white">
+      <div className="max-w-[85%] self-end whitespace-pre-wrap rounded-[12px] rounded-br-sm bg-ink-deep px-4 py-2.5 text-white">
         {children}
       </div>
     )

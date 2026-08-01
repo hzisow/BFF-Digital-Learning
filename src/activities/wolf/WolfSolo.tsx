@@ -63,7 +63,7 @@ export default function WolfSolo() {
       <div className="mb-6 flex items-center justify-between gap-3">
         <div>
           <h1 className="flex items-center gap-2 font-display text-2xl font-bold text-ink">
-            <LineChart className="h-6 w-6 shrink-0 text-bff-700" aria-hidden="true" />
+            <LineChart className="h-6 w-6 shrink-0 text-ink" aria-hidden="true" />
             <span>
               Wolf of Wall <em>Street</em>
             </span>
@@ -100,7 +100,7 @@ export default function WolfSolo() {
       </div>
 
       {stage === 1 && (
-        <p className="card mb-4 border-bff-200 bg-bff-50 text-sm text-ink/75">
+        <p className="card mb-4 border-bff-200 bg-paper-soft text-sm text-ink/75">
           {zh ? (
             <>
               你有 <strong>{money(STARTING_CASH)}</strong> 可以投资在 12 家公司上。研究下面的市场信息，
@@ -142,14 +142,14 @@ export default function WolfSolo() {
               return (
                 <div key={c.ticker} className="card animate-pop-in flex items-start justify-between gap-3 p-4">
                   <div className="flex items-start gap-2.5">
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-bff-50 text-bff-700">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-paper-soft text-ink">
                       <GameIcon name={c.icon} className="h-5 w-5" />
                     </span>
                     <div>
                       <p className="font-display font-bold text-ink">
                         {c.name} <span className="text-xs text-ink/60">{c.ticker}</span>
                         {shares > 0 && (
-                          <span className="chip ml-2 bg-bff-50 text-bff-700">{zh ? `你持有 ${shares}` : es ? `tienes ${shares}` : `you own ${shares}`}</span>
+                          <span className="chip ml-2 bg-paper-soft text-ink">{zh ? `你持有 ${shares}` : es ? `tienes ${shares}` : `you own ${shares}`}</span>
                         )}
                       </p>
                       <p className="text-sm text-ink/70">{zh ? c.summaryZh : es ? c.summaryEs : c.summary}</p>

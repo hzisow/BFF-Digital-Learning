@@ -21,15 +21,28 @@ export default {
           400: '#f0b35a',
           500: '#e09a33',
         },
-        // Editorial base — warm cream "paper" and near-black navy "ink".
+        // Editorial base, on the Wealthsimple warm cream-to-graphite axis.
+        //
+        // The whole palette is deliberately WARM. The previous ink was a cool
+        // navy (#0c1a27) and the paper a cool-ish cream; swapping those two
+        // values is what re-tones every surface in the app at once, because
+        // `text-ink`, `bg-paper` and `border-ink/10` are used everywhere.
+        //
+        // Rule from the system: never pure #000 for text. Graphite keeps the
+        // dark tones warm against cream.
         paper: {
-          DEFAULT: '#f5f3ec',
-          deep: '#e9e5db',
+          DEFAULT: '#fcfcfc', // page canvas
+          deep: '#faf8f5',    // linen cream — alternate warm section
+          soft: '#f1f0f0',    // quiet elevated regions, hover washes
         },
+        stone: '#e4e2e1',     // the only structural line colour
+        pebble: '#686664',    // secondary text, helper copy
         ink: {
-          DEFAULT: '#0c1a27',
-          soft: '#12283a',
+          DEFAULT: '#32302f', // graphite ink — primary text
+          soft: '#4a4746',
+          deep: '#09090a',    // charcoal — the primary pill fill
         },
+        bronze: '#3a3525',    // full-bleed dark feature blocks
       },
       fontFamily: {
         // The @fontsource variable packages register the family under a
@@ -38,19 +51,25 @@ export default {
         display: ['"Fraunces Variable"', 'Fraunces', 'Georgia', 'serif'],
         body: ['"Public Sans Variable"', '"Public Sans"', 'system-ui', 'sans-serif'],
       },
-      // Deliberately tightened off the Tailwind defaults — bubbly, uniform
-      // rounding is a giveaway of un-customized output. These crisper radii
-      // read as an intentional design decision and ripple app-wide.
+      // Softness is the signature: "the extreme roundness makes even dense
+      // product UI feel boutique." Buttons and inputs are full pills; cards get
+      // a large soft radius rather than the literal 100px, which on a narrow
+      // card collapses into a lozenge and loses the corner entirely.
       borderRadius: {
-        lg: '0.5rem',
-        xl: '0.625rem', // was 0.75rem
-        '2xl': '0.875rem', // was 1rem
-        '3xl': '1.125rem', // was 1.5rem
+        lg: '0.75rem',
+        xl: '1rem',
+        '2xl': '1.5rem',
+        '3xl': '2rem',
+        card: '1.75rem',
+        pill: '9999px',
       },
       boxShadow: {
-        // A tight, layered shadow instead of one big soft blur.
-        card: '0 1px 2px rgba(15, 42, 66, 0.06), 0 2px 8px rgba(15, 42, 66, 0.05)',
-        'card-hover': '0 2px 4px rgba(15, 42, 66, 0.08), 0 10px 24px rgba(15, 42, 66, 0.09)',
+        // Deliberately none. "Don't apply CSS drop shadows to cards, modals or
+        // buttons — rely on the warm surface stack and hairlines instead."
+        // Kept as named tokens rather than deleted so the ~40 existing
+        // `shadow-card` usages resolve to nothing instead of failing to build.
+        card: 'none',
+        'card-hover': 'none',
       },
       letterSpacing: {
         tightish: '-0.011em',

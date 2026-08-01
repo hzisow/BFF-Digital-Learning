@@ -375,15 +375,15 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
           const missed = !reached && month > g.deadline
           return (
             <div key={g.id} className="card p-4">
-              <p className="flex items-center gap-1.5 text-sm font-semibold text-slate-800">
-                <GoalIcon className="h-4 w-4 shrink-0 text-bff-600" aria-hidden="true" />
+              <p className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+                <GoalIcon className="h-4 w-4 shrink-0 text-ink" aria-hidden="true" />
                 {zh ? g.labelZh : es ? g.labelEs : g.label}
               </p>
-              <p className="mt-0.5 text-xs text-slate-500">
+              <p className="mt-0.5 text-xs text-pebble">
                 {zh ? `第 ${g.deadline} 个月前存够 ${usd(g.target)}` : es ? `${usd(g.target)} para el mes ${g.deadline}` : `${usd(g.target)} by month ${g.deadline}`}
               </p>
               <div
-                className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-slate-200"
+                className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-stone"
                 role="progressbar"
                 aria-valuemin={0}
                 aria-valuemax={g.target}
@@ -398,20 +398,20 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
               >
                 <div
                   className={`h-full rounded-full transition-all duration-300 ${
-                    reached ? 'bg-green-500' : missed ? 'bg-red-400' : 'bg-bff-600'
+                    reached ? 'bg-green-500' : missed ? 'bg-red-400' : 'bg-ink-deep'
                   }`}
                   style={{ width: `${pct}%` }}
                 />
               </div>
               <div className="mt-2 flex items-center justify-between">
-                <p className="font-display text-sm font-bold text-bff-700">{usd(saved)}</p>
+                <p className="font-display text-sm font-bold text-ink">{usd(saved)}</p>
                 <span
                   className={`chip ${
                     reached
                       ? 'bg-green-100 text-green-800'
                       : missed
                         ? 'bg-red-100 text-red-700'
-                        : 'bg-slate-100 text-slate-600'
+                        : 'bg-paper-soft text-pebble'
                   }`}
                 >
                   {reached ? (
@@ -451,7 +451,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
             {zh ? '六个月结束了。你的计划撑住了吗？' : es ? 'Se acabaron los seis meses. ¿Aguantó tu plan?' : 'Six months are up. Did your plan hold?'}
           </p>
           <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-            <Target className="mr-1 inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
+            <Target className="mr-1 inline-block h-7 w-7 align-[-0.15em] text-ink" aria-hidden="true" />{' '}
             {zh ? (
               <>目标<em>达成者</em></>
             ) : es ? (
@@ -459,7 +459,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
             ) : (
               <>Goal <em>Getter</em></>
             )}{' '}
-            <PiggyBank className="ml-1 inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />
+            <PiggyBank className="ml-1 inline-block h-7 w-7 align-[-0.15em] text-ink" aria-hidden="true" />
           </h1>
         </header>
 
@@ -475,11 +475,11 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
                 style={{ animationDelay: `${i * 0.25}s` }}
               >
                 <div>
-                  <p className="flex items-center gap-1.5 text-sm font-semibold text-slate-800">
-                    <GoalIcon className="h-4 w-4 shrink-0 text-bff-600" aria-hidden="true" />
+                  <p className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+                    <GoalIcon className="h-4 w-4 shrink-0 text-ink" aria-hidden="true" />
                     {zh ? g.labelZh : es ? g.labelEs : g.label}
                   </p>
-                  <p className="mt-0.5 text-xs text-slate-500">
+                  <p className="mt-0.5 text-xs text-pebble">
                     {zh
                       ? `第 ${g.deadline} 个月前需要 ${usd(g.target)} · 你有 ${usd(saved)}`
                       : es
@@ -512,11 +512,11 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
           role="status"
         >
           <p className="flex justify-center" aria-hidden="true">
-            <TierIcon className="h-14 w-14 text-bff-600" />
+            <TierIcon className="h-14 w-14 text-ink" />
           </p>
-          <h2 className="font-display text-3xl font-bold text-slate-900">{tier.title}</h2>
-          <p className="font-display text-lg font-bold text-bff-700">{score} / 100</p>
-          <p className="text-sm text-slate-600">
+          <h2 className="font-display text-3xl font-bold text-ink">{tier.title}</h2>
+          <p className="font-display text-lg font-bold text-ink">{score} / 100</p>
+          <p className="text-sm text-pebble">
             {zh ? '一路上花在娱乐的钱' : es ? 'Dinero en diversión a lo largo del camino' : 'Fun money spent along the way'}:{' '}
             {usd(balances.fun)}
             {tripTaken ? (zh ? '（含一日游！）' : es ? ' (¡excursión incluida!)' : ' (day trip included!)') : ''} —{' '}
@@ -529,11 +529,11 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
         </div>
 
         <div
-          className="card animate-slide-up mt-4 border-bff-200 bg-bff-50 text-sm text-slate-700"
+          className="card animate-slide-up mt-4 border-bff-200 bg-paper-soft text-sm text-ink"
           style={{ animationDelay: '1s' }}
         >
-          <p className="font-display font-bold text-slate-900">
-            <Lightbulb className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-bff-600" aria-hidden="true" /> {zh ? '收获' : es ? 'La lección' : 'The takeaway'}
+          <p className="font-display font-bold text-ink">
+            <Lightbulb className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-ink" aria-hidden="true" /> {zh ? '收获' : es ? 'La lección' : 'The takeaway'}
           </p>
           <p className="mt-1">
             <strong>{zh ? '先付给自己：' : es ? 'Págate a ti primero:' : 'Pay yourself first:'}</strong>{' '}
@@ -580,7 +580,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
             {zh ? '生活总有意外……' : es ? 'la vida pasa…' : 'life happens…'}
           </p>
           <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-            <Target className="mr-1 inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
+            <Target className="mr-1 inline-block h-7 w-7 align-[-0.15em] text-ink" aria-hidden="true" />{' '}
             {zh ? (
               <>目标<em>达成者</em></>
             ) : es ? (
@@ -588,16 +588,16 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
             ) : (
               <>Goal <em>Getter</em></>
             )}{' '}
-            <PiggyBank className="ml-1 inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />
+            <PiggyBank className="ml-1 inline-block h-7 w-7 align-[-0.15em] text-ink" aria-hidden="true" />
           </h1>
         </header>
 
         <div className="card animate-pop-in mt-4" role="status">
           <p className="flex" aria-hidden="true">
-            <EventIcon className="h-12 w-12 text-bff-600" />
+            <EventIcon className="h-12 w-12 text-ink" />
           </p>
-          <h2 className="mt-2 font-display text-xl font-bold text-slate-900">{eventCard.title}</h2>
-          <div className="mt-2 space-y-2 text-sm text-slate-700">
+          <h2 className="mt-2 font-display text-xl font-bold text-ink">{eventCard.title}</h2>
+          <div className="mt-2 space-y-2 text-sm text-ink">
             {eventCard.lines.map((line) => (
               <p key={line}>{line}</p>
             ))}
@@ -632,7 +632,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
           {zh ? '第' : es ? 'Mes' : 'Month'} {month} {zh ? '个月，共' : es ? 'de' : 'of'} {TOTAL_MONTHS}{zh ? ' 个月' : ''}
         </p>
         <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-          <Target className="mr-1 inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
+          <Target className="mr-1 inline-block h-7 w-7 align-[-0.15em] text-ink" aria-hidden="true" />{' '}
           {zh ? (
             <>目标<em>达成者</em></>
           ) : es ? (
@@ -640,12 +640,12 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
           ) : (
             <>Goal <em>Getter</em></>
           )}{' '}
-          <PiggyBank className="ml-1 inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />
+          <PiggyBank className="ml-1 inline-block h-7 w-7 align-[-0.15em] text-ink" aria-hidden="true" />
         </h1>
       </header>
 
       {month === 1 && (
-        <div className="card mt-4 border-bff-200 bg-bff-50 text-sm text-slate-700">
+        <div className="card mt-4 border-bff-200 bg-paper-soft text-sm text-ink">
           {zh ? (
             <p>
               你每月挣 <strong>{usd(BASE_INCOME)}</strong>，持续 6 个月，而且你定下了三个带有真实期限的 SMART 目标。每个月，把你的工资以 {usd(STEP)} 为一档，在各个目标和娱乐之间进行分配。提个醒：生活可不会乖乖静止 6 个月。
@@ -670,8 +670,8 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
 
       <section className="card mt-4 p-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 className="font-display text-lg font-bold text-slate-900">
-            <Banknote className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-bff-600" aria-hidden="true" />{' '}
+          <h2 className="font-display text-lg font-bold text-ink">
+            <Banknote className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-ink" aria-hidden="true" />{' '}
             {zh
               ? `第 ${month} 个月工资：${usd(monthInfo.income)}`
               : es
@@ -679,7 +679,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
               : `Month ${month} paycheck: ${usd(monthInfo.income)}`}
           </h2>
         </div>
-        {monthInfo.note && <p className="mt-1 text-xs text-slate-600">{monthInfo.note}</p>}
+        {monthInfo.note && <p className="mt-1 text-xs text-pebble">{monthInfo.note}</p>}
 
         <div className="mt-3 space-y-2">
           {BUCKETS.map((b) => {
@@ -689,13 +689,13 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
             return (
               <div
                 key={b.id}
-                className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-2.5"
+                className="flex items-center justify-between gap-3 rounded-xl border border-stone bg-white px-4 py-2.5"
               >
-                <p className="flex flex-wrap items-center gap-1.5 text-sm font-semibold text-slate-800">
-                  <BucketIcon className="h-4 w-4 shrink-0 text-bff-600" aria-hidden="true" />
+                <p className="flex flex-wrap items-center gap-1.5 text-sm font-semibold text-ink">
+                  <BucketIcon className="h-4 w-4 shrink-0 text-ink" aria-hidden="true" />
                   {zh ? b.labelZh : es ? b.labelEs : b.label}
                   {b.id === 'fun' && min > 0 && (
-                    <span className="ml-2 text-xs font-normal text-slate-500">
+                    <span className="ml-2 text-xs font-normal text-pebble">
                       {zh ? `（含 ${usd(min)} 的一日游）` : es ? `(incluye la excursión de ${usd(min)})` : `(includes the ${usd(min)} trip)`}
                     </span>
                   )}
@@ -706,18 +706,18 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
                     onClick={() => bump(b.id, -STEP)}
                     disabled={value <= min}
                     aria-label={zh ? `从${b.labelZh}中减去 $20` : es ? `Quitar $20 de ${b.labelEs}` : `Take $20 away from ${b.label}`}
-                    className="h-9 w-9 rounded-lg border-2 border-slate-200 bg-white font-display text-lg font-bold text-slate-700 transition hover:border-bff-300 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 disabled:active:scale-100"
+                    className="h-9 w-9 rounded-lg border-2 border-stone bg-white font-display text-lg font-bold text-ink transition hover:border-bff-300 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 disabled:active:scale-100"
                   >
                     <span aria-hidden="true">−</span>
                   </button>
-                  <p className="w-14 text-center font-display text-sm font-bold text-bff-700">
+                  <p className="w-14 text-center font-display text-sm font-bold text-ink">
                     {usd(value)}
                   </p>
                   <button
                     type="button"
                     onClick={() => bump(b.id, STEP)}
                     aria-label={zh ? `向${b.labelZh}再投入 $20` : es ? `Poner $20 más en ${b.labelEs}` : `Put $20 more toward ${b.label}`}
-                    className="h-9 w-9 rounded-lg border-2 border-slate-200 bg-white font-display text-lg font-bold text-slate-700 transition hover:border-bff-300 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 disabled:active:scale-100"
+                    className="h-9 w-9 rounded-lg border-2 border-stone bg-white font-display text-lg font-bold text-ink transition hover:border-bff-300 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 disabled:active:scale-100"
                   >
                     <span aria-hidden="true">+</span>
                   </button>
@@ -728,7 +728,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
         </div>
 
         <p
-          className={`mt-3 text-sm font-semibold ${remaining === 0 ? 'text-green-700' : 'text-slate-600'}`}
+          className={`mt-3 text-sm font-semibold ${remaining === 0 ? 'text-green-700' : 'text-pebble'}`}
           role="status"
           aria-live="polite"
         >

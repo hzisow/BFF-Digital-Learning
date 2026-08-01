@@ -60,7 +60,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             ) : t.kind === 'error' ? (
               <XCircle className="h-4 w-4 shrink-0 text-red-600" aria-hidden="true" />
             ) : (
-              <Info className="h-4 w-4 shrink-0 text-bff-600" aria-hidden="true" />
+              <Info className="h-4 w-4 shrink-0 text-ink" aria-hidden="true" />
             )}
             {t.message}
           </div>

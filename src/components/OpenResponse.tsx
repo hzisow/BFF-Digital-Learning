@@ -78,7 +78,7 @@ export default function OpenResponse({ prompt, rubric, id }: OpenResponseProps) 
 
   return (
     <div className="card accent-left">
-      <p className="eyebrow text-bff-600">
+      <p className="eyebrow text-ink">
         <span className="eyebrow-line" aria-hidden="true" />
         {zh ? '开放式问题' : es ? 'Respuesta abierta' : 'Open response'}
       </p>
@@ -204,11 +204,11 @@ export default function OpenResponse({ prompt, rubric, id }: OpenResponseProps) 
           <div className="panel mt-4 p-5">
             <div className="flex flex-wrap items-center gap-3">
               <h3 className="flex items-center gap-1.5 font-display text-base font-bold text-ink">
-                <Sparkles className="h-4 w-4 text-bff-600" aria-hidden="true" />
+                <Sparkles className="h-4 w-4 text-ink" aria-hidden="true" />
                 {zh ? '你的反馈' : es ? 'Tus comentarios' : 'Your feedback'}
               </h3>
               {grade.score !== null && (
-                <span className="chip bg-bff-100 text-bff-800">
+                <span className="chip bg-paper-soft text-ink">
                   {scoreLabel}: {grade.score}/100
                 </span>
               )}

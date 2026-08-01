@@ -144,7 +144,7 @@ export default function PracticePage() {
                 <Sparkles className="h-7 w-7" aria-hidden="true" />
               )}
             </span>
-            <p className="eyebrow mt-5 justify-center text-bff-300">
+            <p className="eyebrow mt-5 justify-center text-paper/70">
               {zh ? '复习完成' : es ? 'Repaso completado' : 'Review complete'}
             </p>
             <p className="mt-2 font-display text-6xl font-extrabold text-white">
@@ -204,7 +204,7 @@ export default function PracticePage() {
     <div className="mx-auto max-w-2xl px-4 py-10">
       <section className="ed-hero chamfer px-6 py-5">
         <div className="relative z-[1] flex flex-wrap items-center justify-between gap-3">
-          <p className="eyebrow text-bff-300">
+          <p className="eyebrow text-paper/70">
             <RefreshCw className="h-3.5 w-3.5" aria-hidden="true" />
             {zh
               ? `复习 · 第 ${step + 1} / ${deck.length} 题`
@@ -222,14 +222,14 @@ export default function PracticePage() {
       <h1 className="mt-6 font-display text-2xl font-bold text-ink">{q.question}</h1>
       <div className="mt-6 space-y-3">
         {q.options.map((opt, i) => {
-          let cls = 'border-slate-200 bg-white text-slate-700 hover:border-bff-400 hover:bg-bff-50'
+          let cls = 'border-stone bg-white text-ink hover:border-bff-400 hover:bg-paper-soft'
           if (revealed) {
             cls =
               i === q.answerIndex
                 ? 'border-green-500 bg-green-50 text-green-800'
                 : i === chosen
                   ? 'border-red-400 bg-red-50 text-red-700'
-                  : 'border-slate-200 bg-white text-slate-500'
+                  : 'border-stone bg-white text-pebble'
           }
           return (
             <button

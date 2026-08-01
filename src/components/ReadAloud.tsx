@@ -49,8 +49,8 @@ export default function ReadAloud({ text }: { text: string }) {
       title={speaking ? t('readAloud.stop') : t('readAloud.play')}
       className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-[5px] text-base transition ${
         speaking
-          ? 'bg-bff-600 text-white'
-          : 'text-current hover:bg-bff-600 hover:text-white'
+          ? 'bg-ink-deep text-white'
+          : 'text-current hover:bg-ink-deep hover:text-white'
       }`}
     >
       {speaking ? (

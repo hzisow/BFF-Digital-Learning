@@ -90,7 +90,7 @@ export default function GlossaryPage() {
           style={{ width: 180, height: 180, bottom: -110, left: '50%', marginLeft: -90 }}
         />
         <div className="relative z-[1]">
-          <p className="eyebrow justify-center text-bff-300">
+          <p className="eyebrow justify-center text-paper/70">
             <BookOpen className="h-3.5 w-3.5" aria-hidden="true" /> {t('glossary.title')}
           </p>
           <h1 className="mt-3 font-display text-4xl font-extrabold text-white sm:text-5xl">
@@ -142,7 +142,7 @@ export default function GlossaryPage() {
         <div className="mt-8 space-y-8">
           {groups.map(([letter, list]) => (
             <section key={letter} aria-label={letter}>
-              <h2 className="font-display text-2xl font-extrabold text-bff-700">{letter}</h2>
+              <h2 className="font-display text-2xl font-extrabold text-ink">{letter}</h2>
               <dl className="mt-3 space-y-3">
                 {list.map((e) => (
                   <div key={`${e.lessonSlug}-${e.term}`} className="card accent-left p-5 pl-6">
@@ -154,7 +154,7 @@ export default function GlossaryPage() {
                       {t('glossary.from')}{' '}
                       <Link
                         to={`/lessons/${e.lessonSlug}`}
-                        className="inline-flex items-center gap-1.5 font-semibold text-bff-700 hover:underline"
+                        className="inline-flex items-center gap-1.5 font-semibold text-ink hover:underline"
                       >
                         <AppIcon name={e.lessonIcon} className="h-4 w-4" />
                         {e.lessonTitle}

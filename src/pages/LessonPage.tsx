@@ -999,13 +999,13 @@ export default function LessonPage() {
     return (
       <div className="lz">
         <div className="mx-auto max-w-xl px-4 py-24 text-center">
-          <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-bff-100 text-bff-700">
+          <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-paper-soft text-ink">
             <SearchX className="h-8 w-8" aria-hidden="true" />
           </span>
-          <h1 className="mt-6 font-display text-3xl font-bold text-slate-900">
+          <h1 className="mt-6 font-display text-3xl font-bold text-ink">
             {tr({ en: 'Lesson not found', es: 'Lección no encontrada', zh: '未找到课程' })}
           </h1>
-          <p className="mt-3 text-slate-600">
+          <p className="mt-3 text-pebble">
             {tr({
               en: 'We looked everywhere, but this lesson seems to have left the syllabus. Check the address, or browse the full curriculum.',
               es: 'Buscamos por todas partes, pero esta lección parece haber salido del temario. Revisa la dirección o explora todo el plan de estudios.',

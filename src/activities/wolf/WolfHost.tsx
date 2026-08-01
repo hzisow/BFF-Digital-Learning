@@ -40,7 +40,7 @@ const ADVANCE_LABELS: Record<number, { label: string; labelEs: string; labelZh: 
 const PODIUM_ICONS: LucideIcon[] = [Crown, Medal, Award]
 
 const BIG_BUTTON =
-  'rounded-2xl bg-white px-8 py-4 font-display text-2xl font-bold text-bff-900 shadow-lg transition hover:bg-bff-50 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50'
+  'rounded-2xl bg-white px-8 py-4 font-display text-2xl font-bold text-ink shadow-lg transition hover:bg-paper-soft active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50'
 
 function HostShell({ code, children }: { code?: string; children: ReactNode }) {
   return (
@@ -164,7 +164,7 @@ export default function WolfHost() {
     return (
       <HostShell>
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
-          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-bff-50 text-bff-700">
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-paper-soft text-ink">
             <Monitor className="h-6 w-6" aria-hidden="true" />
           </span>
           <h1 className="font-display text-xl font-bold text-ink">{zh ? '主持人屏幕' : es ? 'Pantalla del anfitrión' : 'Host screen'}</h1>
@@ -193,7 +193,7 @@ export default function WolfHost() {
     return (
       <HostShell>
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
-          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-bff-50 text-bff-700">
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-paper-soft text-ink">
             <HelpCircle className="h-6 w-6" aria-hidden="true" />
           </span>
           <h1 className="font-display text-xl font-bold text-ink">{zh ? '无法加载游戏' : es ? 'No se pudo cargar el juego' : 'Could not load the game'}</h1>
@@ -209,7 +209,7 @@ export default function WolfHost() {
   if (!adminReady || !session) {
     return (
       <HostShell>
-        <p className="mt-32 text-center font-display text-2xl font-semibold text-bff-200">
+        <p className="mt-32 text-center font-display text-2xl font-semibold text-paper/70">
           {zh ? '正在预热交易大厅…' : es ? 'Preparando el piso de negociación…' : 'Warming up the trading floor…'}
         </p>
       </HostShell>
@@ -227,15 +227,15 @@ export default function WolfHost() {
       {/* Stage 0 — lobby */}
       {stage === 0 && (
         <div className="flex flex-col items-center gap-8 pt-8 text-center">
-          <p className="eyebrow justify-center text-bff-300">
+          <p className="eyebrow justify-center text-paper/70">
             <span className="eyebrow-line" aria-hidden="true" />
             {zh ? '实时市场游戏' : es ? 'JUEGO DE MERCADO EN VIVO' : 'LIVE MARKET GAME'}
           </p>
           <h1 className="flex items-center justify-center gap-3 font-display text-4xl font-bold sm:text-5xl">
-            <LineChart className="h-9 w-9 shrink-0 text-bff-300 sm:h-11 sm:w-11" aria-hidden="true" />
+            <LineChart className="h-9 w-9 shrink-0 text-paper/70 sm:h-11 sm:w-11" aria-hidden="true" />
             Wolf of Wall Street
           </h1>
-          <p className="text-xl text-bff-200">{zh ? '拿起一台设备，用游戏代码加入' : es ? 'Toma un dispositivo y únete con el código del juego' : 'Grab a device and join with the game code'}</p>
+          <p className="text-xl text-paper/70">{zh ? '拿起一台设备，用游戏代码加入' : es ? 'Toma un dispositivo y únete con el código del juego' : 'Grab a device and join with the game code'}</p>
           <p className="font-display text-7xl font-bold tracking-widest sm:text-8xl md:text-9xl">
             {session.code}
           </p>
@@ -265,7 +265,7 @@ export default function WolfHost() {
                 </span>
               ))}
               {players.length === 0 && (
-                <span className="text-lg text-bff-300">{zh ? '正在等待第一位投资者加入…' : es ? 'Esperando a que se una el primer inversionista…' : 'Waiting for the first trader to join…'}</span>
+                <span className="text-lg text-paper/70">{zh ? '正在等待第一位投资者加入…' : es ? 'Esperando a que se una el primer inversionista…' : 'Waiting for the first trader to join…'}</span>
               )}
             </div>
           </div>
@@ -281,14 +281,14 @@ export default function WolfHost() {
           <h1 className="flex items-center gap-3 font-display text-4xl font-bold sm:text-5xl">
             {(() => {
               const StageIcon = STAGE_TITLES[stage].Icon
-              return <StageIcon className="h-9 w-9 shrink-0 text-bff-300 sm:h-11 sm:w-11" aria-hidden="true" />
+              return <StageIcon className="h-9 w-9 shrink-0 text-paper/70 sm:h-11 sm:w-11" aria-hidden="true" />
             })()}
             {zh ? STAGE_TITLES[stage].titleZh : es ? STAGE_TITLES[stage].titleEs : STAGE_TITLES[stage].title}
           </h1>
           <div className="grid gap-6 lg:grid-cols-[1fr_minmax(300px,360px)]">
             <div className="space-y-6">
               <div className="rounded-2xl bg-white/10 p-6">
-                <h2 className="mb-4 font-display text-lg font-bold uppercase tracking-wide text-bff-200">
+                <h2 className="mb-4 font-display text-lg font-bold uppercase tracking-wide text-paper/70">
                   {stage === 1 ? (
                     <>
                       <Search className="inline h-5 w-5 align-[-0.15em]" aria-hidden="true" /> {zh ? '市场信息' : es ? 'Información del mercado' : 'Market information'}
@@ -303,7 +303,7 @@ export default function WolfHost() {
                   {stage === 1
                     ? (zh ? MARKET_HINTS_ZH : es ? MARKET_HINTS_ES : MARKET_HINTS).map((h, i) => (
                         <li key={h} className="flex items-start gap-3 text-2xl font-semibold leading-snug">
-                          <GameIcon name={MARKET_HINT_ICONS[i]} className="mt-1 h-7 w-7 shrink-0 text-bff-300" />
+                          <GameIcon name={MARKET_HINT_ICONS[i]} className="mt-1 h-7 w-7 shrink-0 text-paper/70" />
                           <span>{h}</span>
                         </li>
                       ))
@@ -325,7 +325,7 @@ export default function WolfHost() {
                 </ul>
               </div>
               <div className="rounded-2xl bg-white/10 p-6">
-                <h2 className="mb-4 font-display text-lg font-bold uppercase tracking-wide text-bff-200">
+                <h2 className="mb-4 font-display text-lg font-bold uppercase tracking-wide text-paper/70">
                   <ChartCandlestick className="inline h-5 w-5 align-[-0.15em]" aria-hidden="true" /> {zh ? '价格' : es ? 'Precios' : 'Prices'}
                 </h2>
                 <div className="grid gap-x-8 gap-y-1 sm:grid-cols-2">
@@ -340,7 +340,7 @@ export default function WolfHost() {
                       >
                         <span className="font-display text-lg font-semibold">
                           {c.ticker}{' '}
-                          <span className="text-base font-normal text-bff-200">{c.name}</span>
+                          <span className="text-base font-normal text-paper/70">{c.name}</span>
                         </span>
                         <span className="whitespace-nowrap font-display text-xl font-bold">
                           ${price}
@@ -351,7 +351,7 @@ export default function WolfHost() {
                                   ? 'text-green-400'
                                   : change < 0
                                     ? 'text-red-400'
-                                    : 'text-bff-300'
+                                    : 'text-paper/70'
                               }`}
                             >
                               <span aria-hidden="true" className="inline-flex items-center gap-0.5">
@@ -397,7 +397,7 @@ export default function WolfHost() {
               </div>
             </div>
             <div className="h-fit rounded-2xl bg-white/10 p-6">
-              <h2 className="mb-4 font-display text-lg font-bold uppercase tracking-wide text-bff-200">
+              <h2 className="mb-4 font-display text-lg font-bold uppercase tracking-wide text-paper/70">
                 <Trophy className="inline h-5 w-5 align-[-0.15em]" aria-hidden="true" /> {zh ? '排行榜' : es ? 'Tabla de posiciones' : 'Leaderboard'}
               </h2>
               <ol className="space-y-2.5">
@@ -411,12 +411,12 @@ export default function WolfHost() {
                     </span>
                   </li>
                 ))}
-                {standings.length === 0 && <li className="text-lg text-bff-300">{zh ? '还没有投资者…' : es ? 'Aún no hay inversionistas…' : 'No traders yet…'}</li>}
+                {standings.length === 0 && <li className="text-lg text-paper/70">{zh ? '还没有投资者…' : es ? 'Aún no hay inversionistas…' : 'No traders yet…'}</li>}
               </ol>
             </div>
           </div>
           <ControlBar>
-            <p className="mr-auto hidden text-bff-300 sm:block">
+            <p className="mr-auto hidden text-paper/70 sm:block">
               {zh
                 ? '每个人都在自己的设备上交易——等大家准备好了再推进。'
                 : es
@@ -443,10 +443,10 @@ export default function WolfHost() {
       {stage === 4 && (
         <div className="space-y-6 pt-2">
           <h1 className="font-display text-4xl font-bold sm:text-5xl">
-            <Lock className="inline h-9 w-9 align-[-0.12em] text-bff-300 sm:h-10 sm:w-10" aria-hidden="true" /> {zh ? '收盘钟声——结果揭晓' : es ? 'Campana de cierre — ya están los resultados' : 'Closing Bell — the results are in'}
+            <Lock className="inline h-9 w-9 align-[-0.12em] text-paper/70 sm:h-10 sm:w-10" aria-hidden="true" /> {zh ? '收盘钟声——结果揭晓' : es ? 'Campana de cierre — ya están los resultados' : 'Closing Bell — the results are in'}
           </h1>
           {session.reveal_index === 0 && (
-            <p className="text-2xl text-bff-200">
+            <p className="text-2xl text-paper/70">
               {zh
                 ? '营造悬念……一家一家地揭晓这些公司吧！'
                 : es
@@ -472,7 +472,7 @@ export default function WolfHost() {
                     <div>
                       <p className="font-display text-2xl font-bold">
                         {c.name}{' '}
-                        <span className="text-lg font-semibold text-bff-300">{c.ticker}</span>
+                        <span className="text-lg font-semibold text-paper/70">{c.ticker}</span>
                       </p>
                       <p className="mt-1 text-lg text-bff-100">{zh ? c.summaryZh : es ? c.summaryEs : c.summary}</p>
                     </div>
@@ -555,7 +555,7 @@ export default function WolfHost() {
             ))}
           </div>
           {standings.length === 0 && (
-            <p className="text-2xl text-bff-200">{zh ? '这一轮没有投资者——市场一片冷清！' : es ? 'No hubo inversionistas esta ronda — ¡el mercado estuvo tranquilo!' : 'No traders this round — the market was quiet!'}</p>
+            <p className="text-2xl text-paper/70">{zh ? '这一轮没有投资者——市场一片冷清！' : es ? 'No hubo inversionistas esta ronda — ¡el mercado estuvo tranquilo!' : 'No traders this round — the market was quiet!'}</p>
           )}
           {standings.length > 3 && (
             <ol className="w-full max-w-xl space-y-2">

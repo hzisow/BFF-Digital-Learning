@@ -132,7 +132,7 @@ export default function AccountAuth() {
     return (
       <Shell title={zh ? '查收邮件' : es ? 'Revisa tu correo' : 'Check your email'}>
         <p className="flex items-start gap-3 text-ink/75">
-          <Mail className="mt-0.5 h-5 w-5 shrink-0 text-bff-600" aria-hidden="true" />
+          <Mail className="mt-0.5 h-5 w-5 shrink-0 text-ink" aria-hidden="true" />
           <span>
             {sent === 'confirm'
               ? zh
@@ -290,7 +290,7 @@ function Shell({
   return (
     <div className="mx-auto max-w-lg px-4 py-14 sm:py-20">
       <div className="panel p-7 sm:p-9">
-        <span className="flex h-11 w-11 items-center justify-center rounded-[6px] bg-bff-600 text-white">
+        <span className="flex h-11 w-11 items-center justify-center rounded-[6px] bg-ink-deep text-white">
           <KeyRound className="h-5 w-5" aria-hidden="true" />
         </span>
         <h1 className="mt-5 font-display text-3xl font-extrabold text-ink">{title}</h1>
@@ -335,8 +335,8 @@ function Field({
         onChange={(e) => onChange(e.target.value)}
         aria-describedby={[hintId, errId].filter(Boolean).join(' ') || undefined}
         aria-invalid={error ? true : undefined}
-        className={`mt-2 w-full rounded-[6px] border px-4 py-2.5 text-ink outline-none transition focus:ring-2 focus:ring-bff-400 ${
-          error ? 'border-red-400' : 'border-ink/20 focus:border-bff-500'
+        className={`mt-2 w-full rounded-[6px] border px-4 py-2.5 text-ink outline-none transition focus:ring-2 focus:ring-ink ${
+          error ? 'border-red-400' : 'border-ink/20 focus:border-ink'
         }`}
         {...rest}
       />

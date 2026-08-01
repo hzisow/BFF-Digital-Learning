@@ -293,6 +293,53 @@ Same CJK limit as the worksheet generator: jsPDF's built-in fonts are Latin-only
 so a Chinese certificate falls back to English chrome and the page says so and
 points at Print instead.
 
+### The design system is Wealthsimple
+Chosen by the user from `hzisow/refero-design-styles` after being shown four
+candidates. Wealthsimple is "an editorial boutique masquerading as a fintech" —
+and being a *finance* brand, it carries money credibility for free.
+
+The whole system in one line: **warm neutrals, serif display, sans body, full-pill
+buttons, hairlines instead of shadows, and no colour in the chrome at all.**
+
+| Token | Value | Where |
+|---|---|---|
+| Paper | `#fcfcfc` | page canvas (`bg-paper`) |
+| Linen | `#faf8f5` | warm alternate sections and card fills (`bg-paper-deep`) |
+| Soft | `#f1f0f0` | hover washes, quiet regions (`bg-paper-soft`) |
+| Stone | `#e4e2e1` | the only structural line colour (`border-stone`) |
+| Pebble | `#686664` | secondary text (`text-pebble`) |
+| Graphite | `#32302f` | primary text (`text-ink`) |
+| Charcoal | `#09090a` | the primary pill fill (`bg-ink-deep`) |
+| Bronze | `#3a3525` | every full-bleed dark field (`bg-bronze`) |
+
+The highest-leverage single edit was redefining `ink` from a cool navy
+(`#0c1a27`) to warm graphite. `text-ink`, `bg-paper` and `border-ink/10` are used
+in hundreds of places, so that one line re-tones the entire app.
+
+**The primary button is dark, not brand-blue.** That inversion is what makes the
+system read as expensive: colour is withheld from the chrome so the serif and the
+whitespace carry the page, and the one dark pill is unmissable because nothing
+competes with it. `shadow-card` is redefined to `none` rather than deleted, so
+the ~40 existing usages resolve to nothing instead of breaking the build.
+
+Three deliberate deviations from the spec, each for a reason:
+1. **Fraunces stays** as the display serif instead of the doc's Tiempos
+   substitute. It occupies the same slot (editorial serif display), it is
+   already self-hosted, and swapping it would undo a change a reviewer
+   specifically approved two commits earlier.
+2. **Cards are 28px, not the literal 100px.** On a narrow three-up elective card
+   a 100px radius collapses into a lozenge and eats the corner entirely.
+3. **BFF blue is not deleted, it is demoted.** The system says monochrome, but
+   the blue is a nonprofit's actual brand mark. It survives in the logo and
+   nowhere else in the chrome.
+
+Semantic colour was left alone on purpose: green / red / amber still mean
+correct, wrong and overdue. Those carry information, not decoration.
+
+The re-tone across 44 files was scripted rather than hand-edited — see
+`warm.py` in the session scratchpad for the substitution table, including what it
+deliberately did not touch.
+
 ### Typography: Fraunces + Public Sans, and why it changed
 The pairing was Bricolage Grotesque + Inter. A reviewer looking at the live site
 said, unprompted, that "the font looks really AI" — which is a fair read:
@@ -878,7 +925,8 @@ are wondering *why* something is the way it is.
 
 | Commit | What changed |
 |---|---|
-| _(most recent)_ | Front page rebuilt around BFF Academy; student accounts; certificate as a PDF |
+| _(most recent)_ | Applied the Wealthsimple design system app-wide — warm palette, pill buttons, no shadows |
+| `862516e` | Front page rebuilt around BFF Academy; student accounts; certificate as a PDF |
 | `d8e1300` | Reviewer feedback: new typeface pair, a progress meter, one chance per question |
 | `bd3de27` | 85% mastery gate — a lesson only unlocks the next one once its quiz is passed |
 | `0dc05e2` | Per-question analytics, roster rename/remove/merge, due dates that read as deadlines |

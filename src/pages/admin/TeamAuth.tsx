@@ -21,11 +21,11 @@ export function BackendOffCard() {
   return (
     <div className="mx-auto max-w-lg px-4 py-16">
       <div className="card animate-pop-in text-center">
-        <Plug className="mx-auto h-9 w-9 text-slate-400" aria-hidden="true" />
-        <h1 className="mt-3 font-display text-2xl font-bold text-slate-900">
+        <Plug className="mx-auto h-9 w-9 text-pebble" aria-hidden="true" />
+        <h1 className="mt-3 font-display text-2xl font-bold text-ink">
           {zh ? '团队仪表板尚未连接' : es ? 'El panel del equipo aún no está conectado' : 'Team dashboard not connected yet'}
         </h1>
-        <p className="mt-3 text-slate-600">
+        <p className="mt-3 text-pebble">
           {zh
             ? '班级代码、作业和导师仪表板会在后端连接后启用；快速的 Supabase 配置方法请参见 README。课程和单人活动已可供所有人使用，无需后端。'
             : es
@@ -83,7 +83,7 @@ export default function TeamAuth() {
           className="ed-hero-orbit gold -left-32 bottom-[-9rem] h-[380px] w-[380px]"
         />
         <div className="relative z-[1] mx-auto max-w-3xl px-4 py-16 text-center sm:py-20">
-          <p className="eyebrow justify-center text-bff-300">
+          <p className="eyebrow justify-center text-paper/70">
             <span className="eyebrow-line" aria-hidden="true" />
             <Users className="h-3.5 w-3.5" aria-hidden="true" />
             {zh ? '团队登录' : es ? 'Acceso del equipo' : 'Team sign-in'}
@@ -127,7 +127,7 @@ export default function TeamAuth() {
                 </p>
               )}
               <p className="mt-5 flex items-start gap-2 text-sm leading-relaxed text-ink/70">
-                <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-bff-600" aria-hidden="true" />
+                <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-ink" aria-hidden="true" />
                 <span>
                   {zh
                     ? '初次使用？登录即可创建您的账户。BFF 管理员审批后，您方可管理班级。'

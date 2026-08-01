@@ -18,7 +18,7 @@ function SoloModeCard() {
   const zh = lang === 'zh'
   return (
     <div className="mx-auto max-w-lg animate-pop-in text-center">
-      <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-bff-600 text-white shadow-sm">
+      <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-ink-deep text-white shadow-sm">
         <Ticket className="h-7 w-7" strokeWidth={1.75} aria-hidden="true" />
       </span>
       <p className="eyebrow mt-6 justify-center">
@@ -121,7 +121,7 @@ function JoinForm() {
   return (
     <div className="mx-auto max-w-md animate-pop-in">
       <div className="text-center">
-        <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-bff-600 text-white shadow-sm">
+        <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-ink-deep text-white shadow-sm">
           <Ticket className="h-7 w-7" strokeWidth={1.75} aria-hidden="true" />
         </span>
         <p className="eyebrow mt-6 justify-center">
@@ -149,7 +149,7 @@ function JoinForm() {
       <div className="panel ink mt-8 p-6 sm:p-7">
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label htmlFor="class-code" className="font-display text-sm font-semibold text-slate-700">
+            <label htmlFor="class-code" className="font-display text-sm font-semibold text-ink">
               {zh ? '班级代码' : es ? 'Código de clase' : 'Class code'}
             </label>
             <input
@@ -167,7 +167,7 @@ function JoinForm() {
           </div>
           <div className="flex gap-3">
             <div className="flex-1">
-              <label htmlFor="first-name" className="font-display text-sm font-semibold text-slate-700">
+              <label htmlFor="first-name" className="font-display text-sm font-semibold text-ink">
                 {zh ? '名字' : es ? 'Nombre' : 'First name'}
               </label>
               <input
@@ -182,7 +182,7 @@ function JoinForm() {
               />
             </div>
             <div className="w-24">
-              <label htmlFor="last-initial" className="font-display text-sm font-semibold text-slate-700">
+              <label htmlFor="last-initial" className="font-display text-sm font-semibold text-ink">
                 {zh ? '姓氏首字母' : es ? 'Inicial' : 'Last initial'}
               </label>
               <input
@@ -197,7 +197,7 @@ function JoinForm() {
               />
             </div>
           </div>
-          <p id="name-hint" className="-mt-2 text-xs text-slate-500">
+          <p id="name-hint" className="-mt-2 text-xs text-pebble">
             {zh ? (
               <>
                 你的导师会看到 <strong>{displayName || '小明 M.'}</strong>
@@ -243,9 +243,9 @@ function JoinForm() {
         </form>
       </div>
 
-      <p className="mt-6 text-center text-xs text-slate-500">
+      <p className="mt-6 text-center text-xs text-pebble">
         {zh ? '没有班级代码？你仍然可以' : es ? '¿No tienes código de clase? Todavía puedes ' : 'No class code? You can still '}
-        <Link to="/lessons" className="font-semibold text-bff-700 hover:text-bff-800">
+        <Link to="/lessons" className="font-semibold text-ink hover:text-ink">
           {zh ? '自己探索全部内容' : es ? 'explorar todo por tu cuenta' : 'explore everything solo'}
         </Link>{' '}
         {zh ? '——进度会保存在这台设备上。' : es ? '— tu progreso se guarda en este dispositivo.' : '— progress saves on this device.'}

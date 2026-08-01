@@ -57,10 +57,10 @@ export default function Landing() {
           decorative
           className="pointer-events-none absolute -right-16 top-1/2 hidden h-[125%] -translate-y-1/2 opacity-[0.05] lg:block"
         />
-        <div className="relative z-[1] mx-auto max-w-6xl px-4 py-14 sm:py-20">
+        <div className="relative z-[1] mx-auto max-w-6xl px-4 py-20 sm:py-28">
           <div className="max-w-2xl">
             <Logo reversed className="h-10 sm:h-11" />
-            <h1 className="mt-7 font-display text-4xl font-extrabold leading-[1.03] text-white sm:text-6xl">
+            <h1 className="mt-7 font-display text-4xl font-medium leading-[1.08] tracking-[-0.01em] text-paper sm:text-6xl">
               {zh ? (
                 <>
                   真正管用的<em>理财技能</em>。
@@ -75,7 +75,7 @@ export default function Landing() {
                 </>
               )}
             </h1>
-            <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/70">
+            <p className="mt-5 max-w-xl text-lg leading-relaxed text-paper/75">
               {zh
                 ? `BFF Academy 是一门 ${LESSON_COUNT} 节课的免费课程，由高中生为高中生打造。在课堂上跟导师一起学，或者自己随时学。`
                 : es
@@ -89,7 +89,7 @@ export default function Landing() {
               </Link>
               <Link
                 to="/join"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-[5px] border border-white/25 px-5 py-3 font-display font-semibold text-white/90 transition-[transform,background-color,color] duration-150 hover:bg-white/10 hover:text-white active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-bff-400 focus-visible:ring-offset-2 focus-visible:ring-offset-ink sm:w-auto"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-pill border border-paper/40 px-7 py-3 font-body text-[15px] font-medium tracking-[0.025em] text-paper/90 transition-[transform,background-color,color] duration-150 hover:bg-paper hover:text-ink active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-paper focus-visible:ring-offset-2 focus-visible:ring-offset-bronze sm:w-auto"
               >
                 {zh ? '我有班级代码' : es ? 'Tengo un código de clase' : 'I have a class code'}
               </Link>
@@ -103,7 +103,7 @@ export default function Landing() {
           sits in its own block below the frame. Text floated over a darkened
           photo is the most recognisable generated-landing-page move there is,
           and avoiding it is most of what makes this read as designed. */}
-      <section className="mx-auto max-w-6xl px-4 py-14 sm:py-20">
+      <section className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
         <div className="grid gap-6 lg:grid-cols-5">
           <DoorCard
             to={primaryTo}
@@ -148,8 +148,8 @@ export default function Landing() {
       {/* ---------- Who made this ----------
           One band, not three. The credibility claims that were spread across a
           stat strip and a paragraph now sit on a single line. */}
-      <section className="border-t border-ink/10 bg-white">
-        <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-14 lg:flex-row lg:items-center lg:gap-16 lg:py-16">
+      <section className="border-t border-stone bg-paper-deep">
+        <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-20 lg:flex-row lg:items-center lg:gap-16">
           <div className="lg:flex-1">
             <p className="eyebrow">
               <span className="eyebrow-line" aria-hidden="true" />
@@ -246,7 +246,7 @@ function DoorCard({
           {title}
         </h2>
         <p className="mt-3 leading-relaxed text-ink/65">{body}</p>
-        <span className="mt-6 inline-flex items-center gap-2 font-display text-sm font-bold text-bff-700">
+        <span className="mt-6 inline-flex items-center gap-2 font-body text-[15px] font-medium text-ink">
           {cta}
           <ArrowRight className="nudge h-4 w-4" aria-hidden="true" />
         </span>

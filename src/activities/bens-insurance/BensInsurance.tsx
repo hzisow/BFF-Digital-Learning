@@ -206,7 +206,7 @@ function outcomeClasses(tone: Tone): string {
     case 'bad':
       return 'text-red-600'
     default:
-      return 'text-slate-500'
+      return 'text-pebble'
   }
 }
 
@@ -278,7 +278,7 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
             {zh ? '保障已确定。来看看这个月过得怎么样……' : es ? 'Cobertura confirmada. Veamos cómo va el mes…' : "Coverage locked. Let's see how the month goes…"}
           </p>
           <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-            <ShieldCheck className="mr-1 inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
+            <ShieldCheck className="mr-1 inline-block h-7 w-7 align-[-0.15em] text-ink" aria-hidden="true" />{' '}
             {zh ? (
               <>Ben 的保险<em>挑战</em></>
             ) : es ? (
@@ -298,9 +298,9 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
               className="card animate-slide-up flex items-start gap-3 p-4"
               style={{ animationDelay: `${i * EVENT_DELAY}s` }}
             >
-              <EventIcon className="mt-0.5 h-6 w-6 shrink-0 text-bff-600" aria-hidden="true" />
+              <EventIcon className="mt-0.5 h-6 w-6 shrink-0 text-ink" aria-hidden="true" />
               <div>
-                <p className="text-sm font-semibold text-slate-800">{e.title}</p>
+                <p className="text-sm font-semibold text-ink">{e.title}</p>
                 <p className={`mt-1 text-sm font-bold ${outcomeClasses(e.tone)}`}>{e.outcome}</p>
               </div>
             </div>
@@ -314,11 +314,11 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
           role="status"
         >
           <p className="flex justify-center" aria-hidden="true">
-            <GradeIcon className="h-14 w-14 text-bff-600" />
+            <GradeIcon className="h-14 w-14 text-ink" />
           </p>
-          <h2 className="font-display text-3xl font-bold text-slate-900">{results.grade}</h2>
-          <p className="font-display text-lg font-bold text-bff-700">{results.score} / 100</p>
-          <div className="mx-auto max-w-sm rounded-xl bg-slate-50 p-4 text-sm text-slate-700">
+          <h2 className="font-display text-3xl font-bold text-ink">{results.grade}</h2>
+          <p className="font-display text-lg font-bold text-ink">{results.score} / 100</p>
+          <div className="mx-auto max-w-sm rounded-xl bg-paper-soft p-4 text-sm text-ink">
             <div className="flex justify-between">
               <span>{zh ? '已付保费' : es ? 'Primas pagadas' : 'Premiums paid'}</span>
               <span className="font-semibold">{usd(results.premiums)}</span>
@@ -329,7 +329,7 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
                 {usd(results.surpriseCosts)}
               </span>
             </div>
-            <div className="mt-2 flex justify-between border-t border-slate-200 pt-2 font-display font-bold text-slate-900">
+            <div className="mt-2 flex justify-between border-t border-stone pt-2 font-display font-bold text-ink">
               <span>{zh ? '本月合计' : es ? 'Total de este mes' : 'Total this month'}</span>
               <span>{usd(results.premiums + results.surpriseCosts)}</span>
             </div>
@@ -337,10 +337,10 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
         </div>
 
         <div
-          className="card animate-slide-up mt-4 border-amber-200 bg-amber-50 text-sm text-slate-700"
+          className="card animate-slide-up mt-4 border-amber-200 bg-amber-50 text-sm text-ink"
           style={{ animationDelay: `${tallyDelay + EVENT_DELAY}s` }}
         >
-          <p className="font-display font-bold text-slate-900">
+          <p className="font-display font-bold text-ink">
             <AlertTriangle className="mr-1 inline-block h-4 w-4 align-[-0.15em] text-amber-500" aria-hidden="true" /> {zh ? '一条重要提示' : es ? 'Una nota importante' : 'One important note'}
           </p>
           <p className="mt-1">
@@ -376,7 +376,7 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
           {zh ? 'Ben 理财冒险的第 2 部分' : es ? 'Parte 2 de la aventura financiera de Ben' : "Part 2 of Ben's money adventure"}
         </p>
         <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-          <ShieldCheck className="mr-1 inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
+          <ShieldCheck className="mr-1 inline-block h-7 w-7 align-[-0.15em] text-ink" aria-hidden="true" />{' '}
           {zh ? (
             <>Ben 的保险<em>挑战</em></>
           ) : es ? (
@@ -387,7 +387,7 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
         </h1>
       </header>
 
-      <div className="card mt-4 border-bff-200 bg-bff-50 text-sm text-slate-700">
+      <div className="card mt-4 border-bff-200 bg-paper-soft text-sm text-ink">
         {zh ? (
           <p>
             Ben 的预算撑过了第 1 部分——海滩之旅就在<strong>这个月</strong>，而且没错，那只鬣蜥正式成了家里的一员。现在
@@ -416,15 +416,15 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
       {/* Running total */}
       <section className="card mt-6 p-4">
         <div className="flex items-center justify-between text-sm" aria-live="polite">
-          <p className="font-display font-bold text-slate-900">
-            {usd(premiums)} <span className="font-normal text-slate-500">{zh ? '/' : es ? 'de' : 'of'} {usd(BUDGET)}</span>
+          <p className="font-display font-bold text-ink">
+            {usd(premiums)} <span className="font-normal text-pebble">{zh ? '/' : es ? 'de' : 'of'} {usd(BUDGET)}</span>
           </p>
           <p className={`font-display font-bold ${overBudget ? 'text-red-600' : 'text-green-700'}`}>
             {overBudget ? (zh ? `超支 ${usd(-remaining)}！` : es ? `¡${usd(-remaining)} sobre el presupuesto!` : `${usd(-remaining)} over budget!`) : (zh ? `还剩 ${usd(remaining)}` : es ? `${usd(remaining)} restantes` : `${usd(remaining)} left`)}
           </p>
         </div>
         <div
-          className="mt-2 h-3 w-full overflow-hidden rounded-full bg-slate-200"
+          className="mt-2 h-3 w-full overflow-hidden rounded-full bg-stone"
           role="progressbar"
           aria-valuemin={0}
           aria-valuemax={BUDGET}
@@ -432,7 +432,7 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
           aria-label={zh ? `已用保费：${usd(premiums)} / ${usd(BUDGET)}` : es ? `Primas usadas: ${usd(premiums)} de ${usd(BUDGET)}` : `Premiums used: ${usd(premiums)} of ${usd(BUDGET)}`}
         >
           <div
-            className={`h-full rounded-full transition-all duration-300 ${overBudget ? 'bg-red-500' : 'bg-bff-600'}`}
+            className={`h-full rounded-full transition-all duration-300 ${overBudget ? 'bg-red-500' : 'bg-ink-deep'}`}
             style={{ width: `${Math.min(100, (premiums / BUDGET) * 100)}%` }}
           />
         </div>
@@ -440,11 +440,11 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
 
       {/* Car insurance (radio) */}
       <section className="mt-6">
-        <h2 className="font-display text-lg font-bold text-slate-900">
-          <Car className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-bff-600" aria-hidden="true" />{' '}
+        <h2 className="font-display text-lg font-bold text-ink">
+          <Car className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-ink" aria-hidden="true" />{' '}
           {zh ? '汽车保险' : es ? 'Seguro del carro' : 'Car insurance'}
         </h2>
-        <p className="text-xs text-slate-500">{zh ? '这家人有两辆车——Ben 的车和他妻子的车。' : es ? 'La familia tiene dos carros — el de Ben y el de su esposa.' : "The family has two cars — Ben's and his wife's."}</p>
+        <p className="text-xs text-pebble">{zh ? '这家人有两辆车——Ben 的车和他妻子的车。' : es ? 'La familia tiene dos carros — el de Ben y el de su esposa.' : "The family has two cars — Ben's and his wife's."}</p>
         <div className="mt-2 space-y-2" role="radiogroup" aria-label={zh ? '汽车保险' : es ? 'Seguro del carro' : 'Car insurance'}>
           {(
             [
@@ -462,22 +462,22 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
                 aria-checked={on}
                 onClick={() => setCar(opt.value)}
                 className={`flex w-full items-center justify-between gap-3 rounded-xl border-2 px-4 py-3 text-left transition active:scale-[0.98] ${
-                  on ? 'border-bff-500 bg-bff-50 shadow-sm' : 'border-slate-200 bg-white hover:border-bff-300'
+                  on ? 'border-ink bg-paper-soft shadow-sm' : 'border-stone bg-white hover:border-bff-300'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <span
                     aria-hidden
                     className={`h-4 w-4 shrink-0 rounded-full border-2 ${
-                      on ? 'border-bff-600 bg-bff-600' : 'border-slate-300 bg-white'
+                      on ? 'border-ink bg-ink-deep' : 'border-stone bg-white'
                     }`}
                   />
                   <div>
-                    <p className="text-sm font-semibold text-slate-800">{opt.label}</p>
-                    <p className="text-xs text-slate-600">{opt.note}</p>
+                    <p className="text-sm font-semibold text-ink">{opt.label}</p>
+                    <p className="text-xs text-pebble">{opt.note}</p>
                   </div>
                 </div>
-                <p className={`font-display text-sm font-bold ${on ? 'text-bff-700' : 'text-slate-500'}`}>
+                <p className={`font-display text-sm font-bold ${on ? 'text-ink' : 'text-pebble'}`}>
                   {usd(opt.cost)}
                 </p>
               </button>
@@ -486,7 +486,7 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
         </div>
         {car === 'one' && (
           <div
-            className="animate-pop-in mt-2 flex gap-2 rounded-xl border border-bff-200 bg-bff-50 p-3"
+            className="animate-pop-in mt-2 flex gap-2 rounded-xl border border-bff-200 bg-paper-soft p-3"
             role="radiogroup"
             aria-label={zh ? '保哪一辆车' : es ? 'Qué carro asegurar' : 'Which car to insure'}
           >
@@ -506,8 +506,8 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
                   onClick={() => setWhichCar(opt.value)}
                   className={`flex-1 rounded-lg border-2 px-3 py-2 text-sm font-semibold transition ${
                     on
-                      ? 'border-bff-600 bg-bff-600 text-white'
-                      : 'border-slate-200 bg-white text-slate-700 hover:border-bff-300'
+                      ? 'border-ink bg-ink-deep text-white'
+                      : 'border-stone bg-white text-ink hover:border-bff-300'
                   }`}
                 >
                   {opt.label}
@@ -520,8 +520,8 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
 
       {/* Other policies (toggles) */}
       <section className="mt-6">
-        <h2 className="font-display text-lg font-bold text-slate-900">
-          {zh ? '其他保障' : es ? 'Otras coberturas' : 'Other coverage'} <span className="text-sm font-normal text-slate-500">{zh ? '（点一下来添加或去掉）' : es ? '(toca para agregar o quitar)' : '(tap to add or drop)'}</span>
+        <h2 className="font-display text-lg font-bold text-ink">
+          {zh ? '其他保障' : es ? 'Otras coberturas' : 'Other coverage'} <span className="text-sm font-normal text-pebble">{zh ? '（点一下来添加或去掉）' : es ? '(toca para agregar o quitar)' : '(tap to add or drop)'}</span>
         </h2>
         <div className="mt-2 grid gap-2 sm:grid-cols-2">
           {POLICIES.map((p) => {
@@ -534,21 +534,21 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
                 aria-pressed={on}
                 onClick={() => toggle(p.id)}
                 className={`flex items-start justify-between gap-2 rounded-xl border-2 px-4 py-3 text-left transition active:scale-[0.98] ${
-                  on ? 'border-bff-500 bg-bff-50 shadow-sm' : 'border-slate-200 bg-white hover:border-bff-300'
+                  on ? 'border-ink bg-paper-soft shadow-sm' : 'border-stone bg-white hover:border-bff-300'
                 }`}
               >
                 <div>
-                  <p className="flex items-center gap-1.5 text-sm font-semibold text-slate-800">
-                    <PolicyIcon className="h-4 w-4 shrink-0 text-bff-600" aria-hidden="true" />
+                  <p className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+                    <PolicyIcon className="h-4 w-4 shrink-0 text-ink" aria-hidden="true" />
                     {zh ? p.labelZh : es ? p.labelEs : p.label}
                   </p>
-                  <p className="mt-0.5 text-xs text-slate-600">{zh ? p.noteZh : es ? p.noteEs : p.note}</p>
+                  <p className="mt-0.5 text-xs text-pebble">{zh ? p.noteZh : es ? p.noteEs : p.note}</p>
                 </div>
                 <div className="text-right">
-                  <p className={`font-display text-sm font-bold ${on ? 'text-bff-700' : 'text-slate-500'}`}>
+                  <p className={`font-display text-sm font-bold ${on ? 'text-ink' : 'text-pebble'}`}>
                     {usd(p.cost)}
                   </p>
-                  <p className={`text-xs font-semibold ${on ? 'text-bff-700' : 'text-slate-500'}`}>
+                  <p className={`text-xs font-semibold ${on ? 'text-ink' : 'text-pebble'}`}>
                     {on ? (
                       <>
                         {zh ? '已投保' : es ? 'Asegurado' : 'Insured'} <Check className="inline-block h-3.5 w-3.5 align-[-0.15em]" aria-hidden="true" />

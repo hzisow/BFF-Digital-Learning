@@ -60,12 +60,12 @@ const WEEK_THEMES: Record<number, WeekTheme> = {
     blurb: 'Where money comes from — and where yours goes.',
     blurbEs: 'De dónde viene el dinero — y a dónde se va el tuyo.',
     blurbZh: '钱从哪里来——你的钱又去了哪里。',
-    banner: 'bg-bff-700',
-    nodeBg: 'bg-bff-600',
-    nodeShadow: 'shadow-[0_4px_0_#075178]',
-    border: 'border-bff-600',
-    text: 'text-bff-700',
-    bar: 'bg-bff-600',
+    banner: 'bg-bronze',
+    nodeBg: 'bg-bronze',
+    nodeShadow: 'shadow-[0_4px_0_#241f14]',
+    border: 'border-bronze',
+    text: 'text-bronze',
+    bar: 'bg-bronze',
   },
   2: {
     name: 'Make It Grow',
@@ -76,7 +76,7 @@ const WEEK_THEMES: Record<number, WeekTheme> = {
     blurbZh: '让你的钱增长，借钱也不落入陷阱。',
     banner: 'bg-ink',
     nodeBg: 'bg-ink',
-    nodeShadow: 'shadow-[0_4px_0_#050f18]',
+    nodeShadow: 'shadow-[0_4px_0_#141312]',
     border: 'border-ink',
     text: 'text-ink',
     bar: 'bg-ink',
@@ -88,12 +88,12 @@ const WEEK_THEMES: Record<number, WeekTheme> = {
     blurb: 'Protecting yourself and making smarter choices.',
     blurbEs: 'Protégete y toma decisiones más inteligentes.',
     blurbZh: '保护好自己，做出更聪明的选择。',
-    banner: 'bg-bff-800',
-    nodeBg: 'bg-bff-700',
-    nodeShadow: 'shadow-[0_4px_0_#0b4364]',
-    border: 'border-bff-700',
-    text: 'text-bff-800',
-    bar: 'bg-bff-700',
+    banner: 'bg-bronze',
+    nodeBg: 'bg-bronze',
+    nodeShadow: 'shadow-[0_4px_0_#241f14]',
+    border: 'border-bronze',
+    text: 'text-bronze',
+    bar: 'bg-bronze',
   },
   4: {
     name: 'Plan & Protect',
@@ -104,7 +104,7 @@ const WEEK_THEMES: Record<number, WeekTheme> = {
     blurbZh: '提前规划，智胜骗子。',
     banner: 'bg-ink',
     nodeBg: 'bg-ink',
-    nodeShadow: 'shadow-[0_4px_0_#050f18]',
+    nodeShadow: 'shadow-[0_4px_0_#141312]',
     border: 'border-ink',
     text: 'text-ink',
     bar: 'bg-ink',
@@ -373,12 +373,12 @@ export default function LessonsIndex() {
         <span aria-hidden className="ed-hero-orbit gold" style={{ width: 340, height: 340, bottom: -180, right: -20 }} />
         <span aria-hidden className="ed-hero-orbit" style={{ width: 220, height: 220, bottom: -120, left: -70 }} />
         <div className="relative z-[1] mx-auto max-w-3xl px-4 py-14 sm:py-16">
-          <p className="eyebrow text-bff-300">
+          <p className="eyebrow text-paper/70">
             <span className="eyebrow-line" aria-hidden="true" />
             <BookOpen className="h-3.5 w-3.5" aria-hidden="true" /> {zh ? '课程大纲' : es ? 'El plan de estudios' : 'The curriculum'}
           </p>
           <h1 className="mt-3 font-display text-5xl font-extrabold leading-[1.02] text-white sm:text-6xl">
-            BFF <em className="text-bff-300">Academy</em>
+            BFF <em className="text-paper/70">Academy</em>
           </h1>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/80">
             {zh
@@ -484,10 +484,10 @@ export default function LessonsIndex() {
         </p>
         <div className="panel mt-3 p-5">
           <div className="flex items-center justify-between gap-2">
-            <p className="inline-flex items-center gap-1.5 font-display text-sm font-bold text-slate-900">
-              <CalendarDays className="h-4 w-4 text-bff-600" aria-hidden="true" /> {zh ? '今日任务' : es ? 'Misiones de hoy' : "Today's quests"}
+            <p className="inline-flex items-center gap-1.5 font-display text-sm font-bold text-ink">
+              <CalendarDays className="h-4 w-4 text-ink" aria-hidden="true" /> {zh ? '今日任务' : es ? 'Misiones de hoy' : "Today's quests"}
             </p>
-            <span className="text-xs font-semibold text-slate-500">
+            <span className="text-xs font-medium text-pebble">
               {questsDone}/{quests.length} {zh ? '完成' : es ? 'hechas' : 'done'}
             </span>
           </div>
@@ -496,7 +496,7 @@ export default function LessonsIndex() {
               <li key={q.id} className="flex items-center gap-2.5 text-sm">
                 <span
                   className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${
-                    q.done ? 'bg-green-500 text-white' : 'border-2 border-slate-300'
+                    q.done ? 'bg-green-600 text-white' : 'border-2 border-stone'
                   }`}
                   aria-hidden="true"
                 >
@@ -504,7 +504,7 @@ export default function LessonsIndex() {
                 </span>
                 <span
                   className={`inline-flex items-center gap-2 ${
-                    q.done ? 'text-slate-400 line-through' : 'text-slate-700'
+                    q.done ? 'text-pebble line-through' : 'text-ink'
                   }`}
                 >
                   <AppIcon name={q.icon} className="h-4 w-4 shrink-0" />
@@ -744,7 +744,7 @@ export default function LessonsIndex() {
             <Sparkles className="h-5 w-5 shrink-0 text-gold-500" aria-hidden="true" />
             {zh ? '额外选修单元' : es ? 'Unidades extra' : 'Bonus electives'}
           </h2>
-          <p className="mt-2 max-w-2xl text-slate-600">
+          <p className="mt-2 max-w-2xl text-pebble">
             {zh
               ? '五个额外的深入单元，随时都能探索——它们不在 4 周路径内，但仍会计入你的进度和连续记录。'
               : es
@@ -760,17 +760,17 @@ export default function LessonsIndex() {
                   to={meta.path}
                   className="card lift group flex gap-4"
                 >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[8px] bg-bff-50 text-2xl">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[8px] bg-paper-soft text-2xl">
                     <AppIcon name={meta.icon} className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
-                    <h3 className="font-display font-bold text-slate-900 group-hover:text-bff-700">
+                    <h3 className="font-display font-bold text-ink group-hover:text-ink">
                       {lessonTitle(meta)}
                     </h3>
-                    <p className="mt-1 text-sm leading-relaxed text-slate-600">
+                    <p className="mt-1 text-sm leading-relaxed text-pebble">
                       {localizeActivity(meta, lang).description}
                     </p>
-                    <p className="mt-2 text-xs font-semibold text-slate-500">
+                    <p className="mt-2 text-xs font-semibold text-pebble">
                       <Clock className="mr-1 inline h-3.5 w-3.5 align-[-2px]" aria-hidden="true" />~{meta.durationMin} {zh ? '分钟' : 'min'}
                       {p?.status === 'completed'
                         ? zh
@@ -796,10 +796,10 @@ export default function LessonsIndex() {
         {/* Games live outside the curriculum path */}
         <div className="card mt-16 flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-between sm:text-left">
           <div>
-            <p className="font-display font-bold text-slate-900">
+            <p className="font-display font-bold text-ink">
                             {zh ? '在找游戏吗？' : es ? '¿Buscas los juegos?' : 'Looking for the games?'}
             </p>
-            <p className="mt-1 text-sm text-slate-600">
+            <p className="mt-1 text-sm text-pebble">
               {zh
                 ? 'Wolf of Wall Street 和 Ben 的挑战自成一体——随时都能玩，不需要跟着路径走。'
                 : es
@@ -829,15 +829,15 @@ export default function LessonsIndex() {
             className="w-full max-w-sm animate-pop-in rounded-[10px] bg-white p-6 text-center shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <AppIcon name={jumpTarget.icon} className="mx-auto h-12 w-12 text-bff-600" />
-            <h3 id="jump-dialog-title" className="mt-3 font-display text-xl font-bold text-slate-900">
+            <AppIcon name={jumpTarget.icon} className="mx-auto h-12 w-12 text-ink" />
+            <h3 id="jump-dialog-title" className="mt-3 font-display text-xl font-bold text-ink">
               {zh
                 ? `${lessonTitle(jumpTarget)} 还锁着`
                 : es
                   ? `${lessonTitle(jumpTarget)} está bloqueada`
                   : `${lessonTitle(jumpTarget)} is locked`}
             </h3>
-            <p className="mt-2 text-sm leading-relaxed text-slate-600">
+            <p className="mt-2 text-sm leading-relaxed text-pebble">
               {zh
                 ? `每节课要拿到 ${PASS_SCORE}% 才能解锁下一站。先把当前这节课过关，这一站就会打开。`
                 : es

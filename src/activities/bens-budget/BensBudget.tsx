@@ -341,7 +341,7 @@ function toneClasses(tone: Tone): string {
     case 'warn':
       return 'bg-red-100 text-red-700'
     default:
-      return 'bg-slate-100 text-slate-600'
+      return 'bg-paper-soft text-pebble'
   }
 }
 
@@ -398,42 +398,42 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
       <div className="mx-auto max-w-3xl px-4 py-8">
         <div className="card animate-pop-in space-y-4 text-center" role="status">
           <p className="flex justify-center" aria-hidden="true">
-            <GradeIcon className="h-14 w-14 text-bff-600" />
+            <GradeIcon className="h-14 w-14 text-ink" />
           </p>
-          <h1 className="font-display text-3xl font-bold text-slate-900">{results.grade}</h1>
-          <p className="font-display text-lg font-bold text-bff-700">{results.score} / 100</p>
+          <h1 className="font-display text-3xl font-bold text-ink">{results.grade}</h1>
+          <p className="font-display text-lg font-bold text-ink">{results.score} / 100</p>
           <div className="mx-auto flex max-w-md flex-wrap justify-center gap-2 text-sm">
-            <span className="chip bg-slate-100 text-slate-700">
+            <span className="chip bg-paper-soft text-ink">
               {zh ? '已花' : es ? 'Gastado' : 'Spent'} {usd(results.spent - results.saved)} {zh ? '/' : es ? 'de' : 'of'} {usd(INCOME)}
             </span>
-            <span className="chip bg-bff-50 text-bff-700">{zh ? '已存' : es ? 'Ahorrado' : 'Saved'} {usd(results.saved)}</span>
-            <span className="chip bg-slate-100 text-slate-700">{zh ? '剩余' : es ? 'Sobrante' : 'Left over'} {usd(leftover)}</span>
+            <span className="chip bg-paper-soft text-ink">{zh ? '已存' : es ? 'Ahorrado' : 'Saved'} {usd(results.saved)}</span>
+            <span className="chip bg-paper-soft text-ink">{zh ? '剩余' : es ? 'Sobrante' : 'Left over'} {usd(leftover)}</span>
           </div>
         </div>
 
         <div className="card mt-4 space-y-3">
-          <h2 className="font-display text-lg font-bold text-slate-900">{zh ? 'Ben 这个月过得如何' : es ? 'Cómo le fue a Ben este mes' : "How Ben's month played out"}</h2>
+          <h2 className="font-display text-lg font-bold text-ink">{zh ? 'Ben 这个月过得如何' : es ? 'Cómo le fue a Ben este mes' : "How Ben's month played out"}</h2>
           <ul className="space-y-2">
             {results.lines.map((line) => (
               <li key={line.text} className="flex items-start gap-3">
                 <span className={`chip mt-0.5 w-12 shrink-0 justify-center ${toneClasses(line.tone)}`}>
                   {line.points > 0 ? `+${line.points}` : '0'}
                 </span>
-                <span className="text-sm text-slate-700">{line.text}</span>
+                <span className="text-sm text-ink">{line.text}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="card mt-4 border-bff-200 bg-bff-50">
-          <h2 className="font-display text-lg font-bold text-slate-900">
-            <Speech className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-bff-600" aria-hidden="true" />{' '}
+        <div className="card mt-4 border-bff-200 bg-paper-soft">
+          <h2 className="font-display text-lg font-bold text-ink">
+            <Speech className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-ink" aria-hidden="true" />{' '}
             {zh ? '反思' : es ? 'Reflexión' : 'Reflection'}
           </h2>
-          <p className="mt-1 text-sm font-semibold text-slate-700">
+          <p className="mt-1 text-sm font-semibold text-ink">
             {zh ? '准备好解释你保留了什么、砍掉了什么，以及为什么。' : es ? 'Prepárate para explicar qué conservaste, qué recortaste y por qué.' : 'Be ready to explain what you kept, what you cut, and why.'}
           </p>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
+          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ink">
             <li>{zh ? '哪一项砍得最艰难，是什么让它这么难？' : es ? '¿Cuál recorte fue el más difícil de hacer, y qué lo hizo difícil?' : 'Which cut was the hardest to make, and what made it hard?'}</li>
             <li>
               {zh
@@ -467,7 +467,7 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
           {zh ? 'Ben 理财冒险的第 1 部分' : es ? 'Parte 1 de la aventura financiera de Ben' : "Part 1 of Ben's money adventure"}
         </p>
         <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-          <Wallet className="mr-2 inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />
+          <Wallet className="mr-2 inline-block h-7 w-7 align-[-0.15em] text-ink" aria-hidden="true" />
           {zh ? (
             <>Ben 的预算<em>挑战</em></>
           ) : es ? (
@@ -478,7 +478,7 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
         </h1>
       </header>
 
-      <div className="card mt-4 border-bff-200 bg-bff-50 text-sm text-slate-700">
+      <div className="card mt-4 border-bff-200 bg-paper-soft text-sm text-ink">
         {zh ? (
           <p>
             来认识一下 <strong>Ben</strong>：36 岁，初中科学老师，已婚，有三个孩子（5 岁、9 岁和 13
@@ -501,8 +501,8 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
             <strong>$900 total — $300 this month</strong>. Your job: decide where every dollar goes.
           </p>
         )}
-        <p className="mt-2 text-xs text-slate-600">
-          <Info className="mr-1 inline-block h-3.5 w-3.5 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
+        <p className="mt-2 text-xs text-pebble">
+          <Info className="mr-1 inline-block h-3.5 w-3.5 align-[-0.15em] text-ink" aria-hidden="true" />{' '}
           {zh
             ? `医疗保险（$300/月）已经从 Ben 的工资里扣掉了——这一项已经搞定，不算在这 ${usd(INCOME)} 里面。`
             : es
@@ -513,31 +513,31 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
 
       {/* Needs */}
       <section className="mt-6">
-        <h2 className="font-display text-lg font-bold text-slate-900">
-          {zh ? '必需开支' : es ? 'Las necesidades' : 'The needs'} <span className="text-sm font-normal text-slate-500">{zh ? '（固定——Ben 跳不过这些）' : es ? '(fijas — Ben no puede saltárselas)' : "(locked in — Ben can't skip these)"}</span>
+        <h2 className="font-display text-lg font-bold text-ink">
+          {zh ? '必需开支' : es ? 'Las necesidades' : 'The needs'} <span className="text-sm font-normal text-pebble">{zh ? '（固定——Ben 跳不过这些）' : es ? '(fijas — Ben no puede saltárselas)' : "(locked in — Ben can't skip these)"}</span>
         </h2>
         <div className="mt-2 space-y-2">
           {NEEDS.map((n) => (
             <div
               key={n.label}
-              className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-100/70 px-4 py-3"
+              className="flex items-center justify-between gap-3 rounded-xl border border-stone bg-paper-soft/70 px-4 py-3"
             >
               <div className="flex items-center gap-3">
                 <span
                   aria-hidden
-                  className="flex h-5 w-5 items-center justify-center rounded border border-slate-300 bg-slate-300 text-white"
+                  className="flex h-5 w-5 items-center justify-center rounded border border-stone bg-slate-300 text-white"
                 >
                   <Check className="h-3.5 w-3.5" aria-hidden="true" />
                 </span>
                 <div>
-                  <p className="text-sm font-semibold text-slate-600">{zh ? n.labelZh : es ? n.labelEs : n.label}</p>
-                  {n.note && <p className="text-xs text-slate-600">{zh ? n.noteZh : es ? n.noteEs : n.note}</p>}
+                  <p className="text-sm font-semibold text-pebble">{zh ? n.labelZh : es ? n.labelEs : n.label}</p>
+                  {n.note && <p className="text-xs text-pebble">{zh ? n.noteZh : es ? n.noteEs : n.note}</p>}
                 </div>
               </div>
-              <p className="font-display text-sm font-bold text-slate-600">{usd(n.cost)}</p>
+              <p className="font-display text-sm font-bold text-pebble">{usd(n.cost)}</p>
             </div>
           ))}
-          <p className="text-right text-xs font-semibold text-slate-500">
+          <p className="text-right text-xs font-semibold text-pebble">
             {zh ? '必需开支合计：' : es ? 'Total de necesidades:' : 'Needs total:'} {usd(NEEDS_TOTAL)}
           </p>
         </div>
@@ -546,15 +546,15 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
       {/* Running budget bar */}
       <section className="card mt-6 p-4">
         <div className="flex items-center justify-between text-sm" aria-live="polite">
-          <p className="font-display font-bold text-slate-900">
-            {usd(spent)} <span className="font-normal text-slate-500">{zh ? '/' : es ? 'de' : 'of'} {usd(INCOME)}</span>
+          <p className="font-display font-bold text-ink">
+            {usd(spent)} <span className="font-normal text-pebble">{zh ? '/' : es ? 'de' : 'of'} {usd(INCOME)}</span>
           </p>
           <p className={`font-display font-bold ${overBudget ? 'text-red-600' : 'text-green-700'}`}>
             {overBudget ? (zh ? `超支 ${usd(-remaining)}！` : es ? `¡${usd(-remaining)} sobre el presupuesto!` : `${usd(-remaining)} over budget!`) : (zh ? `还剩 ${usd(remaining)}` : es ? `${usd(remaining)} restantes` : `${usd(remaining)} left`)}
           </p>
         </div>
         <div
-          className="mt-2 h-3 w-full overflow-hidden rounded-full bg-slate-200"
+          className="mt-2 h-3 w-full overflow-hidden rounded-full bg-stone"
           role="progressbar"
           aria-valuemin={0}
           aria-valuemax={INCOME}
@@ -562,7 +562,7 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
           aria-label={zh ? `已用预算：${usd(spent)} / ${usd(INCOME)}` : es ? `Presupuesto usado: ${usd(spent)} de ${usd(INCOME)}` : `Budget used: ${usd(spent)} of ${usd(INCOME)}`}
         >
           <div
-            className={`h-full rounded-full transition-all duration-300 ${overBudget ? 'bg-red-500' : 'bg-bff-600'}`}
+            className={`h-full rounded-full transition-all duration-300 ${overBudget ? 'bg-red-500' : 'bg-ink-deep'}`}
             style={{ width: `${Math.min(100, (spent / INCOME) * 100)}%` }}
           />
         </div>
@@ -570,8 +570,8 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
 
       {/* Choices */}
       <section className="mt-6">
-        <h2 className="font-display text-lg font-bold text-slate-900">
-          {zh ? '可选开支' : es ? 'Las opciones' : 'The choices'} <span className="text-sm font-normal text-slate-500">{zh ? '（点一下来保留或砍掉）' : es ? '(toca para conservar o recortar)' : '(tap to keep or cut)'}</span>
+        <h2 className="font-display text-lg font-bold text-ink">
+          {zh ? '可选开支' : es ? 'Las opciones' : 'The choices'} <span className="text-sm font-normal text-pebble">{zh ? '（点一下来保留或砍掉）' : es ? '(toca para conservar o recortar)' : '(tap to keep or cut)'}</span>
         </h2>
         <div className="mt-2 grid gap-2 sm:grid-cols-2">
           {CHOICES.map((c) => {
@@ -585,22 +585,22 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
                 onClick={() => toggle(c.id)}
                 className={`flex items-start justify-between gap-2 rounded-xl border-2 px-4 py-3 text-left transition active:scale-[0.98] ${
                   on
-                    ? 'border-bff-500 bg-bff-50 shadow-sm'
-                    : 'border-slate-200 bg-white hover:border-bff-300'
+                    ? 'border-ink bg-paper-soft shadow-sm'
+                    : 'border-stone bg-white hover:border-bff-300'
                 }`}
               >
                 <div>
-                  <p className="flex items-center gap-1.5 text-sm font-semibold text-slate-800">
-                    <ChoiceIcon className="h-4 w-4 shrink-0 text-bff-600" aria-hidden="true" />
+                  <p className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+                    <ChoiceIcon className="h-4 w-4 shrink-0 text-ink" aria-hidden="true" />
                     {zh ? c.labelZh : es ? c.labelEs : c.label}
                   </p>
-                  <p className="mt-0.5 text-xs text-slate-600">{zh ? c.noteZh : es ? c.noteEs : c.note}</p>
+                  <p className="mt-0.5 text-xs text-pebble">{zh ? c.noteZh : es ? c.noteEs : c.note}</p>
                 </div>
                 <div className="text-right">
-                  <p className={`font-display text-sm font-bold ${on ? 'text-bff-700' : 'text-slate-500'}`}>
+                  <p className={`font-display text-sm font-bold ${on ? 'text-ink' : 'text-pebble'}`}>
                     {usd(c.cost)}
                   </p>
-                  <p className={`text-xs font-semibold ${on ? 'text-bff-700' : 'text-slate-500'}`}>
+                  <p className={`text-xs font-semibold ${on ? 'text-ink' : 'text-pebble'}`}>
                     {on ? (
                       <>
                         {zh ? '购买' : es ? 'Comprando' : 'Buying'} <Check className="inline-block h-3.5 w-3.5 align-[-0.15em]" aria-hidden="true" />
@@ -618,8 +618,8 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
 
       {/* Savings */}
       <section className="mt-6">
-        <h2 className="font-display text-lg font-bold text-slate-900">
-          <TreePalm className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-bff-600" aria-hidden="true" />{' '}
+        <h2 className="font-display text-lg font-bold text-ink">
+          <TreePalm className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-ink" aria-hidden="true" />{' '}
           {zh ? '海滩基金' : es ? 'El fondo para la playa' : 'The beach fund'}
         </h2>
         <div className="mt-2 space-y-2" role="radiogroup" aria-label={zh ? '存钱选择' : es ? 'Elección de ahorro' : 'Savings choice'}>
@@ -634,23 +634,23 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
                 onClick={() => setSaved(opt.value)}
                 className={`flex w-full items-center justify-between gap-3 rounded-xl border-2 px-4 py-3 text-left transition active:scale-[0.98] ${
                   on
-                    ? 'border-bff-500 bg-bff-50 shadow-sm'
-                    : 'border-slate-200 bg-white hover:border-bff-300'
+                    ? 'border-ink bg-paper-soft shadow-sm'
+                    : 'border-stone bg-white hover:border-bff-300'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <span
                     aria-hidden
                     className={`h-4 w-4 shrink-0 rounded-full border-2 ${
-                      on ? 'border-bff-600 bg-bff-600' : 'border-slate-300 bg-white'
+                      on ? 'border-ink bg-ink-deep' : 'border-stone bg-white'
                     }`}
                   />
                   <div>
-                    <p className="text-sm font-semibold text-slate-800">{zh ? opt.labelZh : es ? opt.labelEs : opt.label}</p>
-                    <p className="text-xs text-slate-600">{zh ? opt.noteZh : es ? opt.noteEs : opt.note}</p>
+                    <p className="text-sm font-semibold text-ink">{zh ? opt.labelZh : es ? opt.labelEs : opt.label}</p>
+                    <p className="text-xs text-pebble">{zh ? opt.noteZh : es ? opt.noteEs : opt.note}</p>
                   </div>
                 </div>
-                <p className={`font-display text-sm font-bold ${on ? 'text-bff-700' : 'text-slate-500'}`}>
+                <p className={`font-display text-sm font-bold ${on ? 'text-ink' : 'text-pebble'}`}>
                   {usd(opt.value)}
                 </p>
               </button>
@@ -674,7 +674,7 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
           </p>
         )}
         {!overBudget && saved === null && (
-          <p className="mt-2 text-sm text-slate-500">{zh ? '选一个海滩基金的选项来完成。' : es ? 'Elige una opción del fondo para la playa para terminar.' : 'Pick a beach fund option to finish.'}</p>
+          <p className="mt-2 text-sm text-pebble">{zh ? '选一个海滩基金的选项来完成。' : es ? 'Elige una opción del fondo para la playa para terminar.' : 'Pick a beach fund option to finish.'}</p>
         )}
       </div>
     </div>

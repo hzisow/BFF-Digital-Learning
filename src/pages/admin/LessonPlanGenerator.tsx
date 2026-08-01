@@ -36,8 +36,8 @@ function escapeHtml(s: string): string {
 // Inline: **bold**, *italic*, `code`. Input is already HTML-escaped.
 function inlineMd(s: string): string {
   return s
-    .replace(/`([^`]+)`/g, '<code class="rounded bg-slate-100 px-1 py-0.5 text-[0.85em] text-slate-800">$1</code>')
-    .replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold text-slate-900">$1</strong>')
+    .replace(/`([^`]+)`/g, '<code class="rounded bg-paper-soft px-1 py-0.5 text-[0.85em] text-ink">$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold text-ink">$1</strong>')
     .replace(/(^|[^*])\*([^*]+)\*/g, '$1<em>$2</em>')
 }
 
@@ -73,7 +73,7 @@ function renderMarkdown(md: string): string {
       }
       const thead =
         '<thead><tr>' +
-        headers.map((h) => `<th class="border border-slate-200 bg-slate-50 px-3 py-2 text-left font-semibold text-slate-800">${inlineMd(h)}</th>`).join('') +
+        headers.map((h) => `<th class="border border-stone bg-paper-soft px-3 py-2 text-left font-semibold text-ink">${inlineMd(h)}</th>`).join('') +
         '</tr></thead>'
       const tbody =
         '<tbody>' +
@@ -81,7 +81,7 @@ function renderMarkdown(md: string): string {
           .map(
             (r) =>
               '<tr>' +
-              r.map((c) => `<td class="border border-slate-200 px-3 py-2 align-top text-slate-700">${inlineMd(c)}</td>`).join('') +
+              r.map((c) => `<td class="border border-stone px-3 py-2 align-top text-ink">${inlineMd(c)}</td>`).join('') +
               '</tr>',
           )
           .join('') +
@@ -95,12 +95,12 @@ function renderMarkdown(md: string): string {
     if (h) {
       const level = h[1].length
       const sizes: Record<number, string> = {
-        1: 'mt-2 mb-3 font-display text-2xl font-bold text-slate-900',
-        2: 'mt-5 mb-2 font-display text-xl font-bold text-slate-900',
-        3: 'mt-4 mb-2 font-display text-lg font-semibold text-slate-900',
-        4: 'mt-3 mb-1 font-semibold text-slate-900',
-        5: 'mt-3 mb-1 font-semibold text-slate-700',
-        6: 'mt-3 mb-1 font-semibold text-slate-600',
+        1: 'mt-2 mb-3 font-display text-2xl font-bold text-ink',
+        2: 'mt-5 mb-2 font-display text-xl font-bold text-ink',
+        3: 'mt-4 mb-2 font-display text-lg font-semibold text-ink',
+        4: 'mt-3 mb-1 font-semibold text-ink',
+        5: 'mt-3 mb-1 font-semibold text-ink',
+        6: 'mt-3 mb-1 font-semibold text-pebble',
       }
       out.push(`<h${level} class="${sizes[level]}">${inlineMd(h[2].trim())}</h${level}>`)
       i++
@@ -109,7 +109,7 @@ function renderMarkdown(md: string): string {
 
     // Horizontal rule.
     if (/^\s*([-*_])\s*(\1\s*){2,}$/.test(line)) {
-      out.push('<hr class="my-4 border-slate-200" />')
+      out.push('<hr class="my-4 border-stone" />')
       i++
       continue
     }
@@ -121,7 +121,7 @@ function renderMarkdown(md: string): string {
         items.push(`<li class="mb-1">${inlineMd(lines[i].replace(/^\s*\d+\.\s+/, ''))}</li>`)
         i++
       }
-      out.push(`<ol class="my-2 list-decimal space-y-0.5 pl-6 text-slate-700">${items.join('')}</ol>`)
+      out.push(`<ol class="my-2 list-decimal space-y-0.5 pl-6 text-ink">${items.join('')}</ol>`)
       continue
     }
 
@@ -132,7 +132,7 @@ function renderMarkdown(md: string): string {
         items.push(`<li class="mb-1">${inlineMd(lines[i].replace(/^\s*[-*+]\s+/, ''))}</li>`)
         i++
       }
-      out.push(`<ul class="my-2 list-disc space-y-0.5 pl-6 text-slate-700">${items.join('')}</ul>`)
+      out.push(`<ul class="my-2 list-disc space-y-0.5 pl-6 text-ink">${items.join('')}</ul>`)
       continue
     }
 
@@ -150,7 +150,7 @@ function renderMarkdown(md: string): string {
       i++
     }
     if (para.length) {
-      out.push(`<p class="my-2 leading-relaxed text-slate-700">${inlineMd(para.join(' '))}</p>`)
+      out.push(`<p class="my-2 leading-relaxed text-ink">${inlineMd(para.join(' '))}</p>`)
     } else {
       i++
     }
@@ -325,7 +325,7 @@ export default function LessonPlanGenerator() {
           className="ed-hero-orbit gold -left-40 bottom-[-11rem] h-[440px] w-[440px]"
         />
         <div className="relative z-[1] mx-auto max-w-4xl px-4 py-14 sm:py-16">
-          <p className="eyebrow text-bff-300">
+          <p className="eyebrow text-paper/70">
             <span className="eyebrow-line" aria-hidden="true" />
             <Wand2 className="h-3.5 w-3.5" aria-hidden="true" />
             {zh ? '导师工具' : es ? 'Herramienta para mentores' : 'Mentor tool'}
@@ -371,7 +371,7 @@ export default function LessonPlanGenerator() {
 
       <form onSubmit={handleSubmit} className="card mb-8">
         <fieldset className="mb-5">
-          <legend className="mb-2 text-sm font-semibold text-slate-700">
+          <legend className="mb-2 text-sm font-semibold text-ink">
             {zh ? '材料类型' : es ? 'Tipo de material' : 'What do you need?'}
           </legend>
           <div className="flex flex-wrap gap-3">
@@ -392,8 +392,8 @@ export default function LessonPlanGenerator() {
               return (
                 <label
                   key={k}
-                  className={`flex cursor-pointer items-center gap-2 rounded-xl border-2 px-4 py-2.5 font-display font-semibold transition focus-within:ring-2 focus-within:ring-bff-400 focus-within:ring-offset-2 ${
-                    active ? 'border-bff-600 bg-bff-50 text-bff-700' : 'border-slate-300 bg-white text-slate-600 hover:bg-slate-50'
+                  className={`flex cursor-pointer items-center gap-2 rounded-xl border-2 px-4 py-2.5 font-display font-semibold transition focus-within:ring-2 focus-within:ring-ink focus-within:ring-offset-2 ${
+                    active ? 'border-ink bg-paper-soft text-ink' : 'border-stone bg-white text-pebble hover:bg-paper-soft'
                   }`}
                 >
                   <input
@@ -413,7 +413,7 @@ export default function LessonPlanGenerator() {
 
         <div className="grid gap-5 sm:grid-cols-2">
           <label className="block sm:col-span-2">
-            <span className="mb-1 block text-sm font-semibold text-slate-700">
+            <span className="mb-1 block text-sm font-semibold text-ink">
               {zh ? '主题' : es ? 'Tema' : 'Topic'}
             </span>
             <input
@@ -433,7 +433,7 @@ export default function LessonPlanGenerator() {
           </label>
 
           <label className="block">
-            <span className="mb-1 block text-sm font-semibold text-slate-700">
+            <span className="mb-1 block text-sm font-semibold text-ink">
               {zh ? '年级段' : es ? 'Nivel de grado' : 'Grade band'}
             </span>
             <input
@@ -447,7 +447,7 @@ export default function LessonPlanGenerator() {
 
           {!isWorksheet && (
             <label className="block">
-              <span className="mb-1 block text-sm font-semibold text-slate-700">
+              <span className="mb-1 block text-sm font-semibold text-ink">
                 {zh ? '课时长度（分钟）' : es ? 'Duración de la clase (minutos)' : 'Class length (minutes)'}
               </span>
               <input
@@ -479,7 +479,7 @@ export default function LessonPlanGenerator() {
                   : 'Generate'}
           </button>
           {busy && (
-            <span role="status" className="text-sm text-slate-500">
+            <span role="status" className="text-sm text-pebble">
               {zh ? '正在起草材料…' : es ? 'Redactando los materiales…' : 'Drafting your materials…'}
             </span>
           )}
@@ -630,7 +630,7 @@ export default function LessonPlanGenerator() {
               </p>
             )}
             <article
-              className="max-w-none text-slate-700"
+              className="max-w-none text-ink"
               // Safe: renderMarkdown HTML-escapes all input before applying a
               // fixed, closed set of formatting patterns — no raw HTML passes through.
               dangerouslySetInnerHTML={{ __html: renderedHtml }}

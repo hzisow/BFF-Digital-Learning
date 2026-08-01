@@ -495,7 +495,7 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
             {zh ? '结账完成。来算算你的捡漏雷达有多准。' : es ? 'Compra terminada. Sumemos tu radar de ofertas.' : "Checkout complete. Let's total up your deal radar."}
           </p>
           <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-            <ShoppingCart className="inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
+            <ShoppingCart className="inline-block h-7 w-7 align-[-0.15em] text-ink" aria-hidden="true" />{' '}
             {zh ? (
               <>聪明<em>购物者</em></>
             ) : es ? (
@@ -503,15 +503,15 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
             ) : (
               <>Smart <em>Shopper</em></>
             )}{' '}
-            <Scale className="inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />
+            <Scale className="inline-block h-7 w-7 align-[-0.15em] text-ink" aria-hidden="true" />
           </h1>
         </header>
 
         <div className="card animate-pop-in mt-4 space-y-2 text-center" role="status">
-          <TierIcon className="mx-auto h-14 w-14 text-bff-600" aria-hidden="true" />
-          <h2 className="font-display text-3xl font-bold text-slate-900">{tier.title}</h2>
-          <p className="font-display text-lg font-bold text-bff-700">{score} / 100</p>
-          <p className="text-sm text-slate-600">
+          <TierIcon className="mx-auto h-14 w-14 text-ink" aria-hidden="true" />
+          <h2 className="font-display text-3xl font-bold text-ink">{tier.title}</h2>
+          <p className="font-display text-lg font-bold text-ink">{score} / 100</p>
+          <p className="text-sm text-pebble">
             {zh
               ? `你在 ${ROUNDS.length} 轮中的 ${correctCount} 轮找出了更划算的选择。`
               : es
@@ -520,9 +520,9 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
           </p>
         </div>
 
-        <div className="card animate-slide-up mt-4 border-bff-200 bg-bff-50 text-sm text-slate-700">
-          <p className="font-display font-bold text-slate-900">
-            <Calculator className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-bff-600" aria-hidden="true" />{zh ? '要点' : es ? 'La lección' : 'The takeaway'}
+        <div className="card animate-slide-up mt-4 border-bff-200 bg-paper-soft text-sm text-ink">
+          <p className="font-display font-bold text-ink">
+            <Calculator className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-ink" aria-hidden="true" />{zh ? '要点' : es ? 'La lección' : 'The takeaway'}
           </p>
           <p className="mt-1">
             {zh
@@ -561,7 +561,7 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
             : `Round ${roundIndex + 1} of ${ROUNDS.length} · Score so far: ${correctCount} right`}
         </p>
         <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-          <ShoppingCart className="inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
+          <ShoppingCart className="inline-block h-7 w-7 align-[-0.15em] text-ink" aria-hidden="true" />{' '}
           {zh ? (
             <>聪明<em>购物者</em></>
           ) : es ? (
@@ -569,12 +569,12 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
           ) : (
             <>Smart <em>Shopper</em></>
           )}{' '}
-          <Scale className="inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />
+          <Scale className="inline-block h-7 w-7 align-[-0.15em] text-ink" aria-hidden="true" />
         </h1>
       </header>
 
       {roundIndex === 0 && !revealed && (
-        <div className="card mt-4 border-bff-200 bg-bff-50 text-sm text-slate-700">
+        <div className="card mt-4 border-bff-200 bg-paper-soft text-sm text-ink">
           <p>
             {zh
               ? '两款产品，一个更划算的选择——而货架标签正想糊弄你。选出更聪明的那笔买卖，然后我们一起来算真实的账。'
@@ -586,8 +586,8 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
       )}
 
       <section className="mt-4">
-        <h2 className="font-display text-lg font-bold text-slate-900">{zh ? round.titleZh : es ? round.titleEs : round.title}</h2>
-        <p className="mt-1 text-sm text-slate-600">{zh ? round.scenarioZh : es ? round.scenarioEs : round.scenario}</p>
+        <h2 className="font-display text-lg font-bold text-ink">{zh ? round.titleZh : es ? round.titleEs : round.title}</h2>
+        <p className="mt-1 text-sm text-pebble">{zh ? round.scenarioZh : es ? round.scenarioEs : round.scenario}</p>
 
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           {round.offers.map((offer, i) => {
@@ -607,24 +607,24 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
                       ? 'border-green-600 bg-green-50'
                       : isPicked
                         ? 'border-red-400 bg-red-50'
-                        : 'border-slate-200 bg-white opacity-80'
+                        : 'border-stone bg-white opacity-80'
                     : isPicked
-                      ? 'border-bff-500 bg-bff-50 shadow-sm'
-                      : 'border-slate-200 bg-white hover:border-bff-300'
+                      ? 'border-ink bg-paper-soft shadow-sm'
+                      : 'border-stone bg-white hover:border-bff-300'
                 }`}
               >
-                <OfferIcon className="h-8 w-8 text-bff-600" aria-hidden="true" />
-                <p className="mt-1 text-sm font-semibold text-slate-800">{zh ? offer.nameZh : es ? offer.nameEs : offer.name}</p>
-                <p className="mt-1 inline-block rounded bg-gold-400/30 px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-slate-800">
+                <OfferIcon className="h-8 w-8 text-ink" aria-hidden="true" />
+                <p className="mt-1 text-sm font-semibold text-ink">{zh ? offer.nameZh : es ? offer.nameEs : offer.name}</p>
+                <p className="mt-1 inline-block rounded bg-gold-400/30 px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-ink">
                   {zh ? offer.shelfTagZh : es ? offer.shelfTagEs : offer.shelfTag}
                 </p>
-                <p className="mt-2 font-display text-xl font-bold text-bff-700">{zh ? offer.priceZh : es ? offer.priceEs : offer.price}</p>
+                <p className="mt-2 font-display text-xl font-bold text-ink">{zh ? offer.priceZh : es ? offer.priceEs : offer.price}</p>
                 {revealed && (
                   <div className="animate-pop-in mt-3 rounded-lg bg-white/70 p-3">
-                    <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                    <p className="text-xs font-bold uppercase tracking-wide text-pebble">
                       {zh ? '真实的账' : es ? 'La matemática real' : 'The real math'}
                     </p>
-                    <dl className="mt-1 space-y-1 text-xs text-slate-700">
+                    <dl className="mt-1 space-y-1 text-xs text-ink">
                       {offer.mathLines.map((line) => (
                         <div key={line.label} className="flex justify-between gap-2">
                           <dt>{zh ? line.labelZh : es ? line.labelEs : line.label}</dt>
@@ -633,7 +633,7 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
                       ))}
                     </dl>
                     <p
-                      className={`mt-2 border-t border-slate-200 pt-2 text-sm font-bold ${
+                      className={`mt-2 border-t border-stone pt-2 text-sm font-bold ${
                         isBetter ? 'text-green-700' : 'text-red-600'
                       }`}
                     >
@@ -669,7 +669,7 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
                 </>
               )}
             </p>
-            <p className="mt-1 text-sm text-slate-700">{zh ? round.explanationZh : es ? round.explanationEs : round.explanation}</p>
+            <p className="mt-1 text-sm text-ink">{zh ? round.explanationZh : es ? round.explanationEs : round.explanation}</p>
             <div className="mt-4 text-center">
               <button className="btn-primary w-full sm:w-auto" onClick={next}>
                 {roundIndex + 1 < ROUNDS.length ? (zh ? '下一轮' : es ? 'Siguiente ronda' : 'Next round') : (zh ? '查看我的结果' : es ? 'Ver mis resultados' : 'See my results')}

@@ -20,7 +20,7 @@ const ITEM_ICONS: Record<string, LucideIcon> = {
 /** Message-type marker: envelope for email, speech bubble for a text. */
 function KindMark({ kind }: { kind: 'email' | 'text' }) {
   const Icon = kind === 'email' ? ITEM_ICONS.Mail : ITEM_ICONS.MessageSquare
-  return <Icon className="mr-1 inline-block h-4 w-4 align-[-0.15em] text-slate-500" aria-hidden="true" />
+  return <Icon className="mr-1 inline-block h-4 w-4 align-[-0.15em] text-pebble" aria-hidden="true" />
 }
 
 // ---------- Inbox data ----------
@@ -608,7 +608,7 @@ function cuesOf(m: InboxMessage, es: boolean, zh: boolean): { cue: string; why: 
 function Body({ message, revealed, es, zh }: { message: InboxMessage; revealed: boolean; es: boolean; zh: boolean }) {
   const body = zh ? message.bodyZh : es ? message.bodyEs : message.body
   return (
-    <div className="space-y-2 text-sm text-slate-700">
+    <div className="space-y-2 text-sm text-ink">
       {body.map((para, i) => (
         <p key={i}>
           {para.map((seg, j) =>
@@ -618,7 +618,7 @@ function Body({ message, revealed, es, zh }: { message: InboxMessage; revealed: 
               <mark
                 key={j}
                 className={`rounded px-1 font-semibold ${
-                  message.isScam ? 'bg-amber-200 text-slate-900' : 'bg-green-100 text-green-900'
+                  message.isScam ? 'bg-amber-200 text-ink' : 'bg-green-100 text-green-900'
                 }`}
               >
                 {seg.cue}
@@ -702,7 +702,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
               : "Case closed. Here's what the messages were hiding."}
           </p>
           <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-            <UserSearch className="inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
+            <UserSearch className="inline-block h-7 w-7 align-[-0.15em] text-ink" aria-hidden="true" />{' '}
             {zh ? (
               <>识骗<em>高手</em></>
             ) : es ? (
@@ -710,15 +710,15 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
             ) : (
               <>Scam <em>Spotter</em></>
             )}{' '}
-            <Smartphone className="inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />
+            <Smartphone className="inline-block h-7 w-7 align-[-0.15em] text-ink" aria-hidden="true" />
           </h1>
         </header>
 
         <div className="card animate-pop-in mt-4 space-y-2 text-center" role="status">
-          <TierIcon className="mx-auto h-14 w-14 text-bff-600" aria-hidden="true" />
-          <h2 className="font-display text-3xl font-bold text-slate-900">{tier.title}</h2>
-          <p className="font-display text-lg font-bold text-bff-700">{score} / 100</p>
-          <p className="text-sm text-slate-600">
+          <TierIcon className="mx-auto h-14 w-14 text-ink" aria-hidden="true" />
+          <h2 className="font-display text-3xl font-bold text-ink">{tier.title}</h2>
+          <p className="font-display text-lg font-bold text-ink">{score} / 100</p>
+          <p className="text-sm text-pebble">
             {zh
               ? `${MESSAGES.length} 条消息里你答对了 ${correctCount} 条。`
               : es
@@ -738,7 +738,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
                 style={{ animationDelay: `${i * 0.12}s` }}
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <p className="text-sm font-semibold text-slate-800">
+                  <p className="text-sm font-semibold text-ink">
                     <KindMark kind={m.kind} />
                     {zh ? m.senderZh : es ? m.senderEs : m.sender} — {zh ? m.subjectZh : es ? m.subjectEs : m.subject}
                   </p>
@@ -756,7 +756,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
                     )}
                   </span>
                 </div>
-                <p className="mt-1 text-xs text-slate-500">
+                <p className="mt-1 text-xs text-pebble">
                   {zh ? '来自' : es ? 'De' : 'From'}: {zh ? m.addressZh : es ? m.addressEs : m.address} ·{' '}
                   {zh ? '实际上是' : es ? 'En realidad es' : 'Actually'}{' '}
                   <span className={`font-bold ${m.isScam ? 'text-red-600' : 'text-green-700'}`}>
@@ -770,10 +770,10 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
                 </div>
                 <div
                   className={`mt-3 rounded-xl p-3 text-xs ${
-                    m.isScam ? 'bg-amber-50 text-slate-700' : 'bg-green-50 text-slate-700'
+                    m.isScam ? 'bg-amber-50 text-ink' : 'bg-green-50 text-ink'
                   }`}
                 >
-                  <p className="font-display font-bold text-slate-900">
+                  <p className="font-display font-bold text-ink">
                     {m.isScam ? (
                       <>
                         <AlertTriangle className="mr-1 inline-block h-4 w-4 align-[-0.15em] text-red-600" aria-hidden="true" /> {zh ? '危险信号' : es ? 'Señales de alerta' : 'Red flags'}
@@ -799,11 +799,11 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
         </div>
 
         <div
-          className="card animate-slide-up mt-4 border-bff-200 bg-bff-50 text-sm text-slate-700"
+          className="card animate-slide-up mt-4 border-bff-200 bg-paper-soft text-sm text-ink"
           style={{ animationDelay: `${MESSAGES.length * 0.12}s` }}
         >
-          <p className="font-display font-bold text-slate-900">
-            <ShieldCheck className="inline-block h-4 w-4 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
+          <p className="font-display font-bold text-ink">
+            <ShieldCheck className="inline-block h-4 w-4 align-[-0.15em] text-ink" aria-hidden="true" />{' '}
             {zh ? '举好你的 S.H.I.E.L.D. 盾牌' : es ? 'Mantén tu S.H.I.E.L.D. en alto' : 'Keep your S.H.I.E.L.D. up'}
           </p>
           {zh ? (
@@ -859,7 +859,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
               : 'Read closely. Is this message legit, or a scam?'}
           </p>
           <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-            <UserSearch className="inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
+            <UserSearch className="inline-block h-7 w-7 align-[-0.15em] text-ink" aria-hidden="true" />{' '}
             {zh ? (
               <>识骗<em>高手</em></>
             ) : es ? (
@@ -867,7 +867,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
             ) : (
               <>Scam <em>Spotter</em></>
             )}{' '}
-            <Smartphone className="inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />
+            <Smartphone className="inline-block h-7 w-7 align-[-0.15em] text-ink" aria-hidden="true" />
           </h1>
         </header>
 
@@ -875,13 +875,13 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
           <button className="btn-ghost -ml-2 text-sm" onClick={() => setOpenId(null)}>
             <ArrowLeft className="inline-block h-4 w-4 align-[-0.15em]" aria-hidden="true" /> {zh ? '返回收件箱' : es ? 'Volver a la bandeja' : 'Back to inbox'}
           </button>
-          <div className="mt-3 border-b border-slate-200 pb-3">
-            <p className="text-sm font-semibold text-slate-800">
+          <div className="mt-3 border-b border-stone pb-3">
+            <p className="text-sm font-semibold text-ink">
               <KindMark kind={open.kind} />
               {zh ? open.senderZh : es ? open.senderEs : open.sender}
             </p>
-            <p className="text-xs text-slate-500">{zh ? open.addressZh : es ? open.addressEs : open.address}</p>
-            <p className="mt-1 font-display font-bold text-slate-900">
+            <p className="text-xs text-pebble">{zh ? open.addressZh : es ? open.addressEs : open.address}</p>
+            <p className="mt-1 font-display font-bold text-ink">
               {zh ? open.subjectZh : es ? open.subjectEs : open.subject}
             </p>
           </div>
@@ -896,7 +896,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
               className={`flex-1 rounded-xl border-2 px-4 py-2.5 font-display font-semibold transition active:scale-[0.97] ${
                 v === 'legit'
                   ? 'border-green-600 bg-green-600 text-white shadow-sm'
-                  : 'border-slate-200 bg-white text-slate-700 hover:border-green-400'
+                  : 'border-stone bg-white text-ink hover:border-green-400'
               }`}
             >
               {zh ? '合法' : es ? 'Legítimo' : 'Legit'} <ShieldCheck className="inline-block h-4 w-4 align-[-0.15em]" aria-hidden="true" />
@@ -908,13 +908,13 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
               className={`flex-1 rounded-xl border-2 px-4 py-2.5 font-display font-semibold transition active:scale-[0.97] ${
                 v === 'scam'
                   ? 'border-red-600 bg-red-600 text-white shadow-sm'
-                  : 'border-slate-200 bg-white text-slate-700 hover:border-red-400'
+                  : 'border-stone bg-white text-ink hover:border-red-400'
               }`}
             >
               {zh ? '骗局' : es ? 'Estafa' : 'Scam'} <Siren className="inline-block h-4 w-4 align-[-0.15em]" aria-hidden="true" />
             </button>
           </div>
-          <p className="mt-3 text-center text-xs text-slate-500" role="status" aria-live="polite">
+          <p className="mt-3 text-center text-xs text-pebble" role="status" aria-live="polite">
             {v
               ? zh
                 ? `已标记为${v === 'scam' ? '骗局' : '合法'}——提交之前你随时可以改主意。`
@@ -945,7 +945,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
             : 'Your inbox has 8 new messages. Some of them are traps.'}
         </p>
         <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-          <UserSearch className="inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
+          <UserSearch className="inline-block h-7 w-7 align-[-0.15em] text-ink" aria-hidden="true" />{' '}
           {zh ? (
             <>识骗<em>高手</em></>
           ) : es ? (
@@ -953,11 +953,11 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
           ) : (
             <>Scam <em>Spotter</em></>
           )}{' '}
-          <Smartphone className="inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />
+          <Smartphone className="inline-block h-7 w-7 align-[-0.15em] text-ink" aria-hidden="true" />
         </h1>
       </header>
 
-      <div className="card mt-4 border-bff-200 bg-bff-50 text-sm text-slate-700">
+      <div className="card mt-4 border-bff-200 bg-paper-soft text-sm text-ink">
         {zh ? (
           <p>
             打开每一条消息，像侦探一样读它，然后把它标记为{' '}
@@ -1000,7 +1000,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
         )}
       </div>
 
-      <p className="mt-4 text-sm font-semibold text-slate-600" role="status" aria-live="polite">
+      <p className="mt-4 text-sm font-semibold text-pebble" role="status" aria-live="polite">
         {zh
           ? `${MESSAGES.length} 条消息中已分类 ${classifiedCount} 条`
           : es
@@ -1016,14 +1016,14 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
               <button
                 type="button"
                 onClick={() => setOpenId(m.id)}
-                className="flex w-full items-center justify-between gap-3 rounded-xl border-2 border-slate-200 bg-white px-4 py-3 text-left transition hover:border-bff-300 active:scale-[0.98]"
+                className="flex w-full items-center justify-between gap-3 rounded-xl border-2 border-stone bg-white px-4 py-3 text-left transition hover:border-bff-300 active:scale-[0.98]"
               >
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold text-slate-800">
+                  <p className="truncate text-sm font-semibold text-ink">
                     <KindMark kind={m.kind} />
                     {zh ? m.senderZh : es ? m.senderEs : m.sender}
                   </p>
-                  <p className="truncate text-xs text-slate-600">{zh ? m.subjectZh : es ? m.subjectEs : m.subject}</p>
+                  <p className="truncate text-xs text-pebble">{zh ? m.subjectZh : es ? m.subjectEs : m.subject}</p>
                 </div>
                 <span
                   className={`chip shrink-0 ${
@@ -1031,7 +1031,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
                       ? 'bg-red-100 text-red-700'
                       : v === 'legit'
                         ? 'bg-green-100 text-green-800'
-                        : 'bg-slate-100 text-slate-600'
+                        : 'bg-paper-soft text-pebble'
                   }`}
                 >
                   {v === 'scam' ? (
@@ -1061,7 +1061,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
           {zh ? '提交判断' : es ? 'Enviar veredictos' : 'Submit verdicts'}
         </button>
         {!allClassified && (
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-2 text-sm text-pebble">
             {zh
               ? `提交前请把每一条消息都分类好——还剩 ${MESSAGES.length - classifiedCount} 条。`
               : es
