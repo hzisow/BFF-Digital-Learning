@@ -121,7 +121,7 @@ const lesson: Lesson = {
  source: 'BFF Classroom',
  questions: [
  {
- at: 38,
+ at: 36,
  question: 'What is a budget, really?',
  options: [
  'A way to never spend money on fun',
@@ -134,8 +134,8 @@ const lesson: Lesson = {
  'A budget is just a plan for the money you already have — any amount — and it makes room for needs and wants on purpose.',
  },
  {
- at: 150,
- question: 'Using the 50/30/20 rule on $200 a month, how much goes to savings?',
+ at: 152,
+ question: 'Using the 50/30/20 rule on $200 this week, how much goes to savings?',
  options: [
  '$100',
  '$60',
@@ -412,7 +412,7 @@ const lesson: Lesson = {
  source: 'BFF Classroom',
  questions: [
  {
- at: 38,
+ at: 36,
  question: '¿Qué es un presupuesto, en realidad?',
  options: [
  'Una forma de nunca gastar dinero en cosas divertidas',
@@ -425,8 +425,8 @@ const lesson: Lesson = {
  'Un presupuesto no es más que un plan para el dinero que ya tienes — cualquier cantidad — y hace lugar a propósito para las necesidades y los deseos.',
  },
  {
- at: 150,
- question: 'Usando la regla 50/30/20 con $200 al mes, ¿cuánto va al ahorro?',
+ at: 152,
+ question: 'Usando la regla 50/30/20 con $200 esta semana, ¿cuánto va al ahorro?',
  options: [
  '$100',
  '$60',
@@ -705,7 +705,7 @@ const lesson: Lesson = {
  source: 'BFF Classroom',
  questions: [
  {
- at: 38,
+ at: 36,
  question: '预算到底是什么？',
  options: [
  '一种永远不把钱花在娱乐上的方式',
@@ -718,8 +718,8 @@ const lesson: Lesson = {
  '预算不过是为你已经拥有的钱制定的计划——无论金额多少——它会有意地为需要和想要留出空间。',
  },
  {
- at: 150,
- question: '按照 50/30/20 法则，每月 $200 中有多少进入储蓄？',
+ at: 152,
+ question: '按照 50/30/20 法则，这周的 $200 中有多少进入储蓄？',
  options: [
  '$100',
  '$60',

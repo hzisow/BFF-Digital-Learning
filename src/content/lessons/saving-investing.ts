@@ -109,7 +109,7 @@ const lesson: Lesson = {
  source: 'BFF Classroom',
  questions: [
  {
- at: 80,
+ at: 89,
  question:
  'You put in $100 at 10% per year. After year 1 you have $110. About how much after year 2?',
  options: ['$120', '$121', '$110', '$200'],
@@ -118,7 +118,7 @@ const lesson: Lesson = {
  "Year 2 you earn 10% on $110 — that's $11 — so $121. You earned interest on your interest.",
  },
  {
- at: 108,
+ at: 107,
  question: 'What makes compound interest different from simple interest?',
  options: [
  'Compounding only works at big banks',
@@ -402,7 +402,7 @@ const lesson: Lesson = {
  source: 'BFF Classroom',
  questions: [
  {
- at: 80,
+ at: 89,
  question:
  'Pones $100 al 10% por año. Después del año 1 tienes $110. ¿Aproximadamente cuánto tienes después del año 2?',
  options: ['$120', '$121', '$110', '$200'],
@@ -411,7 +411,7 @@ const lesson: Lesson = {
  'En el año 2 ganas el 10% sobre $110 — eso son $11 — así que $121. Ganaste interés sobre tu interés.',
  },
  {
- at: 108,
+ at: 107,
  question: '¿Qué hace diferente al interés compuesto del interés simple?',
  options: [
  'El interés compuesto solo funciona en los bancos grandes',
@@ -696,7 +696,7 @@ const lesson: Lesson = {
  source: 'BFF Classroom',
  questions: [
  {
- at: 80,
+ at: 89,
  question:
  '你以每年 10% 存入 $100。第 1 年后你有 $110。第 2 年后大约有多少？',
  options: ['$120', '$121', '$110', '$200'],
@@ -705,7 +705,7 @@ const lesson: Lesson = {
  '第 2 年你在 $110 上赚 10%——也就是 $11——所以是 $121。你赚到了利息之上的利息。',
  },
  {
- at: 108,
+ at: 107,
  question: '复利和单利有什么不同？',
  options: [
  '复利只在大银行才管用',

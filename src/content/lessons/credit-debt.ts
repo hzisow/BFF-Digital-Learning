@@ -119,7 +119,7 @@ const lesson: Lesson = {
  'Payment history is the heavyweight at about 35%. One missed payment can hurt for years — which is why autopay helps.',
  },
  {
- at: 150,
+ at: 148,
  question: "What's one of the WORST things for your credit score?",
  options: [
  'Keeping an old card open',
@@ -405,7 +405,7 @@ const lesson: Lesson = {
  'El historial de pagos es el peso pesado, con cerca del 35%. Un solo pago perdido puede afectarte por años — por eso el pago automático ayuda.',
  },
  {
- at: 150,
+ at: 148,
  question:
  '¿Cuál es una de las PEORES cosas para tu puntaje de crédito?',
  options: [
@@ -697,7 +697,7 @@ const lesson: Lesson = {
  '还款记录是重量级选手，大约占35%。哪怕只错过一次付款，也可能影响你的分数好几年——这就是为什么自动扣款很有帮助。',
  },
  {
- at: 150,
+ at: 148,
  question: '对你的信用分数来说，最糟糕的事情之一是什么？',
  options: [
  '保留一张旧卡不注销',
