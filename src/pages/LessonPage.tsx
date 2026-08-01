@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ArrowLeft, ArrowRight, Check, X, Lightbulb, SearchX, RotateCcw } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Check, X, Lightbulb, Lock, SearchX, RotateCcw } from 'lucide-react'
 import { isLessonSlug, loadLesson, peekLesson } from '../content/lessons'
 import type { Lesson, LessonSection } from '../content/types'
 import VideoCheckpoint from '../components/VideoCheckpoint'
@@ -12,6 +12,7 @@ import { ACTIVITIES } from '../lib/activities'
 import { useLang, localizeLesson } from '../lib/i18n'
 import type { Lang } from '../lib/i18n'
 import { saveProgress } from '../lib/progress'
+import { PASS_SCORE } from '../lib/mastery'
 import {
   clearPosition,
   loadPosition,
@@ -435,7 +436,9 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
     // behind would offer to drop them back into the middle of a lesson they
     // have already completed.
     clearPosition(lesson.slug)
-    celebrate(pct === 100 ? 'perfect' : 'complete')
+    // Only celebrate a pass. Confetti over a score that leaves the next lesson
+    // locked reads as "well done" and contradicts the banner right below it.
+    if (pct >= PASS_SCORE) celebrate(pct === 100 ? 'perfect' : 'complete')
     void saveProgress(studentRef.current, lesson.slug, {
       status: 'completed',
       score: pct,
@@ -624,14 +627,18 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
     const total = loc.quiz.length
     const correct = loc.quiz.filter((q, i) => quizAnswers[i]?.chosen === q.answerIndex).length
     const pct = total > 0 ? Math.round((correct / total) * 100) : 100
-    const tier =
-      pct === 100
+    // Passing unlocks the next lesson; anything short of it does not. The
+    // message has to say which of those just happened, because "Nice job!"
+    // above a locked path is the most confusing thing this screen could do.
+    const passed = pct >= PASS_SCORE
+    const missedBy = total > 0 ? Math.ceil((PASS_SCORE / 100) * total) - correct : 0
+    const tier = passed
+      ? pct === 100
         ? zh ? '满分——你正式成为理财高手了！' : es ? '¡Puntaje perfecto — eres un master del dinero!' : 'Perfect score — you are officially a money master.'
-        : pct >= 80
-          ? zh ? '太棒了——你是真的懂这些！' : es ? '¡Increíble — de verdad sabes de esto!' : 'Amazing work — you really know your stuff.'
-          : pct >= 60
-            ? zh ? '做得不错！快速复习一下你就全掌握了。' : es ? '¡Bien hecho! Un repaso rápido y lo dominas.' : 'Nice job — one quick review and you will have it down.'
-            : zh ? '很努力了！再把这节课过一遍、重做测验。' : es ? '¡Buen esfuerzo! Repasa la lección y repite el examen.' : 'Good effort — skim the lesson again and retake the quiz.'
+        : zh ? '过关了——你是真的懂这些！' : es ? '¡Aprobada — de verdad sabes de esto!' : 'Passed — you really know your stuff.'
+      : pct >= 60
+        ? zh ? '很接近了！再复习一下，重做测验就能过关。' : es ? '¡Muy cerca! Repasa un poco y repite el examen.' : 'So close — a quick review and a retake will get you there.'
+        : zh ? '很努力了！再把这节课过一遍、重做测验。' : es ? '¡Buen esfuerzo! Repasa la lección y repite el examen.' : 'Good effort — skim the lesson again and retake the quiz.'
 
     return (
       <div className="lz">
@@ -640,7 +647,9 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
           <div className="lz-result-cover animate-pop-in">
             <div className="lz-hero-orbit one" aria-hidden="true" />
             <p className="lz-eyebrow" style={{ color: 'var(--lz-blue-bright)', justifyContent: 'center' }}>
-              {tr({ en: 'Lesson complete', es: 'Lección completa', zh: '课程完成' })}
+              {passed
+                ? tr({ en: 'Lesson complete', es: 'Lección completa', zh: '课程完成' })
+                : tr({ en: 'Not passed yet', es: 'Aún no aprobada', zh: '尚未通过' })}
             </p>
             <p className="lz-result-score">
               <em>{pct}</em>%
@@ -693,14 +702,52 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
             })}
           </div>
 
-          <div style={{ marginTop: '36px', display: 'flex', flexWrap: 'wrap', gap: '10px', alignItems: 'center' }}>
-            <button type="button" onClick={retakeQuiz} className="lz-btn lz-btn--ghost-dark">
+          {/* The gate, stated plainly. A student who scored 71% should learn it
+              here rather than by finding a locked node on the path. */}
+          <div
+            role="status"
+            className={`lz-gate ${passed ? 'ok' : ''}`}
+            style={{ marginTop: '28px' }}
+          >
+            {passed ? (
+              <>
+                <Check className="h-4 w-4 shrink-0" aria-hidden="true" />
+                <span>
+                  {zh
+                    ? `达到 ${PASS_SCORE}% 的过关线——下一课已解锁。`
+                    : es
+                      ? `Superaste el ${PASS_SCORE}% — la siguiente lección está desbloqueada.`
+                      : `You cleared the ${PASS_SCORE}% bar — the next lesson is unlocked.`}
+                </span>
+              </>
+            ) : (
+              <>
+                <Lock className="h-4 w-4 shrink-0" aria-hidden="true" />
+                <span>
+                  {zh
+                    ? `解锁下一课需要 ${PASS_SCORE}%。再答对 ${missedBy} 题就够了——重做测验吧，我们只保留你的最高分。`
+                    : es
+                      ? `Necesitas ${PASS_SCORE}% para desbloquear la siguiente lección. Te ${missedBy === 1 ? 'falta' : 'faltan'} ${missedBy} ${missedBy === 1 ? 'respuesta' : 'respuestas'} — repite el examen, solo guardamos tu mejor puntaje.`
+                      : `You need ${PASS_SCORE}% to unlock the next lesson — ${missedBy} more right ${missedBy === 1 ? 'answer' : 'answers'} does it. Retake the quiz; we only ever keep your best score.`}
+                </span>
+              </>
+            )}
+          </div>
+
+          <div style={{ marginTop: '20px', display: 'flex', flexWrap: 'wrap', gap: '10px', alignItems: 'center' }}>
+            <button
+              type="button"
+              onClick={retakeQuiz}
+              className={`lz-btn ${passed ? 'lz-btn--ghost-dark' : 'lz-btn--primary'}`}
+            >
               <RotateCcw className="h-4 w-4" aria-hidden="true" /> {t('lesson.retake')}
             </button>
             <Link to="/lessons" className="lz-btn lz-btn--ghost-dark">
               {t('lesson.backToLessons')}
             </Link>
-            {nextLesson && (
+            {/* Only offered once the bar is cleared — otherwise this button would
+                walk straight past the gate the path is enforcing. */}
+            {nextLesson && passed && (
               <Link to={nextLesson.path} className="lz-btn lz-btn--primary" style={{ marginLeft: 'auto' }}>
                 {t('lesson.nextLesson')} <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>

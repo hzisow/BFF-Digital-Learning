@@ -23,6 +23,7 @@ import { AppIcon } from '../lib/icons'
 import { ACTIVITIES, localizeActivity } from '../lib/activities'
 import type { ActivityMeta } from '../lib/activities'
 import { mostRecentPosition } from '../lib/lessonPosition'
+import { PASS_SCORE, lessonPassed, needsRetake } from '../lib/mastery'
 import { prefetchRoute } from '../lib/routeChunks'
 import { useLang } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
@@ -116,6 +117,8 @@ interface PathNode {
   kind: 'lesson' | 'trophy'
   meta?: ActivityMeta
   state: NodeState
+  /** Finished the quiz but scored under the bar — needs another go. */
+  retake: boolean
   score: number | null
   started: boolean
 }
@@ -308,8 +311,11 @@ export default function LessonsIndex() {
     [],
   )
 
-  const doneCount = lessons.filter((l) => progress[l.slug]?.status === 'completed').length
-  const current = lessons.find((l) => progress[l.slug]?.status !== 'completed')
+  // Progression is gated on mastery: a lesson only counts once the quiz is
+  // passed, so a student who finished with 50% stays on that stop rather than
+  // being waved through to the next one.
+  const doneCount = lessons.filter((l) => lessonPassed(progress[l.slug])).length
+  const current = lessons.find((l) => !lessonPassed(progress[l.slug]))
   const allDone = doneCount === lessons.length
 
   const weeks = useMemo(() => {
@@ -321,13 +327,19 @@ export default function LessonsIndex() {
 
     const toNode = (meta: ActivityMeta): PathNode => {
       const p: ActivityProgress | undefined = progress[meta.slug]
-      const state: NodeState =
-        p?.status === 'completed'
-          ? 'done'
-          : meta.slug === current?.slug
-            ? 'current'
-            : 'locked'
-      return { kind: 'lesson', meta, state, score: p?.score ?? null, started: p?.status === 'started' }
+      const state: NodeState = lessonPassed(p)
+        ? 'done'
+        : meta.slug === current?.slug
+          ? 'current'
+          : 'locked'
+      return {
+        kind: 'lesson',
+        meta,
+        state,
+        score: p?.score ?? null,
+        started: p?.status === 'started',
+        retake: needsRetake(p),
+      }
     }
 
     const result = [...byWeek.entries()]
@@ -345,6 +357,7 @@ export default function LessonsIndex() {
         state: allDone ? 'done' : 'locked',
         score: null,
         started: false,
+        retake: false,
       })
     }
     return result
@@ -613,17 +626,23 @@ export default function LessonsIndex() {
                           <span
                             className={`absolute -top-9 left-1/2 z-10 -translate-x-1/2 animate-float whitespace-nowrap rounded-[6px] border-2 bg-white px-3 py-1 font-display text-[11px] font-extrabold uppercase tracking-[0.12em] ${theme.border} ${theme.text}`}
                           >
-                            {node.started
+                            {node.retake
                               ? zh
-                                ? '继续'
+                                ? '重考'
                                 : es
-                                  ? 'Sigue'
-                                  : 'Keep going'
-                              : zh
-                                ? '开始'
-                                : es
-                                  ? 'Empezar'
-                                  : 'Start'}
+                                  ? 'Repetir'
+                                  : 'Retake'
+                              : node.started
+                                ? zh
+                                  ? '继续'
+                                  : es
+                                    ? 'Sigue'
+                                    : 'Keep going'
+                                : zh
+                                  ? '开始'
+                                  : es
+                                    ? 'Empezar'
+                                    : 'Start'}
                           </span>
                         )}
                         {clickable ? (
@@ -632,7 +651,15 @@ export default function LessonsIndex() {
                             aria-label={
                               node.state === 'done'
                                 ? `${label}${zh ? '，已完成' : es ? ', completada' : ', completed'}`
-                                : `${label}${zh ? '，当前课程' : es ? ', lección actual' : ', current lesson'}`
+                                : node.retake
+                                  ? `${label}${
+                                      zh
+                                        ? `，得分 ${Math.round(node.score ?? 0)}%，需要 ${PASS_SCORE}% 才能解锁下一课`
+                                        : es
+                                          ? `, ${Math.round(node.score ?? 0)}% — necesitas ${PASS_SCORE}% para desbloquear la siguiente`
+                                          : `, scored ${Math.round(node.score ?? 0)}% — needs ${PASS_SCORE}% to unlock the next lesson`
+                                    }`
+                                  : `${label}${zh ? '，当前课程' : es ? ', lección actual' : ', current lesson'}`
                             }
                           >
                             {circle}
@@ -688,6 +715,13 @@ export default function LessonsIndex() {
                           {sub && <p className="mt-0.5 text-[10px] font-semibold text-ink/50">{sub}</p>}
                           {node.kind === 'lesson' && node.state === 'done' && (
                             <Stars score={node.score} lang={lang} />
+                          )}
+                          {/* Stuck here: show the score and the bar, so the reason
+                              the next stop is locked is visible on the path. */}
+                          {node.retake && (
+                            <p className="mt-0.5 text-[10px] font-bold text-amber-700">
+                              {Math.round(node.score ?? 0)}% / {PASS_SCORE}%
+                            </p>
                           )}
                         </div>
                       </div>
@@ -797,23 +831,42 @@ export default function LessonsIndex() {
           >
             <AppIcon name={jumpTarget.icon} className="mx-auto h-12 w-12 text-bff-600" />
             <h3 id="jump-dialog-title" className="mt-3 font-display text-xl font-bold text-slate-900">
-              {zh ? `即将跳到 ${lessonTitle(jumpTarget)}？` : es ? `¿Saltando a ${lessonTitle(jumpTarget)}?` : `Jumping ahead to ${lessonTitle(jumpTarget)}?`}
+              {zh
+                ? `${lessonTitle(jumpTarget)} 还锁着`
+                : es
+                  ? `${lessonTitle(jumpTarget)} está bloqueada`
+                  : `${lessonTitle(jumpTarget)} is locked`}
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-slate-600">
               {zh
-                ? '这一站在路径上还比较靠后。如果是你的导师布置的——或者你只是好奇——尽管去吧。等你回来，路径还在这里！'
+                ? `每节课要拿到 ${PASS_SCORE}% 才能解锁下一站。先把当前这节课过关，这一站就会打开。`
                 : es
-                  ? 'Esta parada viene más adelante en la ruta. Si tu mentor la asignó — o solo tienes curiosidad — adelante. ¡La ruta seguirá aquí cuando vuelvas!'
-                  : "This stop comes later on the path. If your mentor assigned it — or you're just curious — go right ahead. The path will be here when you get back!"}
+                  ? `Cada lección se desbloquea con un ${PASS_SCORE}% o más en su examen. Aprueba la lección en la que estás y esta parada se abre.`
+                  : `Each lesson unlocks the next at ${PASS_SCORE}% or better on its quiz. Pass the one you're on and this stop opens up.`}
             </p>
+            {current && needsRetake(progress[current.slug]) && (
+              <p className="mt-2 text-sm font-semibold text-amber-700">
+                {zh
+                  ? `你在《${lessonTitle(current)}》拿到 ${Math.round(progress[current.slug]?.score ?? 0)}%——重做测验就能过关。`
+                  : es
+                    ? `Sacaste ${Math.round(progress[current.slug]?.score ?? 0)}% en ${lessonTitle(current)} — repite el examen para aprobarla.`
+                    : `You scored ${Math.round(progress[current.slug]?.score ?? 0)}% on ${lessonTitle(current)} — retake the quiz to clear it.`}
+              </p>
+            )}
             <div className="mt-5 flex flex-col gap-2">
-              <Link to={jumpTarget.path} className="btn-primary w-full">
-                {zh ? '还是要开始' : es ? 'Empezar de todos modos' : 'Start it anyway'}{' '}
-                <ArrowRight className="nudge h-4 w-4" aria-hidden="true" />
-              </Link>
               {current && (
-                <Link to={current.path} className="btn-secondary w-full">
-                  {zh ? '带我去下一课（' : es ? 'Llévame a mi próxima lección (' : 'Take me to my next lesson ('}
+                <Link to={current.path} className="btn-primary w-full">
+                  {needsRetake(progress[current.slug])
+                    ? zh
+                      ? '重做测验（'
+                      : es
+                        ? 'Repetir el examen ('
+                        : 'Retake the quiz ('
+                    : zh
+                      ? '去我当前的课程（'
+                      : es
+                        ? 'Ir a mi lección actual ('
+                        : 'Go to my current lesson ('}
                   <AppIcon name={current.icon} className="h-4 w-4" />{' '}
                   {lessonTitle(current)})
                 </Link>

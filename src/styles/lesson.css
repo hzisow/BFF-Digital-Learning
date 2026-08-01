@@ -430,3 +430,27 @@
 @media (prefers-reduced-motion: reduce) {
   .lz-progress-fill, .lz-option, .lz-btn--primary { transition: none; }
 }
+
+/* Pass/fail banner on the results screen. Sits on the dark result cover, so it
+   needs its own light-on-dark treatment rather than the app's chip styles. */
+.lz-gate {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+  font-weight: 600;
+  /* Sits on the light review sheet, not the dark score cover — so this is dark
+     text on a pale tint, well past 4.5:1 either way. */
+  background: #fdf3e0;
+  border: 1px solid #e0b063;
+  color: #7a4b06;
+}
+.lz-gate.ok {
+  background: #e9f7ee;
+  border-color: #7fc59a;
+  color: #175f36;
+}

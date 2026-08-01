@@ -208,6 +208,51 @@ stops it writing a nonsense `-1`), and an unauthenticated caller cannot rename o
 remove — `mentor_owns_student` returns false and every function raises
 `not_authorized`.
 
+### The course path is a mastery gate at 85%
+`src/lib/mastery.ts` is the single definition of "cleared a lesson":
+`lessonPassed(p)` is `status === 'completed' && score >= PASS_SCORE`, where
+`PASS_SCORE = 85`. Everything that asks "how far along is this student?" now
+calls it — the path (`LessonsIndex`), the results screen (`LessonPage`), the
+certificate, and `resume.ts`. One definition, so those four can never disagree
+about who has passed what.
+
+Before this, finishing a lesson unlocked the next one at *any* score: two of
+eight correct still advanced you, and the certificate counted it.
+
+Why 85 specifically: core lessons carry 7–8 questions, so 85% means **one wrong
+answer still passes and two do not**. That is the whole reason the number is
+what it is. Note the trap before changing it — on a shorter quiz the same
+percentage silently becomes "perfect or nothing". A 6-question elective would
+need 100%, which is why **the gate applies only to the core path**; electives
+stay ungated on purpose.
+
+What a student sees when they fall short:
+- The results screen says it in words — the score, how many more right answers
+  they need, and that only their best score is ever kept.
+- **No "Next lesson" button.** It is not disabled, it is not rendered.
+- Confetti and "Lesson complete" are withheld; the eyebrow reads "Not passed
+  yet". Celebrating a score that leaves the path locked is the single most
+  confusing thing this screen could do.
+- On the path, the node keeps a floating **Retake** badge and a `71% / 85%`
+  caption underneath, so the reason the next stop is locked is visible without
+  clicking anything.
+
+Two deliberate decisions:
+- **"Start it anyway" was removed** from the locked-lesson dialog. It predates
+  the gate, and leaving it would have made the gate cosmetic — one click and you
+  are past it. The dialog now explains the rule and offers "Retake the quiz" or
+  "Go to my current lesson".
+- **A direct lesson URL is still not sealed.** `/lessons/credit-debt` loads for
+  anyone who types it. That is intentional: mentor assignment links from
+  StudentHome point straight at a lesson and must keep working, and a mentor
+  needs a way to put a student wherever the class actually is. The *path* is the
+  gate, not the router.
+
+Retakes can only help: `saveProgress` keeps the highest score it has ever seen
+for an activity, so a bad first attempt is never held against a student. That is
+what makes the gate fair rather than punishing, and it is why the copy can
+promise it.
+
 ### Due dates read as deadlines
 `src/lib/dueDate.ts` classifies `due_at` as overdue / today / tomorrow / soon /
 later. Comparison is **calendar-day, not elapsed-hours**: something due at 9am is
@@ -356,6 +401,11 @@ its own focused chrome, styled by `src/styles/lesson.css` (all classes prefixed
 - **Time estimates** on the lesson hero (the course path already had them)
 - **Arrow-key navigation** through lesson steps, gated by the same rules as the
   Continue button, and never stealing keys from a text field
+- **85% mastery gate on the core path** — verified by walking a real lesson to
+  the results screen twice, once deliberately failing (0%: amber banner, no
+  "Next lesson", no confetti, "Not passed yet") and once passing (100%: green
+  banner, "Next lesson" present), plus five seeded path states covering the
+  boundary at exactly 85%
 
 ---
 
@@ -658,7 +708,14 @@ are wondering *why* something is the way it is.
 
 | Commit | What changed |
 |---|---|
-| _(most recent)_ | Per-lesson content splitting — course path 10.1 s → 4.5 s, lesson 8.0 s → 5.2 s on a bad connection |
+| _(most recent)_ | 85% mastery gate — a lesson only unlocks the next one once its quiz is passed |
+| `0dc05e2` | Per-question analytics, roster rename/remove/merge, due dates that read as deadlines |
+| `980f44b` | Six more video checkpoints so the untested half of each recording is covered |
+| `f9f2e94` | Matched every video checkpoint to what is actually said, and when |
+| `ef84f2e` | Wired in the four real lesson videos and fixed the checkpoint timings |
+| `618d6b7` | First name + last initial sign-in, replacing nickname + PIN |
+| `fd116c1` | Load the Supabase client only when there is a reason to |
+| `f15b845` | Per-lesson content splitting — course path 10.1 s → 4.5 s on a bad connection |
 | `e5c8d6d` | Expanded STATUS.md; measured performance audit that found the above |
 | `1844704` | Lesson resume, time estimates, position-aware Continue, arrow-key navigation |
 | `20aaaca` | Route code splitting, offline states, progress outbox |
@@ -684,6 +741,7 @@ are wondering *why* something is the way it is.
 | `src/lib/useLesson.ts` | Load one lesson when the slug arrives at runtime |
 | `src/lib/lessonPosition.ts` | Where a student is inside a lesson (resume) |
 | `src/lib/resume.ts` | Which lesson "Continue where you left off" points at |
+| `src/lib/mastery.ts` | `PASS_SCORE` and what counts as passing — the only definition |
 | `src/components/ConnectionBanner.tsx` | The top strip shown while offline |
 | `src/components/RouteFallback.tsx` | What shows while a route chunk downloads |
 | `src/index.css` | Design system: tokens, buttons, cards, micro-interactions |

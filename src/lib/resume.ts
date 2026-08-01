@@ -3,6 +3,7 @@
 import { ACTIVITIES } from './activities'
 import { loadLocalProgress } from './progress'
 import { mostRecentPosition } from './lessonPosition'
+import { lessonPassed } from './mastery'
 
 export interface ResumePoint {
   slug: string
@@ -53,10 +54,12 @@ export function resumeLesson(): ResumePoint | null {
     return { slug: started.slug, path: started.path, title: started.title, inProgress: true }
   }
 
-  const anyCompleted = lessons.some((l) => progress[l.slug]?.status === 'completed')
-  if (!anyCompleted) return null
+  // A lesson finished below the pass mark is not behind them — the path still
+  // has them on it, so "your next lesson" has to agree.
+  const anyPassed = lessons.some((l) => lessonPassed(progress[l.slug]))
+  if (!anyPassed) return null
 
-  const next = lessons.find((l) => progress[l.slug]?.status !== 'completed')
+  const next = lessons.find((l) => !lessonPassed(progress[l.slug]))
   if (!next) return null // whole course done
   return { slug: next.slug, path: next.path, title: next.title, inProgress: false }
 }

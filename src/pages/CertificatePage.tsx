@@ -6,6 +6,7 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Printer, ArrowRight, Trophy } from 'lucide-react'
 import { Logo } from '../components/Logo'
+import { lessonPassed } from '../lib/mastery'
 import { ACTIVITIES } from '../lib/activities'
 import { useLang } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
@@ -23,7 +24,9 @@ export default function CertificatePage() {
     () => ACTIVITIES.filter((a) => a.kind === 'lesson').sort((a, b) => a.sortKey - b.sortKey),
     [],
   )
-  const doneCount = lessons.filter((l) => progress[l.slug]?.status === 'completed').length
+  // Passing, not merely finishing — otherwise the certificate would contradict
+  // the path, which refuses to unlock the next lesson under the same score.
+  const doneCount = lessons.filter((l) => lessonPassed(progress[l.slug])).length
   const allDone = doneCount === lessons.length
 
   const scores = lessons
