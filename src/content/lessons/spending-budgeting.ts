@@ -109,7 +109,7 @@ const lesson: Lesson = {
  options: ['$100', '$60', '$40', '$20'],
  answerIndex: 2,
  explanation:
- 'Yes! The 50/30/20 rule sends 20% to savings — and 20% of $200 is $40. The other splits: $100 (50%) toward needs and $60 (30%) toward wants. And remember, you can tweak the percentages to fit your situation.',
+ 'The 50/30/20 rule sends 20% to savings — and 20% of $200 is $40. The other splits: $100 (50%) toward needs and $60 (30%) toward wants. And remember, you can tweak the percentages to fit your situation.',
  },
  },
  {
@@ -203,7 +203,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- "Exactly — that see-it-want-it-buy-it feeling is impulse buying, and the 24-hour rule is the antidote: wait a day before buying a want. Bonus move: ask yourself if you'll care about it a week from now. If not, skip it.",
+ "That see-it-want-it-buy-it feeling is impulse buying, and the 24-hour rule is the antidote: wait a day before buying a want. Bonus move: ask yourself if you'll care about it a week from now. If not, skip it.",
  },
  },
  {
@@ -414,7 +414,7 @@ const lesson: Lesson = {
  options: ['$100', '$60', '$40', '$20'],
  answerIndex: 2,
  explanation:
- '¡Sí! La regla 50/30/20 manda el 20% al ahorro — y el 20% de $200 es $40. Las otras partes: $100 (50%) para necesidades y $60 (30%) para deseos. Y recuerda: puedes ajustar los porcentajes para que encajen con tu situación.',
+ 'La regla 50/30/20 manda el 20% al ahorro — y el 20% de $200 es $40. Las otras partes: $100 (50%) para necesidades y $60 (30%) para deseos. Y recuerda: puedes ajustar los porcentajes para que encajen con tu situación.',
  },
  },
  {
@@ -508,7 +508,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- 'Exacto — esa sensación de lo-veo-lo-quiero-lo-compro es una compra impulsiva, y la regla de las 24 horas es el antídoto: espera un día antes de comprar un deseo. Jugada extra: pregúntate si te va a importar dentro de una semana. Si no, déjalo pasar.',
+ 'Esa sensación de lo-veo-lo-quiero-lo-compro es una compra impulsiva, y la regla de las 24 horas es el antídoto: espera un día antes de comprar un deseo. Jugada extra: pregúntate si te va a importar dentro de una semana. Si no, déjalo pasar.',
  },
  },
  {
@@ -721,7 +721,7 @@ const lesson: Lesson = {
  options: ['$100', '$60', '$40', '$20'],
  answerIndex: 2,
  explanation:
- '没错！50/30/20 法则把 20% 拨给储蓄——而 $200 的 20% 就是 $40。其余的分配是：$100（50%）用于需要，$60（30%）用于想要。别忘了，你可以调整这些百分比来适应你的情况。',
+ '50/30/20 法则把 20% 拨给储蓄——而 $200 的 20% 就是 $40。其余的分配是：$100（50%）用于需要，$60（30%）用于想要。别忘了，你可以调整这些百分比来适应你的情况。',
  },
  },
  {
@@ -815,7 +815,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '没错——那种一看到就想要、就想买的感觉是冲动购物，而 24 小时法则就是解药：买想要的东西前先等一天。加分动作：问问自己一周之后还会不会在乎它。如果不会，就别买。',
+ '那种一看到就想要、就想买的感觉是冲动购物，而 24 小时法则就是解药：买想要的东西前先等一天。加分动作：问问自己一周之后还会不会在乎它。如果不会，就别买。',
  },
  },
  {

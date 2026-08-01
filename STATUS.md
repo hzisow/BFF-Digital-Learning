@@ -208,6 +208,49 @@ stops it writing a nonsense `-1`), and an unauthenticated caller cannot rename o
 remove — `mentor_owns_student` returns false and every function raises
 `not_authorized`.
 
+### Typography: Fraunces + Public Sans, and why it changed
+The pairing was Bricolage Grotesque + Inter. A reviewer looking at the live site
+said, unprompted, that "the font looks really AI" — which is a fair read:
+Inter body copy under a trendy geometric display is the house style of generated
+sites, and Bricolage in particular has become shorthand for it.
+
+Now **Fraunces** (display) + **Public Sans** (text):
+- Fraunces is a variable old-style serif with actual drawing in it. At headline
+  sizes it reads as a decision somebody made, which is the whole point.
+- It also supplies the italic the design was already reaching for. The editorial
+  emphasis word (`h1 em`, `.lz em`) had been falling back to **Georgia** — a
+  system font standing in for a missing one, which is its own kind of tell.
+- Public Sans is the US Web Design System face: as neutral as Inter for long
+  reading, without being Inter.
+
+Three declarations control all of it — `src/index.css` (`@import`s),
+`tailwind.config.js` (`fontFamily.display` / `.body`), and `src/styles/lesson.css`
+(`--lz-display` / `--lz-body`). The lesson canvas keeps its own copies on purpose;
+it is a self-contained world. Swapping the pair again means editing those three.
+
+Measured cost, not estimated: **107KB of Latin on the landing page, against 90KB
+for the old pair.** The entire 17KB difference is the italic file, fetched
+because the hero headline contains an `<em>`. All three faces are
+`font-display: swap`, so none of it blocks first paint. Dropping
+`fraunces/wght-italic.css` recovers 46KB and sends `em` back to Georgia if that
+trade ever stops being worth it.
+
+Note that `font-display` now means *serif* everywhere it is applied — including
+buttons, nav and small caps chips, which were checked on desktop and mobile and
+hold up. If a future change wants sans UI chrome, add a third `ui` token rather
+than reaching for `font-body` case by case.
+
+### One chance per question
+Lesson checkpoints used to allow a second guess before revealing the answer. Two
+problems: it turned a comprehension check into a game of elimination, and it
+disagreed with the final quiz and the video checkpoints, which have always locked
+on the first pick. All three now behave the same way — one pick, immediate
+reveal, explanation shown.
+
+This removed `AnswerState.wrongPicks` entirely. Positions saved to localStorage
+before the change still carry the field; `lessonPosition.ts` reads through a
+cast, so the extra key is ignored and an old saved position still resumes.
+
 ### The course path is a mastery gate at 85%
 `src/lib/mastery.ts` is the single definition of "cleared a lesson":
 `lessonPassed(p)` is `status === 'completed' && score >= PASS_SCORE`, where
@@ -390,8 +433,10 @@ its own focused chrome, styled by `src/styles/lesson.css` (all classes prefixed
 - **Micro-interactions** app-wide, built on shared motion tokens
 - **Accessibility**: WCAG 2.1 AA pass, focus rings, `prefers-reduced-motion`
   honored (transitions collapse to 0.001ms), screen-reader announcements
-- **Self-hosted fonts** — Bricolage Grotesque + Inter bundled via
+- **Self-hosted fonts** — Fraunces + Public Sans bundled via
   `@fontsource-variable`; zero requests to Google Fonts, verified in the browser
+- **"How far am I?" meter** in the lesson action bar — step count, remaining
+  minutes and one tick per step, on screen at every step on desktop and phone
 - **Code-split routes** — first load went from a single 1,546KB chunk to a
   ~266KB critical path; 26 routes verified rendering, no console errors
 - **Flaky-network resilience** — connection bar, per-feature offline states,
@@ -457,6 +502,38 @@ one was set at 2:30 on a video that ends at 2:11 — it would have surfaced as a
 end-of-video pile-up via the catch-up path in `VideoCheckpoint` rather than a
 mid-video pause. `at:` means "pause once playback reaches this second"
 (`t >= q.at`), so each one now sits just past the moment its answer is stated.
+
+#### Adding the rest of the videos later
+More recordings are expected over the coming weeks, so this is a **content edit,
+not a code change** — nothing in the player needs touching, and videos can land
+one at a time. Four core lessons are still without one: `earning-income`,
+`financial-decision-making`, `financial-planning`, `consumer-protection` (plus
+every elective).
+
+For each new video, in `src/content/lessons/<slug>.ts`:
+
+1. Upload to YouTube. The ID is the part after `watch?v=` — it works whether or
+   not the video sits in your own account, and unlisted is fine.
+2. Add a `video` section wherever it belongs in `sections`:
+   ```ts
+   { type: 'video', heading: '…', body: '…',
+     videoId: 'AbqJUXeviI0', source: 'BFF Classroom',
+     questions: [{ at: 38, question: '…', options: [...], answerIndex: 1,
+                   explanation: '…' }] }
+   ```
+3. **Repeat it in all three localizations in that file.** `videoId` and every
+   `at:` appear three times (en/es/zh); changing one and not the others is the
+   single easiest mistake to make here.
+4. `at:` is seconds, and means "pause once playback reaches this second"
+   (`t >= at`). Set each one a beat *after* the answer is said, not on it — a
+   checkpoint past the end of the video does not vanish, it piles up at the end
+   via the catch-up path in `VideoCheckpoint`.
+5. Paste the transcript into a session and the questions plus timings can be
+   drafted from it, which is how the existing eight were written.
+
+Lessons with no video simply have no `video` section — the player renders
+whatever sections exist, so a half-finished set of recordings is a valid state
+and ships fine.
 
 ### Not started, discussed
 - **Self-hosted video** (`src` alongside `videoId`) — designed, not built. Would
@@ -708,7 +785,8 @@ are wondering *why* something is the way it is.
 
 | Commit | What changed |
 |---|---|
-| _(most recent)_ | 85% mastery gate — a lesson only unlocks the next one once its quiz is passed |
+| _(most recent)_ | Reviewer feedback: new typeface pair, a progress meter, one chance per question |
+| `bd3de27` | 85% mastery gate — a lesson only unlocks the next one once its quiz is passed |
 | `0dc05e2` | Per-question analytics, roster rename/remove/merge, due dates that read as deadlines |
 | `980f44b` | Six more video checkpoints so the untested half of each recording is covered |
 | `f9f2e94` | Matched every video checkpoint to what is actually said, and when |

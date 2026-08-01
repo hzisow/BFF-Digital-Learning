@@ -69,7 +69,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 0,
  explanation:
- 'Nice work! Short-term goals happen within 1 year, and 3 months definitely qualifies. The car is medium-term (1 to 5 years), and college tuition and a far-off emergency fund are long-term goals.',
+ 'Short-term goals happen within 1 year, and 3 months definitely qualifies. The car is medium-term (1 to 5 years), and college tuition and a far-off emergency fund are long-term goals.',
  },
  },
  {
@@ -104,7 +104,7 @@ const lesson: Lesson = {
  options: ['$100', '$150', '$200', '$600'],
  answerIndex: 2,
  explanation:
- 'Exactly right! $1,200 divided by 6 months is $200 per month. Working backwards turns a big scary number into a monthly amount you can actually build into your budget.',
+ '$1,200 divided by 6 months is $200 per month. Working backwards turns a big scary number into a monthly amount you can actually build into your budget.',
  },
  },
  {
@@ -148,7 +148,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- 'You got it! The debt snowball lines up your debts from smallest to largest. You make minimum payments on everything else and attack the smallest first. Each payoff is a quick win that keeps you motivated to roll on to the next one.',
+ 'The debt snowball lines up your debts from smallest to largest. You make minimum payments on everything else and attack the smallest first. Each payoff is a quick win that keeps you motivated to roll on to the next one.',
  },
  },
  {
@@ -169,7 +169,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- 'Correct! "Save $500 for a laptop in 4 months" is Specific, Measurable, Attainable, Relevant, and Timely. The other options are vague wishes with no clear target or timeline.',
+ '"Save $500 for a laptop in 4 months" is Specific, Measurable, Attainable, Relevant, and Timely. The other options are vague wishes with no clear target or timeline.',
  },
  {
  question: 'What does the "T" in SMART stand for?',
@@ -183,7 +183,7 @@ const lesson: Lesson = {
  options: ['Short-term', 'Medium-term', 'Long-term', 'Emergency'],
  answerIndex: 1,
  explanation:
- 'Right! Medium-term goals take 1 to 5 years, so a car in 3 years fits perfectly. Short-term goals happen within a year, and long-term goals take 5 or more years.',
+ 'Medium-term goals take 1 to 5 years, so a car in 3 years fits perfectly. Short-term goals happen within a year, and long-term goals take 5 or more years.',
  },
  {
  question:
@@ -191,7 +191,7 @@ const lesson: Lesson = {
  options: ['$400, since you can borrow the rest', 'Exactly $800', '$900 or more', '$100'],
  answerIndex: 2,
  explanation:
- 'Yes! Always add a little extra for hidden costs. If you think you need $800, aim for $900 or more. Milestones almost always come with surprise expenses, and the buffer keeps them from wrecking your plan.',
+ 'Always add a little extra for hidden costs. If you think you need $800, aim for $900 or more. Milestones almost always come with surprise expenses, and the buffer keeps them from wrecking your plan.',
  },
  {
  question: 'What is Baby Step 1 in Dave Ramsey’s plan?',
@@ -203,7 +203,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 3,
  explanation:
- 'Correct! The very first step is a $1,000 starter emergency fund. It is meant to keep you out of bad-debt situations when life throws you a flat tire or a shattered window.',
+ 'The very first step is a $1,000 starter emergency fund. It is meant to keep you out of bad-debt situations when life throws you a flat tire or a shattered window.',
  },
  {
  question:
@@ -224,7 +224,7 @@ const lesson: Lesson = {
  options: ['5%', '50%', '15%', '30%'],
  answerIndex: 2,
  explanation:
- 'Correct! Baby Step 4 says to invest roughly 15% of your household income into retirement funds. Being debt free first is the key that lets you do this with no stress.',
+ 'Baby Step 4 says to invest roughly 15% of your household income into retirement funds. Being debt free first is the key that lets you do this with no stress.',
  },
  {
  question: 'What is the ultimate outcome of completing all seven Baby Steps?',
@@ -236,7 +236,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- 'Exactly! Baby Step 7 is to build and give generously. Once you are fully debt free, you have the freedom to help others, start financial futures for your descendants, and make the world better through your hard work.',
+ 'Baby Step 7 is to build and give generously. Once you are fully debt free, you have the freedom to help others, start financial futures for your descendants, and make the world better through your hard work.',
  },
  ],
  es: {
@@ -304,7 +304,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 0,
  explanation:
- '¡Bien hecho! Las metas de corto plazo ocurren en menos de 1 año, y 3 meses definitivamente califica. El carro es de mediano plazo (1 a 5 años), y la colegiatura universitaria y un fondo de emergencia lejano son metas de largo plazo.',
+ 'Las metas de corto plazo ocurren en menos de 1 año, y 3 meses definitivamente califica. El carro es de mediano plazo (1 a 5 años), y la colegiatura universitaria y un fondo de emergencia lejano son metas de largo plazo.',
  },
  },
  {
@@ -406,7 +406,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '¡Correcto! "Ahorrar $500 para una laptop en 4 meses" es específica, medible, alcanzable, relevante y con plazo. Las otras opciones son deseos vagos sin un objetivo ni un plazo claros.',
+ '"Ahorrar $500 para una laptop en 4 meses" es específica, medible, alcanzable, relevante y con plazo. Las otras opciones son deseos vagos sin un objetivo ni un plazo claros.',
  },
  {
  question: '¿Qué significa la "T" de SMART?',
@@ -431,7 +431,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '¡Así es! Las metas de mediano plazo toman de 1 a 5 años, así que un carro en 3 años encaja perfecto. Las metas de corto plazo ocurren en menos de un año, y las de largo plazo toman 5 años o más.',
+ 'Las metas de mediano plazo toman de 1 a 5 años, así que un carro en 3 años encaja perfecto. Las metas de corto plazo ocurren en menos de un año, y las de largo plazo toman 5 años o más.',
  },
  {
  question:
@@ -444,7 +444,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- '¡Sí! Siempre agrega un poco extra para los costos ocultos. Si crees que necesitas $800, apunta a $900 o más. Los hitos casi siempre traen gastos sorpresa, y el colchón evita que arruinen tu plan.',
+ 'Siempre agrega un poco extra para los costos ocultos. Si crees que necesitas $800, apunta a $900 o más. Los hitos casi siempre traen gastos sorpresa, y el colchón evita que arruinen tu plan.',
  },
  {
  question: '¿Cuál es el Baby Step 1 en el plan de Dave Ramsey?',
@@ -456,7 +456,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 3,
  explanation:
- '¡Correcto! El primer paso es un fondo de emergencia inicial de $1,000. Su propósito es mantenerte fuera de situaciones de deuda mala cuando la vida te lanza una llanta ponchada o una ventana rota.',
+ 'El primer paso es un fondo de emergencia inicial de $1,000. Su propósito es mantenerte fuera de situaciones de deuda mala cuando la vida te lanza una llanta ponchada o una ventana rota.',
  },
  {
  question:
@@ -469,7 +469,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 0,
  explanation:
- '¡Eso es! El Baby Step 3 convierte tu fondo inicial en 3 a 6 meses de gastos y cuentas, manteniéndote seguro y financieramente estable en la mayoría de las situaciones.',
+ 'El Baby Step 3 convierte tu fondo inicial en 3 a 6 meses de gastos y cuentas, manteniéndote seguro y financieramente estable en la mayoría de las situaciones.',
  },
  {
  question:
@@ -477,7 +477,7 @@ const lesson: Lesson = {
  options: ['5%', '50%', '15%', '30%'],
  answerIndex: 2,
  explanation:
- '¡Correcto! El Baby Step 4 dice invertir aproximadamente el 15% del ingreso de tu hogar en fondos de jubilación. Estar primero libre de deudas es la clave que te permite hacerlo sin estrés.',
+ 'El Baby Step 4 dice invertir aproximadamente el 15% del ingreso de tu hogar en fondos de jubilación. Estar primero libre de deudas es la clave que te permite hacerlo sin estrés.',
  },
  {
  question:
@@ -490,7 +490,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '¡Exacto! El Baby Step 7 es construir riqueza y dar con generosidad. Una vez totalmente libre de deudas, tienes la libertad de ayudar a otros, iniciar futuros financieros para tus descendientes y hacer del mundo un lugar mejor con tu esfuerzo.',
+ 'El Baby Step 7 es construir riqueza y dar con generosidad. Una vez totalmente libre de deudas, tienes la libertad de ayudar a otros, iniciar futuros financieros para tus descendientes y hacer del mundo un lugar mejor con tu esfuerzo.',
  },
  ],
  },
@@ -557,7 +557,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 0,
  explanation:
- '做得好！短期目标在 1 年以内实现，3 个月绝对符合。那辆车是中期目标（1 到 5 年），而大学学费和遥远的应急基金则是长期目标。',
+ '短期目标在 1 年以内实现，3 个月绝对符合。那辆车是中期目标（1 到 5 年），而大学学费和遥远的应急基金则是长期目标。',
  },
  },
  {
@@ -592,7 +592,7 @@ const lesson: Lesson = {
  options: ['$100', '$150', '$200', '$600'],
  answerIndex: 2,
  explanation:
- '完全正确！$1,200 除以 6 个月就是每月 $200。倒推计算把一个又大又吓人的数字，变成了一个你真的能纳入预算的月度金额。',
+ '$1,200 除以 6 个月就是每月 $200。倒推计算把一个又大又吓人的数字，变成了一个你真的能纳入预算的月度金额。',
  },
  },
  {
@@ -636,7 +636,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '答对了！债务滚雪球法把你的债务从最小到最大排列。你对其余所有债务只还最低还款额，先集中火力攻克最小的那笔。每还清一笔都是一次快速的胜利，让你有动力继续推进到下一笔。',
+ '债务滚雪球法把你的债务从最小到最大排列。你对其余所有债务只还最低还款额，先集中火力攻克最小的那笔。每还清一笔都是一次快速的胜利，让你有动力继续推进到下一笔。',
  },
  },
  {
@@ -657,7 +657,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '正确！"4 个月内存 $500 买一台笔记本电脑"是具体的、可衡量的、可实现的、相关的，而且有时限。其他选项都是模糊的愿望，没有清晰的目标或时间表。',
+ '"4 个月内存 $500 买一台笔记本电脑"是具体的、可衡量的、可实现的、相关的，而且有时限。其他选项都是模糊的愿望，没有清晰的目标或时间表。',
  },
  {
  question: 'SMART 中的"T"代表什么？',
@@ -671,7 +671,7 @@ const lesson: Lesson = {
  options: ['短期', '中期', '长期', '应急'],
  answerIndex: 1,
  explanation:
- '对了！中期目标需要 1 到 5 年，所以 3 年后买车正好符合。短期目标在一年以内实现，而长期目标需要 5 年或更久。',
+ '中期目标需要 1 到 5 年，所以 3 年后买车正好符合。短期目标在一年以内实现，而长期目标需要 5 年或更久。',
  },
  {
  question:
@@ -679,7 +679,7 @@ const lesson: Lesson = {
  options: ['$400，因为剩下的可以借', '正好 $800', '$900 或更多', '$100'],
  answerIndex: 2,
  explanation:
- '没错！总是为隐藏成本多留一点。如果你觉得需要 $800，那就争取 $900 或更多。里程碑几乎总会伴随着意外开销，而缓冲能防止它们毁掉你的计划。',
+ '总是为隐藏成本多留一点。如果你觉得需要 $800，那就争取 $900 或更多。里程碑几乎总会伴随着意外开销，而缓冲能防止它们毁掉你的计划。',
  },
  {
  question: '在 Dave Ramsey 的计划中，Baby Step 1 是什么？',
@@ -691,7 +691,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 3,
  explanation:
- '正确！最开始的一步是 $1,000 的初始应急基金。它的作用是在生活给你一个爆胎或碎车窗时，让你远离糟糕的债务处境。',
+ '最开始的一步是 $1,000 的初始应急基金。它的作用是在生活给你一个爆胎或碎车窗时，让你远离糟糕的债务处境。',
  },
  {
  question:
@@ -712,7 +712,7 @@ const lesson: Lesson = {
  options: ['5%', '50%', '15%', '30%'],
  answerIndex: 2,
  explanation:
- '正确！Baby Step 4 说要把家庭收入的大约 15% 投资于退休基金。先做到无债一身轻，是让你能够毫无压力地做到这一点的关键。',
+ 'Baby Step 4 说要把家庭收入的大约 15% 投资于退休基金。先做到无债一身轻，是让你能够毫无压力地做到这一点的关键。',
  },
  {
  question: '完成全部七个 Baby Steps 的终极成果是什么？',
@@ -724,7 +724,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '完全正确！Baby Step 7 就是积累财富并慷慨给予。一旦你彻底无债一身轻，你就有了自由去帮助他人、为子孙后代开启财务未来，并通过自己的努力让世界变得更美好。',
+ 'Baby Step 7 就是积累财富并慷慨给予。一旦你彻底无债一身轻，你就有了自由去帮助他人、为子孙后代开启财务未来，并通过自己的努力让世界变得更美好。',
  },
  ],
  },

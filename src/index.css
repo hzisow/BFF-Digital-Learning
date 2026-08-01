@@ -5,8 +5,22 @@
    dependency. `wght` (weight axis only, no optical sizing) keeps the files
    small; each subset carries a unicode-range, so a browser downloads only the
    ranges the page actually uses (~87KB for Latin). */
-@import '@fontsource-variable/bricolage-grotesque/wght.css';
-@import '@fontsource-variable/inter/wght.css';
+/* Fraunces (display) + Public Sans (text). The previous pairing was Bricolage
+   Grotesque + Inter, which is the default look of a generated site — reviewers
+   said so unprompted. A serif with real drawing in it, set against a civic
+   grotesque, reads as a decision somebody made. Fraunces also supplies the
+   italic the design was already reaching for, so the editorial emphasis word is
+   no longer falling back to Georgia.
+
+   Measured cost, not estimated: 107KB of Latin on the landing page against
+   90KB for the old pair. The whole 17KB is the italic file, which the browser
+   fetches because the hero headline contains an <em>. All three are
+   `font-display: swap`, so none of it blocks first paint. If that trade ever
+   stops being worth it, dropping `wght-italic.css` and letting `em` fall back
+   to Georgia recovers 46KB and nothing else changes. */
+@import '@fontsource-variable/fraunces/wght.css';
+@import '@fontsource-variable/fraunces/wght-italic.css';
+@import '@fontsource-variable/public-sans/wght.css';
 
 @tailwind base;
 @tailwind components;
@@ -33,12 +47,13 @@
   h1, h2, h3, h4 {
     @apply font-display tracking-tightish;
   }
-  /* Serif-italic emphasis word inside display headings — an editorial signature. */
+  /* Italic emphasis word inside display headings — an editorial signature. Now
+     the display face's own italic rather than a Georgia substitute, so the
+     emphasis reads as the same voice leaning in instead of a different font. */
   h1 em, h2 em, h3 em, .display em {
-    font-family: Georgia, "Times New Roman", serif;
     font-style: italic;
     font-weight: 500;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
     color: #0077b5;
   }
 

@@ -122,7 +122,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 0,
  explanation:
- 'You got it! FICA is 6.2% for Social Security ($12.40) plus 1.45% for Medicare ($2.90), which totals 7.65% — about $15.30 on a $200 check. And no, being a teen does not make you exempt: if you earn wages, you pay FICA.',
+ 'FICA is 6.2% for Social Security ($12.40) plus 1.45% for Medicare ($2.90), which totals 7.65% — about $15.30 on a $200 check. And no, being a teen does not make you exempt: if you earn wages, you pay FICA.',
  },
  },
  {
@@ -525,7 +525,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '答对了！税后工资是唯一真正进到她银行账户的数字，所以它是唯一她能花的数字。那 $68 的差额进了税款和其他扣款——用税前工资做预算，正是人们不小心超支的原因。',
+ '税后工资是唯一真正进到她银行账户的数字，所以它是唯一她能花的数字。那 $68 的差额进了税款和其他扣款——用税前工资做预算，正是人们不小心超支的原因。',
  },
  },
  {
@@ -565,7 +565,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 0,
  explanation:
- '答对了！FICA 是社会保障的 6.2%（$12.40）加上医疗保险的 1.45%（$2.90），合计 7.65%——在一张 $200 的支票上大约是 $15.30。而且不，作为青少年并不能让你免缴：只要你赚工资，你就得缴 FICA。',
+ 'FICA 是社会保障的 6.2%（$12.40）加上医疗保险的 1.45%（$2.90），合计 7.65%——在一张 $200 的支票上大约是 $15.30。而且不，作为青少年并不能让你免缴：只要你赚工资，你就得缴 FICA。',
  },
  },
  {

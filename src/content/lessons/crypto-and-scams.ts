@@ -89,7 +89,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- "Exactly. Volatility is the dealbreaker: money she NEEDS on a deadline cannot ride something that can crash 20-50% in weeks — and no, coins do not always come back. Savings and speculation are different sports, and her car fund belongs in savings.",
+ "Volatility is the dealbreaker: money she NEEDS on a deadline cannot ride something that can crash 20-50% in weeks — and no, coins do not always come back. Savings and speculation are different sports, and her car fund belongs in savings.",
  },
  },
  {
@@ -321,7 +321,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- 'Exacto. La volatilidad es el problema decisivo: el dinero que NECESITA para una fecha límite no puede montarse en algo que puede desplomarse 20-50% en semanas, y no, las monedas no siempre regresan. Ahorrar y especular son deportes distintos, y su fondo para el auto pertenece a los ahorros.',
+ 'La volatilidad es el problema decisivo: el dinero que NECESITA para una fecha límite no puede montarse en algo que puede desplomarse 20-50% en semanas, y no, las monedas no siempre regresan. Ahorrar y especular son deportes distintos, y su fondo para el auto pertenece a los ahorros.',
  },
  },
  {
@@ -554,7 +554,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '没错。波动性就是那个致命伤：她有截止期限、必须要用的钱，不能押在一个几周内就可能暴跌20-50%的东西上——而且不，币并不总会回来。储蓄和投机是两项不同的运动，她的购车基金属于储蓄。',
+ '波动性就是那个致命伤：她有截止期限、必须要用的钱，不能押在一个几周内就可能暴跌20-50%的东西上——而且不，币并不总会回来。储蓄和投机是两项不同的运动，她的购车基金属于储蓄。',
  },
  },
  {

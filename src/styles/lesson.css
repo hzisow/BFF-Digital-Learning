@@ -20,8 +20,8 @@
   --lz-chamfer: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
   /* Font stacks live in variables so the self-hosted "… Variable" family names
      are declared in exactly one place. */
-  --lz-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", system-ui, sans-serif;
-  --lz-body: "Inter Variable", Inter, system-ui, sans-serif;
+  --lz-display: "Fraunces Variable", Fraunces, Georgia, serif;
+  --lz-body: "Public Sans Variable", "Public Sans", system-ui, sans-serif;
 
   min-height: 100dvh;
   display: flex;
@@ -31,12 +31,12 @@
   font-family: var(--lz-body);
 }
 
-/* Emphasis word inside display headings — a serif italic, like the reference. */
+/* Emphasis word inside display headings — the display face's own italic. */
 .lz em {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--lz-display);
   font-style: italic;
   font-weight: 500;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   color: var(--lz-blue);
 }
 .lz-hero em { color: var(--lz-blue-bright); }
@@ -314,7 +314,6 @@
 .lz-feedback.ok strong { color: #175f36; }
 .lz-feedback.no strong { color: #8a5a12; }
 .lz-feedback p { margin: 8px 0 0; font-size: 14px; line-height: 1.6; color: #3a4450; }
-.lz-retry-note { margin-top: 16px; display: inline-flex; align-items: center; gap: 8px; background: #fdf4e3; border: 1px solid #f0d19a; color: #8a5a12; padding: 10px 14px; font-size: 13px; font-weight: 700; }
 
 /* ---- Fixed bottom action bar (consistent across every step) ---- */
 .lz-actionbar {
@@ -338,15 +337,60 @@
 .lz-step-label { font-size: 10px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--lz-muted); }
 .lz-step-label b { color: var(--lz-ink); }
 
+/* ---- "How far am I?" meter, centred in the action bar ---- */
+/* Holds the Back button's place on step 1 so the meter stays centred instead of
+   sliding sideways the moment Back appears. */
+.lz-actionbar-spacer { flex: 0 0 auto; width: 92px; }
+.lz-meter {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.lz-meter-label {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--lz-muted);
+  white-space: nowrap;
+}
+.lz-meter-label b { color: var(--lz-ink); font-size: 12px; }
+.lz-meter-of { opacity: 0.75; }
+.lz-meter-left::before { content: "·"; margin: 0 7px; opacity: 0.5; }
+.lz-meter-left { color: var(--lz-blue); }
+/* Segmented rather than continuous: a student can count the ticks that are
+   left, which is a more concrete answer than a percentage. */
+.lz-meter-track { display: flex; gap: 2px; height: 5px; }
+.lz-meter-tick {
+  flex: 1 1 0;
+  min-width: 2px;
+  background: var(--lz-paper-deep);
+  transition: background var(--dur-hover, 160ms) var(--ease-out, ease-out);
+}
+.lz-meter-tick.is-done { background: var(--lz-blue); }
+/* The current step reads brighter, so "where am I" and "how much is left" are
+   two different signals rather than one blended bar. */
+.lz-meter-tick.is-now { background: var(--lz-blue-bright); }
+
 /* Arrow-key hint. A shortcut nobody knows about is not a feature, so it is
-   stated once, quietly, next to the button it replaces. Hidden wherever there
-   is no keyboard to press — on a phone it would be pure noise. */
+   stated once, quietly, in the meter's label row. Hidden wherever there is no
+   keyboard to press — on a phone it would be pure noise. */
 .lz-kbd-hint {
   display: none;
   align-items: center;
   gap: 5px;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
   color: var(--lz-muted);
   white-space: nowrap;
 }
@@ -424,6 +468,13 @@
   .lz-panel, .lz-scenario { padding: 24px 22px; }
   .lz-body { font-size: 16px; }
   .lz-topbar-unit { display: none; }
+  /* Phone: the meter still fits, but Back gives up its word and the reserved
+     slot shrinks so the Continue button keeps a comfortable tap target. */
+  .lz-actionbar-inner { gap: 10px; padding: 12px 14px; }
+  .lz-actionbar-spacer { width: 40px; }
+  .lz-btn--compact span { display: none; }
+  .lz-btn--compact { padding-left: 12px; padding-right: 12px; }
+  .lz-meter-label { font-size: 9px; letter-spacing: 0.1em; }
 }
 
 /* Respect reduced motion (global rule also applies, this is belt-and-braces) */

@@ -60,7 +60,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- 'Right! Installment credit gives you a lump sum that you repay in fixed installments by a certain date, like car loans and mortgages. Credit cards are revolving credit, and debit cards are not credit at all since they pull straight from your checking account.',
+ 'Installment credit gives you a lump sum that you repay in fixed installments by a certain date, like car loans and mortgages. Credit cards are revolving credit, and debit cards are not credit at all since they pull straight from your checking account.',
  },
  },
  {
@@ -94,7 +94,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- 'Yes! On-time payments are the biggest factor (35%) and keeping utilization low, like using only 20% of your limit, helps the second biggest factor (30%). Maxing out cards and opening five new cards in a week both hurt your score. Nice work!',
+ 'On-time payments are the biggest factor (35%) and keeping utilization low, like using only 20% of your limit, helps the second biggest factor (30%). Maxing out cards and opening five new cards in a week both hurt your score.',
  },
  },
  {
@@ -221,7 +221,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 0,
  explanation:
- 'Exactly. Minimum payments barely dent the balance, so that 22.99% APR keeps charging interest on everything left over. Paying in full every month is what turns a credit card into an essentially free loan instead of an expensive one.',
+ 'Minimum payments barely dent the balance, so that 22.99% APR keeps charging interest on everything left over. Paying in full every month is what turns a credit card into an essentially free loan instead of an expensive one.',
  },
  },
  {
@@ -374,7 +374,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- '¡Correcto! El crédito en cuotas te da una suma de dinero que devuelves en cuotas fijas antes de una fecha determinada, como los préstamos de auto y las hipotecas. Las tarjetas de crédito son crédito revolvente, y las tarjetas de débito ni siquiera son crédito, porque sacan el dinero directo de tu cuenta de cheques.',
+ 'El crédito en cuotas te da una suma de dinero que devuelves en cuotas fijas antes de una fecha determinada, como los préstamos de auto y las hipotecas. Las tarjetas de crédito son crédito revolvente, y las tarjetas de débito ni siquiera son crédito, porque sacan el dinero directo de tu cuenta de cheques.',
  },
  },
  {
@@ -408,7 +408,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '¡Sí! Los pagos a tiempo son el factor más grande (35%), y mantener baja la utilización, como usar solo el 20% de tu límite, ayuda al segundo factor más grande (30%). Llevar las tarjetas al límite y abrir cinco tarjetas nuevas en una semana dañan tu puntaje. ¡Buen trabajo!',
+ 'Los pagos a tiempo son el factor más grande (35%), y mantener baja la utilización, como usar solo el 20% de tu límite, ayuda al segundo factor más grande (30%). Llevar las tarjetas al límite y abrir cinco tarjetas nuevas en una semana dañan tu puntaje.',
  },
  },
  {
@@ -536,7 +536,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 0,
  explanation:
- 'Exacto. Los pagos mínimos apenas rascan el saldo, así que ese APR del 22.99% sigue cobrando interés sobre todo lo que queda. Pagar el total cada mes es lo que convierte una tarjeta de crédito en un préstamo esencialmente gratis en lugar de uno caro.',
+ 'Los pagos mínimos apenas rascan el saldo, así que ese APR del 22.99% sigue cobrando interés sobre todo lo que queda. Pagar el total cada mes es lo que convierte una tarjeta de crédito en un préstamo esencialmente gratis en lugar de uno caro.',
  },
  },
  {
@@ -694,7 +694,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- '答对了！分期信用给你一笔钱，你要在某个日期前按固定金额分期偿还，比如车贷和房贷。信用卡属于循环信用，而借记卡根本不算信用，因为它直接从你的支票账户扣钱。',
+ '分期信用给你一笔钱，你要在某个日期前按固定金额分期偿还，比如车贷和房贷。信用卡属于循环信用，而借记卡根本不算信用，因为它直接从你的支票账户扣钱。',
  },
  },
  {
@@ -728,7 +728,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '没错！按时还款是最大的因素（35%），而把使用率保持在低位，比如只用额度的20%，则有助于第二大因素（30%）。刷爆信用卡和一周内开五张新卡都会伤害你的分数。干得漂亮！',
+ '按时还款是最大的因素（35%），而把使用率保持在低位，比如只用额度的20%，则有助于第二大因素（30%）。刷爆信用卡和一周内开五张新卡都会伤害你的分数。',
  },
  },
  {
@@ -855,7 +855,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 0,
  explanation:
- '完全正确。最低还款额几乎撼动不了欠款本金，所以那22.99%的APR会继续对剩下的一切计收利息。每月全额还清，才能把信用卡变成一笔本质上免费的贷款，而不是一笔昂贵的贷款。',
+ '最低还款额几乎撼动不了欠款本金，所以那22.99%的APR会继续对剩下的一切计收利息。每月全额还清，才能把信用卡变成一笔本质上免费的贷款，而不是一笔昂贵的贷款。',
  },
  },
  {

@@ -89,7 +89,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- 'Exactly — sales tax is added at the register when you buy things. Here it was 7%: $80 x 0.07 = $5.60 extra. Payroll tax comes out of paychecks, property tax is for real estate, and income tax is charged on money you earn.',
+ 'Sales tax is added at the register when you buy things. Here it was 7%: $80 x 0.07 = $5.60 extra. Payroll tax comes out of paychecks, property tax is for real estate, and income tax is charged on money you earn.',
  },
  },
  {
@@ -300,7 +300,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- 'Exacto — el impuesto sobre las ventas se suma en la caja cuando compras cosas. Aquí fue 7%: $80 x 0.07 = $5.60 extra. El impuesto sobre la nómina sale de los cheques, el impuesto predial es para los bienes raíces y el impuesto sobre la renta se cobra sobre el dinero que ganas.',
+ 'El impuesto sobre las ventas se suma en la caja cuando compras cosas. Aquí fue 7%: $80 x 0.07 = $5.60 extra. El impuesto sobre la nómina sale de los cheques, el impuesto predial es para los bienes raíces y el impuesto sobre la renta se cobra sobre el dinero que ganas.',
  },
  },
  {
@@ -512,7 +512,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- '没错——销售税在你买东西时于收银台加上。这里是7%：80美元 x 0.07 = 多出5.60美元。工资税从工资里扣，房产税针对房地产，而所得税是对你赚到的钱征收的。',
+ '销售税在你买东西时于收银台加上。这里是7%：80美元 x 0.07 = 多出5.60美元。工资税从工资里扣，房产税针对房地产，而所得税是对你赚到的钱征收的。',
  },
  },
  {

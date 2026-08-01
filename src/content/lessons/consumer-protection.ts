@@ -61,7 +61,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- 'Correct! The FTC is the federal agency that enforces antitrust laws and protects consumers. The BBB is helpful too, but it is an organization for reporting unethical businesses, not a federal agency.',
+ 'The FTC is the federal agency that enforces antitrust laws and protects consumers. The BBB is helpful too, but it is an organization for reporting unethical businesses, not a federal agency.',
  },
  },
  {
@@ -154,7 +154,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- 'Exactly! 2FA adds an extra step, like a code texted to your phone, on top of your password. Even if a scammer steals your password, they still cannot get in. It is one of the easiest security upgrades you can make today.',
+ '2FA adds an extra step, like a code texted to your phone, on top of your password. Even if a scammer steals your password, they still cannot get in. It is one of the easiest security upgrades you can make today.',
  },
  },
  {
@@ -181,7 +181,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- 'Correct! Consumer protection is the whole system of laws, agencies, and tools — like the FTC, CFPB, and BBB — that defends people against scams, fraud, and shady business practices.',
+ 'Consumer protection is the whole system of laws, agencies, and tools — like the FTC, CFPB, and BBB — that defends people against scams, fraud, and shady business practices.',
  },
  {
  question:
@@ -202,7 +202,7 @@ const lesson: Lesson = {
  options: ['Phishing', 'A subscription trap', 'Affinity fraud', 'A ticket resale scam'],
  answerIndex: 0,
  explanation:
- 'You nailed it! Phishing is when emails, texts, or DMs pretend to be from banks, teachers, delivery services, and more to trick you into giving up info. Real companies do not ask for sensitive info this way.',
+ 'Phishing is when emails, texts, or DMs pretend to be from banks, teachers, delivery services, and more to trick you into giving up info. Real companies do not ask for sensitive info this way.',
  },
  {
  question:
@@ -210,7 +210,7 @@ const lesson: Lesson = {
  options: ['A giveaway', 'A phishing text', 'Affinity fraud', 'A subscription trap'],
  answerIndex: 3,
  explanation:
- 'Right! Subscription traps are free trials that auto-renew without clear permission or are extremely hard to cancel. Always check the fine print before entering your card info for a "free" trial.',
+ 'Subscription traps are free trials that auto-renew without clear permission or are extremely hard to cancel. Always check the fine print before entering your card info for a "free" trial.',
  },
  {
  question:
@@ -218,7 +218,7 @@ const lesson: Lesson = {
  options: ['Phishing', 'Affinity fraud', 'A subscription trap', 'Identity theft'],
  answerIndex: 1,
  explanation:
- 'Correct! Affinity fraud is when someone fraudulently claims to be a member of the same ethnic, religious, career, or community group to gain a potential investor’s trust. Trust the math, not just the membership.',
+ 'Affinity fraud is when someone fraudulently claims to be a member of the same ethnic, religious, career, or community group to gain a potential investor’s trust. Trust the math, not just the membership.',
  },
  {
  question: 'Which of these is a red flag that a message might be a scam?',
@@ -230,7 +230,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- 'Yes! Gift card payment requests are a classic scam red flag, along with urgency, "too good to be true" offers, bad grammar, suspicious links, and weird domain extensions like.xyz or.vip. No real company demands gift cards.',
+ 'Gift card payment requests are a classic scam red flag, along with urgency, "too good to be true" offers, bad grammar, suspicious links, and weird domain extensions like.xyz or.vip. No real company demands gift cards.',
  },
  {
  question: 'In the S.H.I.E.L.D. acronym, what does the "L" stand for?',
@@ -242,7 +242,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- 'Correct! L is for Lock your devices: always use a passcode, fingerprint, or face ID on your phone, tablet, and laptop so your info stays safe if a device is lost or stolen.',
+ 'L is for Lock your devices: always use a passcode, fingerprint, or face ID on your phone, tablet, and laptop so your info stays safe if a device is lost or stolen.',
  },
  {
  question: 'Why should you avoid entering card info or passwords on public Wi-Fi?',
@@ -254,7 +254,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- 'Exactly! Public Wi-Fi at places like coffee shops and airports is not secure. Wait until you are on a trusted private network like your home Wi-Fi, or use your phone’s hotspot before entering anything sensitive.',
+ 'Public Wi-Fi at places like coffee shops and airports is not secure. Wait until you are on a trusted private network like your home Wi-Fi, or use your phone’s hotspot before entering anything sensitive.',
  },
  ],
  es: {
@@ -313,7 +313,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '¡Correcto! La FTC es la agencia federal que hace cumplir las leyes antimonopolio y protege a los consumidores. La BBB también ayuda, pero es una organización para reportar negocios poco éticos, no una agencia federal.',
+ 'La FTC es la agencia federal que hace cumplir las leyes antimonopolio y protege a los consumidores. La BBB también ayuda, pero es una organización para reportar negocios poco éticos, no una agencia federal.',
  },
  },
  {
@@ -364,7 +364,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- '¡Buen ojo! Ese mensaje acumula varias señales de alerta: urgencia falsa con cuenta regresiva, un enlace sospechoso y un dominio.xyz raro. Las empresas reales no te presionan así. Si tienes dudas, bórralo y entra tú mismo al sitio web oficial.',
+ 'Ese mensaje acumula varias señales de alerta: urgencia falsa con cuenta regresiva, un enlace sospechoso y un dominio.xyz raro. Las empresas reales no te presionan así. Si tienes dudas, bórralo y entra tú mismo al sitio web oficial.',
  },
  },
  {
@@ -406,7 +406,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '¡Exacto! La 2FA agrega un paso extra, como un código enviado por texto a tu teléfono, además de tu contraseña. Aunque un estafador robe tu contraseña, no puede entrar. Es una de las mejoras de seguridad más fáciles que puedes hacer hoy mismo.',
+ 'La 2FA agrega un paso extra, como un código enviado por texto a tu teléfono, además de tu contraseña. Aunque un estafador robe tu contraseña, no puede entrar. Es una de las mejoras de seguridad más fáciles que puedes hacer hoy mismo.',
  },
  },
  {
@@ -433,7 +433,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '¡Correcto! La protección al consumidor es todo el sistema de leyes, agencias y herramientas, como la FTC, la CFPB y la BBB, que defiende a las personas contra estafas, fraudes y prácticas comerciales turbias.',
+ 'La protección al consumidor es todo el sistema de leyes, agencias y herramientas, como la FTC, la CFPB y la BBB, que defiende a las personas contra estafas, fraudes y prácticas comerciales turbias.',
  },
  {
  question:
@@ -472,7 +472,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 3,
  explanation:
- '¡Así es! Las trampas de suscripción son pruebas gratis que se renuevan automáticamente sin un permiso claro o que son extremadamente difíciles de cancelar. Siempre revisa las letras pequeñas antes de ingresar los datos de tu tarjeta para una prueba "gratis".',
+ 'Las trampas de suscripción son pruebas gratis que se renuevan automáticamente sin un permiso claro o que son extremadamente difíciles de cancelar. Siempre revisa las letras pequeñas antes de ingresar los datos de tu tarjeta para una prueba "gratis".',
  },
  {
  question:
@@ -485,7 +485,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '¡Correcto! El fraude por afinidad es cuando alguien afirma falsamente ser miembro del mismo grupo étnico, religioso, profesional o comunitario para ganarse la confianza de un posible inversionista. Confía en las matemáticas, no solo en la membresía.',
+ 'El fraude por afinidad es cuando alguien afirma falsamente ser miembro del mismo grupo étnico, religioso, profesional o comunitario para ganarse la confianza de un posible inversionista. Confía en las matemáticas, no solo en la membresía.',
  },
  {
  question:
@@ -498,7 +498,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '¡Sí! Pedir pagos con tarjetas de regalo es una señal de alerta clásica de estafa, junto con la urgencia, las ofertas "demasiado buenas para ser verdad", la mala ortografía, los enlaces sospechosos y las extensiones de dominio raras como.xyz o.vip. Ninguna empresa real exige tarjetas de regalo.',
+ 'Pedir pagos con tarjetas de regalo es una señal de alerta clásica de estafa, junto con la urgencia, las ofertas "demasiado buenas para ser verdad", la mala ortografía, los enlaces sospechosos y las extensiones de dominio raras como.xyz o.vip. Ninguna empresa real exige tarjetas de regalo.',
  },
  {
  question: 'En el acrónimo S.H.I.E.L.D., ¿qué significa la "L"?',
@@ -510,7 +510,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- '¡Correcto! La L es de Lock your devices (bloquea tus dispositivos): usa siempre un código, huella digital o reconocimiento facial en tu teléfono, tableta y laptop para que tu información quede a salvo si un dispositivo se pierde o te lo roban.',
+ 'La L es de Lock your devices (bloquea tus dispositivos): usa siempre un código, huella digital o reconocimiento facial en tu teléfono, tableta y laptop para que tu información quede a salvo si un dispositivo se pierde o te lo roban.',
  },
  {
  question:
@@ -523,7 +523,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '¡Exacto! El Wi-Fi público de lugares como cafeterías y aeropuertos no es seguro. Espera a estar en una red privada de confianza, como el Wi-Fi de tu casa, o usa el hotspot de tu teléfono antes de ingresar cualquier dato sensible.',
+ 'El Wi-Fi público de lugares como cafeterías y aeropuertos no es seguro. Espera a estar en una red privada de confianza, como el Wi-Fi de tu casa, o usa el hotspot de tu teléfono antes de ingresar cualquier dato sensible.',
  },
  ],
  },
@@ -578,7 +578,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '正确！FTC 是执行反垄断法并保护消费者的联邦机构。BBB 也很有帮助，但它是一个用来举报不道德企业的组织，而不是联邦机构。',
+ 'FTC 是执行反垄断法并保护消费者的联邦机构。BBB 也很有帮助，但它是一个用来举报不道德企业的组织，而不是联邦机构。',
  },
  },
  {
@@ -671,7 +671,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '完全正确！2FA 在你的密码之上增加了一个额外步骤，比如一条发到你手机的验证码短信。即使骗子偷走了你的密码，他们仍然进不去。这是你今天就能做的最简单的安全升级之一。',
+ '2FA 在你的密码之上增加了一个额外步骤，比如一条发到你手机的验证码短信。即使骗子偷走了你的密码，他们仍然进不去。这是你今天就能做的最简单的安全升级之一。',
  },
  },
  {
@@ -698,7 +698,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '正确！消费者保护是整套法律、机构和工具的体系——比如 FTC、CFPB 和 BBB——用来保护人们免受骗局、欺诈和不正当商业行为的侵害。',
+ '消费者保护是整套法律、机构和工具的体系——比如 FTC、CFPB 和 BBB——用来保护人们免受骗局、欺诈和不正当商业行为的侵害。',
  },
  {
  question: '哪个机构负责监管与消费者相关的金融产品和服务？',
@@ -726,7 +726,7 @@ const lesson: Lesson = {
  options: ['抽奖', '钓鱼短信', '亲和欺诈', '订阅陷阱'],
  answerIndex: 3,
  explanation:
- '对了！订阅陷阱是指未经明确许可就自动续费、或者极难取消的免费试用。在为"免费"试用输入银行卡信息之前，一定要看清小字条款。',
+ '订阅陷阱是指未经明确许可就自动续费、或者极难取消的免费试用。在为"免费"试用输入银行卡信息之前，一定要看清小字条款。',
  },
  {
  question:
@@ -734,7 +734,7 @@ const lesson: Lesson = {
  options: ['网络钓鱼', '亲和欺诈', '订阅陷阱', '身份盗窃'],
  answerIndex: 1,
  explanation:
- '正确！亲和欺诈是指有人谎称自己是同一个族裔、宗教、职业或社区群体的成员，以此骗取潜在投资者的信任。要相信数字，而不只是相信"自己人"的身份。',
+ '亲和欺诈是指有人谎称自己是同一个族裔、宗教、职业或社区群体的成员，以此骗取潜在投资者的信任。要相信数字，而不只是相信"自己人"的身份。',
  },
  {
  question: '以下哪一项是消息可能是骗局的危险信号？',
@@ -746,7 +746,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '没错！要求用礼品卡付款是一个经典的骗局危险信号，此外还有紧迫感、"好得令人难以置信"的优惠、糟糕的语法、可疑链接，以及像.xyz 或.vip 这样奇怪的域名后缀。没有一家真正的公司会索要礼品卡。',
+ '要求用礼品卡付款是一个经典的骗局危险信号，此外还有紧迫感、"好得令人难以置信"的优惠、糟糕的语法、可疑链接，以及像.xyz 或.vip 这样奇怪的域名后缀。没有一家真正的公司会索要礼品卡。',
  },
  {
  question: '在 S.H.I.E.L.D. 这个缩写中，"L"代表什么？',
@@ -758,7 +758,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- '正确！L 代表 Lock your devices（锁定你的设备）：在你的手机、平板和笔记本电脑上始终使用密码、指纹或面容 ID，这样即使设备丢失或被盗，你的信息也能保持安全。',
+ 'L 代表 Lock your devices（锁定你的设备）：在你的手机、平板和笔记本电脑上始终使用密码、指纹或面容 ID，这样即使设备丢失或被盗，你的信息也能保持安全。',
  },
  {
  question: '为什么你应该避免在公共 Wi-Fi 上输入银行卡信息或密码？',
@@ -770,7 +770,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '完全正确！咖啡店和机场等场所的公共 Wi-Fi 并不安全。在输入任何敏感信息之前，等到你连上像你家里 Wi-Fi 那样值得信赖的私人网络，或者用你手机的热点。',
+ '咖啡店和机场等场所的公共 Wi-Fi 并不安全。在输入任何敏感信息之前，等到你连上像你家里 Wi-Fi 那样值得信赖的私人网络，或者用你手机的热点。',
  },
  ],
  },

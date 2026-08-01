@@ -136,7 +136,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- 'Perfect! Only free money lowers your price: $30,000 - $12,000 = $18,000 net price. The work-study is money you would have to earn, and the loan is money you would have to pay back — neither one is a discount.',
+ 'Only free money lowers your price: $30,000 - $12,000 = $18,000 net price. The work-study is money you would have to earn, and the loan is money you would have to pay back — neither one is a discount.',
  },
  },
  {
@@ -371,7 +371,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '¡Perfecto! Solo el dinero gratis reduce tu precio: $30,000 - $12,000 = $18,000 de precio neto. El trabajo-estudio es dinero que tendrías que ganar, y el préstamo es dinero que tendrías que devolver — ninguno de los dos es un descuento.',
+ 'Solo el dinero gratis reduce tu precio: $30,000 - $12,000 = $18,000 de precio neto. El trabajo-estudio es dinero que tendrías que ganar, y el préstamo es dinero que tendrías que devolver — ninguno de los dos es un descuento.',
  },
  },
  {

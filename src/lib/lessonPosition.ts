@@ -14,10 +14,13 @@
 // — we would rather lose a scroll position than show someone a half-finished
 // lesson they never opened on this machine.
 
-/** Mirrors the per-question state the lesson player keeps. */
+/**
+ * Mirrors the per-question state the lesson player keeps. Positions saved
+ * before questions became one-shot also carry a `wrongPicks` array; it is
+ * simply ignored on read, so an old saved position still resumes.
+ */
 export interface StoredAnswer {
   chosen: number | null
-  wrongPicks: number[]
   revealed: boolean
 }
 

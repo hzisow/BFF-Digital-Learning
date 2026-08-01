@@ -50,11 +50,10 @@ function sectionText(section: LessonSection): string {
 
 interface AnswerState {
   chosen: number | null
-  wrongPicks: number[]
   revealed: boolean
 }
 
-const EMPTY_ANSWER: AnswerState = { chosen: null, wrongPicks: [], revealed: false }
+const EMPTY_ANSWER: AnswerState = { chosen: null, revealed: false }
 
 // ---------- Compact chrome pieces ----------
 
@@ -104,7 +103,6 @@ function optionClass(state: AnswerState, answerIndex: number, i: number): string
     if (i === state.chosen) return `${base} is-wrong`
     return `${base} is-dim`
   }
-  if (state.wrongPicks.includes(i)) return `${base} is-wrong`
   return base
 }
 
@@ -163,11 +161,6 @@ function MultipleChoice({
           </button>
         ))}
       </div>
-      {!state.revealed && state.wrongPicks.length === 1 && (
-        <p role="status" className="lz-retry-note">
-          {zh ? '还差一点——再试一次！' : es ? 'Casi — ¡inténtalo una vez más!' : 'Not quite — take one more shot.'}
-        </p>
-      )}
       {state.revealed && (
         <div role="status" className={`lz-feedback ${gotIt ? 'ok' : 'no'}`}>
           <strong>
@@ -364,6 +357,12 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
   // "just started" next to a card saying "you stopped at step 12".
   const shownStep = pendingResume ? pendingResume.step : currentStep
   const percent = totalSteps > 0 ? Math.round((shownStep / totalSteps) * 100) : 100
+  // "How much longer?" is the question students actually ask, and steps are a
+  // poor proxy — a video step and a one-line concept step are not the same
+  // effort. The lesson already carries an author-set duration, so prorate it.
+  const minutesLeft = Math.max(0, Math.round((lesson.durationMin * (100 - percent)) / 100))
+  const esLang = lang === 'es'
+  const zhLang = lang === 'zh'
 
   const section = loc.sections[sectionIndex]
   const quizQuestion = loc.quiz[quizIndex]
@@ -517,6 +516,10 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
+  // One chance per question. Checkpoints used to allow a second guess before
+  // revealing, which made them a game of elimination rather than a check of what
+  // the student actually knew — and it disagreed with the final quiz and the
+  // video checkpoints, which have always locked on the first pick.
   function answerCheckpoint(i: number) {
     if (section.type !== 'checkpoint') return
     const answerIndex = section.checkpoint.answerIndex
@@ -524,11 +527,7 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
     setCheckpointAnswers((prev) => {
       const cur = prev[sectionIndex] ?? EMPTY_ANSWER
       if (cur.revealed) return prev
-      if (i === answerIndex) {
-        return { ...prev, [sectionIndex]: { ...cur, chosen: i, revealed: true } }
-      }
-      const wrongPicks = cur.wrongPicks.includes(i) ? cur.wrongPicks : [...cur.wrongPicks, i]
-      return { ...prev, [sectionIndex]: { chosen: i, wrongPicks, revealed: wrongPicks.length >= 2 } }
+      return { ...prev, [sectionIndex]: { chosen: i, wrongPicks: [], revealed: true } }
     })
   }
 
@@ -889,21 +888,65 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
       <div className="lz-actionbar">
         <div className="lz-actionbar-inner">
           {phase === 'lesson' && sectionIndex > 0 ? (
-            <button type="button" onClick={goBack} className="lz-btn">
-              <ArrowLeft className="h-4 w-4" aria-hidden="true" /> {tr({ en: 'Back', es: 'Atrás', zh: '返回' })}
+            <button type="button" onClick={goBack} className="lz-btn lz-btn--compact">
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+              <span>{tr({ en: 'Back', es: 'Atrás', zh: '返回' })}</span>
             </button>
           ) : (
-            <span className="lz-step-label">
-              {tr({ en: 'Step', es: 'Paso', zh: '第' })} <b>{currentStep}</b> / {totalSteps}
-            </span>
+            <span className="lz-actionbar-spacer" aria-hidden="true" />
           )}
-          {/* Discoverability for the arrow-key shortcut. Hidden on touch, where
-              there is no keyboard and it would just be clutter. */}
-          <span className="lz-kbd-hint" aria-hidden="true">
-            <kbd>←</kbd>
-            <kbd>→</kbd>
-            {tr({ en: 'to move', es: 'para navegar', zh: '切换步骤' })}
-          </span>
+
+          {/* How much is left. A 3px hairline at the top of the page was the only
+              answer to "how far am I?", and nobody reads a hairline — so the
+              count, the remaining minutes and a segmented meter live here, in
+              the one strip that is on screen at every step. */}
+          <div className="lz-meter">
+            <p className="lz-meter-label">
+              <span>
+                {tr({ en: 'Step', es: 'Paso', zh: '第' })} <b>{currentStep}</b>
+                <span className="lz-meter-of"> / {totalSteps}</span>
+                {minutesLeft > 0 && (
+                  <span className="lz-meter-left">
+                    {zhLang
+                      ? `约剩 ${minutesLeft} 分钟`
+                      : esLang
+                        ? `~${minutesLeft} min restantes`
+                        : `~${minutesLeft} min left`}
+                  </span>
+                )}
+              </span>
+              {/* Discoverability for the arrow-key shortcut. Hidden on touch,
+                  where there is no keyboard and it would just be clutter. */}
+              <span className="lz-kbd-hint" aria-hidden="true">
+                <kbd>←</kbd>
+                <kbd>→</kbd>
+                {tr({ en: 'to move', es: 'para navegar', zh: '切换步骤' })}
+              </span>
+            </p>
+            <div
+              className="lz-meter-track"
+              role="progressbar"
+              aria-label={tr({ en: 'Lesson progress', es: 'Progreso de la lección', zh: '课程进度' })}
+              aria-valuenow={percent}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuetext={tr({
+                en: `Step ${currentStep} of ${totalSteps}, ${percent}% done`,
+                es: `Paso ${currentStep} de ${totalSteps}, ${percent}% completado`,
+                zh: `第 ${currentStep} 步，共 ${totalSteps} 步，已完成 ${percent}%`,
+              })}
+            >
+              {/* One tick per step, so the remaining distance is countable at a
+                  glance rather than estimated off a continuous bar. */}
+              {Array.from({ length: totalSteps }, (_, i) => (
+                <span
+                  key={i}
+                  className={`lz-meter-tick${i < currentStep ? ' is-done' : ''}${i === currentStep - 1 ? ' is-now' : ''}`}
+                />
+              ))}
+            </div>
+          </div>
+
           <button type="button" onClick={goNext} disabled={!canContinue} className="lz-btn lz-btn--primary">
             {continueLabel} <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </button>

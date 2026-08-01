@@ -61,7 +61,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- "Exactly right — pay that's based on hours worked is a wage, which is a classic form of earned income. A salary would be a fixed total amount regardless of hours, and commission would depend on how much she sells, not how long she works.",
+ "Pay that's based on hours worked is a wage, which is a classic form of earned income. A salary would be a fixed total amount regardless of hours, and commission would depend on how much she sells, not how long she works.",
  },
  },
  {
@@ -111,7 +111,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 3,
  explanation:
- "You got it! Seniority typically brings higher pay, more PTO, and better shots at promotions — but it actually reduces flexibility. Maria might earn more or find better benefits elsewhere, and leaving means starting her seniority clock over.",
+ "Seniority typically brings higher pay, more PTO, and better shots at promotions — but it actually reduces flexibility. Maria might earn more or find better benefits elsewhere, and leaving means starting her seniority clock over.",
  },
  },
  {
@@ -313,7 +313,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '¡Exacto! El pago basado en horas trabajadas es un salario por hora (wage), una forma clásica de ingreso ganado. Un sueldo fijo sería un monto total sin importar las horas, y una comisión dependería de cuánto vende, no de cuánto tiempo trabaja.',
+ 'El pago basado en horas trabajadas es un salario por hora (wage), una forma clásica de ingreso ganado. Un sueldo fijo sería un monto total sin importar las horas, y una comisión dependería de cuánto vende, no de cuánto tiempo trabaja.',
  },
  },
  {
@@ -568,7 +568,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '完全正确——基于工作小时数的报酬就是工资（wage），这是劳动所得的经典形式。薪水是不管工时多少都固定的总额，而佣金取决于她卖出多少，而不是她工作多久。',
+ '基于工作小时数的报酬就是工资（wage），这是劳动所得的经典形式。薪水是不管工时多少都固定的总额，而佣金取决于她卖出多少，而不是她工作多久。',
  },
  },
  {
@@ -618,7 +618,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 3,
  explanation:
- '答对了！资历通常带来更高的薪酬、更多的 PTO 和更好的晋升机会——但它实际上会降低灵活度。Maria 在别处也许能赚更多或找到更好的福利，而一旦离开，她的资历时钟就得从头开始。',
+ '资历通常带来更高的薪酬、更多的 PTO 和更好的晋升机会——但它实际上会降低灵活度。Maria 在别处也许能赚更多或找到更好的福利，而一旦离开，她的资历时钟就得从头开始。',
  },
  },
  {

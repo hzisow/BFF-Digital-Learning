@@ -97,7 +97,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- "Exactly! After year 1, Joe's balance is $10,500, so year 2's 5% applies to that bigger number, earning him $525 instead of $500. Interest earning interest is the whole magic trick of compounding, and it snowballs the longer you leave it alone.",
+ "After year 1, Joe's balance is $10,500, so year 2's 5% applies to that bigger number, earning him $525 instead of $500. Interest earning interest is the whole magic trick of compounding, and it snowballs the longer you leave it alone.",
  },
  },
  {
@@ -215,7 +215,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 3,
  explanation:
- 'You got it! Mutual funds and ETFs are "baskets" of many stocks, giving you diversification, which spreads your investments across the market and lowers your risk compared to betting on a single company. Fund managers run mutual funds for a fee; ETFs skip the fee and the manager.',
+ 'Mutual funds and ETFs are "baskets" of many stocks, giving you diversification, which spreads your investments across the market and lowers your risk compared to betting on a single company. Fund managers run mutual funds for a fee; ETFs skip the fee and the manager.',
  },
  },
  {
@@ -418,7 +418,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- '¡Exacto! Después del año 1, el saldo de Joe es de $10,500, así que el 5% del año 2 se aplica a ese número más grande, ganándole $525 en lugar de $500. El interés que gana interés es todo el truco de magia del interés compuesto, y crece como bola de nieve mientras más tiempo lo dejes quieto.',
+ 'Después del año 1, el saldo de Joe es de $10,500, así que el 5% del año 2 se aplica a ese número más grande, ganándole $525 en lugar de $500. El interés que gana interés es todo el truco de magia del interés compuesto, y crece como bola de nieve mientras más tiempo lo dejes quieto.',
  },
  },
  {
@@ -740,7 +740,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- '完全正确！第 1 年之后，Joe 的余额是 $10,500，所以第 2 年的 5% 是对这个更大的数字计算的，给他带来 $525 而不是 $500。利息生利息就是复利全部的魔术，而且你放着不动的时间越长，它就滚得越大。',
+ '第 1 年之后，Joe 的余额是 $10,500，所以第 2 年的 5% 是对这个更大的数字计算的，给他带来 $525 而不是 $500。利息生利息就是复利全部的魔术，而且你放着不动的时间越长，它就滚得越大。',
  },
  },
  {
@@ -858,7 +858,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 3,
  explanation:
- '答对了！共同基金和 ETF 是许多股票的「篮子」，给你带来分散化，把你的投资分布到整个市场，相比把宝押在单独一家公司上，降低了你的风险。基金经理收费管理共同基金；ETF 则省去了费用和经理。',
+ '共同基金和 ETF 是许多股票的「篮子」，给你带来分散化，把你的投资分布到整个市场，相比把宝押在单独一家公司上，降低了你的风险。基金经理收费管理共同基金；ETF 则省去了费用和经理。',
  },
  },
  {

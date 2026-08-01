@@ -89,7 +89,7 @@ const lesson: Lesson = {
  options: ['$1,200', '$300', '$900', '$0'],
  answerIndex: 1,
  explanation:
- 'Nice work! The deductible is what you pay before insurance kicks in. You pay $300, and insurance covers the remaining $900.',
+ 'The deductible is what you pay before insurance kicks in. You pay $300, and insurance covers the remaining $900.',
  },
  },
  {
@@ -121,7 +121,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- "Exactly! Since Maya rarely files claims, she can save money with lower monthly premiums and accept a higher deductible. And skipping insurance entirely is risky, because no one can predict the unexpected.",
+ "Since Maya rarely files claims, she can save money with lower monthly premiums and accept a higher deductible. And skipping insurance entirely is risky, because no one can predict the unexpected.",
  },
  },
  {
@@ -204,7 +204,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 3,
  explanation:
- 'You got it! Renters insurance protects tenants in a rented dwelling, covering personal property, liability claims, and extra living expenses when a unit is damaged.',
+ 'Renters insurance protects tenants in a rented dwelling, covering personal property, liability claims, and extra living expenses when a unit is damaged.',
  },
  },
  {
@@ -389,7 +389,7 @@ const lesson: Lesson = {
  options: ['$1,200', '$300', '$900', '$0'],
  answerIndex: 1,
  explanation:
- '¡Bien hecho! El deducible es lo que pagas antes de que el seguro entre en acción. Tú pagas $300 y el seguro cubre los $900 restantes.',
+ 'El deducible es lo que pagas antes de que el seguro entre en acción. Tú pagas $300 y el seguro cubre los $900 restantes.',
  },
  },
  {
@@ -421,7 +421,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- '¡Exacto! Como Maya casi nunca presenta reclamos, puede ahorrar dinero con primas mensuales más bajas y aceptar un deducible más alto. Y quedarse sin seguro por completo es arriesgado, porque nadie puede predecir lo inesperado.',
+ 'Como Maya casi nunca presenta reclamos, puede ahorrar dinero con primas mensuales más bajas y aceptar un deducible más alto. Y quedarse sin seguro por completo es arriesgado, porque nadie puede predecir lo inesperado.',
  },
  },
  {
@@ -722,7 +722,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- '完全正确！既然Maya很少理赔，她就可以用较低的月保费省钱，并接受较高的免赔额。而完全不买保险是有风险的，因为没人能预测意外。',
+ '既然Maya很少理赔，她就可以用较低的月保费省钱，并接受较高的免赔额。而完全不买保险是有风险的，因为没人能预测意外。',
  },
  },
  {
@@ -805,7 +805,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 3,
  explanation:
- '答对了！租客保险保护在租住房屋里的租客，覆盖个人财物、责任理赔，以及房屋受损时的额外居住费用。',
+ '租客保险保护在租住房屋里的租客，覆盖个人财物、责任理赔，以及房屋受损时的额外居住费用。',
  },
  },
  {

@@ -292,7 +292,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- '¡Eso es! El costo de oportunidad es el valor de aquello a lo que renuncias, en este caso la patineta. Hasta las compras divertidas tienen un costo de oportunidad.',
+ 'El costo de oportunidad es el valor de aquello a lo que renuncias, en este caso la patineta. Hasta las compras divertidas tienen un costo de oportunidad.',
  },
  },
  {
@@ -543,7 +543,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- '就是这样！机会成本是你所放弃之物的价值，在这里就是那块滑板。就连让人开心的消费也有机会成本。',
+ '机会成本是你所放弃之物的价值，在这里就是那块滑板。就连让人开心的消费也有机会成本。',
  },
  },
  {
@@ -602,7 +602,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 0,
  explanation:
- '答对了！在购买前跨不同商家比较价格和功能，这就是货比三家，它刚刚为Deja省下了一半的价钱。',
+ '在购买前跨不同商家比较价格和功能，这就是货比三家，它刚刚为Deja省下了一半的价钱。',
  },
  },
  {
