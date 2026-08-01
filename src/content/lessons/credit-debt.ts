@@ -119,6 +119,20 @@ const lesson: Lesson = {
  'Payment history is the heavyweight at about 35%. One missed payment can hurt for years — which is why autopay helps.',
  },
  {
+  at: 127,
+  question:
+   'Why does the video say to stay away from payday loans?',
+  options: [
+   'They are only for people with perfect credit',
+   'They are short, high-interest loans that usually leave you deeper in debt than you started',
+   'They take too long to get approved',
+   'They can only be used to pay for school',
+  ],
+  answerIndex: 1,
+  explanation:
+   'Payday loans are short-term and carry very high interest. People take them to get from one paycheck to the next, and almost always end up owing more than they borrowed.',
+ },
+ {
  at: 148,
  question: "What's one of the WORST things for your credit score?",
  options: [
@@ -131,7 +145,21 @@ const lesson: Lesson = {
  explanation:
  'A missed payment hits the biggest factor and can stay on your report up to 7 years. Old accounts and low utilization actually help; checking your own report never hurts.',
  },
- ],
+  {
+  at: 182,
+  question:
+   'What makes a credit card act like a free loan?',
+  options: [
+   'Paying only the minimum each month',
+   'Paying your balance in full every month',
+   'Keeping the card right at its limit',
+   'Opening several cards at once',
+  ],
+  answerIndex: 1,
+  explanation:
+   'Pay the full balance and you have borrowed for free. Pay only the minimum and interest starts building on what is left, which costs far more over time.',
+ },
+],
  },
  {
  type: 'content',
@@ -405,6 +433,20 @@ const lesson: Lesson = {
  'El historial de pagos es el peso pesado, con cerca del 35%. Un solo pago perdido puede afectarte por años — por eso el pago automático ayuda.',
  },
  {
+  at: 127,
+  question:
+   '¿Por qué el video dice que evites los préstamos de día de pago (payday loans)?',
+  options: [
+   'Solo son para personas con crédito perfecto',
+   'Son préstamos cortos con intereses altísimos que casi siempre te dejan con más deuda de la que empezaste',
+   'Tardan demasiado en aprobarse',
+   'Solo se pueden usar para pagar la escuela',
+  ],
+  answerIndex: 1,
+  explanation:
+   'Los préstamos de día de pago son a corto plazo y con intereses muy altos. La gente los usa para llegar al siguiente cheque, y casi siempre termina debiendo más de lo que pidió.',
+ },
+ {
  at: 148,
  question:
  '¿Cuál es una de las PEORES cosas para tu puntaje de crédito?',
@@ -418,7 +460,21 @@ const lesson: Lesson = {
  explanation:
  'No hacer un pago golpea el factor más grande y puede quedarse en tu reporte hasta por 7 años. Las cuentas antiguas y la utilización baja en realidad te ayudan; revisar tu propio reporte nunca daña.',
  },
- ],
+  {
+  at: 182,
+  question:
+   '¿Qué hace que una tarjeta de crédito funcione como un préstamo gratis?',
+  options: [
+   'Pagar solo el mínimo cada mes',
+   'Pagar el saldo completo todos los meses',
+   'Mantener la tarjeta justo en su límite',
+   'Abrir varias tarjetas a la vez',
+  ],
+  answerIndex: 1,
+  explanation:
+   'Si pagas el saldo completo, pediste prestado gratis. Si pagas solo el mínimo, empiezan a acumularse intereses sobre lo que queda, y eso cuesta mucho más con el tiempo.',
+ },
+],
  },
  {
  type: 'content',
@@ -697,6 +753,20 @@ const lesson: Lesson = {
  '还款记录是重量级选手，大约占35%。哪怕只错过一次付款，也可能影响你的分数好几年——这就是为什么自动扣款很有帮助。',
  },
  {
+  at: 127,
+  question:
+   '视频为什么建议远离发薪日贷款（payday loan）？',
+  options: [
+   '它们只提供给信用完美的人',
+   '它们是高利息的短期贷款，往往让你欠得比一开始更多',
+   '审批时间太长',
+   '只能用来支付学费',
+  ],
+  answerIndex: 1,
+  explanation:
+   '发薪日贷款期限短、利息极高。人们借它来撑到下一次发薪，结果几乎总是欠下比借的时候更多。',
+ },
+ {
  at: 148,
  question: '对你的信用分数来说，最糟糕的事情之一是什么？',
  options: [
@@ -709,7 +779,21 @@ const lesson: Lesson = {
  explanation:
  '错过一次付款会重创最大的因素，而且可能会在你的报告上留存长达7年。旧账户和低使用率其实是在帮你；查看自己的报告永远不会有害。',
  },
- ],
+  {
+  at: 182,
+  question:
+   '怎样才能让信用卡相当于一笔免息贷款？',
+  options: [
+   '每月只还最低还款额',
+   '每月把账单全额还清',
+   '一直把卡刷到额度上限',
+   '一次性开好几张卡',
+  ],
+  answerIndex: 1,
+  explanation:
+   '全额还清，就等于免费借用了这笔钱。只还最低还款额，剩下的余额就开始计息，长期下来贵得多。',
+ },
+],
  },
  {
  type: 'content',

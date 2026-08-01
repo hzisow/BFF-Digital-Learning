@@ -157,6 +157,20 @@ const lesson: Lesson = {
  "One broken leg or ER visit can cost tens of thousands of dollars, and you can't schedule an accident. That's the huge, unpredictable risk insurance covers.",
  },
  {
+  at: 97,
+  question:
+   'What is a deductible?',
+  options: [
+   'The amount you pay every month to stay covered',
+   'The amount you pay yourself before insurance starts paying',
+   'A discount for being young and healthy',
+   'Money the insurance company pays you each year',
+  ],
+  answerIndex: 1,
+  explanation:
+   'Your premium is the regular payment that keeps you covered. Your deductible is what comes out of your own pocket before insurance starts paying — and a higher deductible usually means a lower premium.',
+ },
+ {
  at: 126,
  question: 'At its core, what does insurance protect you from?',
  options: [
@@ -444,6 +458,20 @@ const lesson: Lesson = {
  'Una sola pierna rota o una visita a urgencias puede costar decenas de miles de dólares, y no puedes agendar un accidente. Ese es el riesgo enorme e impredecible que cubre el seguro.',
  },
  {
+  at: 97,
+  question:
+   '¿Qué es un deducible?',
+  options: [
+   'Lo que pagas cada mes para seguir cubierto',
+   'Lo que pagas de tu propio bolsillo antes de que el seguro empiece a pagar',
+   'Un descuento por ser joven y sano',
+   'Dinero que la aseguradora te paga cada año',
+  ],
+  answerIndex: 1,
+  explanation:
+   'La prima es el pago regular que te mantiene cubierto. El deducible es lo que sale de tu bolsillo antes de que el seguro empiece a pagar — y un deducible más alto suele significar una prima más baja.',
+ },
+ {
  at: 126,
  question: 'En esencia, ¿de qué te protege el seguro?',
  options: [
@@ -728,6 +756,20 @@ const lesson: Lesson = {
  answerIndex: 1,
  explanation:
  '一次腿骨折或一趟急诊就可能花费数万美元，而你没法给意外排日程。这正是保险所覆盖的那种巨大又难以预测的风险。',
+ },
+ {
+  at: 97,
+  question:
+   '什么是免赔额（deductible）？',
+  options: [
+   '你每月为维持保障而支付的钱',
+   '在保险开始赔付之前，需要你自己先承担的金额',
+   '给年轻健康人群的折扣',
+   '保险公司每年付给你的钱',
+  ],
+  answerIndex: 1,
+  explanation:
+   '保费是你为维持保障而定期支付的钱；免赔额是保险开始赔付前需要你自己先掏的部分——免赔额越高，保费通常越低。',
  },
  {
  at: 126,

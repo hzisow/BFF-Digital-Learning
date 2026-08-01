@@ -109,6 +109,20 @@ const lesson: Lesson = {
  source: 'BFF Classroom',
  questions: [
  {
+  at: 41,
+  question:
+   'What is the main difference between saving and investing?',
+  options: [
+   'Saving is for long-term growth; investing is for emergencies',
+   'Saving is low risk with low returns; investing takes more risk for higher potential growth',
+   'They are two words for the same thing',
+   'Only investing keeps your money safe',
+  ],
+  answerIndex: 1,
+  explanation:
+   'Saving keeps money safe and reachable for short-term and emergency needs, with very low returns. Investing accepts more risk in exchange for much higher potential growth over the long run.',
+ },
+ {
  at: 89,
  question:
  'You put in $100 at 10% per year. After year 1 you have $110. About how much after year 2?',
@@ -130,7 +144,21 @@ const lesson: Lesson = {
  explanation:
  "Simple interest pays only on your original deposit; compounding pays on your deposit plus everything it's already earned — which is why it snowballs.",
  },
- ],
+  {
+  at: 141,
+  question:
+   'What does dollar cost averaging mean?',
+  options: [
+   'Investing a set amount on a regular schedule, instead of trying to time the market',
+   'Waiting for the perfect moment to buy',
+   'Only investing when prices drop',
+   'Spending the average of what you earn',
+  ],
+  answerIndex: 0,
+  explanation:
+   "Dollar cost averaging is investing the same amount on a regular schedule — say $50 a month — so you are never trying to guess the market's highs and lows.",
+ },
+],
  },
  {
  type: 'content',
@@ -402,6 +430,20 @@ const lesson: Lesson = {
  source: 'BFF Classroom',
  questions: [
  {
+  at: 41,
+  question:
+   '¿Cuál es la diferencia principal entre ahorrar e invertir?',
+  options: [
+   'Ahorrar es para el crecimiento a largo plazo; invertir es para emergencias',
+   'Ahorrar es de bajo riesgo y bajo rendimiento; invertir asume más riesgo a cambio de más crecimiento potencial',
+   'Son dos palabras para lo mismo',
+   'Solo invertir mantiene tu dinero seguro',
+  ],
+  answerIndex: 1,
+  explanation:
+   'Ahorrar mantiene el dinero seguro y disponible para necesidades de corto plazo y emergencias, con rendimientos muy bajos. Invertir acepta más riesgo a cambio de mucho más crecimiento potencial a largo plazo.',
+ },
+ {
  at: 89,
  question:
  'Pones $100 al 10% por año. Después del año 1 tienes $110. ¿Aproximadamente cuánto tienes después del año 2?',
@@ -423,7 +465,21 @@ const lesson: Lesson = {
  explanation:
  'El interés simple paga solo sobre tu depósito original; el compuesto paga sobre tu depósito más todo lo que ya ha ganado — por eso crece como bola de nieve.',
  },
- ],
+  {
+  at: 141,
+  question:
+   '¿Qué significa el costo promedio en dólares (dollar cost averaging)?',
+  options: [
+   'Invertir una cantidad fija de forma regular, en vez de tratar de adivinar el mercado',
+   'Esperar el momento perfecto para comprar',
+   'Invertir solo cuando bajan los precios',
+   'Gastar el promedio de lo que ganas',
+  ],
+  answerIndex: 0,
+  explanation:
+   'El costo promedio en dólares es invertir la misma cantidad de forma regular — por ejemplo $50 al mes — para no tener que adivinar los altibajos del mercado.',
+ },
+],
  },
  {
  type: 'content',
@@ -696,6 +752,20 @@ const lesson: Lesson = {
  source: 'BFF Classroom',
  questions: [
  {
+  at: 41,
+  question:
+   '储蓄和投资的主要区别是什么？',
+  options: [
+   '储蓄用于长期增长；投资用于应急',
+   '储蓄风险低、回报低；投资承担更多风险，换取更高的潜在增长',
+   '两者其实是一回事',
+   '只有投资才能保证资金安全',
+  ],
+  answerIndex: 1,
+  explanation:
+   '储蓄把钱放在安全、随时可取的地方，用来应对短期和紧急需要，但回报很低。投资承担更多风险，换取长期更高的潜在增长。',
+ },
+ {
  at: 89,
  question:
  '你以每年 10% 存入 $100。第 1 年后你有 $110。第 2 年后大约有多少？',
@@ -717,7 +787,21 @@ const lesson: Lesson = {
  explanation:
  '单利只对你的原始存款支付利息；复利支付的是你的存款加上它已经赚到的一切之上的利息——这就是为什么它会滚雪球般增长。',
  },
- ],
+  {
+  at: 141,
+  question:
+   '定投（dollar cost averaging）是什么意思？',
+  options: [
+   '按固定节奏投入固定金额，而不是去猜市场时机',
+   '等待最完美的买入时机',
+   '只在价格下跌时才投资',
+   '按收入的平均值来消费',
+  ],
+  answerIndex: 0,
+  explanation:
+   '定投就是按固定节奏投入相同金额——比如每月 $50——这样你就不必去猜市场的高点和低点。',
+ },
+],
  },
  {
  type: 'content',

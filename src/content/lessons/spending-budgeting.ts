@@ -146,7 +146,21 @@ const lesson: Lesson = {
  explanation:
  '20% goes to savings, and 20% of $200 is $40. Needs get $100 (50%), wants get $60 (30%).',
  },
- ],
+  {
+  at: 204,
+  question:
+   'You see something you want and feel the urge to buy it right now. What does the video suggest?',
+  options: [
+   'Buy it before the price goes up',
+   'Wait one full day before buying it',
+   'Ask a friend to buy it for you',
+   'Cancel a subscription to pay for it',
+  ],
+  answerIndex: 1,
+  explanation:
+   'The 24-hour rule: wait a full day before an impulse buy. Most of the time the urge passes — and if it does not, it was probably worth buying.',
+ },
+],
  },
  {
  type: 'content',
@@ -437,7 +451,21 @@ const lesson: Lesson = {
  explanation:
  'El 20% va al ahorro, y el 20% de $200 es $40. Las necesidades reciben $100 (50%) y los deseos reciben $60 (30%).',
  },
- ],
+  {
+  at: 204,
+  question:
+   'Ves algo que quieres y sientes el impulso de comprarlo ya mismo. ¿Qué sugiere el video?',
+  options: [
+   'Cómpralo antes de que suba de precio',
+   'Espera un día completo antes de comprarlo',
+   'Pídele a un amigo que lo compre por ti',
+   'Cancela una suscripción para pagarlo',
+  ],
+  answerIndex: 1,
+  explanation:
+   'La regla de las 24 horas: espera un día completo antes de una compra impulsiva. Casi siempre se te pasan las ganas — y si no, probablemente valía la pena.',
+ },
+],
  },
  {
  type: 'content',
@@ -730,7 +758,21 @@ const lesson: Lesson = {
  explanation:
  '20% 进入储蓄，而 $200 的 20% 就是 $40。需要占 $100（50%），想要占 $60（30%）。',
  },
- ],
+  {
+  at: 204,
+  question:
+   '你看到想要的东西，很想马上买下来。视频建议怎么做？',
+  options: [
+   '趁涨价前赶紧买',
+   '先等满一天再决定',
+   '让朋友帮你买',
+   '取消一项订阅来付钱',
+  ],
+  answerIndex: 1,
+  explanation:
+   '24 小时法则：冲动消费前先等满一天。大多数时候这股冲动会过去——如果没过去，那它可能真的值得买。',
+ },
+],
  },
  {
  type: 'content',
