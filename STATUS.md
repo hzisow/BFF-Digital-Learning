@@ -330,22 +330,35 @@ Optional `GEMINI_MODEL` pins one model without a redeploy.
 ## Open items
 
 ### Blocked on the user
-1. **Lesson video IDs.** Four lessons still point at placeholder YouTube IDs:
-   - `spending-budgeting` → `sVKQn2I4HDM`
-   - `saving-investing` → `Rm6UdfRs3gw`
-   - `credit-debt` → `ozbGWLtZdoY`
-   - `risk-insurance` → `WTtjmdyTCRM`
-
-   Recording scripts were written and delivered as a PDF; the in-app checkpoint
-   questions are already rewritten to match them (BFF-original, no references to
-   any outside video). The user was guided through uploading to YouTube as
-   **Unlisted** (not Private — Private cannot be embedded). When the four real
-   IDs arrive, swap them in **all three language copies** of each lesson file and
-   confirm the checkpoint `at:` timestamps match the recordings.
-
-2. **Test the remaining AI features.** Money Coach is confirmed. The worksheet
+1. **Test the remaining AI features.** Money Coach is confirmed. The worksheet
    generator, AI practice, and open-response grading are deployed with the same
    fix but have not been clicked through by the user yet.
+
+2. **Watch one lesson end to end.** The four real videos are now wired in (see
+   below). Checkpoint timings were set from the transcripts, not from watching
+   playback, so they are accurate to the second the point is *made* — but only a
+   real viewing confirms the pause lands where it feels right.
+
+### Lesson videos — done
+All four recordings are live and embedded, presented by Alvin Lee, BFF-original:
+
+| Lesson | Video ID | Length | Checkpoints pause at |
+|---|---|---|---|
+| `spending-budgeting` | `AbqJUXeviI0` | ~3:40 | 0:38, 2:30 |
+| `saving-investing` | `StjQs88nDZE` | ~3:00 | 1:20, 1:48 |
+| `credit-debt` | `rNVIS8YsBbQ` | ~3:07 | 1:06, 2:30 |
+| `risk-insurance` | `64VPvCvBq3g` | ~2:11 | 1:16, 2:06 |
+
+`videoId` and each `at:` are duplicated **three times per file** (en/es/zh) — a
+change to one language and not the others is the easy mistake here.
+
+The questions themselves were written against the recording scripts and all four
+recordings followed them, so no question needed rewriting. What did need fixing
+was timing: four of the eight checkpoints fired after the video had moved on, and
+one was set at 2:30 on a video that ends at 2:11 — it would have surfaced as an
+end-of-video pile-up via the catch-up path in `VideoCheckpoint` rather than a
+mid-video pause. `at:` means "pause once playback reaches this second"
+(`t >= q.at`), so each one now sits just past the moment its answer is stated.
 
 ### Not started, discussed
 - **Self-hosted video** (`src` alongside `videoId`) — designed, not built. Would

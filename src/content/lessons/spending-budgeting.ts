@@ -117,11 +117,11 @@ const lesson: Lesson = {
  heading: 'Watch: Budgeting Basics',
  body:
  "Watch this quick BFF video on budgeting basics. Heads up — it pauses to quiz you along the way, so pay attention!",
- videoId: 'sVKQn2I4HDM',
+ videoId: 'AbqJUXeviI0',
  source: 'BFF Classroom',
  questions: [
  {
- at: 80,
+ at: 38,
  question: 'What is a budget, really?',
  options: [
  'A way to never spend money on fun',
@@ -408,11 +408,11 @@ const lesson: Lesson = {
  heading: 'Mira el video: Fundamentos del presupuesto',
  body:
  'Mira este video rápido de BFF sobre los fundamentos del presupuesto. Ojo — se pausa para hacerte preguntas en el camino, ¡así que pon atención!',
- videoId: 'sVKQn2I4HDM',
+ videoId: 'AbqJUXeviI0',
  source: 'BFF Classroom',
  questions: [
  {
- at: 80,
+ at: 38,
  question: '¿Qué es un presupuesto, en realidad?',
  options: [
  'Una forma de nunca gastar dinero en cosas divertidas',
@@ -701,11 +701,11 @@ const lesson: Lesson = {
  heading: '观看：预算入门',
  body:
  '来看这段 BFF 的短视频，讲讲预算入门。注意——它会中途暂停来考你，所以要专心！',
- videoId: 'sVKQn2I4HDM',
+ videoId: 'AbqJUXeviI0',
  source: 'BFF Classroom',
  questions: [
  {
- at: 80,
+ at: 38,
  question: '预算到底是什么？',
  options: [
  '一种永远不把钱花在娱乐上的方式',

@@ -140,11 +140,11 @@ const lesson: Lesson = {
  heading: 'Watch: Can I Skip Insurance?',
  body:
  "Watch this short BFF video on why insurance matters even when you're young and healthy. Heads up — it pauses to quiz you along the way, so pay attention!",
- videoId: 'WTtjmdyTCRM',
+ videoId: '64VPvCvBq3g',
  source: 'BFF Classroom',
  questions: [
  {
- at: 85,
+ at: 76,
  question: 'Why do even young, healthy people need health insurance?',
  options: [
  "It's a fashion statement",
@@ -157,7 +157,7 @@ const lesson: Lesson = {
  "One broken leg or ER visit can cost tens of thousands of dollars, and you can't schedule an accident. That's the huge, unpredictable risk insurance covers.",
  },
  {
- at: 150,
+ at: 126,
  question: 'At its core, what does insurance protect you from?',
  options: [
  'Ever having to pay a premium',
@@ -426,11 +426,11 @@ const lesson: Lesson = {
  heading: 'Mira: ¿Puedo saltarme el seguro?',
  body:
  'Mira este breve video de BFF sobre por qué el seguro importa incluso cuando eres joven y estás sano. Ojo: se pausa para ponerte a prueba en el camino, ¡así que presta atención!',
- videoId: 'WTtjmdyTCRM',
+ videoId: '64VPvCvBq3g',
  source: 'BFF Classroom',
  questions: [
  {
- at: 85,
+ at: 76,
  question:
  '¿Por qué incluso los jóvenes saludables necesitan seguro de salud?',
  options: [
@@ -444,7 +444,7 @@ const lesson: Lesson = {
  'Una sola pierna rota o una visita a urgencias puede costar decenas de miles de dólares, y no puedes agendar un accidente. Ese es el riesgo enorme e impredecible que cubre el seguro.',
  },
  {
- at: 150,
+ at: 126,
  question: 'En esencia, ¿de qué te protege el seguro?',
  options: [
  'De tener que pagar una prima alguna vez',
@@ -713,11 +713,11 @@ const lesson: Lesson = {
  heading: '观看：我可以不买保险吗？',
  body:
  '看看这个简短的BFF视频，了解为什么即使你年轻又健康，保险也很重要。注意：视频会中途暂停来考考你，所以要专心！',
- videoId: 'WTtjmdyTCRM',
+ videoId: '64VPvCvBq3g',
  source: 'BFF Classroom',
  questions: [
  {
- at: 85,
+ at: 76,
  question: '为什么连年轻、健康的人也需要健康保险？',
  options: [
  '这是一种时尚宣言',
@@ -730,7 +730,7 @@ const lesson: Lesson = {
  '一次腿骨折或一趟急诊就可能花费数万美元，而你没法给意外排日程。这正是保险所覆盖的那种巨大又难以预测的风险。',
  },
  {
- at: 150,
+ at: 126,
  question: '归根结底，保险保护你免受什么？',
  options: [
  '永远不用付保费',

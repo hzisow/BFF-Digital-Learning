@@ -102,11 +102,11 @@ const lesson: Lesson = {
  heading: 'Watch: What Goes Into Your Credit Score?',
  body:
  'Watch this quick BFF video on what actually moves your credit score. Heads up — it pauses to quiz you along the way, so pay attention!',
- videoId: 'ozbGWLtZdoY',
+ videoId: 'rNVIS8YsBbQ',
  source: 'BFF Classroom',
  questions: [
  {
- at: 90,
+ at: 66,
  question: 'Which factor counts the MOST in your credit score?',
  options: [
  'How many cards you own',
@@ -388,11 +388,11 @@ const lesson: Lesson = {
  heading: 'Mira el video: ¿Qué compone tu puntaje de crédito?',
  body:
  'Mira este video rápido de BFF sobre lo que realmente mueve tu puntaje de crédito. ¡Ojo — se pausa para hacerte preguntas por el camino, así que presta atención!',
- videoId: 'ozbGWLtZdoY',
+ videoId: 'rNVIS8YsBbQ',
  source: 'BFF Classroom',
  questions: [
  {
- at: 90,
+ at: 66,
  question: '¿Qué factor cuenta MÁS en tu puntaje de crédito?',
  options: [
  'Cuántas tarjetas tienes',
@@ -680,11 +680,11 @@ const lesson: Lesson = {
  heading: '观看：你的信用分数是由什么构成的？',
  body:
  '来看这段BFF的短视频，了解到底是什么在真正影响你的信用分数。注意——它中途会暂停来考考你，所以要集中注意力！',
- videoId: 'ozbGWLtZdoY',
+ videoId: 'rNVIS8YsBbQ',
  source: 'BFF Classroom',
  questions: [
  {
- at: 90,
+ at: 66,
  question: '在你的信用分数里，哪个因素占的比重最大？',
  options: [
  '你拥有多少张卡',
