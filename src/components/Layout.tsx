@@ -4,7 +4,7 @@ import type { NavLinkProps } from 'react-router-dom'
 import { Volume2, VolumeX, Menu, X, ArrowRight, ChevronDown } from 'lucide-react'
 import { Logo } from './Logo'
 import { AppIcon } from '../lib/icons'
-import { useAdmin, useStudent } from '../lib/session'
+import { accountDisplayName, useAccount, useAdmin, useStudent } from '../lib/session'
 import { useLang } from '../lib/i18n'
 import type { Lang } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
@@ -144,9 +144,11 @@ function LangSwitcher() {
 /** Overflow menu for the secondary destinations and the sound toggle. */
 function MoreMenu({
   adminUser,
+  hasAccount,
   t,
 }: {
   adminUser: unknown
+  hasAccount: boolean
   t: (k: string) => string
 }) {
   const [open, setOpen] = useState(false)
@@ -197,6 +199,14 @@ function MoreMenu({
           <PrefetchNavLink chunk="practice" to="/practice" className={itemClass}>
             {t('nav.practice')}
           </PrefetchNavLink>
+          {/* Accounts are opt-in, so this lives in the overflow menu rather than
+              the main bar — nobody needs to be nagged to sign up to take a
+              lesson, but somebody coming back on a new phone needs to find it. */}
+          {!hasAccount && (
+            <PrefetchNavLink chunk="signIn" to="/signin?mode=signin" className={itemClass}>
+              {t('nav.signIn')}
+            </PrefetchNavLink>
+          )}
           {adminUser ? (
             <PrefetchNavLink chunk="admin" to="/admin" className={itemClass}>
               {t('nav.dashboard')}
@@ -219,6 +229,7 @@ function MoreMenu({
 export default function Layout() {
   const { student } = useStudent()
   const { adminUser } = useAdmin()
+  const { account } = useAccount()
   const { t, lang } = useLang()
   const { toast } = useToast()
   const [menuOpen, setMenuOpen] = useState(false)
@@ -305,7 +316,10 @@ export default function Layout() {
   )
 
   // The student's own space is the one persistent call to action on the right.
-  const accountLink = student ? (
+  // Order matters: a student in a class sees their class identity, a student
+  // with only an account still gets a way back to their own space, and a
+  // first-time visitor sees the class-code door rather than a sign-up wall.
+  const accountLink = student || account ? (
     <PrefetchNavLink
       chunk="student"
       to="/student"
@@ -317,7 +331,9 @@ export default function Layout() {
       >
         <AppIcon name={level.tier.icon} className="h-3.5 w-3.5" /> {level.level}
       </span>
-      <span className="max-w-[9ch] truncate">{student.nickname}</span>
+      <span className="max-w-[9ch] truncate">
+        {student?.nickname ?? accountDisplayName(account) ?? account?.email?.split('@')[0]}
+      </span>
     </PrefetchNavLink>
   ) : (
     <PrefetchNavLink chunk="join" to="/join" className="btn-primary px-3 py-1.5 text-sm">
@@ -349,7 +365,7 @@ export default function Layout() {
           {/* Desktop nav */}
           <nav className="hidden items-center gap-1 md:flex" aria-label={t('a11y.primaryNav')}>
             {primaryLinks}
-            <MoreMenu adminUser={adminUser} t={t} />
+            <MoreMenu adminUser={adminUser} hasAccount={Boolean(account)} t={t} />
             <span aria-hidden="true" className="mx-1 h-5 w-px bg-ink/10" />
             {accountLink}
             <LangSwitcher />

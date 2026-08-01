@@ -143,6 +143,13 @@
   .chip {
     @apply inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold;
   }
+  /* An inline text action that is a real choice but not the main one — the
+     "already have an account?" row under a sign-up form. Underlined on hover
+     rather than always, so a row of them does not compete with the submit
+     button. */
+  .link-quiet {
+    @apply font-semibold text-bff-700 underline-offset-2 hover:text-bff-800 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-bff-400 focus-visible:ring-offset-2;
+  }
   /* Eyebrow: small tracked uppercase label above a heading. */
   .eyebrow {
     @apply inline-flex items-center gap-2 font-display text-[11px] font-extrabold uppercase tracking-[0.18em] text-bff-600;
@@ -177,6 +184,56 @@
   border: 1px solid rgba(38, 164, 221, 0.16);
 }
 .ed-hero-orbit.gold { border-color: rgba(240, 179, 90, 0.1); }
+
+/* ---- Front-page "door": a large image-led entry point ----
+   Two of these carry the whole front page, so they are built to look like
+   printed plates rather than app cards: flat white, one hairline border, no
+   shadow at rest. Elevation is communicated by the accent bar and the image
+   scale, never by a glow — a drop-shadowed rounded card over a tinted photo is
+   the exact look the redesign is getting away from. */
+.ed-door {
+  position: relative;
+  background: #fff;
+  border: 1px solid rgba(12, 26, 39, 0.12);
+  transition:
+    border-color var(--dur-hover) var(--ease-out),
+    transform var(--dur-hover) var(--ease-out);
+}
+.ed-door::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; right: 0;
+  height: 4px;
+  background: #0c1a27;
+  z-index: 1;
+}
+.ed-door--primary::before { background: #0077b5; }
+.ed-door:hover { border-color: rgba(12, 26, 39, 0.42); }
+@media (hover: hover) {
+  .ed-door:hover { transform: translateY(-2px); }
+}
+
+/* The image frame. `overflow: hidden` plus a scale on hover means the photo
+   moves inside a fixed frame — the crop never shifts the layout below it. */
+.ed-door-frame {
+  position: relative;
+  overflow: hidden;
+  background: #0c1a27;
+  border-bottom: 1px solid rgba(12, 26, 39, 0.12);
+}
+.ed-door-frame > * {
+  transition: transform 400ms var(--ease-out);
+}
+@media (hover: hover) {
+  .ed-door:hover .ed-door-frame > * { transform: scale(1.03); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ed-door, .ed-door-frame > * { transition: none; }
+  .ed-door:hover, .ed-door:hover .ed-door-frame > * { transform: none; }
+}
+
+/* A plain hairline frame for images that are not links. */
+.lz-frame { border: 1px solid rgba(12, 26, 39, 0.12); }
 
 /* Editorial panel: flat surface with a colored top accent bar */
 .panel {

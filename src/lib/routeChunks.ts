@@ -22,6 +22,8 @@ export const routeChunks = {
   coach: () => import('../pages/MoneyCoach'),
   join: () => import('../pages/student/JoinPage'),
   student: () => import('../pages/student/StudentHome'),
+  signIn: () => import('../pages/student/AccountAuth'),
+  resetPassword: () => import('../pages/student/ResetPassword'),
   liveJoin: () => import('../pages/LiveJoin'),
 
   bensBudget: () => import('../activities/bens-budget/BensBudget'),

@@ -12,14 +12,16 @@ A trilingual (English / Spanish / Simplified Chinese) digital financial-literacy
 platform for **BFF of America**, a student-founded 501(c)(3).
 
 - **Students** join a class with a code plus a first name and last initial
-  ("Jayden M.") — no email, no password, no full name.
+  ("Jayden M.") — no email, no password, no full name. An account (email +
+  password) is **optional**, and only exists so progress follows them between
+  devices.
 - **Mentors** sign in with Google and are gated behind an `approved` flag.
 - Everything also works **solo**, with no backend, straight from the browser.
 
 **Live:** https://hzisow.github.io/BFF-Digital-Learning/
 
 Scale, so you know what you are dealing with: **98 source files, ~33,000 lines**,
-13 lessons × 3 languages, 10 activities, 32 routes, 7 database tables.
+13 lessons × 3 languages, 8 games & challenges, 34 routes, 7 database tables.
 
 ---
 
@@ -56,7 +58,7 @@ Scale, so you know what you are dealing with: **98 source files, ~33,000 lines**
 
 Supabase project ref: `xrlmxpmaykldvbjnoapk`
 
-### Routes (all 32)
+### Routes (all 34)
 
 Everything except Landing / Layout / NotFound is code-split — see
 `src/lib/routeChunks.ts`.
@@ -64,7 +66,7 @@ Everything except Landing / Layout / NotFound is code-split — see
 | Group | Paths |
 |---|---|
 | Public | `/` · `/lessons` · `/activities` · `/glossary` · `/practice` · `/coach` · `/join` · `/game` |
-| Student | `/student` · `/certificate` · `/practice/ai` |
+| Student | `/student` · `/certificate` · `/practice/ai` · `/signin` · `/reset-password` |
 | Challenges | `/challenge/{bens-budget, bens-insurance, paystub-detective, credit-score, scam-spotter, smart-shopper, goal-getter}` |
 | Wolf | `/wolf` · `/wolf/solo` |
 | Mentor | `/team` · `/admin` · `/admin/class/:id` · `/admin/generate` · `/account` |
@@ -207,6 +209,89 @@ combinations, including two NULL scores (the `nullif(greatest(...), -1)` guard
 stops it writing a nonsense `-1`), and an unauthenticated caller cannot rename or
 remove — `mentor_owns_student` returns false and every function raises
 `not_authorized`.
+
+### The front page has one job
+It ran 2,681px over five sections: hero, an 8/3/100% stat strip, a three-card
+"how it works", a three-card "featured activities", then a schools block. Two
+near-identical three-up grids of icon-plus-text, no photography anywhere, and
+**BFF Academy — the actual product — never named on a button.** A reviewer's
+summary was "there's just so much bullshit."
+
+It is now hero → two image-led doors → who-we-are. 1,945px, and the primary
+button says "Start BFF Academy". Nothing was deleted from the site; the cut
+sections were all restating what `/lessons` and `/activities` already show.
+
+Grounded in the **PORTO ROCHA** system from `hzisow/refero-design-styles` (the
+`refero-design` skill): an editorial gallery-wall style where photography is the
+content and the UI recedes — images flush in the grid, hairline borders instead
+of shadows, no gradients, no decorative chrome. The single most important rule
+taken from it: **never put the words on top of the photo.** A caption floated
+over a darkened image is the most recognisable generated-landing-page move
+there is, so the caption sits in its own block below the frame, the way a
+magazine sets it.
+
+#### Photography is a drop-in, by design
+The reviewer specifically asked for a photo of BFF's real in-person tutoring
+behind the Academy card. Those take time to shoot and clear, so the page cannot
+depend on them — but it also should not need a code change the day they arrive.
+
+`src/lib/photos.ts` globs `src/assets/photos/*` at build time. Drop in
+`academy.jpg`, `activities.jpg` or `schools.jpg` and that card becomes a
+photograph on the next build. With no file, `PhotoPanel` draws an ink panel with
+one of three distinct motifs instead. `eager: true` is what makes this a real
+build-time answer rather than a runtime guess, so there is no flash of a
+fallback that then swaps to an image.
+
+The fallback is deliberately good enough to ship. A placeholder that looks broken
+is what tempts somebody into using stock photography of strangers on a nonprofit's
+real program page — see `src/assets/photos/README.md`, which also covers consent,
+since these are photographs of minors.
+
+### Students can have accounts now
+Progress used to live on one device: a class code plus a name in localStorage,
+backed by an **anonymous** Supabase user. Lose the laptop, lose the course.
+
+`src/lib/studentAuth.ts` adds email + password, a reset flow, and sign-in on any
+device. Two things about it are worth knowing:
+
+**Signing up does not create a second user.** A student has usually done several
+lessons before they think about an account, and that work hangs off their
+anonymous `auth.users` row. So sign-up calls `updateUser` to upgrade the user
+they already have, keeping the same uid. Because `students.auth_uid` and every
+`progress` row key off that uid, all of it survives — **no schema change and no
+merge step.** `signUp` is only the fallback for somebody with no session at all.
+
+**The class-code path stays.** Accounts are additional, never required. A mentor
+with thirty students and a forty-five minute period cannot run everyone through
+email confirmation, and demanding an email address to try a free lesson is
+exactly the friction the name-based join was built to remove. Every screen says
+so out loud.
+
+One subtlety that would have been a bug: `session.tsx` used to treat *any*
+non-anonymous user as a BFF team member. With student accounts that is no longer
+true, so accounts carry `user_metadata.bff_role = 'student'` and the session
+splits three ways (anonymous / student account / team). That flag is a **UX
+signal, not a security boundary** — user metadata is user-writable. Real team
+access is gated server-side by `profiles.approved` and `is_approved_admin()`, so
+the worst a student can do by clearing it is show themselves a dashboard link
+that leads to a "waiting for approval" screen.
+
+Routes: `/signin` (one screen, three modes via `?mode=`) and `/reset-password`.
+Note `/account` was already taken by the **mentor** account page.
+
+### The certificate generates itself
+It already unlocked automatically at 8/8 passed lessons — that part predates this
+work. What was missing: it could only be *printed*, which is nothing to a student
+on a Chromebook with no printer.
+
+`src/lib/certificatePdf.ts` draws a landscape A4 PDF with jsPDF primitives rather
+than rasterising the DOM — text stays selectable, the file is ~57KB instead of a
+megabyte, and it does not depend on the page fonts having loaded. The name field
+now pre-fills from the account, which is why sign-up asks for a name at all.
+
+Same CJK limit as the worksheet generator: jsPDF's built-in fonts are Latin-only,
+so a Chinese certificate falls back to English chrome and the page says so and
+points at Print instead.
 
 ### Typography: Fraunces + Public Sans, and why it changed
 The pairing was Bricolage Grotesque + Inter. A reviewer looking at the live site
@@ -473,7 +558,15 @@ Optional `GEMINI_MODEL` pins one model without a redeploy.
 ## Open items
 
 ### Blocked on the user
-1. **Test the remaining AI features.** Money Coach is confirmed. The worksheet
+1. **Photographs for the front page.** Drop `academy.jpg` / `activities.jpg` /
+   `schools.jpg` into `src/assets/photos/` — see the README there for framing and
+   consent. Highest-leverage item left on the front page by a distance.
+2. **Two Supabase dashboard settings** before password reset works end to end:
+   add `https://hzisow.github.io/BFF-Digital-Learning/reset-password` to
+   Authentication → URL Configuration → Redirect URLs, and confirm an email
+   sender is set up (the built-in one is rate-limited to a handful of messages
+   per hour — fine for testing, not for a classroom).
+3. **Test the remaining AI features.** Money Coach is confirmed. The worksheet
    generator, AI practice, and open-response grading are deployed with the same
    fix but have not been clicked through by the user yet.
 
@@ -785,7 +878,8 @@ are wondering *why* something is the way it is.
 
 | Commit | What changed |
 |---|---|
-| _(most recent)_ | Reviewer feedback: new typeface pair, a progress meter, one chance per question |
+| _(most recent)_ | Front page rebuilt around BFF Academy; student accounts; certificate as a PDF |
+| `d8e1300` | Reviewer feedback: new typeface pair, a progress meter, one chance per question |
 | `bd3de27` | 85% mastery gate — a lesson only unlocks the next one once its quiz is passed |
 | `0dc05e2` | Per-question analytics, roster rename/remove/merge, due dates that read as deadlines |
 | `980f44b` | Six more video checkpoints so the untested half of each recording is covered |

@@ -4,21 +4,48 @@
 
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Printer, ArrowRight, Trophy } from 'lucide-react'
+import { Printer, ArrowRight, Trophy, Download, Loader2 } from 'lucide-react'
 import { Logo } from '../components/Logo'
 import { lessonPassed } from '../lib/mastery'
 import { ACTIVITIES } from '../lib/activities'
 import { useLang } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
-import { useStudent } from '../lib/session'
+import { accountDisplayName, useAccount, useStudent } from '../lib/session'
+import { downloadCertificate } from '../lib/certificatePdf'
 
 export default function CertificatePage() {
   const { lang } = useLang()
   const es = lang === 'es'
   const zh = lang === 'zh'
   const { student } = useStudent()
+  const { account } = useAccount()
   const progress = useMemo(() => loadLocalProgress(), [])
-  const [name, setName] = useState(student?.nickname ?? '')
+  // Prefer the name on the account: a student typed it once at sign-up
+  // specifically so this would fill itself in, and it is a full name rather than
+  // the "Jayden M." shorthand a classroom roster uses.
+  const [name, setName] = useState(
+    () => accountDisplayName(account) ?? student?.nickname ?? '',
+  )
+  const [saving, setSaving] = useState(false)
+  const [saveError, setSaveError] = useState<string | null>(null)
+
+  async function onDownload() {
+    setSaveError(null)
+    setSaving(true)
+    try {
+      await downloadCertificate({
+        name,
+        dateStr,
+        lessonCount: lessons.length,
+        avgScore,
+        lang,
+      })
+    } catch (err) {
+      setSaveError(err instanceof Error ? err.message : String(err))
+    } finally {
+      setSaving(false)
+    }
+  }
 
   const lessons = useMemo(
     () => ACTIVITIES.filter((a) => a.kind === 'lesson').sort((a, b) => a.sortKey - b.sortKey),
@@ -96,10 +123,10 @@ export default function CertificatePage() {
         </h1>
         <p className="mt-3 text-ink/60">
           {zh
-            ? '按你希望显示的样子输入你的名字，然后打印出来。'
+            ? '确认一下名字的写法，然后下载或打印。'
             : es
-            ? 'Escribe tu nombre como quieres que aparezca y luego imprímelo.'
-            : 'Type your name the way you want it to appear, then print it.'}
+            ? 'Confirma cómo quieres que aparezca tu nombre, y descárgalo o imprímelo.'
+            : 'Check how you want your name to read, then download or print it.'}
         </p>
         <div className="mx-auto mt-4 flex max-w-md flex-col items-center gap-3 sm:flex-row">
           <label htmlFor="cert-name" className="sr-only">
@@ -113,10 +140,33 @@ export default function CertificatePage() {
             onChange={(e) => setName(e.target.value)}
             maxLength={60}
           />
-          <button type="button" className="btn-primary shrink-0" onClick={() => window.print()}>
+          <button
+            type="button"
+            className="btn-primary shrink-0"
+            onClick={onDownload}
+            disabled={saving}
+          >
+            {saving ? (
+              <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+            ) : (
+              <Download className="h-4 w-4" aria-hidden="true" />
+            )}
+            {zh ? '下载 PDF' : es ? 'Descargar PDF' : 'Download PDF'}
+          </button>
+          <button type="button" className="btn-ghost shrink-0" onClick={() => window.print()}>
             <Printer className="h-4 w-4" aria-hidden="true" /> {zh ? '打印' : es ? 'Imprimir' : 'Print'}
           </button>
         </div>
+        {saveError && (
+          <p role="alert" className="mx-auto mt-3 max-w-md text-sm font-semibold text-red-700">
+            {saveError}
+          </p>
+        )}
+        {lang === 'zh' && (
+          <p className="mx-auto mt-3 max-w-md text-xs text-ink/50">
+            下载的 PDF 使用英文版式（PDF 字体不含中文字形）。想要中文证书，请使用「打印」。
+          </p>
+        )}
       </div>
 
       {/* The certificate itself — an editorial framed credential */}

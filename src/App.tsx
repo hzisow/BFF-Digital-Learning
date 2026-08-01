@@ -25,6 +25,8 @@ const AIPractice = lazy(routeChunks.aiPractice)
 const MoneyCoach = lazy(routeChunks.coach)
 const JoinPage = lazy(routeChunks.join)
 const StudentHome = lazy(routeChunks.student)
+const AccountAuth = lazy(routeChunks.signIn)
+const ResetPassword = lazy(routeChunks.resetPassword)
 const LiveJoin = lazy(routeChunks.liveJoin)
 
 const BensBudget = lazy(routeChunks.bensBudget)
@@ -70,6 +72,8 @@ export default function App() {
         <Route path="/join" element={<JoinPage />} />
         <Route path="/game" element={<LiveJoin />} />
         <Route path="/student" element={<StudentHome />} />
+        <Route path="/signin" element={<AccountAuth />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/challenge/bens-budget" element={<BensBudget />} />
         <Route path="/challenge/bens-insurance" element={<BensInsurance />} />
         <Route path="/challenge/paystub-detective" element={<PaystubDetective />} />
