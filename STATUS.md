@@ -828,6 +828,36 @@ Two traps found the hard way while writing these:
 
 ---
 
+## Session safety: checkpoints and git
+
+`.claude/settings.json` sets `fileCheckpointingEnabled: true` (the default, made
+explicit so it is shared with anyone who clones) and `cleanupPeriodDays: 90` (up
+from 30, so a session's transcript and checkpoints survive long enough to be
+useful).
+
+In Claude Code, `/rewind` or a double `Esc` on an empty prompt opens the rewind
+menu: restore code, restore conversation, restore both, or summarize a stretch of
+the chat to free context.
+
+**Read this before relying on it.** Checkpointing tracks only files edited
+through Claude's own file-editing tools. It does **not** track anything a bash
+command touched — and a large share of the work on this project has gone through
+`python3 - <<'PY'` heredocs and `sed`, precisely because the edits were
+sweeping (the 96 lesson-explanation rewrites, the 44-file colour re-tone). None
+of that would be in a checkpoint.
+
+So on this repo git is the real safety net, not checkpoints:
+
+- Every change is committed with a message explaining *why*, and deployed by
+  fast-forwarding `main`.
+- Undoing a shipped change is `git revert <sha>`, which is exactly how the
+  Wealthsimple restyle was backed out — `git diff --cached --quiet <prev>`
+  confirmed the tree came back byte-identical rather than approximately.
+
+Treat checkpoints as local undo inside one session, and git as the history.
+
+---
+
 ## Useful commands
 
 ```bash
