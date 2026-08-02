@@ -24,7 +24,7 @@ export default function LevelCard({ xp }: { xp: number }) {
             <Star className="h-6 w-6 text-gold-400" />
           </span>
           <div>
-            <p className="eyebrow text-paper/70">
+            <p className="eyebrow text-bff-300">
               {zh ? '等级' : es ? 'Nivel' : 'Level'} {info.level} · {info.tier.name}
             </p>
             <p className="mt-0.5 font-display text-3xl font-extrabold tabular-nums text-gold-400">

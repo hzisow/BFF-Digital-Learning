@@ -58,7 +58,7 @@ function optionLetter(i: number): string {
 function RankMark({ index, className = 'h-5 w-5' }: { index: number; className?: string }) {
   if (index === 0) return <Crown className={`${className} text-gold-500`} aria-hidden="true" />
   if (index === 1) return <Medal className={`${className} text-ink/45`} aria-hidden="true" />
-  if (index === 2) return <Award className={`${className} text-ink`} aria-hidden="true" />
+  if (index === 2) return <Award className={`${className} text-bff-600`} aria-hidden="true" />
   return <>{index + 1}.</>
 }
 
@@ -78,7 +78,7 @@ function Shell({ code, children }: { code: string; children: ReactNode }) {
       <header className="flex items-center justify-between border-b border-ink/10 bg-white px-4 py-3">
         <Logo className="h-8" />
         {code && (
-          <span className="chip bg-paper-soft font-display tracking-widest text-ink">
+          <span className="chip bg-bff-50 font-display tracking-widest text-bff-700">
             QUIZ {code}
           </span>
         )}
@@ -215,7 +215,7 @@ export default function QuizPlay() {
     return (
       <Shell code={code}>
         <div className="card mx-auto mt-10 max-w-md space-y-3 text-center">
-          <Plug className="mx-auto block h-11 w-11 text-ink" aria-hidden="true" />
+          <Plug className="mx-auto block h-11 w-11 text-bff-600" aria-hidden="true" />
           <h1 className="font-display text-xl font-bold text-ink">
             {zh
               ? '实时测验还没有连接'
@@ -242,7 +242,7 @@ export default function QuizPlay() {
     return (
       <Shell code={code}>
         <div className="card mx-auto mt-10 max-w-md space-y-3 text-center">
-          <HelpCircle className="mx-auto block h-11 w-11 text-ink" aria-hidden="true" />
+          <HelpCircle className="mx-auto block h-11 w-11 text-bff-600" aria-hidden="true" />
           <h1 className="font-display text-xl font-bold text-ink">
             {zh ? '嗯，这次没成功' : es ? 'Mmm, eso no funcionó' : 'Hmm, that did not work'}
           </h1>
@@ -288,7 +288,7 @@ export default function QuizPlay() {
     return (
       <Shell code={session.code}>
         <div className="card mx-auto mt-10 max-w-md space-y-3 text-center">
-          <BookOpen className="mx-auto block h-11 w-11 text-ink" aria-hidden="true" />
+          <BookOpen className="mx-auto block h-11 w-11 text-bff-600" aria-hidden="true" />
           <h1 className="font-display text-xl font-bold text-ink">
             {zh ? '这个测验暂时无法使用' : es ? 'Este quiz no está disponible' : 'This quiz is not available'}
           </h1>
@@ -312,7 +312,7 @@ export default function QuizPlay() {
       <Shell code={session.code}>
         <div className="card mx-auto mt-10 max-w-md space-y-4">
           <div className="text-center">
-            <AppIcon name={lesson.icon} className="mx-auto block h-11 w-11 text-ink" />
+            <AppIcon name={lesson.icon} className="mx-auto block h-11 w-11 text-bff-600" />
             <h1 className="mt-2 font-display text-xl font-bold text-ink">
               {zh ? '你找到测验啦！' : es ? '¡Encontraste el quiz!' : 'You found the quiz!'}
             </h1>
@@ -440,7 +440,7 @@ export default function QuizPlay() {
           </div>
           <p aria-live="polite" className="text-center">
             {myAnswer !== undefined && (
-              <span className="chip bg-paper-soft font-display text-sm text-ink">
+              <span className="chip bg-bff-50 font-display text-sm text-bff-700">
                 {zh ? '答案已锁定' : es ? 'Respuesta confirmada' : 'Answer locked in'}{' '}
                 <Lock className="inline h-4 w-4 align-[-0.15em]" aria-hidden="true" />{' '}
                 {zh ? '看大屏幕吧！' : es ? '¡Mira la pantalla grande!' : 'Watch the big screen!'}
@@ -485,7 +485,7 @@ export default function QuizPlay() {
             <strong>{q.options[q.answerIndex]}</strong>
           </p>
           {myRank > 0 && (
-            <p className="font-display text-lg font-bold text-ink">
+            <p className="font-display text-lg font-bold text-bff-700">
               {zh
                 ? `你目前排在第 ${myRank} 名，共 ${standings.length} 人，${myScore.toLocaleString()} 分`
                 : es
@@ -514,7 +514,7 @@ export default function QuizPlay() {
                   ? `Terminaste #${myRank || standings.length} de ${standings.length}`
                   : `You finished #${myRank || standings.length} of ${standings.length}`}
             </h1>
-            <p className="mt-1 font-display text-lg font-bold text-ink">
+            <p className="mt-1 font-display text-lg font-bold text-bff-700">
               {zh
                 ? `${myScore.toLocaleString()} 分`
                 : es
@@ -533,7 +533,7 @@ export default function QuizPlay() {
                     key={p.id}
                     className={`flex items-center justify-between rounded-xl px-3 py-2 text-sm ${
                       p.id === player.id
-                        ? 'bg-paper-soft font-bold text-ink'
+                        ? 'bg-bff-50 font-bold text-bff-800'
                         : 'bg-paper text-ink/75'
                     }`}
                   >

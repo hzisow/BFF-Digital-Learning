@@ -46,7 +46,7 @@ function SoundToggle() {
       aria-pressed={on}
       aria-label={on ? 'Mute sound effects' : 'Turn on sound effects'}
       title={on ? 'Sound on' : 'Sound off'}
-      className="flex h-8 w-8 items-center justify-center rounded-pill text-pebble transition-colors hover:bg-paper-soft hover:text-ink"
+      className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-800"
     >
       {on ? (
         <Volume2 className="h-[18px] w-[18px]" aria-hidden="true" />
@@ -59,13 +59,13 @@ function SoundToggle() {
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `rounded-lg px-3 py-1.5 font-display text-sm font-semibold transition ${
-    isActive ? 'bg-paper-soft text-ink' : 'text-pebble hover:bg-paper-soft hover:text-ink'
+    isActive ? 'bg-bff-50 text-bff-700' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
   }`
 
 // Larger tap targets for the mobile dropdown.
 const mobileLinkClass = ({ isActive }: { isActive: boolean }) =>
   `block rounded-xl px-4 py-3 font-display text-base font-semibold transition ${
-    isActive ? 'bg-paper-soft text-ink' : 'text-pebble hover:bg-paper-soft'
+    isActive ? 'bg-bff-50 text-bff-700' : 'text-slate-700 hover:bg-slate-100'
   }`
 
 // Simple inline SVG flags (not emoji, so they render identically everywhere).
@@ -121,7 +121,7 @@ function LangSwitcher() {
       aria-pressed={lang === l}
       aria-label={ariaFor[l]}
       className={`flex items-center gap-1.5 rounded-md px-2 py-1 font-display text-xs font-bold transition ${
-        lang === l ? 'bg-paper text-ink' : 'text-pebble hover:text-ink'
+        lang === l ? 'bg-white text-bff-700 shadow-sm' : 'text-slate-600 hover:text-slate-800'
       }`}
     >
       {flag}
@@ -130,7 +130,7 @@ function LangSwitcher() {
   )
   return (
     <div
-      className="ml-1 flex items-center gap-0.5 rounded-pill bg-paper-soft p-0.5"
+      className="ml-1 flex items-center gap-0.5 rounded-lg bg-slate-100 p-0.5"
       role="group"
       aria-label="Language / Idioma / 语言"
     >
@@ -323,10 +323,10 @@ export default function Layout() {
     <PrefetchNavLink
       chunk="student"
       to="/student"
-      className="inline-flex items-center gap-1.5 rounded-pill border border-stone px-3 py-1.5 font-body text-sm font-medium text-ink transition-colors hover:bg-paper-soft"
+      className="inline-flex items-center gap-1.5 rounded-[5px] border border-ink/15 px-2.5 py-1.5 font-display text-sm font-semibold text-ink transition-colors hover:bg-ink/5"
     >
       <span
-        className="inline-flex items-center gap-1 rounded-pill bg-paper-soft px-2 py-0.5 text-xs font-medium text-ink"
+        className="inline-flex items-center gap-1 rounded-[4px] bg-bff-100 px-1.5 py-0.5 text-xs font-bold text-bff-700"
         title={`Level ${level.level} · ${level.tier.name}`}
       >
         <AppIcon name={level.tier.icon} className="h-3.5 w-3.5" /> {level.level}
@@ -345,11 +345,11 @@ export default function Layout() {
     <div className="flex min-h-screen flex-col">
       <a
         href="#main-content"
-        className="sr-only z-50 rounded-lg bg-ink-deep px-4 py-2 font-display font-semibold text-white focus:not-sr-only focus:absolute focus:left-4 focus:top-4"
+        className="sr-only z-50 rounded-lg bg-bff-700 px-4 py-2 font-display font-semibold text-white focus:not-sr-only focus:absolute focus:left-4 focus:top-4"
       >
         {t('a11y.skip')}
       </a>
-      <header className="sticky top-0 z-40 border-b border-stone bg-paper/95 backdrop-blur">
+      <header className="sticky top-0 z-40 border-b-2 border-bff-600 bg-paper/95 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4">
           <Link
             to="/"
@@ -357,7 +357,7 @@ export default function Layout() {
             aria-label={t('a11y.home')}
           >
             <Logo className="h-9" />
-            <span className="hidden font-display text-lg font-medium text-ink sm:block">
+            <span className="hidden font-display text-lg font-bold text-bff-800 sm:block">
               BFF Classroom
             </span>
           </Link>
@@ -380,7 +380,7 @@ export default function Layout() {
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
               aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-              className="flex h-10 w-10 items-center justify-center rounded-lg border border-stone text-ink transition-colors hover:bg-paper-soft"
+              className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-700 transition-colors hover:bg-slate-100"
             >
               {menuOpen ? (
                 <X className="h-[22px] w-[22px]" aria-hidden="true" />
@@ -396,7 +396,7 @@ export default function Layout() {
           <nav
             id="mobile-menu"
             aria-label={t('a11y.primaryNav')}
-            className="animate-slide-up border-t border-stone bg-white px-4 py-3 md:hidden"
+            className="animate-slide-up border-t border-slate-200 bg-white px-4 py-3 md:hidden"
           >
             <div className="flex flex-col gap-1">
               <PrefetchNavLink chunk="lessons" to="/lessons" className={mobileLinkClass}>
@@ -452,7 +452,7 @@ export default function Layout() {
         </Suspense>
       </main>
 
-      <footer className="bg-bronze text-paper">
+      <footer className="bg-ink text-white">
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-4 py-10 text-center sm:flex-row sm:justify-between sm:text-left">
           <div className="flex items-center gap-3">
             <Logo reversed className="h-8" />
@@ -460,14 +460,14 @@ export default function Layout() {
               <p className="font-display text-sm font-bold text-white">
                 Building Financial Futures of America
               </p>
-              <p className="text-xs text-paper/60">{t('footer.tagline')}</p>
+              <p className="text-xs text-white/55">{t('footer.tagline')}</p>
             </div>
           </div>
           <a
             href="https://www.bffofamerica.org"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-paper/70 transition-colors hover:text-paper"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-bff-200 transition-colors hover:text-white"
           >
             bffofamerica.org
             <ArrowRight className="nudge h-4 w-4" aria-hidden="true" />

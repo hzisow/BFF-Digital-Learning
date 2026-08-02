@@ -615,7 +615,7 @@ function revealRowClasses(status: LineStatus): string {
     case 'false':
       return 'border-amber-400 bg-amber-50'
     case 'clean':
-      return 'border-stone bg-white'
+      return 'border-slate-200 bg-white'
   }
 }
 
@@ -703,10 +703,10 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
         <div className="card animate-pop-in space-y-4 text-center" role="status">
-          <GradeIcon className="mx-auto h-14 w-14 text-ink" aria-hidden="true" />
-          <h1 className="font-display text-3xl font-bold text-ink">{title}</h1>
-          <p className="font-display text-lg font-bold text-ink">{score} / 100</p>
-          <p className="mx-auto max-w-md text-sm text-ink">{blurb}</p>
+          <GradeIcon className="mx-auto h-14 w-14 text-bff-600" aria-hidden="true" />
+          <h1 className="font-display text-3xl font-bold text-slate-900">{title}</h1>
+          <p className="font-display text-lg font-bold text-bff-700">{score} / 100</p>
+          <p className="mx-auto max-w-md text-sm text-slate-700">{blurb}</p>
           <div className="mx-auto flex max-w-md flex-wrap justify-center gap-2 text-sm">
             <span className="chip bg-green-100 text-green-700">
               {zh
@@ -725,18 +725,18 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
           </div>
         </div>
 
-        <div className="card mt-4 animate-slide-up border-bff-200 bg-paper-soft">
-          <h2 className="font-display text-lg font-bold text-ink">
-            <Lightbulb className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-ink" aria-hidden="true" /> {zh ? '关键要点' : es ? 'La lección clave' : 'The key takeaway'}
+        <div className="card mt-4 animate-slide-up border-bff-200 bg-bff-50">
+          <h2 className="font-display text-lg font-bold text-slate-900">
+            <Lightbulb className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-bff-600" aria-hidden="true" /> {zh ? '关键要点' : es ? 'La lección clave' : 'The key takeaway'}
           </h2>
-          <p className="mt-1 text-sm font-semibold text-ink">
+          <p className="mt-1 text-sm font-semibold text-slate-700">
             {zh
               ? '一定要核对你的工资单——错误很常见，而且那是你的钱。'
               : es
               ? 'Siempre revisa tu comprobante de pago — los errores son comunes y es TU dinero.'
               : "Always check your paystub — errors are common and it's YOUR money."}
           </p>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ink">
+          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
             <li>{zh ? '用你的小时数 × 你的时薪。每一次都应该等于税前工资。' : es ? 'Multiplica tus horas × tu tarifa. Debe ser igual al pago bruto, siempre.' : 'Multiply your hours × your rate. It should equal gross pay, every time.'}</li>
             <li>{zh ? '记住固定税率：Social Security 是税前工资的 6.2%，Medicare 是 1.45%。' : es ? 'Conoce las tasas fijas: el Seguro Social es 6.2% y Medicare es 1.45% del bruto.' : 'Know the fixed rates: Social Security is 6.2% and Medicare is 1.45% of gross.'}</li>
             <li>{zh ? '任何你没书面同意的费用都要质疑——还有任何出现两次的税。' : es ? 'Cuestiona cualquier cuota que no acordaste por escrito — y cualquier impuesto que aparezca dos veces.' : "Question any fee you didn't agree to in writing — and any tax listed twice."}</li>
@@ -770,8 +770,8 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
             {zh ? '第' : es ? 'Ronda' : 'Round'} {roundIndex + 1} {zh ? `轮，共 ${ROUNDS.length} 轮` : es ? 'de' : 'of'} {zh ? '' : ROUNDS.length}
           </p>
           <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
-            <Receipt className="inline-block h-7 w-7 align-[-0.15em] text-ink" aria-hidden="true" />
-            <Search className="ml-1 inline-block h-7 w-7 align-[-0.15em] text-ink" aria-hidden="true" />{' '}
+            <Receipt className="inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />
+            <Search className="ml-1 inline-block h-7 w-7 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
             {zh ? (
               <>工资单<em>侦探</em></>
             ) : es ? (
@@ -781,12 +781,12 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
             )}
           </h1>
         </div>
-        <p className="chip bg-paper-soft text-ink" aria-live="polite">
+        <p className="chip bg-bff-50 text-bff-700" aria-live="polite">
           {zh ? '得分' : es ? 'Puntaje' : 'Score'}: {score}
         </p>
       </div>
 
-      <div className="card mt-4 border-bff-200 bg-paper-soft text-sm text-ink">
+      <div className="card mt-4 border-bff-200 bg-bff-50 text-sm text-slate-700">
         {zh ? (
           <p>
             三个青少年打工者都怀疑自己的工资算错了——而工资单上的错误比你想的要常见。<strong>把每一行看起来可疑的都点一下</strong>，然后提交。如果某一行的数字和它自己标签上的算法对不上，或者有一笔本不该出现的费用，就标记这一行。每抓到一个 +{POINTS_PER_CATCH}；每次误报 −{FALSE_ALARM_PENALTY}。
@@ -812,17 +812,17 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
 
       {/* Case briefing */}
       <div className="card mt-4">
-        <p className="text-sm text-ink">
-          <RoundIcon className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-ink" aria-hidden="true" />
+        <p className="text-sm text-slate-700">
+          <RoundIcon className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-bff-600" aria-hidden="true" />
           <strong>{zh ? '案件' : es ? 'Caso' : 'Case'} #{roundIndex + 1}: {round.worker}</strong> — {zh ? round.storyZh : es ? round.storyEs : round.story}
         </p>
       </div>
 
       {/* The paystub */}
       <section className="card mt-4 p-0" aria-label={zh ? `${round.worker} 的工资单` : es ? `Comprobante de pago de ${round.worker}` : `Paystub for ${round.worker}`}>
-        <div className="rounded-t-[7px] border-b border-stone bg-paper-soft px-5 py-4">
-          <p className="font-display text-base font-bold text-ink">{round.employer}</p>
-          <p className="text-sm text-pebble">
+        <div className="rounded-t-[7px] border-b border-slate-200 bg-slate-100 px-5 py-4">
+          <p className="font-display text-base font-bold text-slate-900">{round.employer}</p>
+          <p className="text-sm text-slate-600">
             {zh ? '员工' : es ? 'Empleado' : 'Employee'}: {round.worker} · {zh ? '工资周期' : es ? 'Periodo de pago' : 'Pay period'}: {zh ? round.periodZh : es ? round.periodEs : round.period}
           </p>
         </div>
@@ -830,7 +830,7 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
         <div className="space-y-4 p-5">
           {sections.map((section) => (
             <div key={section}>
-              <h2 className="font-display text-xs font-bold uppercase tracking-wide text-pebble">
+              <h2 className="font-display text-xs font-bold uppercase tracking-wide text-slate-600">
                 {zh ? SECTION_TITLES_ZH[section] : es ? SECTION_TITLES_ES[section] : SECTION_TITLES[section]}
               </h2>
               <ul className="mt-1.5 space-y-1.5">
@@ -849,11 +849,11 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
                         >
                           <div className="flex items-start justify-between gap-3">
                             <div>
-                              <p className="text-sm font-semibold text-ink">{zh ? line.labelZh : es ? line.labelEs : line.label}</p>
-                              {line.detail && <p className="text-xs text-pebble">{zh ? line.detailZh : es ? line.detailEs : line.detail}</p>}
+                              <p className="text-sm font-semibold text-slate-800">{zh ? line.labelZh : es ? line.labelEs : line.label}</p>
+                              {line.detail && <p className="text-xs text-slate-600">{zh ? line.detailZh : es ? line.detailEs : line.detail}</p>}
                             </div>
                             <div className="text-right">
-                              <p className="font-display text-sm font-bold text-ink">
+                              <p className="font-display text-sm font-bold text-slate-800">
                                 {line.amount}
                               </p>
                               {chip && (
@@ -861,7 +861,7 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
                               )}
                             </div>
                           </div>
-                          <p className="mt-2 border-t border-stone/70 pt-2 text-xs text-ink">
+                          <p className="mt-2 border-t border-slate-200/70 pt-2 text-xs text-slate-700">
                             {zh ? line.revealZh : es ? line.revealEs : line.reveal}
                           </p>
                         </li>
@@ -877,18 +877,18 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
                           className={`flex w-full items-center justify-between gap-3 rounded-xl border-2 px-4 py-3 text-left transition active:scale-[0.98] ${
                             on
                               ? 'border-red-500 bg-red-50 shadow-sm'
-                              : 'border-stone bg-white hover:border-bff-300'
+                              : 'border-slate-200 bg-white hover:border-bff-300'
                           }`}
                         >
                           <div>
-                            <p className="text-sm font-semibold text-ink">{zh ? line.labelZh : es ? line.labelEs : line.label}</p>
-                            {line.detail && <p className="text-xs text-pebble">{zh ? line.detailZh : es ? line.detailEs : line.detail}</p>}
+                            <p className="text-sm font-semibold text-slate-800">{zh ? line.labelZh : es ? line.labelEs : line.label}</p>
+                            {line.detail && <p className="text-xs text-slate-600">{zh ? line.detailZh : es ? line.detailEs : line.detail}</p>}
                           </div>
                           <div className="text-right">
-                            <p className="font-display text-sm font-bold text-ink">
+                            <p className="font-display text-sm font-bold text-slate-800">
                               {line.amount}
                             </p>
-                            <p className={`text-xs font-semibold ${on ? 'text-red-600' : 'text-pebble'}`}>
+                            <p className={`text-xs font-semibold ${on ? 'text-red-600' : 'text-slate-500'}`}>
                               {on ? (
                                 <>
                                   {zh ? '已标记' : es ? 'Marcado' : 'Flagged'}{' '}
@@ -912,10 +912,10 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
       {/* Reveal summary + controls */}
       {revealing ? (
         <div className="card mt-4 animate-pop-in text-center" role="status">
-          <h2 className="font-display text-lg font-bold text-ink">
+          <h2 className="font-display text-lg font-bold text-slate-900">
             {zh ? `第 ${roundIndex + 1} 轮判定` : es ? `Veredicto de la ronda ${roundIndex + 1}` : `Round ${roundIndex + 1} verdict`}
           </h2>
-          <p className="mt-1 text-sm text-ink">
+          <p className="mt-1 text-sm text-slate-700">
             {zh
               ? `你抓到了 ${round.errorCount} 个错误中的 ${roundResult.found} 个`
               : es
@@ -933,7 +933,7 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
                 ? ' sin ninguna falsa alarma'
                 : ' with zero false alarms'}
             {' — '}
-            <strong className="text-ink">
+            <strong className="text-bff-700">
               {roundResult.points >= 0 ? `+${roundResult.points}` : roundResult.points} {zh ? '分' : es ? 'puntos' : 'points'}
             </strong>
             {zh ? '。' : '.'}
@@ -959,7 +959,7 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
               : `Submit round — ${selected.size} line${selected.size === 1 ? '' : 's'} flagged`}
           </button>
           {selected.size === 0 && (
-            <p className="mt-2 text-sm text-pebble">
+            <p className="mt-2 text-sm text-slate-500">
               {zh
                 ? `至少标记一行可疑的才能提交。（这张工资单里藏着 ${round.errorCount} 个错误。）`
                 : es

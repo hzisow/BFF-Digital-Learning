@@ -125,7 +125,7 @@ function QuestionCard({
 
   return (
     <div className={`w-full ${compact ? '' : 'card'} text-left`}>
-      <p className="eyebrow text-ink">
+      <p className="eyebrow text-bff-600">
         <Pause className="h-3.5 w-3.5" aria-hidden="true" />{' '}
         {zh
           ? `视频检查 · 第 ${index + 1} / ${total} 题`
@@ -138,7 +138,7 @@ function QuestionCard({
       </p>
       <div role="group" aria-labelledby={questionId} className="mt-3 space-y-2">
         {q.options.map((opt, i) => {
-          let cls = 'border-ink/15 bg-white text-ink/80 hover:border-bff-400 hover:bg-paper-soft'
+          let cls = 'border-ink/15 bg-white text-ink/80 hover:border-bff-400 hover:bg-bff-50'
           if (revealed) {
             cls =
               i === q.answerIndex
@@ -507,7 +507,7 @@ export default function VideoCheckpoint({
             <div
               ref={panelRef}
               tabIndex={-1}
-              className="relative flex h-full w-full animate-slide-in-up flex-col overflow-y-auto border-l-2 border-ink bg-white/95 p-4 shadow-2xl backdrop-blur sm:w-[62%] sm:max-w-sm sm:animate-slide-in-right sm:p-5"
+              className="relative flex h-full w-full animate-slide-in-up flex-col overflow-y-auto border-l-2 border-bff-600 bg-white/95 p-4 shadow-2xl backdrop-blur sm:w-[62%] sm:max-w-sm sm:animate-slide-in-right sm:p-5"
             >
               <div className="my-auto">
                 <QuestionCard

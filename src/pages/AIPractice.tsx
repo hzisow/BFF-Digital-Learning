@@ -138,7 +138,7 @@ export default function AIPractice() {
         aria-hidden="true"
       />
       <div className="relative z-[1]">
-        <p className="eyebrow text-paper/70">
+        <p className="eyebrow text-bff-300">
           <span className="eyebrow-line" aria-hidden="true" />
           <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
           {zh ? 'AI 练习' : es ? 'Práctica con IA' : 'AI Practice'}
@@ -197,7 +197,7 @@ export default function AIPractice() {
   // ---- Weak-topic summary (shown before generating) ----
   const topicSummary = (
     <div className="card accent-left mb-8 pl-7">
-      <p className="eyebrow text-ink">
+      <p className="eyebrow text-bff-600">
         <span className="eyebrow-line" aria-hidden="true" />
         {usingFallback
           ? zh
@@ -328,12 +328,12 @@ export default function AIPractice() {
       <div className="mx-auto max-w-2xl px-4 py-10">
         {header}
         <div className="panel p-8 pt-9 text-center shadow-card">
-          <p className="eyebrow justify-center text-ink">
+          <p className="eyebrow justify-center text-bff-600">
             <span className="eyebrow-line" aria-hidden="true" />
             {zh ? '练习完成' : es ? 'Práctica completada' : 'Practice complete'}
             <span className="eyebrow-line" aria-hidden="true" />
           </p>
-          <p className="mt-4 font-display text-6xl font-extrabold text-ink">{pct}%</p>
+          <p className="mt-4 font-display text-6xl font-extrabold text-bff-600">{pct}%</p>
           <p role="status" className="mt-2 leading-relaxed text-ink/70">
             {zh
               ? `你答对了 ${questions.length} 道题中的 ${correctCount} 道。`
@@ -379,7 +379,7 @@ export default function AIPractice() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
       {header}
-      <p className="eyebrow text-ink">
+      <p className="eyebrow text-bff-600">
         <span className="eyebrow-line" aria-hidden="true" />
         {questionLabel}
       </p>
@@ -391,7 +391,7 @@ export default function AIPractice() {
             const isAnswer = i === q.answerIndex
             const isChosen = i === chosen
             let cls =
-              'border-ink/15 bg-white text-ink hover:border-bff-400 hover:bg-paper-soft'
+              'border-ink/15 bg-white text-ink hover:border-bff-400 hover:bg-bff-50'
             let badgeCls = 'border-ink/20 bg-paper text-ink/70'
             if (revealed) {
               if (isAnswer) {
@@ -429,7 +429,7 @@ export default function AIPractice() {
                 disabled={revealed}
                 onClick={() => pick(i)}
                 aria-label={marker ? `${opt} — ${marker}` : undefined}
-                className={`flex w-full items-start justify-between gap-3 rounded-[8px] border-2 px-4 py-3 text-left font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 disabled:cursor-default ${cls}`}
+                className={`flex w-full items-start justify-between gap-3 rounded-[8px] border-2 px-4 py-3 text-left font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-bff-400 focus-visible:ring-offset-2 disabled:cursor-default ${cls}`}
               >
                 <span className="flex items-start gap-3">
                   <span

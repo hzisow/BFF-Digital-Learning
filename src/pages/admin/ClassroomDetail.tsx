@@ -54,7 +54,7 @@ import {
 function ProgressChip({ row, zh, es }: { row: ProgressRow | undefined; zh: boolean; es: boolean }) {
   if (!row) {
     return (
-      <span className="chip bg-paper-soft text-pebble">
+      <span className="chip bg-slate-100 text-slate-600">
         <span aria-hidden="true">—</span>
         <span className="sr-only">{zh ? '未开始' : es ? 'Sin comenzar' : 'Not started'}</span>
       </span>
@@ -153,11 +153,11 @@ export default function ClassroomDetail() {
     return (
       <div className="mx-auto max-w-lg px-4 py-16">
         <div className="card text-center">
-          <Search className="mx-auto h-9 w-9 text-pebble" aria-hidden="true" />
-          <h1 className="mt-3 font-display text-2xl font-bold text-ink">
+          <Search className="mx-auto h-9 w-9 text-slate-400" aria-hidden="true" />
+          <h1 className="mt-3 font-display text-2xl font-bold text-slate-900">
             {zh ? '未找到班级' : es ? 'Aula no encontrada' : 'Classroom not found'}
           </h1>
-          <p className="mt-2 text-pebble">
+          <p className="mt-2 text-slate-600">
             {zh
               ? '该班级不存在、已归档，或属于其他导师。'
               : es
@@ -452,7 +452,7 @@ export default function ClassroomDetail() {
   }
 
   const lightBtn =
-    'inline-flex items-center gap-2 rounded-[5px] border border-white/25 px-4 py-2 text-sm font-display font-semibold text-white/90 transition-[transform,background-color,color] duration-150 hover:bg-white/10 hover:text-white active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-ink disabled:cursor-not-allowed disabled:opacity-50'
+    'inline-flex items-center gap-2 rounded-[5px] border border-white/25 px-4 py-2 text-sm font-display font-semibold text-white/90 transition-[transform,background-color,color] duration-150 hover:bg-white/10 hover:text-white active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-bff-400 focus-visible:ring-offset-2 focus-visible:ring-offset-ink disabled:cursor-not-allowed disabled:opacity-50'
 
   return (
     <div>
@@ -475,7 +475,7 @@ export default function ClassroomDetail() {
           </Link>
           <div className="mt-5 flex flex-wrap items-start justify-between gap-4">
             <div className="min-w-0">
-              <p className="eyebrow text-paper/70">
+              <p className="eyebrow text-bff-300">
                 <span className="eyebrow-line" aria-hidden="true" />
                 {zh ? '班级' : es ? 'Aula' : 'Classroom'}
               </p>
@@ -577,12 +577,12 @@ export default function ClassroomDetail() {
         {/* ---------- Assignments ---------- */}
         <section>
           <h2 className="flex items-center gap-2 font-display text-xl font-bold text-ink">
-            <ClipboardList className="h-5 w-5 text-ink" aria-hidden="true" />
+            <ClipboardList className="h-5 w-5 text-bff-600" aria-hidden="true" />
             {zh ? '作业' : es ? 'Tareas' : 'Assignments'}
           </h2>
 
           {assignments.length === 0 ? (
-            <p className="card mt-4 text-sm text-pebble">
+            <p className="card mt-4 text-sm text-slate-500">
               {zh
                 ? '还没有布置任何内容——在下方选择一个活动，它就会显示在每位学生的主页上。'
                 : es
@@ -595,23 +595,23 @@ export default function ClassroomDetail() {
                 const meta = getActivity(a.activity_slug)
                 return (
                   <li key={a.id} className="card flex items-start gap-3 p-4">
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-paper-soft text-ink">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-bff-50 text-bff-700">
                       <AppIcon name={meta?.icon ?? 'help'} className="h-5 w-5" />
                     </span>
                     <div className="min-w-0 flex-1">
-                      <p className="font-display font-semibold text-ink">
+                      <p className="font-display font-semibold text-slate-900">
                         {meta?.title ?? a.activity_slug}
                       </p>
-                      {a.note && <p className="text-sm text-pebble">{a.note}</p>}
+                      {a.note && <p className="text-sm text-slate-600">{a.note}</p>}
                       {a.due_at && (
-                        <p className="mt-0.5 text-xs font-semibold text-ink">
+                        <p className="mt-0.5 text-xs font-semibold text-bff-700">
                           {zh ? '截止 ' : es ? 'Fecha límite ' : 'Due '}{formatDate(a.due_at)}
                         </p>
                       )}
                     </div>
                     <button
                       type="button"
-                      className="btn-ghost px-2 py-1 text-sm text-pebble hover:text-red-600"
+                      className="btn-ghost px-2 py-1 text-sm text-slate-500 hover:text-red-600"
                       onClick={() => void handleUnassign(a)}
                       aria-label={zh ? `移除作业 ${meta?.title ?? a.activity_slug}` : es ? `Quitar la tarea ${meta?.title ?? a.activity_slug}` : `Remove assignment ${meta?.title ?? a.activity_slug}`}
                     >
@@ -626,19 +626,19 @@ export default function ClassroomDetail() {
           {/* Assign an activity */}
           <form
             onSubmit={handleAssign}
-            className="card mt-4 flex flex-col gap-3 border-2 border-dashed border-bff-200 bg-paper-soft/40"
+            className="card mt-4 flex flex-col gap-3 border-2 border-dashed border-bff-200 bg-bff-50/40"
           >
-            <h3 className="font-display font-bold text-ink">
+            <h3 className="font-display font-bold text-slate-900">
               {zh ? '布置一项活动' : es ? 'Asignar una actividad' : 'Assign an activity'}
             </h3>
             {unassigned.length === 0 ? (
-              <p className="text-sm text-pebble">
+              <p className="text-sm text-slate-500">
                 {zh ? '所有活动都已布置——太棒了！' : es ? 'Todas las actividades ya están asignadas. ¡Genial!' : 'Every activity is already assigned — nice!'}
               </p>
             ) : (
               <>
                 <label className="block">
-                  <span className="mb-1 block text-sm font-semibold text-ink">
+                  <span className="mb-1 block text-sm font-semibold text-slate-700">
                     {zh ? '活动' : es ? 'Actividad' : 'Activity'}<span className="text-red-500"> *</span>
                   </span>
                   <select
@@ -671,9 +671,9 @@ export default function ClassroomDetail() {
                   </select>
                 </label>
                 <label className="block">
-                  <span className="mb-1 block text-sm font-semibold text-ink">
+                  <span className="mb-1 block text-sm font-semibold text-slate-700">
                     {zh ? '给学生的备注' : es ? 'Nota para los estudiantes' : 'Note for students'}{' '}
-                    <span className="font-normal text-pebble">{zh ? '（可选）' : es ? '(opcional)' : '(optional)'}</span>
+                    <span className="font-normal text-slate-500">{zh ? '（可选）' : es ? '(opcional)' : '(optional)'}</span>
                   </span>
                   <input
                     className="input"
@@ -684,8 +684,8 @@ export default function ClassroomDetail() {
                   />
                 </label>
                 <label className="block">
-                  <span className="mb-1 block text-sm font-semibold text-ink">
-                    {zh ? '截止日期' : es ? 'Fecha límite' : 'Due date'} <span className="font-normal text-pebble">{zh ? '（可选）' : es ? '(opcional)' : '(optional)'}</span>
+                  <span className="mb-1 block text-sm font-semibold text-slate-700">
+                    {zh ? '截止日期' : es ? 'Fecha límite' : 'Due date'} <span className="font-normal text-slate-500">{zh ? '（可选）' : es ? '(opcional)' : '(optional)'}</span>
                   </span>
                   <input
                     className="input"
@@ -717,7 +717,7 @@ export default function ClassroomDetail() {
         {/* ---------- Live game ---------- */}
         <section>
           <h2 className="flex items-center gap-2 font-display text-xl font-bold text-ink">
-            <Play className="h-5 w-5 text-ink" aria-hidden="true" />
+            <Play className="h-5 w-5 text-bff-600" aria-hidden="true" />
             {zh ? '实时游戏' : es ? 'Juego en vivo' : 'Live game'}
           </h2>
           <div className="mt-4">
@@ -730,7 +730,7 @@ export default function ClassroomDetail() {
       <section className="mt-12">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="flex items-center gap-2 font-display text-xl font-bold text-ink">
-            <Users className="h-5 w-5 text-ink" aria-hidden="true" />
+            <Users className="h-5 w-5 text-bff-600" aria-hidden="true" />
             {zh ? '学生与进度' : es ? 'Estudiantes y progreso' : 'Students & progress'}
           </h2>
           {students.length > 0 && (
@@ -748,37 +748,37 @@ export default function ClassroomDetail() {
         {students.length > 0 && (
           <dl className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
             <div className="card p-4">
-              <dt className="text-xs font-semibold uppercase tracking-wide text-pebble">
+              <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                 {zh ? '学生' : es ? 'Estudiantes' : 'Students'}
               </dt>
-              <dd className="mt-1 font-display text-2xl font-bold text-ink">
+              <dd className="mt-1 font-display text-2xl font-bold text-slate-900">
                 {students.length}
               </dd>
             </div>
             <div className="card p-4">
-              <dt className="text-xs font-semibold uppercase tracking-wide text-pebble">
+              <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                 {zh ? '本周活跃' : es ? 'Activos esta semana' : 'Active this week'}
               </dt>
-              <dd className="mt-1 font-display text-2xl font-bold text-ink">
+              <dd className="mt-1 font-display text-2xl font-bold text-slate-900">
                 {activeStudentIds.size}
-                <span className="text-base font-semibold text-pebble">
+                <span className="text-base font-semibold text-slate-400">
                   /{students.length}
                 </span>
               </dd>
             </div>
             <div className="card p-4">
-              <dt className="text-xs font-semibold uppercase tracking-wide text-pebble">
+              <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                 {zh ? '完成率' : es ? 'Finalización' : 'Completion'}
               </dt>
-              <dd className="mt-1 font-display text-2xl font-bold text-ink">
+              <dd className="mt-1 font-display text-2xl font-bold text-slate-900">
                 {assignments.length === 0 ? '—' : `${completionPct}%`}
               </dd>
             </div>
             <div className="card p-4">
-              <dt className="text-xs font-semibold uppercase tracking-wide text-pebble">
+              <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                 {zh ? '班级平均分' : es ? 'Puntuación media de la clase' : 'Class avg score'}
               </dt>
-              <dd className="mt-1 font-display text-2xl font-bold text-ink">
+              <dd className="mt-1 font-display text-2xl font-bold text-slate-900">
                 {classAvg == null ? '—' : classAvg}
               </dd>
             </div>
@@ -787,13 +787,13 @@ export default function ClassroomDetail() {
 
         {students.length === 0 ? (
           <div className="card mt-4 text-center">
-            <Backpack className="mx-auto h-8 w-8 text-pebble" aria-hidden="true" />
-            <p className="mt-2 font-display font-semibold text-ink">
+            <Backpack className="mx-auto h-8 w-8 text-slate-400" aria-hidden="true" />
+            <p className="mt-2 font-display font-semibold text-slate-700">
               {zh ? '还没有学生' : es ? 'Aún no hay estudiantes' : 'No students yet'}
             </p>
-            <p className="mx-auto mt-1 max-w-md text-sm text-pebble">
+            <p className="mx-auto mt-1 max-w-md text-sm text-slate-500">
               {zh ? '分享班级代码 ' : es ? 'Comparte el código de clase ' : 'Share the class code '}
-              <span className="font-mono font-bold tracking-widest text-ink">
+              <span className="font-mono font-bold tracking-widest text-bff-700">
                 {classroom.code}
               </span>{' '}
               {zh
@@ -808,9 +808,9 @@ export default function ClassroomDetail() {
             {mergeFrom && (
               <div
                 role="status"
-                className="mb-3 flex flex-wrap items-center justify-between gap-3 rounded-[8px] border border-bff-300 bg-paper-soft px-4 py-3 text-sm"
+                className="mb-3 flex flex-wrap items-center justify-between gap-3 rounded-[8px] border border-bff-300 bg-bff-50 px-4 py-3 text-sm"
               >
-                <span className="text-ink">
+                <span className="text-bff-900">
                   {zh
                     ? `选择要把“${mergeFrom.nickname}”并入的同学。两条记录中较好的成绩会保留。`
                     : es
@@ -832,7 +832,7 @@ export default function ClassroomDetail() {
                       : `Students in ${classroom.name} and their progress on each assigned activity`}
                 </caption>
                 <thead>
-                  <tr className="border-b border-stone bg-paper-soft text-xs uppercase tracking-wide text-pebble">
+                  <tr className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
                     <th scope="col" className="px-4 py-3 font-semibold">
                       {zh ? '学生' : es ? 'Estudiante' : 'Student'}
                     </th>
@@ -861,10 +861,10 @@ export default function ClassroomDetail() {
                   {students.map((s) => {
                     const byActivity = progressByStudent.get(s.id)
                     return (
-                      <tr key={s.id} className="border-b border-stone last:border-0">
+                      <tr key={s.id} className="border-b border-slate-100 last:border-0">
                         <th
                           scope="row"
-                          className="whitespace-nowrap px-4 py-3 text-left font-semibold text-ink"
+                          className="whitespace-nowrap px-4 py-3 text-left font-semibold text-slate-800"
                         >
                           {editingId === s.id ? (
                             <span className="flex items-center gap-1.5">
@@ -891,7 +891,7 @@ export default function ClassroomDetail() {
                               <button
                                 type="button"
                                 onClick={() => setEditingId(null)}
-                                className="rounded p-1 text-pebble hover:bg-paper-soft"
+                                className="rounded p-1 text-slate-500 hover:bg-slate-100"
                                 aria-label={zh ? '取消' : es ? 'Cancelar' : 'Cancel'}
                               >
                                 <X className="h-4 w-4" aria-hidden="true" />
@@ -903,7 +903,7 @@ export default function ClassroomDetail() {
                               type="button"
                               onClick={() => void handleMergeInto(s)}
                               disabled={rosterBusy}
-                              className="rounded-[5px] border border-bff-400 bg-paper-soft px-2 py-1 text-left text-ink hover:bg-paper-soft"
+                              className="rounded-[5px] border border-bff-400 bg-bff-50 px-2 py-1 text-left text-bff-800 hover:bg-bff-100"
                             >
                               {zh ? `并入“${s.nickname}”` : es ? `Combinar con ${s.nickname}` : `Merge into ${s.nickname}`}
                             </button>
@@ -918,7 +918,7 @@ export default function ClassroomDetail() {
                                       setEditName(s.nickname)
                                       setEditingId(s.id)
                                     }}
-                                    className="rounded p-1 text-pebble hover:bg-paper-soft hover:text-ink"
+                                    className="rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
                                     aria-label={
                                       zh ? `重命名 ${s.nickname}` : es ? `Renombrar a ${s.nickname}` : `Rename ${s.nickname}`
                                     }
@@ -928,7 +928,7 @@ export default function ClassroomDetail() {
                                   <button
                                     type="button"
                                     onClick={() => setMergeFrom(s)}
-                                    className="rounded p-1 text-pebble hover:bg-paper-soft hover:text-ink"
+                                    className="rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
                                     aria-label={
                                       zh ? `合并 ${s.nickname}` : es ? `Combinar a ${s.nickname}` : `Merge ${s.nickname}`
                                     }
@@ -945,7 +945,7 @@ export default function ClassroomDetail() {
                                   <button
                                     type="button"
                                     onClick={() => void handleRemove(s)}
-                                    className="rounded p-1 text-pebble hover:bg-red-50 hover:text-red-600"
+                                    className="rounded p-1 text-slate-400 hover:bg-red-50 hover:text-red-600"
                                     aria-label={
                                       zh ? `移除 ${s.nickname}` : es ? `Quitar a ${s.nickname}` : `Remove ${s.nickname}`
                                     }
@@ -957,7 +957,7 @@ export default function ClassroomDetail() {
                             </span>
                           )}
                         </th>
-                        <td className="whitespace-nowrap px-4 py-3 text-pebble">
+                        <td className="whitespace-nowrap px-4 py-3 text-slate-500">
                           {formatDate(s.created_at)}
                         </td>
                         {assignments.map((a) => (
@@ -972,7 +972,7 @@ export default function ClassroomDetail() {
               </table>
             </div>
             {assignments.length === 0 && (
-              <p className="mt-2 text-sm text-pebble">
+              <p className="mt-2 text-sm text-slate-500">
                 {zh
                   ? '在上方布置一项活动，即可在此开始追踪进度。'
                   : es
@@ -989,16 +989,16 @@ export default function ClassroomDetail() {
                   return (
                     <div key={sm.slug} className="card p-4">
                       <div className="flex items-baseline justify-between gap-3">
-                        <p className="flex items-center gap-2 font-display text-sm font-semibold text-ink">
-                          <AppIcon name={sm.icon} className="h-4 w-4 shrink-0 text-ink" />
+                        <p className="flex items-center gap-2 font-display text-sm font-semibold text-slate-800">
+                          <AppIcon name={sm.icon} className="h-4 w-4 shrink-0 text-bff-600" />
                           {sm.title}
                         </p>
-                        <p className="whitespace-nowrap text-xs text-pebble">
+                        <p className="whitespace-nowrap text-xs text-slate-500">
                           {sm.completed}/{sm.total} {zh ? '已完成' : es ? 'completadas' : 'completed'}
                           {sm.avg != null && (zh ? `，平均分 ${sm.avg}` : es ? `, puntuación media ${sm.avg}` : `, avg score ${sm.avg}`)}
                         </p>
                       </div>
-                      <div className="mt-2 h-2 overflow-hidden rounded-full bg-paper-soft">
+                      <div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-100">
                         <div
                           className="h-full rounded-full bg-bff-500 transition-all"
                           style={{ width: `${pct}%` }}
@@ -1020,7 +1020,7 @@ export default function ClassroomDetail() {
                   <span className="eyebrow-line" aria-hidden="true" />
                   {zh ? '逐题结果' : es ? 'Resultados por pregunta' : 'Question by question'}
                 </p>
-                <p className="mt-2 text-sm text-pebble">
+                <p className="mt-2 text-sm text-slate-600">
                   {zh
                     ? '看看全班在每道测验题上的表现，决定下节课该重点复习什么。'
                     : es
@@ -1032,15 +1032,15 @@ export default function ClassroomDetail() {
                     const meta = getActivity(a.activity_slug)
                     const open = breakdownSlug === a.activity_slug
                     return (
-                      <div key={a.id} className="rounded-[8px] border border-stone">
+                      <div key={a.id} className="rounded-[8px] border border-slate-200">
                         <button
                           type="button"
                           onClick={() => setBreakdownSlug(open ? null : a.activity_slug)}
                           aria-expanded={open}
-                          className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left font-display text-sm font-semibold text-ink hover:bg-paper-soft"
+                          className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left font-display text-sm font-semibold text-slate-800 hover:bg-slate-50"
                         >
                           <span className="flex items-center gap-2">
-                            <AppIcon name={meta?.icon ?? 'help'} className="h-4 w-4 shrink-0 text-ink" />
+                            <AppIcon name={meta?.icon ?? 'help'} className="h-4 w-4 shrink-0 text-bff-600" />
                             {meta?.title ?? a.activity_slug}
                           </span>
                           <ChevronDown
@@ -1049,7 +1049,7 @@ export default function ClassroomDetail() {
                           />
                         </button>
                         {open && (
-                          <div className="border-t border-stone px-4 pb-4">
+                          <div className="border-t border-slate-200 px-4 pb-4">
                             <QuestionBreakdown slug={a.activity_slug} rows={progress} zh={zh} es={es} />
                           </div>
                         )}

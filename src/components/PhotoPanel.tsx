@@ -42,44 +42,44 @@ export default function PhotoPanel({
   return (
     <div
       aria-hidden="true"
-      className={`relative h-full w-full overflow-hidden bg-bronze ${className}`}
+      className={`relative h-full w-full overflow-hidden bg-ink ${className}`}
     >
       {/* Three genuinely different drawings. Repeating one motif across
           adjacent panels is what made the placeholder read as a bug rather than
           a treatment. */}
       <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" className="h-full w-full">
         {motif === 'rings' && (
-          <g fill="none" stroke="#e8c98a">
+          <g fill="none" stroke="#26a4dd">
             <circle cx="200" cy="150" r="52" strokeOpacity="0.34" />
             <circle cx="200" cy="150" r="98" strokeOpacity="0.24" />
             <circle cx="200" cy="150" r="144" strokeOpacity="0.16" />
             <circle cx="200" cy="150" r="190" strokeOpacity="0.09" />
             <circle cx="200" cy="150" r="236" strokeOpacity="0.05" />
-            <circle cx="200" cy="150" r="14" stroke="#c9a86a" strokeOpacity="0.5" />
+            <circle cx="200" cy="150" r="14" stroke="#f0b35a" strokeOpacity="0.5" />
           </g>
         )}
         {motif === 'bars' && (
           <g>
-            <g fill="#e8c98a">
+            <g fill="#26a4dd">
               <rect x="46" y="188" width="46" height="112" fillOpacity="0.16" />
               <rect x="112" y="142" width="46" height="158" fillOpacity="0.22" />
               <rect x="178" y="96" width="46" height="204" fillOpacity="0.3" />
             </g>
-            <rect x="244" y="52" width="46" height="248" fill="#c9a86a" fillOpacity="0.26" />
-            <rect x="310" y="118" width="46" height="182" fill="#e8c98a" fillOpacity="0.14" />
+            <rect x="244" y="52" width="46" height="248" fill="#f0b35a" fillOpacity="0.26" />
+            <rect x="310" y="118" width="46" height="182" fill="#26a4dd" fillOpacity="0.14" />
           </g>
         )}
         {motif === 'grid' && (
-          <g stroke="#faf8f5" strokeOpacity="0.08" fill="none">
+          <g stroke="#f5f3ec" strokeOpacity="0.08" fill="none">
             {Array.from({ length: 9 }, (_, i) => (
               <line key={`v${i}`} x1={i * 50} y1="0" x2={i * 50} y2="300" />
             ))}
             {Array.from({ length: 7 }, (_, i) => (
               <line key={`h${i}`} x1="0" y1={i * 50} x2="400" y2={i * 50} />
             ))}
-            <rect x="100" y="50" width="100" height="100" fill="#e8c98a" fillOpacity="0.2" stroke="none" />
-            <rect x="200" y="150" width="50" height="50" fill="#c9a86a" fillOpacity="0.28" stroke="none" />
-            <rect x="250" y="100" width="50" height="50" fill="#e8c98a" fillOpacity="0.12" stroke="none" />
+            <rect x="100" y="50" width="100" height="100" fill="#26a4dd" fillOpacity="0.2" stroke="none" />
+            <rect x="200" y="150" width="50" height="50" fill="#f0b35a" fillOpacity="0.28" stroke="none" />
+            <rect x="250" y="100" width="50" height="50" fill="#26a4dd" fillOpacity="0.12" stroke="none" />
           </g>
         )}
       </svg>

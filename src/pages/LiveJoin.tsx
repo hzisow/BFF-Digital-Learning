@@ -85,11 +85,11 @@ export default function LiveJoin() {
           <div className="text-center">
             <span
               aria-hidden="true"
-              className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-ink-deep text-white"
+              className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-bff-600 text-white"
             >
               <Radio className="h-7 w-7" />
             </span>
-            <p className="eyebrow mt-4 justify-center text-paper/70">
+            <p className="eyebrow mt-4 justify-center text-bff-300">
               <span className="eyebrow-line" aria-hidden="true" />
               {zh ? '实时游戏' : es ? 'Juego en vivo' : 'Live game'}
               <span className="eyebrow-line" aria-hidden="true" />
@@ -110,7 +110,7 @@ export default function LiveJoin() {
               )}
             </h1>
             <p className="mx-auto mt-3 flex max-w-sm items-start justify-center gap-2 text-sm leading-relaxed text-white/70">
-              <Users className="mt-0.5 h-4 w-4 shrink-0 text-paper/70" aria-hidden="true" />
+              <Users className="mt-0.5 h-4 w-4 shrink-0 text-bff-300" aria-hidden="true" />
               <span>
                 {zh
                   ? '你的导师正在大屏幕上主持一个游戏——输入屏幕上显示的代码就能加入。'
@@ -190,7 +190,7 @@ export default function LiveJoin() {
 
       <p className="mt-6 text-center text-xs text-ink/60">
         {zh ? '没有游戏代码？ ' : es ? '¿No tienes código del juego? ' : 'No game code? '}
-        <Link to="/activities" className="font-semibold text-ink hover:text-ink">
+        <Link to="/activities" className="font-semibold text-bff-700 hover:text-bff-800">
           {zh ? '自己玩任意一个游戏' : es ? 'Juega cualquier juego por tu cuenta' : 'Play any game solo'}
         </Link>
         .

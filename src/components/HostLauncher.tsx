@@ -67,7 +67,7 @@ export default function HostLauncher({ classroomId }: { classroomId: string | nu
   return (
     <div className="panel p-6">
       <h3 className="flex items-center gap-2 font-display text-lg font-bold text-ink">
-        <Radio className="h-5 w-5 text-ink" aria-hidden="true" /> {zh ? '主持一场实时游戏' : es ? 'Organiza un juego en vivo' : 'Host a live game'}
+        <Radio className="h-5 w-5 text-bff-600" aria-hidden="true" /> {zh ? '主持一场实时游戏' : es ? 'Organiza un juego en vivo' : 'Host a live game'}
       </h3>
       <p className="mt-1 text-sm text-ink/60">
         {zh

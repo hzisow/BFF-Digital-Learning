@@ -91,7 +91,7 @@ export default function ClassLeaderboard({
                   key={r.student_id}
                   className={`flex items-center gap-3 rounded-[6px] border-l-4 px-3 py-2 ${
                     isMe
-                      ? 'border-l-bff-600 bg-paper-soft ring-1 ring-ink'
+                      ? 'border-l-bff-600 bg-bff-50 ring-1 ring-bff-200'
                       : 'border-l-transparent odd:bg-ink/[0.03]'
                   }`}
                 >
@@ -110,7 +110,7 @@ export default function ClassLeaderboard({
                   <span className="min-w-0 flex-1 truncate font-display font-semibold text-ink">
                     {r.nickname}
                     {isMe && (
-                      <span className="ml-1.5 text-xs font-semibold text-ink">
+                      <span className="ml-1.5 text-xs font-semibold text-bff-600">
                         ({zh ? '你' : es ? 'tú' : 'you'})
                       </span>
                     )}
@@ -118,7 +118,7 @@ export default function ClassLeaderboard({
                       {info.tier.name}
                     </span>
                   </span>
-                  <span className="shrink-0 font-display text-sm font-bold tabular-nums text-ink">
+                  <span className="shrink-0 font-display text-sm font-bold tabular-nums text-bff-700">
                     {r.xp.toLocaleString()} XP
                   </span>
                 </li>

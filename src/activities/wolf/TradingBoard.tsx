@@ -59,7 +59,7 @@ export default function TradingBoard({ stage, cash, holdings, onTrade, locked }:
         </div>
         <div className="text-right">
           <p className="text-xs font-semibold uppercase tracking-wide text-ink/60">{zh ? '投资组合价值' : es ? 'Valor de la cartera' : 'Portfolio value'}</p>
-          <p className="font-display text-xl font-bold text-ink">{money(total)}</p>
+          <p className="font-display text-xl font-bold text-bff-700">{money(total)}</p>
         </div>
       </div>
 
@@ -86,15 +86,15 @@ export default function TradingBoard({ stage, cash, holdings, onTrade, locked }:
           </ul>
         </div>
       ) : (
-        <div className="card space-y-2 border-bff-200 bg-paper-soft">
-          <h2 className="flex items-center gap-1.5 font-display text-sm font-bold uppercase tracking-wide text-ink">
+        <div className="card space-y-2 border-bff-200 bg-bff-50">
+          <h2 className="flex items-center gap-1.5 font-display text-sm font-bold uppercase tracking-wide text-bff-700">
             <Search className="h-4 w-4 shrink-0" aria-hidden="true" />
             {zh ? '市场信息' : es ? 'Información del mercado' : 'Market information'}
           </h2>
           <ul className="grid gap-1.5 sm:grid-cols-2">
             {(zh ? MARKET_HINTS_ZH : es ? MARKET_HINTS_ES : MARKET_HINTS).map((h, i) => (
               <li key={h} className="flex items-start gap-1.5 text-sm text-ink/75">
-                <GameIcon name={MARKET_HINT_ICONS[i]} className="mt-0.5 h-4 w-4 shrink-0 text-ink" />
+                <GameIcon name={MARKET_HINT_ICONS[i]} className="mt-0.5 h-4 w-4 shrink-0 text-bff-600" />
                 <span>{h}</span>
               </li>
             ))}
@@ -119,7 +119,7 @@ export default function TradingBoard({ stage, cash, holdings, onTrade, locked }:
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-start gap-2">
-                  <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-paper-soft text-ink">
+                  <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-bff-50 text-bff-700">
                     <GameIcon name={c.icon} className="h-4 w-4" />
                   </span>
                   <div>

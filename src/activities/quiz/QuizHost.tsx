@@ -43,7 +43,7 @@ const OPTION_COLORS = [
 ]
 
 const BIG_BUTTON =
-  'rounded-2xl bg-white px-8 py-4 font-display text-2xl font-bold text-ink shadow-lg transition hover:bg-paper-soft active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50'
+  'rounded-2xl bg-white px-8 py-4 font-display text-2xl font-bold text-bff-900 shadow-lg transition hover:bg-bff-50 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50'
 
 function optionLetter(i: number): string {
   return String.fromCharCode(65 + i)
@@ -57,7 +57,7 @@ function optionLetter(i: number): string {
 function RankMark({ index, className = 'h-6 w-6' }: { index: number; className?: string }) {
   if (index === 0) return <Crown className={`${className} text-gold-400`} aria-hidden="true" />
   if (index === 1) return <Medal className={`${className} text-white`} aria-hidden="true" />
-  if (index === 2) return <Award className={`${className} text-paper/70`} aria-hidden="true" />
+  if (index === 2) return <Award className={`${className} text-bff-200`} aria-hidden="true" />
   return <>{index + 1}.</>
 }
 
@@ -226,7 +226,7 @@ export default function QuizHost() {
     return (
       <HostShell>
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
-          <Monitor className="mx-auto block h-11 w-11 text-ink" aria-hidden="true" />
+          <Monitor className="mx-auto block h-11 w-11 text-bff-600" aria-hidden="true" />
           <h1 className="font-display text-xl font-bold text-ink">
             {zh ? '测验主持人屏幕' : es ? 'Pantalla del anfitrión del quiz' : 'Quiz host screen'}
           </h1>
@@ -255,7 +255,7 @@ export default function QuizHost() {
     return (
       <HostShell>
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
-          <HelpCircle className="mx-auto block h-11 w-11 text-ink" aria-hidden="true" />
+          <HelpCircle className="mx-auto block h-11 w-11 text-bff-600" aria-hidden="true" />
           <h1 className="font-display text-xl font-bold text-ink">
             {zh ? '无法加载测验' : es ? 'No se pudo cargar el quiz' : 'Could not load the quiz'}
           </h1>
@@ -271,7 +271,7 @@ export default function QuizHost() {
   if (!adminReady || !session) {
     return (
       <HostShell>
-        <p className="mt-32 text-center font-display text-2xl font-semibold text-paper/70">
+        <p className="mt-32 text-center font-display text-2xl font-semibold text-bff-200">
           {zh ? '正在准备测验……' : es ? 'Preparando el quiz…' : 'Warming up the quiz…'}
         </p>
       </HostShell>
@@ -292,7 +292,7 @@ export default function QuizHost() {
     return (
       <HostShell code={session.code}>
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
-          <BookOpen className="mx-auto block h-11 w-11 text-ink" aria-hidden="true" />
+          <BookOpen className="mx-auto block h-11 w-11 text-bff-600" aria-hidden="true" />
           <h1 className="font-display text-xl font-bold text-ink">
             {zh
               ? '这节课暂时无法使用'
@@ -339,7 +339,7 @@ export default function QuizHost() {
       {/* Lobby */}
       {session.state === 'lobby' && (
         <div className="flex flex-col items-center gap-8 pt-8 text-center">
-          <p className="eyebrow justify-center text-paper/70">
+          <p className="eyebrow justify-center text-bff-300">
             <span className="eyebrow-line" aria-hidden="true" />
             {zh ? '实时测验' : es ? 'QUIZ EN VIVO' : 'LIVE QUIZ'}
           </p>
@@ -347,7 +347,7 @@ export default function QuizHost() {
             <AppIcon name={lesson.icon} className="inline h-9 w-9 align-[-0.12em] sm:h-11 sm:w-11" />{' '}
             {zh ? '实时测验' : es ? 'Quiz en vivo' : 'Live Quiz'} — {lesson.title}
           </h1>
-          <p className="text-xl text-paper/70">
+          <p className="text-xl text-bff-200">
             {zh
               ? '打开网站，进入“活动”，选择“实时测验”，然后输入这个代码'
               : es
@@ -378,7 +378,7 @@ export default function QuizHost() {
                 </span>
               ))}
               {players.length === 0 && (
-                <span className="text-lg text-paper/70">
+                <span className="text-lg text-bff-300">
                   {zh
                     ? '正在等待第一位玩家加入……'
                     : es
@@ -398,7 +398,7 @@ export default function QuizHost() {
       {session.state === 'question' && (
         <div className="space-y-6 pt-2">
           <div className="flex items-center justify-between gap-6">
-            <p className="font-display text-xl font-bold uppercase tracking-wide text-paper/70">
+            <p className="font-display text-xl font-bold uppercase tracking-wide text-bff-200">
               {zh
                 ? `第 ${qIndex + 1} 题，共 ${total} 题`
                 : es
@@ -419,7 +419,7 @@ export default function QuizHost() {
           <h1 className="font-display text-4xl font-bold leading-tight sm:text-5xl">
             {q.question}
           </h1>
-          <p className="text-xl text-paper/70">
+          <p className="text-xl text-bff-200">
             {zh
               ? '在你自己的设备上作答吧！'
               : es
@@ -440,7 +440,7 @@ export default function QuizHost() {
             ))}
           </div>
           <ControlBar>
-            <p className="mr-auto hidden text-paper/70 sm:block">
+            <p className="mr-auto hidden text-bff-300 sm:block">
               {zh
                 ? '计时器只是为了营造气氛——等大家准备好了再揭晓答案吧。'
                 : es
@@ -458,7 +458,7 @@ export default function QuizHost() {
       {/* Reveal */}
       {session.state === 'reveal' && (
         <div className="space-y-6 pt-2">
-          <p className="font-display text-xl font-bold uppercase tracking-wide text-paper/70">
+          <p className="font-display text-xl font-bold uppercase tracking-wide text-bff-200">
             {zh
               ? `第 ${qIndex + 1} 题，共 ${total} 题 —— 答案是……`
               : es
@@ -499,14 +499,14 @@ export default function QuizHost() {
           </div>
           <div className="grid gap-6 lg:grid-cols-[1fr_minmax(300px,360px)]">
             <div className="rounded-2xl bg-white/10 p-6">
-              <h2 className="mb-3 font-display text-lg font-bold uppercase tracking-wide text-paper/70">
+              <h2 className="mb-3 font-display text-lg font-bold uppercase tracking-wide text-bff-200">
                 <Lightbulb className="inline h-5 w-5 align-[-0.15em]" aria-hidden="true" />{' '}
                 {zh ? '为什么' : es ? 'Por qué' : 'Why'}
               </h2>
               <p className="text-2xl font-semibold leading-snug">{q.explanation}</p>
             </div>
             <div className="h-fit rounded-2xl bg-white/10 p-6">
-              <h2 className="mb-4 font-display text-lg font-bold uppercase tracking-wide text-paper/70">
+              <h2 className="mb-4 font-display text-lg font-bold uppercase tracking-wide text-bff-200">
                 <Trophy className="inline h-5 w-5 align-[-0.15em]" aria-hidden="true" />{' '}
                 {zh ? '排行榜' : es ? 'Tabla de posiciones' : 'Leaderboard'}
               </h2>
@@ -532,7 +532,7 @@ export default function QuizHost() {
                   </li>
                 ))}
                 {standings.length === 0 && (
-                  <li className="text-lg text-paper/70">
+                  <li className="text-lg text-bff-300">
                     {zh ? '还没有玩家……' : es ? 'Aún no hay jugadores…' : 'No players yet…'}
                   </li>
                 )}
@@ -594,7 +594,7 @@ export default function QuizHost() {
             ))}
           </div>
           {standings.length === 0 && (
-            <p className="text-2xl text-paper/70">
+            <p className="text-2xl text-bff-200">
               {zh
                 ? '这一轮没有人参与——好安静的教室！'
                 : es
@@ -619,7 +619,7 @@ export default function QuizHost() {
               ))}
             </ol>
           )}
-          <p className="text-xl text-paper/70">
+          <p className="text-xl text-bff-200">
             {zh ? '大家答得都很棒！' : es ? '¡Excelente quiz, todos!' : 'Great quizzing, everyone!'}{' '}
             <PartyPopper className="inline h-6 w-6 align-[-0.15em] text-gold-400" aria-hidden="true" />
           </p>

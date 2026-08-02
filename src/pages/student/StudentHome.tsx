@@ -44,7 +44,7 @@ function ProgressChip({
     )
   }
   return (
-    <span className="chip bg-paper-soft text-pebble">{zh ? '未开始' : es ? 'Sin empezar' : 'Not started'}</span>
+    <span className="chip bg-slate-100 text-slate-600">{zh ? '未开始' : es ? 'Sin empezar' : 'Not started'}</span>
   )
 }
 
@@ -217,7 +217,7 @@ export default function StudentHome() {
         <div className="relative z-[1]">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
-              <p className="eyebrow text-paper/70">
+              <p className="eyebrow text-bff-200">
                 <span className="eyebrow-line" aria-hidden="true" />
                 {zh ? '你的主页' : es ? 'Tu panel' : 'Your dashboard'}
               </p>
@@ -237,7 +237,7 @@ export default function StudentHome() {
             <button
               type="button"
               onClick={handleLeave}
-              className="inline-flex items-center justify-center gap-2 rounded-[5px] px-4 py-2 font-display text-sm font-semibold text-white/70 transition-colors duration-150 hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+              className="inline-flex items-center justify-center gap-2 rounded-[5px] px-4 py-2 font-display text-sm font-semibold text-white/70 transition-colors duration-150 hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-bff-400 focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
             >
               {zh ? '离开班级' : es ? 'Salir de la clase' : 'Leave class'}
             </button>
@@ -249,20 +249,20 @@ export default function StudentHome() {
               <p className="font-display text-3xl font-extrabold text-gold-400 sm:text-4xl">
                 {xp.toLocaleString()}
               </p>
-              <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.15em] text-paper/70">XP</p>
+              <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.15em] text-bff-200">XP</p>
             </div>
             <div>
               <p className="font-display text-3xl font-extrabold text-white sm:text-4xl">{level}</p>
-              <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.15em] text-paper/70">
+              <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.15em] text-bff-200">
                 {zh ? '等级' : es ? 'Nivel' : 'Level'}
               </p>
             </div>
             <div>
               <p className="font-display text-3xl font-extrabold text-white sm:text-4xl">
                 {completedCount}
-                <span className="text-xl font-bold text-paper/70">/{allActivities.length}</span>
+                <span className="text-xl font-bold text-bff-200">/{allActivities.length}</span>
               </p>
-              <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.15em] text-paper/70">
+              <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.15em] text-bff-200">
                 {zh ? '已完成' : es ? 'Completadas' : 'Completed'}
               </p>
             </div>
@@ -279,7 +279,7 @@ export default function StudentHome() {
           ) : (
             <Flame className="h-6 w-6 shrink-0 text-bff-500" aria-hidden="true" />
           )}
-          <p className="font-display font-semibold text-ink">
+          <p className="font-display font-semibold text-slate-700">
             {completedCount > 0
               ? zh
                 ? `你已经完成了 ${completedCount} / ${allActivities.length} 个活动`
@@ -383,10 +383,10 @@ export default function StudentHome() {
           !loadError && (
             <div className="card mt-4 text-center">
               <Umbrella className="mx-auto h-10 w-10 text-bff-500" strokeWidth={1.5} aria-hidden="true" />
-              <p className="mt-3 font-display font-semibold text-ink">
+              <p className="mt-3 font-display font-semibold text-slate-700">
                 {zh ? '目前还没有布置作业——去下面探索吧！' : es ? 'Nada asignado todavía — ¡explora abajo!' : 'Nothing assigned yet — explore below!'}
               </p>
-              <p className="mt-1 text-sm text-pebble">
+              <p className="mt-1 text-sm text-slate-500">
                 {zh
                   ? '随着你的班级学习 BFF Academy，你的导师会在这里发布课程和游戏。'
                   : es
@@ -418,12 +418,12 @@ export default function StudentHome() {
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3">
-                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-paper-soft text-ink">
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-bff-50 text-bff-700">
                         <AppIcon name={activity.icon} className="h-6 w-6" />
                       </span>
                       <div>
-                        <p className="font-display font-bold text-ink">{local.title}</p>
-                        <p className="text-xs font-semibold text-pebble">
+                        <p className="font-display font-bold text-slate-900">{local.title}</p>
+                        <p className="text-xs font-semibold text-slate-500">
                           {kindLabel(activity.kind, lang)} · ~{activity.durationMin} {zh ? '分钟' : 'min'}
                         </p>
                       </div>
@@ -431,7 +431,7 @@ export default function StudentHome() {
                     <ProgressChip progress={p} es={es} zh={zh} />
                   </div>
                   {asg.note && (
-                    <p className="mt-3 flex items-start gap-2 rounded-xl bg-paper-soft px-4 py-3 text-sm text-ink">
+                    <p className="mt-3 flex items-start gap-2 rounded-xl bg-bff-50 px-4 py-3 text-sm text-bff-900">
                       <MessageSquare className="mt-0.5 h-4 w-4 shrink-0 text-bff-500" aria-hidden="true" />
                       <span>
                         <span className="font-semibold">{zh ? '来自你的导师：' : es ? 'De tu mentor:' : 'From your mentor:'}</span> {asg.note}
@@ -439,7 +439,7 @@ export default function StudentHome() {
                     </p>
                   )}
                   <div className="mt-4 flex items-center justify-between gap-2">
-                    <span className="text-xs font-semibold text-pebble">
+                    <span className="text-xs font-semibold text-slate-500">
                       {due ? (
                         // "Fri, Aug 7" reads like a fact. "Due tomorrow" reads
                         // like a deadline — and the exact date is still there
@@ -451,7 +451,7 @@ export default function StudentHome() {
                             <Clock className="h-3 w-3" aria-hidden="true" />
                             {dueLabel(due, lang)}
                           </span>
-                          <span className="text-pebble">{formatDue(asg.due_at!, es, zh)}</span>
+                          <span className="text-slate-400">{formatDue(asg.due_at!, es, zh)}</span>
                         </span>
                       ) : zh ? (
                         '没有截止日期'
@@ -522,16 +522,16 @@ export default function StudentHome() {
                 className="card lift group flex flex-col p-5"
               >
                 <div className="flex items-start justify-between gap-2">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-paper-soft text-ink">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-bff-50 text-bff-700">
                     <AppIcon name={a.icon} className="h-6 w-6" />
                   </span>
-                  <span className="chip bg-paper-soft text-ink">{kindLabel(a.kind, lang)}</span>
+                  <span className="chip bg-bff-50 text-bff-700">{kindLabel(a.kind, lang)}</span>
                 </div>
-                <p className="mt-3 font-display font-bold text-ink group-hover:text-ink">
+                <p className="mt-3 font-display font-bold text-slate-900 group-hover:text-bff-700">
                   {local.title}
                 </p>
                 <div className="mt-3 flex items-center justify-between gap-2">
-                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-pebble">
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500">
                     <Clock className="h-3.5 w-3.5" aria-hidden="true" /> ~{a.durationMin} {zh ? '分钟' : 'min'}
                   </span>
                   <ProgressChip progress={p} es={es} zh={zh} />

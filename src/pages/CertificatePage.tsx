@@ -191,7 +191,7 @@ export default function CertificatePage() {
               : 'for successfully completing the BFF Academy financial literacy curriculum — all 8 lessons spanning earning, budgeting, saving & investing, credit, insurance, financial decision-making, planning, and consumer protection.'}
           </p>
           {avgScore != null && (
-            <p className="mt-5 inline-flex items-center gap-2 font-display font-bold text-ink">
+            <p className="mt-5 inline-flex items-center gap-2 font-display font-bold text-bff-700">
               <Trophy className="h-4 w-4" aria-hidden="true" />
               {zh ? `测验平均分：${avgScore}%` : es ? `Promedio de exámenes: ${avgScore}%` : `Quiz average: ${avgScore}%`}
             </p>

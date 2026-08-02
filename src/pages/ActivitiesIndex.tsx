@@ -32,7 +32,7 @@ function ProgressChip({
     )
   }
   return (
-    <span className="chip bg-paper-soft text-pebble">
+    <span className="chip bg-slate-100 text-slate-600">
       {zh ? '未开始' : es ? 'Sin empezar' : 'Not started'}
     </span>
   )
@@ -65,7 +65,7 @@ export default function ActivitiesIndex() {
           style={{ width: 200, height: 200, bottom: -110, right: 70 }}
         />
         <div className="relative z-[1] max-w-2xl">
-          <p className="eyebrow text-paper/70">
+          <p className="eyebrow text-bff-300">
             <Gamepad2 className="h-3.5 w-3.5" aria-hidden="true" />
             {zh ? '学习，但很好玩' : es ? 'Aprender, pero divertido' : 'Learning, but fun'}
             <span className="eyebrow-line" aria-hidden="true" />
@@ -96,12 +96,12 @@ export default function ActivitiesIndex() {
           return (
             <Link key={a.slug} to={a.path} className="card lift group flex flex-col">
               <div className="flex items-start justify-between gap-3">
-                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-paper-soft text-ink">
+                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-bff-50 text-bff-700">
                   <AppIcon name={a.icon} className="h-6 w-6" />
                 </span>
-                <span className="chip bg-paper-soft text-ink">{kindLabel(a.kind, lang)}</span>
+                <span className="chip bg-bff-50 text-bff-700">{kindLabel(a.kind, lang)}</span>
               </div>
-              <h2 className="mt-4 font-display text-lg font-bold text-ink group-hover:text-ink">
+              <h2 className="mt-4 font-display text-lg font-bold text-ink group-hover:text-bff-700">
                 {title}
               </h2>
               <p className="mt-2 flex-1 text-sm leading-relaxed text-ink/60">

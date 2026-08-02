@@ -77,7 +77,7 @@ function Shell({ code, children }: { code: string; children: ReactNode }) {
       <header className="flex items-center justify-between border-b border-ink/10 bg-white px-4 py-3">
         <Logo className="h-8" />
         {code && (
-          <span className="chip bg-paper-soft font-display tracking-widest text-ink">
+          <span className="chip bg-bff-50 font-display tracking-widest text-bff-700">
             {zh ? '游戏' : es ? 'JUEGO' : 'GAME'} {code}
           </span>
         )}
@@ -204,7 +204,7 @@ export default function CoPlayPlayer() {
     return (
       <Shell code={code}>
         <div className="card mx-auto mt-10 max-w-md space-y-3 text-center">
-          <HelpCircle className="mx-auto block h-11 w-11 text-ink" aria-hidden="true" />
+          <HelpCircle className="mx-auto block h-11 w-11 text-bff-600" aria-hidden="true" />
           <h1 className="font-display text-xl font-bold text-ink">{zh ? '嗯，这没能成功' : es ? 'Mmm, eso no funcionó' : 'Hmm, that did not work'}</h1>
           <p className="text-sm text-ink/70">{loadError}</p>
           <Link to="/" className="btn-primary">
@@ -243,9 +243,9 @@ export default function CoPlayPlayer() {
         <div className="card mx-auto mt-10 max-w-md space-y-4">
           <div className="text-center">
             {activity ? (
-              <AppIcon name={activity.icon} className="mx-auto block h-11 w-11 text-ink" />
+              <AppIcon name={activity.icon} className="mx-auto block h-11 w-11 text-bff-600" />
             ) : (
-              <Gamepad2 className="mx-auto block h-11 w-11 text-ink" aria-hidden="true" />
+              <Gamepad2 className="mx-auto block h-11 w-11 text-bff-600" aria-hidden="true" />
             )}
             <h1 className="mt-2 font-display text-xl font-bold text-ink">
               {zh ? '你找到游戏啦！' : es ? '¡Encontraste el juego!' : 'You found the game!'}
@@ -294,10 +294,10 @@ export default function CoPlayPlayer() {
     return (
       <Shell code={session.code}>
         <div className="card animate-pop-in mt-6 space-y-4 text-center" role="status">
-          <Flag className="mx-auto block h-14 w-14 text-ink" aria-hidden="true" />
+          <Flag className="mx-auto block h-14 w-14 text-bff-600" aria-hidden="true" />
           <h1 className="font-display text-2xl font-bold text-ink">{zh ? '游戏结束！' : es ? '¡Juego terminado!' : 'Game over!'}</h1>
           {myRank > 0 ? (
-            <p className="font-display text-lg font-bold text-ink">
+            <p className="font-display text-lg font-bold text-bff-700">
               {zh ? `你在 ${standings.length} 人中排名第 ${myRank}` : es ? `Terminaste en el puesto #${myRank} de ${standings.length}` : `You finished #${myRank} of ${standings.length}`}
               {myScore !== null && (
                 <>
@@ -375,7 +375,7 @@ export default function CoPlayPlayer() {
           </h1>
           <p className="text-ink/70">{zh ? '在大屏幕上看排行榜吧。' : es ? 'Mira la tabla de posiciones en la pantalla grande.' : 'Watch the leaderboard on the big screen.'}</p>
           {myRank > 0 && (
-            <p className="font-display text-lg font-bold text-ink">
+            <p className="font-display text-lg font-bold text-bff-700">
               {zh ? `你目前在 ${standings.length} 人中排名第 ${myRank}` : es ? `Actualmente estás en el puesto #${myRank} de ${standings.length}` : `You're currently #${myRank} of ${standings.length}`}
             </p>
           )}

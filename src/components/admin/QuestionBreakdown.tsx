@@ -27,7 +27,7 @@ function Bar({ stat }: { stat: QuestionStat }) {
   // backed up by the number and the label, never on its own.
   const tone = pct < 50 ? 'bg-red-500' : pct < 70 ? 'bg-amber-500' : 'bg-green-500'
   return (
-    <div className="h-2 w-full overflow-hidden rounded-full bg-stone">
+    <div className="h-2 w-full overflow-hidden rounded-full bg-slate-200">
       <div className={`h-full rounded-full ${tone}`} style={{ width: `${pct}%` }} />
     </div>
   )
@@ -77,7 +77,7 @@ export default function QuestionBreakdown({
   const stats = questionStats(lesson, rows)
   if (stats.length === 0) {
     return (
-      <p className="mt-4 text-sm text-pebble">
+      <p className="mt-4 text-sm text-slate-500">
         {zh
           ? '还没有学生完成这节课的测验。'
           : es
@@ -117,12 +117,12 @@ export default function QuestionBreakdown({
         {stats.map((s) => {
           const pct = correctPct(s)
           return (
-            <li key={s.index} className="rounded-[8px] border border-stone p-4">
+            <li key={s.index} className="rounded-[8px] border border-slate-200 p-4">
               <div className="flex items-start justify-between gap-4">
-                <p className="font-semibold text-ink">
+                <p className="font-semibold text-slate-800">
                   {s.index + 1}. {s.question}
                 </p>
-                <span className="shrink-0 whitespace-nowrap font-display text-sm font-bold text-ink">
+                <span className="shrink-0 whitespace-nowrap font-display text-sm font-bold text-slate-700">
                   {pct == null
                     ? zh
                       ? '无作答'
@@ -150,8 +150,8 @@ export default function QuestionBreakdown({
                         isAnswer
                           ? 'bg-green-50 text-green-900'
                           : n > 0
-                            ? 'bg-paper-soft text-ink'
-                            : 'text-pebble'
+                            ? 'bg-slate-50 text-slate-700'
+                            : 'text-slate-400'
                       }`}
                     >
                       <span className="flex min-w-0 items-center gap-2">
@@ -169,7 +169,7 @@ export default function QuestionBreakdown({
               </ul>
 
               {s.topWrong && s.topWrong.count > 1 && (
-                <p className="mt-2 text-xs text-pebble">
+                <p className="mt-2 text-xs text-slate-500">
                   {zh
                     ? `最常见的错误答案：“${s.topWrong.option}”（${s.topWrong.count} 人）`
                     : es

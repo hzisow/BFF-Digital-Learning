@@ -8,7 +8,7 @@ export default function NotFound() {
   const zh = lang === 'zh'
   return (
     <div className="mx-auto max-w-xl px-4 py-24 text-center">
-      <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-[10px] bg-ink text-paper/70">
+      <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-[10px] bg-ink text-bff-300">
         <Compass className="h-8 w-8" aria-hidden="true" />
       </span>
       <p className="eyebrow mt-8 justify-center">404</p>

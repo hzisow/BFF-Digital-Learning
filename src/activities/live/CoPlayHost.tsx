@@ -15,7 +15,7 @@ import { AppIcon } from '../../lib/icons'
 import { Award, Crown, Flag, HelpCircle, Medal, Play, Puzzle, Trophy } from 'lucide-react'
 
 const BIG_BUTTON =
-  'rounded-2xl bg-white px-8 py-4 font-display text-2xl font-bold text-ink shadow-lg transition hover:bg-paper-soft active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50'
+  'rounded-2xl bg-white px-8 py-4 font-display text-2xl font-bold text-bff-900 shadow-lg transition hover:bg-bff-50 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50'
 
 function errorMessage(err: unknown, es: boolean, zh: boolean): string {
   return err instanceof Error
@@ -48,7 +48,7 @@ function rankPlayers(players: LivePlayer[]): LivePlayer[] {
 function RankMark({ index, className = 'h-6 w-6' }: { index: number; className?: string }) {
   if (index === 0) return <Crown className={`${className} text-gold-400`} aria-hidden="true" />
   if (index === 1) return <Medal className={`${className} text-white`} aria-hidden="true" />
-  if (index === 2) return <Award className={`${className} text-paper/70`} aria-hidden="true" />
+  if (index === 2) return <Award className={`${className} text-bff-200`} aria-hidden="true" />
   return <>{index + 1}.</>
 }
 
@@ -141,7 +141,7 @@ export default function CoPlayHost() {
     return (
       <HostShell>
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
-          <HelpCircle className="mx-auto block h-11 w-11 text-ink" aria-hidden="true" />
+          <HelpCircle className="mx-auto block h-11 w-11 text-bff-600" aria-hidden="true" />
           <h1 className="font-display text-xl font-bold text-ink">{zh ? '无法加载游戏' : es ? 'No se pudo cargar el juego' : 'Could not load the game'}</h1>
           <p className="text-sm text-ink/70">{error}</p>
           <Link to="/" className="btn-primary">
@@ -155,7 +155,7 @@ export default function CoPlayHost() {
   if (!session) {
     return (
       <HostShell>
-        <p className="mt-32 text-center font-display text-2xl font-semibold text-paper/70">
+        <p className="mt-32 text-center font-display text-2xl font-semibold text-bff-200">
           {zh ? '正在准备游戏…' : es ? 'Preparando el juego…' : 'Warming up the game…'}
         </p>
       </HostShell>
@@ -168,7 +168,7 @@ export default function CoPlayHost() {
     return (
       <HostShell code={session.code}>
         <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
-          <Puzzle className="mx-auto block h-11 w-11 text-ink" aria-hidden="true" />
+          <Puzzle className="mx-auto block h-11 w-11 text-bff-600" aria-hidden="true" />
           <h1 className="font-display text-xl font-bold text-ink">{zh ? '未知的游戏' : es ? 'Juego desconocido' : 'Unknown game'}</h1>
           <p className="text-sm text-ink/70">
             {zh ? (
@@ -203,7 +203,7 @@ export default function CoPlayHost() {
       {/* Lobby */}
       {session.state === 'lobby' && (
         <div className="flex flex-col items-center gap-8 pt-8 text-center">
-          <p className="eyebrow justify-center text-paper/70">
+          <p className="eyebrow justify-center text-bff-300">
             <span className="eyebrow-line" aria-hidden="true" />
             {zh ? '实时对战' : es ? 'JUEGO EN VIVO' : 'LIVE GAME'}
           </p>
@@ -211,7 +211,7 @@ export default function CoPlayHost() {
             <AppIcon name={activity.icon} className="inline h-9 w-9 align-[-0.12em] sm:h-11 sm:w-11" />{' '}
             {activity.title}
           </h1>
-          <p className="text-xl text-paper/70">{zh ? '拿起一台设备，用游戏代码加入' : es ? 'Toma un dispositivo y únete con el código del juego' : 'Grab a device and join with the game code'}</p>
+          <p className="text-xl text-bff-200">{zh ? '拿起一台设备，用游戏代码加入' : es ? 'Toma un dispositivo y únete con el código del juego' : 'Grab a device and join with the game code'}</p>
           <p className="font-display text-7xl font-bold tracking-widest sm:text-8xl md:text-9xl">
             {session.code}
           </p>
@@ -245,7 +245,7 @@ export default function CoPlayHost() {
                 </span>
               ))}
               {players.length === 0 && (
-                <span className="text-lg text-paper/70">{zh ? '正在等待第一位玩家加入…' : es ? 'Esperando a que se una el primer jugador…' : 'Waiting for the first player to join…'}</span>
+                <span className="text-lg text-bff-300">{zh ? '正在等待第一位玩家加入…' : es ? 'Esperando a que se una el primer jugador…' : 'Waiting for the first player to join…'}</span>
               )}
             </div>
           </div>
@@ -273,7 +273,7 @@ export default function CoPlayHost() {
             {zh ? `${players.length} 人中已有 ${finishedCount} 人完成` : es ? `${finishedCount} de ${players.length} terminaron` : `${finishedCount} of ${players.length} finished`}
           </p>
           <div className="rounded-2xl bg-white/10 p-6" aria-live="polite" aria-label={zh ? '实时排行榜' : es ? 'Tabla de posiciones en vivo' : 'Live leaderboard'}>
-            <h2 className="mb-4 font-display text-lg font-bold uppercase tracking-wide text-paper/70">
+            <h2 className="mb-4 font-display text-lg font-bold uppercase tracking-wide text-bff-200">
               <Trophy className="inline h-5 w-5 align-[-0.15em]" aria-hidden="true" /> {zh ? '实时排行榜' : es ? 'Tabla de posiciones en vivo' : 'Live leaderboard'}
             </h2>
             <ol className="space-y-2.5">
@@ -299,18 +299,18 @@ export default function CoPlayHost() {
                     {p.finished && p.score !== null ? (
                       `${p.score} pts`
                     ) : (
-                      <span className="text-paper/70">{zh ? '游戏中…' : es ? 'jugando…' : 'playing…'}</span>
+                      <span className="text-bff-300">{zh ? '游戏中…' : es ? 'jugando…' : 'playing…'}</span>
                     )}
                   </span>
                 </li>
               ))}
               {standings.length === 0 && (
-                <li className="text-lg text-paper/70">{zh ? '还没有玩家…' : es ? 'Aún no hay jugadores…' : 'No players yet…'}</li>
+                <li className="text-lg text-bff-300">{zh ? '还没有玩家…' : es ? 'Aún no hay jugadores…' : 'No players yet…'}</li>
               )}
             </ol>
           </div>
           <ControlBar>
-            <p className="mr-auto hidden text-paper/70 sm:block">
+            <p className="mr-auto hidden text-bff-300 sm:block">
               {zh
                 ? '每个人都按自己的节奏玩——等大家都玩完了再结束游戏。'
                 : es
@@ -357,7 +357,7 @@ export default function CoPlayHost() {
             ))}
           </div>
           {standings.length === 0 && (
-            <p className="text-2xl text-paper/70">{zh ? '这一轮没有玩家！' : es ? '¡No hubo jugadores esta ronda!' : 'No players this round!'}</p>
+            <p className="text-2xl text-bff-200">{zh ? '这一轮没有玩家！' : es ? '¡No hubo jugadores esta ronda!' : 'No players this round!'}</p>
           )}
           {standings.length > 3 && (
             <ol className="w-full max-w-xl space-y-2">
