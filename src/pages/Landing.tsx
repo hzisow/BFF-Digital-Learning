@@ -78,10 +78,10 @@ export default function Landing() {
             </h1>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/70">
               {zh
-                ? `BFF Academy 是一门 ${LESSON_COUNT} 节课的免费课程，由青少年为青少年打造。在课堂上跟导师一起学，或者自己随时学。`
+                ? `BFF Academy 是一门 ${LESSON_COUNT} 节课的免费课程，由高中生为高中生打造。在课堂上跟导师一起学，或者自己随时学。`
                 : es
-                  ? `BFF Academy es un curso gratuito de ${LESSON_COUNT} lecciones, hecho por jóvenes, para jóvenes. Tómalo en clase con tu mentor, o por tu cuenta.`
-                  : `BFF Academy is a free ${LESSON_COUNT}-lesson course, built by youth, for youth. Take it in class with a mentor, or on your own.`}
+                  ? `BFF Academy es un curso gratuito de ${LESSON_COUNT} lecciones, hecho por estudiantes de secundaria para estudiantes de secundaria. Tómalo en clase con tu mentor, o por tu cuenta.`
+                  : `BFF Academy is a free ${LESSON_COUNT}-lesson course, built by high schoolers for high schoolers. Take it in class with a mentor, or on your own.`}
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Link to={primaryTo} className="btn-primary w-full px-7 py-3 sm:w-auto">
@@ -167,27 +167,27 @@ export default function Landing() {
             <h2 className="mt-3 max-w-lg font-display text-2xl font-bold text-ink sm:text-3xl">
               {zh ? (
                 <>
-                  青少年教青少年<em>理财</em>。
+                  高中生教高中生<em>理财</em>。
                 </>
               ) : es ? (
                 <>
-                  Jóvenes enseñando <em>dinero</em> a jóvenes.
+                  Estudiantes de secundaria enseñando <em>dinero</em> a estudiantes de secundaria.
                 </>
               ) : (
                 <>
-                  Youth teaching youth about <em>money</em>.
+                  High schoolers teaching high schoolers about <em>money</em>.
                 </>
               )}
             </h2>
             <p className="mt-4 max-w-xl leading-relaxed text-ink/65">
               {zh
-                ? 'BFF of America 是一家由学生创办的 501(c)(3) 非营利组织。我们的导师走进课堂为青少年免费授课，BFF Classroom 把同一套课程搬到了网上，永久免费。'
+                ? 'BFF of America 是一家由学生创办的 501(c)(3) 非营利组织。我们的导师走进初高中课堂免费授课，BFF Classroom 把同一套课程搬到了网上，永久免费。'
                 : es
-                  ? 'BFF of America es una organización 501(c)(3) fundada por estudiantes. Nuestros mentores enseñan gratis a jóvenes en las aulas, y BFF Classroom lleva ese mismo programa a internet, gratis, para siempre.'
-                  : 'BFF of America is a student-founded 501(c)(3) nonprofit. Our mentors teach youth for free in classrooms, and BFF Classroom puts that same program online, free, forever.'}
+                  ? 'BFF of America es una organización 501(c)(3) fundada por estudiantes. Nuestros mentores dan clases gratis en escuelas medias y secundarias, y BFF Classroom lleva ese mismo programa a internet, gratis, para siempre.'
+                  : 'BFF of America is a student-founded 501(c)(3) nonprofit. Our mentors teach for free in middle and high school classrooms, and BFF Classroom puts that same program online, free, forever.'}
             </p>
             <a
-              href="https://www.bffofamerica.org"
+              href="https://www.bffofamerica.org/join-the-cause"
               target="_blank"
               rel="noreferrer"
               className="btn-secondary mt-7"
