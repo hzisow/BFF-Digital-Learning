@@ -121,9 +121,10 @@ These were each arrived at the hard way; changing them will reintroduce a bug.
 ### Clean URLs need three things together
 `BrowserRouter` alone breaks on GitHub Pages. All three are required:
 1. `BrowserRouter basename={import.meta.env.BASE_URL}` (`src/main.tsx`)
-2. An **absolute** Vite `base` (`/BFF-Digital-Learning/`). A relative `./` base
-   makes a deep link resolve assets against the wrong folder and 404.
-   Override with `VITE_BASE=/` for a custom domain.
+2. An **absolute** Vite `base`. It is now `/`, because the site is served from
+   the root of a custom domain. A relative `./` base makes a deep link resolve
+   assets against the wrong folder and 404. Set
+   `VITE_BASE=/BFF-Digital-Learning/` to build for the old github.io URL.
 3. `dist/404.html` — a copy of `index.html`, emitted by a small plugin in
    `vite.config.ts`. Pages serves it for unknown paths, so the SPA boots and the
    router renders the route with the URL preserved.
@@ -326,6 +327,69 @@ Note that `font-display` now means *serif* everywhere it is applied — includin
 buttons, nav and small caps chips, which were checked on desktop and mobile and
 hold up. If a future change wants sans UI chrome, add a third `ui` token rather
 than reaching for `font-body` case by case.
+
+### No em dashes in anything a visitor reads
+1,212 of them across 54 files. The em dash is the most cited tell of AI-written
+copy and the site was full of them.
+
+Replacing each with the same character would read worse than leaving them, so the
+substitution is contextual: a parenthetical pair becomes commas, an appositive or
+a conjunction becomes a comma, and a dash joining two **independent clauses**
+becomes a full stop with the next word capitalised. That last case is what a
+blanket comma gets wrong: *"secured, the kids are thrilled"* is a splice, worse
+than the dash it replaced. Independent clauses are detected by looking for a
+finite verb in the first few words, with infinitives after "to" excluded so *"an
+ability to do something"* stays a comma.
+
+Chinese got its own pass. `——` is ordinary Chinese punctuation, as unremarkable
+there as a comma is in English, so it is **not** a tell in that language. It was
+converted anyway, onto Chinese commas and colons, rather than left as the one
+inconsistency on the site.
+
+**Scope is user-facing copy only.** Quoted strings, template literals with their
+`${}` holes protected, and JSX text. Code comments keep their dashes: nobody
+visits a comment, and rewriting a thousand of them is churn with a real chance of
+mangling a line for no reader's benefit. So `grep -c '—' src/` still returns
+hits, and that is correct.
+
+Two things the sweep got wrong, both caught and fixed: the certificate's
+empty-name placeholder was a lone em dash and became a stray comma that would
+have printed onto the PDF, and `index.html`'s meta description was never in a
+`src/` sweep's scope at all.
+
+### Front-page images are gated on a real photograph
+`hasPhoto(slot)` decides whether the frame renders at all. The designed ink panel
+that used to stand in for a photo was doing more harm than good: a large empty
+dark box above the card title reads as a broken image rather than as a treatment,
+and it pushed the actual words down the page. Drop `academy.jpg` into
+`src/assets/photos` and the frame returns on the next build with no code change.
+The who-we-are band also collapses to a single column when its photo is absent,
+rather than stranding the copy beside an empty half.
+
+### Lesson videos ask for 720p
+School wifi often lands students on 360p, where a paystub or a chart on screen is
+unreadable and the checkpoint question that follows is unfair. Asked twice, via
+`playerVars: { vq: 'hd720' }` and again with `setPlaybackQuality` on ready,
+because `playerVars` alone is ignored by some clients.
+
+Both are **requests, not guarantees**. YouTube dropped hard quality control years
+ago and overrides the ask when the connection cannot sustain it, which is the
+right outcome: a stalling 720p stream is worse than a clean 480p one. Neither
+call is checked for success.
+
+### Audience wording: high school, and what is deliberately not
+The landing copy says "built by high schoolers for high schoolers" and "middle
+and high school classrooms". It was briefly changed to "youth" and changed back.
+
+Four other school mentions in the codebase are **not** about the audience and
+must not be swept along with it:
+
+| Where | What it is |
+|---|---|
+| `ScamSpotter` | "Jefferson High School" is the sender name in a phishing scenario |
+| `AdminDashboard` | "Lincoln Middle School" is a sample classroom placeholder |
+| `LessonPlanGenerator` | "middle/high school" is a reading-level hint the mentor needs |
+| `BensBudget`, `activities.ts` | Ben is a middle school science teacher, a character detail |
 
 ### One chance per question
 Lesson checkpoints used to allow a second guess before revealing the answer. Two
@@ -859,38 +923,78 @@ than a surprise the first time Hallmark audits this repo.
 
 ## Custom domain: classroom.bffofamerica.org
 
-Two halves. The repo half is done; the DNS half is a Cloudflare and GitHub
-settings job.
+**Live and verified.** DNS check passed, HTTPS enforced, deep links resolve, and
+`/lessons/earning-income` was loaded directly on the real domain with no failed
+asset requests.
 
-### What changed in the repo
+### DNS
+One Cloudflare record: `CNAME classroom -> hzisow.github.io`, **DNS only (grey
+cloud)**, not proxied. The proxy is deliberately off, and should stay off:
+
+- GitHub Pages already provides the CDN (Fastly), free auto-renewing HTTPS, and
+  DDoS protection. Proxying puts a second CDN in front of a CDN.
+- Hiding the origin buys nothing, because the Pages IP ranges are public.
+- The real hazard is caching. Assets are content-hashed and safe forever, but
+  `index.html` and `404.html` are not, and they are what name the asset files.
+  This repo deploys on every push to `main`, so a Cloudflare-cached HTML entry
+  point would serve a student a page pointing at assets that no longer exist.
+
+If the proxy is ever turned on anyway: SSL/TLS must be **Full (strict)**
+(Flexible loops against Pages, which always serves HTTPS), and HTML needs a
+bypass or short-TTL cache rule.
+
+### What the move required in the repo
 - `public/CNAME` holds the hostname. Vite copies `public/` verbatim into `dist/`,
-  and the deploy workflow uploads `dist/`, so the file reaches Pages without
-  touching the workflow.
-- **`vite.config.ts` base is now `/`, not `/BFF-Digital-Learning/`.** This is the
-  one that bites: get it wrong and the failure is silent and total. Every asset
-  request goes to `/BFF-Digital-Learning/assets/...`, 404s, and the visitor gets
-  a blank white page with nothing to act on. Build with
-  `VITE_BASE=/BFF-Digital-Learning/` to target the old github.io URL again.
-- The favicon href in `index.html` went from `./brand/favicon.png` to
-  `/brand/favicon.png`. Deep links are served the `404.html` fallback *from a
-  nested path*, so a relative href resolved against `/lessons/` and 404'd. Found
-  by serving `dist/` at a root path and watching for failed requests, not by
-  reading the file.
+  which the workflow uploads, so no workflow change was needed.
+- `base` went from `/BFF-Digital-Learning/` to `/`. Getting this wrong is silent
+  and total: every asset request 404s and the visitor gets a blank white page.
+- The favicon href went from `./brand/favicon.png` to `/brand/favicon.png`. Deep
+  links are served the `404.html` fallback **from a nested path**, so a relative
+  href resolved against `/lessons/` and 404'd. Caught by serving `dist/` at a
+  root path and watching for failed requests, not by reading the file.
 
-### The Cloudflare gotcha
-Set the CNAME record to **DNS only (grey cloud)** until GitHub finishes issuing
-the certificate. Behind the orange cloud, GitHub's Let's Encrypt HTTP-01
-challenge cannot reach the origin and "Enforce HTTPS" stays greyed out with an
-unhelpful message. Once the cert is issued you may switch the proxy back on, but
-only with SSL/TLS mode **Full (strict)** -- Flexible causes a redirect loop
-against Pages, which always serves HTTPS.
+### The debugging lesson worth keeping
+Bringing the domain up cost far more time than it should have, because of one
+misread signal. After the domain was configured correctly, the browser kept
+showing GitHub's "There isn't a GitHub Pages site here" 404, including in
+incognito. It was diagnosed as browser cache twice; incognito disproved that
+twice.
 
-### Also needs updating when the domain goes live
-`resetRedirectUrl()` builds from `window.location.origin`, so it adapts on its
-own -- but Supabase only honours URLs on its allowlist. Add
-`https://classroom.bffofamerica.org/reset-password` under Authentication -> URL
-Configuration -> Redirect URLs, and set Site URL to the new origin, or password
-resets bounce to the old github.io address.
+What actually resolved it: **`curl -sI` returned `200` while the browser returned
+`404`, on the same URL, same machine, same minute.** One request cannot get two
+answers from one server, so the inconsistency had to be upstream. The response
+headers said so plainly:
+
+```
+via: 1.1 varnish
+x-proxy-cache: MISS
+```
+
+GitHub Pages sits behind Fastly. The custom domain was saved *after* the last
+deployment, so the edge was still holding a cached 404 for the site root from
+the window when the domain genuinely was unconfigured. `curl` happened to miss
+the cache and reach origin; the browser hit the poisoned object.
+
+**The fix was a fresh deployment** (an empty commit is enough), which
+invalidates the cached objects. `8077d7c` is that commit.
+
+**Next time a Pages domain looks broken, run `curl -sI <url>` before touching any
+setting.** If curl and the browser disagree, the problem is upstream and a
+redeploy is the lever. If they agree, it is genuinely misconfigured.
+
+### Supabase must follow the domain
+`resetRedirectUrl()` builds from `window.location.origin`, so the app adapts on
+its own, but Supabase only honours allowlisted URLs. Authentication -> URL
+Configuration now reads:
+
+| Field | Value |
+|---|---|
+| Site URL | `https://classroom.bffofamerica.org` |
+| Redirect URLs | `https://classroom.bffofamerica.org/**` |
+
+The old `hzisow.github.io/BFF-Digital-Learning/**` entry was removed. Safe to
+remove because Pages 301-redirects the old URL to the custom domain, so the app
+never runs on that origin again.
 
 ---
 
@@ -974,7 +1078,15 @@ are wondering *why* something is the way it is.
 
 | Commit | What changed |
 |---|---|
-| _(most recent)_ | Front page rebuilt around BFF Academy; student accounts; certificate as a PDF |
+| `8077d7c` | Empty redeploy to purge a stale 404 from the Pages edge cache |
+| `c81e34f` | Serve from `classroom.bffofamerica.org` — CNAME, absolute base, absolute favicon |
+| `c2441dc` | School wording restored; the schools CTA points at join-the-cause |
+| `036928e` | 1,212 em dashes removed, placeholder images gated, 720p video default |
+| `95e365a` | Installed the hallmark design skill |
+| `e7ed2f6` | Checkpoint settings committed so the whole team gets them |
+| `195eb04` | Reverted the Wealthsimple design system |
+| `07b1ca4` | Applied the Wealthsimple design system (reverted the same day) |
+| `862516e` | Front page rebuilt around BFF Academy; student accounts; certificate as a PDF |
 | `d8e1300` | Reviewer feedback: new typeface pair, a progress meter, one chance per question |
 | `bd3de27` | 85% mastery gate — a lesson only unlocks the next one once its quiz is passed |
 | `0dc05e2` | Per-question analytics, roster rename/remove/merge, due dates that read as deadlines |
