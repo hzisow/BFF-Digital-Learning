@@ -8,9 +8,17 @@ import { resolve } from 'node:path'
 // /BFF-Digital-Learning/lessons/earning-income resolves assets against
 // .../lessons/ and 404s.
 //
-// Default is the GitHub Pages project path. On a custom domain (or any host
-// serving from the root) build with VITE_BASE=/ to override.
-const base = process.env.VITE_BASE ?? '/BFF-Digital-Learning/'
+// The site is served from the root of a custom domain
+// (classroom.bffofamerica.org, see public/CNAME), so the base is '/'.
+//
+// It was '/BFF-Digital-Learning/' while the site lived at
+// hzisow.github.io/BFF-Digital-Learning/. Getting this wrong is silent and
+// total: with the project path still set, every asset request on the custom
+// domain goes to /BFF-Digital-Learning/assets/... and 404s, so the page loads
+// as a blank white screen with no error a visitor can act on.
+//
+// Set VITE_BASE=/BFF-Digital-Learning/ to build for the old github.io URL again.
+const base = process.env.VITE_BASE ?? '/'
 
 /**
  * GitHub Pages has no server-side rewrites, so refreshing or sharing a deep

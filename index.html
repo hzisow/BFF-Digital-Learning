@@ -2,7 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="./brand/favicon.png" />
+    <!-- Absolute, not "./". Deep links are served the 404.html fallback from a
+         nested path, so a relative icon href resolves against /lessons/ and
+         404s. Vite rewrites a leading "/" to the configured base at build
+         time, so this stays correct under either base. -->
+    <link rel="icon" type="image/png" href="/brand/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"

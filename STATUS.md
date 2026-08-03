@@ -18,7 +18,9 @@ platform for **BFF of America**, a student-founded 501(c)(3).
 - **Mentors** sign in with Google and are gated behind an `approved` flag.
 - Everything also works **solo**, with no backend, straight from the browser.
 
-**Live:** https://hzisow.github.io/BFF-Digital-Learning/
+**Live:** https://classroom.bffofamerica.org (custom domain; the old
+hzisow.github.io/BFF-Digital-Learning/ URL redirects there once GitHub Pages has
+the custom domain saved)
 
 Scale, so you know what you are dealing with: **98 source files, ~33,000 lines**,
 13 lessons × 3 languages, 8 games & challenges, 34 routes, 7 database tables.
@@ -852,6 +854,43 @@ high schoolers about **money***. The italic emphasis word is a deliberate
 signature here and a reviewer has seen it and not objected, so it stays until
 somebody decides otherwise. Flagged so the disagreement is a decision rather
 than a surprise the first time Hallmark audits this repo.
+
+---
+
+## Custom domain: classroom.bffofamerica.org
+
+Two halves. The repo half is done; the DNS half is a Cloudflare and GitHub
+settings job.
+
+### What changed in the repo
+- `public/CNAME` holds the hostname. Vite copies `public/` verbatim into `dist/`,
+  and the deploy workflow uploads `dist/`, so the file reaches Pages without
+  touching the workflow.
+- **`vite.config.ts` base is now `/`, not `/BFF-Digital-Learning/`.** This is the
+  one that bites: get it wrong and the failure is silent and total. Every asset
+  request goes to `/BFF-Digital-Learning/assets/...`, 404s, and the visitor gets
+  a blank white page with nothing to act on. Build with
+  `VITE_BASE=/BFF-Digital-Learning/` to target the old github.io URL again.
+- The favicon href in `index.html` went from `./brand/favicon.png` to
+  `/brand/favicon.png`. Deep links are served the `404.html` fallback *from a
+  nested path*, so a relative href resolved against `/lessons/` and 404'd. Found
+  by serving `dist/` at a root path and watching for failed requests, not by
+  reading the file.
+
+### The Cloudflare gotcha
+Set the CNAME record to **DNS only (grey cloud)** until GitHub finishes issuing
+the certificate. Behind the orange cloud, GitHub's Let's Encrypt HTTP-01
+challenge cannot reach the origin and "Enforce HTTPS" stays greyed out with an
+unhelpful message. Once the cert is issued you may switch the proxy back on, but
+only with SSL/TLS mode **Full (strict)** -- Flexible causes a redirect loop
+against Pages, which always serves HTTPS.
+
+### Also needs updating when the domain goes live
+`resetRedirectUrl()` builds from `window.location.origin`, so it adapts on its
+own -- but Supabase only honours URLs on its allowlist. Add
+`https://classroom.bffofamerica.org/reset-password` under Authentication -> URL
+Configuration -> Redirect URLs, and set Site URL to the new origin, or password
+resets bounce to the old github.io address.
 
 ---
 
