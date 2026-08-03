@@ -828,6 +828,33 @@ Two traps found the hard way while writing these:
 
 ---
 
+## Installed skills
+
+| Skill | Source | What it is |
+|---|---|---|
+| `hallmark` | `nutlope/hallmark` v1.1.0 | Anti-AI-slop design skill. Verbs: `hallmark audit <target>`, `hallmark redesign <target>`, `hallmark study <url\|screenshot>`; with no verb it runs its default design flow. |
+
+Installed with `npx skills add nutlope/hallmark`. It lives in `.agents/skills/`
+with a symlink at `.claude/skills/`, and `skills-lock.json` pins the content
+hash. **Committed on purpose**: the dev container is ephemeral, so an
+uncommitted install is gone the next session, and committing means a second
+contributor gets it by cloning.
+
+Reviewed before use, per the installer's own warning that skills run with full
+agent permissions: all 106 files are markdown, no scripts and nothing
+executable. It is instruction content only.
+
+**One conflict worth knowing about.** Hallmark's discipline 6 is *"Typography
+purity — no italic headers"*, and it names `Built to <em>think</em>` as "one of
+the most reliable AI tells." That is exactly the pattern this site uses — *Money
+skills that **actually matter***, *BFF **Academy***, *high schoolers teaching
+high schoolers about **money***. The italic emphasis word is a deliberate
+signature here and a reviewer has seen it and not objected, so it stays until
+somebody decides otherwise. Flagged so the disagreement is a decision rather
+than a surprise the first time Hallmark audits this repo.
+
+---
+
 ## Session safety: checkpoints and git
 
 `.claude/settings.json` sets `fileCheckpointingEnabled: true` (the default, made
