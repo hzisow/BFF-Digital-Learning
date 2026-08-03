@@ -30,9 +30,9 @@ import type { LucideIcon } from 'lucide-react'
 const NICK_KEY = 'bff_wolf_nick'
 
 const STAGE_TITLES: Record<number, { Icon: LucideIcon; title: string; titleEs: string; titleZh: string }> = {
-  1: { Icon: Bell, title: 'Opening Bell — pick your stocks', titleEs: 'Campana de apertura — elige tus acciones', titleZh: '开盘钟声——挑选你的股票' },
-  2: { Icon: Newspaper, title: 'Breaking News — round 1', titleEs: 'Última hora — ronda 1', titleZh: '突发新闻——第 1 轮' },
-  3: { Icon: Newspaper, title: 'Breaking News — round 2', titleEs: 'Última hora — ronda 2', titleZh: '突发新闻——第 2 轮' },
+  1: { Icon: Bell, title: 'Opening Bell, pick your stocks', titleEs: 'Campana de apertura, elige tus acciones', titleZh: '开盘钟声，挑选你的股票' },
+  2: { Icon: Newspaper, title: 'Breaking News, round 1', titleEs: 'Última hora, ronda 1', titleZh: '突发新闻，第 1 轮' },
+  3: { Icon: Newspaper, title: 'Breaking News, round 2', titleEs: 'Última hora, ronda 2', titleZh: '突发新闻，第 2 轮' },
 }
 
 /** Podium icons for 1st / 2nd / 3rd place in the final standings. */
@@ -217,10 +217,10 @@ export default function WolfPlayer() {
           </h1>
           <p className="text-sm text-ink/70">
             {zh
-              ? '当班级后端接通后，实时对战就会解锁——单人模式现在就能玩！'
+              ? '当班级后端接通后，实时对战就会解锁，单人模式现在就能玩！'
               : es
-                ? 'Los juegos en vivo se activan cuando el backend de la clase está conectado — ¡el modo individual ya está listo!'
-                : 'Live games unlock when the class backend is connected — solo mode is ready now!'}
+                ? 'Los juegos en vivo se activan cuando el backend de la clase está conectado, ¡el modo individual ya está listo!'
+                : 'Live games unlock when the class backend is connected. Solo mode is ready now!'}
           </p>
           <Link to="/wolf" className="btn-primary">
             {zh ? '返回 Wolf of Wall Street' : es ? 'Volver a Wolf of Wall Street' : 'Back to Wolf of Wall Street'}
@@ -322,10 +322,10 @@ export default function WolfPlayer() {
           </h1>
           <p className="text-ink/70">
             {zh
-              ? '看大屏幕——主持人敲响钟声时，市场就开盘。'
+              ? '看大屏幕，主持人敲响钟声时，市场就开盘。'
               : es
-                ? 'Mira la pantalla grande — el mercado abre cuando tu anfitrión toca la campana.'
-                : 'Watch the big screen — the market opens when your host rings the bell.'}
+                ? 'Mira la pantalla grande, el mercado abre cuando tu anfitrión toca la campana.'
+                : 'Watch the big screen, the market opens when your host rings the bell.'}
           </p>
           {others.length > 0 && (
             <div>

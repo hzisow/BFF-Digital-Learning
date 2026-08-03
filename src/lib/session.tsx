@@ -129,7 +129,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const joinClass = useCallback(async (code: string, displayName: string) => {
     if (!BACKEND_ENABLED) {
       throw new Error(
-        'Class codes are not live yet — ask your BFF mentor, or explore the activities in solo mode!',
+        'Class codes are not live yet, ask your BFF mentor, or explore the activities in solo mode!',
       )
     }
     // Joining is the moment a solo visitor becomes a connected one, so this is

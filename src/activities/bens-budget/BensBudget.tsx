@@ -34,7 +34,7 @@ interface NeedItem {
 const NEEDS: NeedItem[] = [
   { label: 'Rent', labelEs: 'Renta', labelZh: '房租', cost: 1200 },
   { label: 'Groceries', labelEs: 'Comida', labelZh: '食品杂货', cost: 600 },
-  { label: 'Water & electricity', labelEs: 'Agua y electricidad', labelZh: '水电费', cost: 275, note: 'Winter bill — higher than usual', noteEs: 'Cuenta de invierno — más alta de lo normal', noteZh: '冬季账单——比平时高' },
+  { label: 'Water & electricity', labelEs: 'Agua y electricidad', labelZh: '水电费', cost: 275, note: 'Winter bill, higher than usual', noteEs: 'Cuenta de invierno, más alta de lo normal', noteZh: '冬季账单，比平时高' },
   { label: 'Car payment', labelEs: 'Pago del carro', labelZh: '汽车贷款', cost: 400 },
   { label: 'Gas', labelEs: 'Gasolina', labelZh: '汽油', cost: 175 },
 ]
@@ -174,9 +174,9 @@ const SAVINGS_OPTIONS: { value: SavingsAmount; label: string; labelEs: string; l
     label: 'Save $200 for the beach trip',
     labelEs: 'Ahorrar $200 para el viaje a la playa',
     labelZh: '为海滩之旅存 $200',
-    note: "This month's goal — keeps the trip on track",
-    noteEs: 'La meta de este mes — mantiene el viaje en marcha',
-    noteZh: '这个月的目标——让旅行顺利进行',
+    note: "This month's goal. Keeps the trip on track",
+    noteEs: 'La meta de este mes, mantiene el viaje en marcha',
+    noteZh: '这个月的目标，让旅行顺利进行',
   },
   {
     value: 300,
@@ -223,7 +223,7 @@ function computeResults(picked: ReadonlySet<string>, saved: SavingsAmount, es: b
 
   // Savings
   if (saved === 300) {
-    lines.push({ points: 25, text: zh ? '海滩之旅和主题公园都稳了——孩子们乐坏了。' : es ? 'Viaje a la playa Y parque de diversiones asegurados — los niños están felices.' : 'Beach trip AND theme park secured — the kids are thrilled.', tone: 'good' })
+    lines.push({ points: 25, text: zh ? '海滩之旅和主题公园都稳了，孩子们乐坏了。' : es ? 'Viaje a la playa Y parque de diversiones asegurados, los niños están felices.' : 'Beach trip AND theme park secured. The kids are thrilled.', tone: 'good' })
   } else if (saved === 200) {
     lines.push({ points: 18, text: zh ? '海滩之旅顺利进行（没有主题公园，但大海是免费的）。' : es ? 'Viaje a la playa en marcha (sin parque de diversiones, pero el mar es gratis).' : 'Beach trip on track (no theme park, but the ocean is free).', tone: 'good' })
   } else {
@@ -247,9 +247,9 @@ function computeResults(picked: ReadonlySet<string>, saved: SavingsAmount, es: b
 
   // Heater
   if (has('heater')) {
-    lines.push({ points: 10, text: zh ? '趁暖气还没变成 $400 的大问题就修好了——聪明。' : es ? 'Calefacción arreglada antes de que se convierta en un problema de $400 — inteligente.' : 'Heater fixed before it becomes a $400 problem — smart.', tone: 'good' })
+    lines.push({ points: 10, text: zh ? '趁暖气还没变成 $400 的大问题就修好了，聪明。' : es ? 'Calefacción arreglada antes de que se convierta en un problema de $400, inteligente.' : 'Heater fixed before it becomes a $400 problem, smart.', tone: 'good' })
   } else {
-    lines.push({ points: 5, text: zh ? '跳过暖气有点冒险，但还扛得住——寒冷的早晨磨炼意志？' : es ? 'Saltarse la calefacción es arriesgado, pero se puede sobrevivir — ¿las mañanas frías forjan el carácter?' : 'Skipping the heater is risky, but survivable — cold mornings build character?', tone: 'neutral' })
+    lines.push({ points: 5, text: zh ? '跳过暖气有点冒险，但还扛得住，寒冷的早晨磨炼意志？' : es ? 'Saltarse la calefacción es arriesgado, pero se puede sobrevivir, ¿las mañanas frías forjan el carácter?' : 'Skipping the heater is risky, but survivable. Cold mornings build character?', tone: 'neutral' })
   }
 
   // Sneakers
@@ -261,37 +261,37 @@ function computeResults(picked: ReadonlySet<string>, saved: SavingsAmount, es: b
 
   // Soccer
   if (has('soccer')) {
-    lines.push({ points: 8, text: zh ? '13 岁的孩子留在队里——信守了承诺。' : es ? 'El de 13 años se queda en el equipo — compromiso cumplido.' : 'The 13-year-old stays on the team — commitment honored.', tone: 'good' })
+    lines.push({ points: 8, text: zh ? '13 岁的孩子留在队里，信守了承诺。' : es ? 'El de 13 años se queda en el equipo, compromiso cumplido.' : 'The 13-year-old stays on the team, commitment honored.', tone: 'good' })
   } else {
-    lines.push({ points: 0, text: zh ? '跳过足球很难受——对 Ben 来说这是一次艰难的饭桌谈话。' : es ? 'Saltarse el fútbol duele — es una conversación difícil en la mesa para Ben.' : "Skipping soccer stings — that's a hard dinner-table conversation for Ben.", tone: 'neutral' })
+    lines.push({ points: 0, text: zh ? '跳过足球很难受，对 Ben 来说这是一次艰难的饭桌谈话。' : es ? 'Saltarse el fútbol duele. Es una conversación difícil en la mesa para Ben.' : "Skipping soccer stings. That's a hard dinner-table conversation for Ben.", tone: 'neutral' })
   }
 
   // Allergy meds — judgment call either way
   if (has('allergy-meds')) {
     lines.push({ points: 6, text: zh ? '症状很轻，但提前应对春季过敏是个合理的决定。' : es ? 'Los síntomas son leves, pero adelantarse a las alergias de primavera es una decisión razonable.' : 'Symptoms are mild, but staying ahead of spring allergies is a fair call.', tone: 'good' })
   } else {
-    lines.push({ points: 6, text: zh ? '症状既然很轻，暂缓买药也是个说得过去的判断——只是留意着点她。' : es ? 'Con síntomas leves, esperar con la medicina es una decisión válida — solo mantenla vigilada.' : 'With mild symptoms, waiting on the meds is a real judgment call — just keep an eye on her.', tone: 'neutral' })
+    lines.push({ points: 6, text: zh ? '症状既然很轻，暂缓买药也是个说得过去的判断，只是留意着点她。' : es ? 'Con síntomas leves, esperar con la medicina es una decisión válida, solo mantenla vigilada.' : 'With mild symptoms, waiting on the meds is a real judgment call, just keep an eye on her.', tone: 'neutral' })
   }
 
   // Guitar
   if (has('guitar')) {
-    lines.push({ points: 5, text: zh ? '吉他课订好了——演出的准备继续进行。' : es ? 'Clase de guitarra reservada — la preparación para el concierto sigue en marcha.' : 'Guitar lesson booked — concert prep stays on track.', tone: 'good' })
+    lines.push({ points: 5, text: zh ? '吉他课订好了，演出的准备继续进行。' : es ? 'Clase de guitarra reservada, la preparación para el concierto sigue en marcha.' : 'Guitar lesson booked. Concert prep stays on track.', tone: 'good' })
   } else {
-    lines.push({ points: 0, text: zh ? '这个月没课——演出前他可以在家练。' : es ? 'Sin clase este mes — puede practicar en casa hasta el concierto.' : 'No lesson this month — he can practice at home till the concert.', tone: 'neutral' })
+    lines.push({ points: 0, text: zh ? '这个月没课，演出前他可以在家练。' : es ? 'Sin clase este mes. Puede practicar en casa hasta el concierto.' : 'No lesson this month. He can practice at home till the concert.', tone: 'neutral' })
   }
 
   // Classroom supplies
   if (has('supplies')) {
-    lines.push({ points: 5, text: zh ? '教室用品搞定了——Ben 的学生（还有 Ben）都很感激。' : es ? 'Útiles del salón cubiertos — los estudiantes de Ben (y Ben) lo agradecen.' : "Classroom supplies covered — Ben's students (and Ben) say thanks.", tone: 'good' })
+    lines.push({ points: 5, text: zh ? '教室用品搞定了，Ben 的学生（还有 Ben）都很感激。' : es ? 'Útiles del salón cubiertos, los estudiantes de Ben (y Ben) lo agradecen.' : "Classroom supplies covered, Ben's students (and Ben) say thanks.", tone: 'good' })
   } else {
     lines.push({ points: 0, text: zh ? '教室这个月先将就一下。' : es ? 'El salón se las arregla este mes.' : 'The classroom makes do this month.', tone: 'neutral' })
   }
 
   // Dinner out
   if (has('dinner')) {
-    lines.push({ points: 3, text: zh ? '全家下馆子——一家人的时光很重要。' : es ? 'Cena en familia fuera — el tiempo en familia importa.' : 'Family dinner out — family time matters.', tone: 'good' })
+    lines.push({ points: 3, text: zh ? '全家下馆子，一家人的时光很重要。' : es ? 'Cena en familia fuera, el tiempo en familia importa.' : 'Family dinner out, family time matters.', tone: 'good' })
   } else {
-    lines.push({ points: 0, text: zh ? '那就在家做饭吧——海滩基金谢谢你。' : es ? 'Comida casera será — el fondo de la playa lo agradece.' : 'Home-cooked it is — the beach fund thanks you.', tone: 'neutral' })
+    lines.push({ points: 0, text: zh ? '那就在家做饭吧，海滩基金谢谢你。' : es ? 'Comida casera será, el fondo de la playa lo agradece.' : 'Home-cooked it is, the beach fund thanks you.', tone: 'neutral' })
   }
 
   // Chipotle
@@ -305,14 +305,14 @@ function computeResults(picked: ReadonlySet<string>, saved: SavingsAmount, es: b
   if (has('iguana')) {
     lines.push({ points: 0, text: zh ? '鬣蜥加入了这个家。剧透：鬣蜥会让保险变复杂。' : es ? 'La iguana se une a la familia. Presagio: las iguanas complican los seguros.' : 'The iguana joins the family. Foreshadowing: iguanas complicate insurance.', tone: 'neutral' })
   } else {
-    lines.push({ points: 5, text: zh ? '在手头紧的月份养一只 $90/月 的宠物——明智地放弃了。' : es ? 'Una mascota de $90/mes en un mes ajustado — sabio dejarla pasar.' : 'A $90/month pet on a tight month — wise pass.', tone: 'good' })
+    lines.push({ points: 5, text: zh ? '在手头紧的月份养一只 $90/月 的宠物，明智地放弃了。' : es ? 'Una mascota de $90/mes en un mes ajustado, sabio dejarla pasar.' : 'A $90/month pet on a tight month, wise pass.', tone: 'good' })
   }
 
   // Under budget (submit is blocked while over, so this always lands)
   const choicesTotal = CHOICES.reduce((sum, c) => sum + (has(c.id) ? c.cost : 0), 0)
   const spent = NEEDS_TOTAL + choicesTotal + saved
   if (spent <= INCOME) {
-    lines.push({ points: 10, text: zh ? '控制在 $3,200 以内——Ben 的预算真的平衡了。' : es ? 'Te mantuviste bajo los $3,200 — el presupuesto de Ben realmente cuadra.' : "Stayed under $3,200 — Ben's budget actually balances.", tone: 'good' })
+    lines.push({ points: 10, text: zh ? '控制在 $3,200 以内，Ben 的预算真的平衡了。' : es ? 'Te mantuviste bajo los $3,200, el presupuesto de Ben realmente cuadra.' : "Stayed under $3,200, Ben's budget actually balances.", tone: 'good' })
   }
 
   const score = Math.min(100, lines.reduce((sum, l) => sum + l.points, 0))
@@ -483,14 +483,14 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
           <p>
             来认识一下 <strong>Ben</strong>：36 岁，初中科学老师，已婚，有三个孩子（5 岁、9 岁和 13
             岁）。税后，每个月有 <strong>{usd(INCOME)}</strong> 进他的账户。全家的梦想：<strong>3
-            个月后的海滩之旅</strong>，也就是要一共存 <strong>$900——这个月存 $300</strong>。你的任务：决定每一块钱花在哪里。
+            个月后的海滩之旅</strong>，也就是要一共存 <strong>$900，这个月存 $300</strong>。你的任务：决定每一块钱花在哪里。
           </p>
         ) : es ? (
           <p>
             Te presentamos a <strong>Ben</strong>: 36 años, maestro de ciencias de secundaria, casado, tres
             hijos (de 5, 9 y 13 años). Después de impuestos, le llegan <strong>{usd(INCOME)}</strong> a su
             cuenta cada mes. El sueño de la familia: un <strong>viaje a la playa en 3 meses</strong>, lo que
-            significa ahorrar <strong>$900 en total — $300 este mes</strong>. Tu trabajo: decidir a dónde va
+            significa ahorrar <strong>$900 en total, $300 este mes</strong>. Tu trabajo: decidir a dónde va
             cada dólar.
           </p>
         ) : (
@@ -498,23 +498,23 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
             Meet <strong>Ben</strong>: 36, middle school science teacher, married, three kids (ages 5,
             9, and 13). After taxes, <strong>{usd(INCOME)}</strong> lands in his account each month.
             The family dream: a <strong>beach trip in 3 months</strong>, which means saving{' '}
-            <strong>$900 total — $300 this month</strong>. Your job: decide where every dollar goes.
+            <strong>$900 total, $300 this month</strong>. Your job: decide where every dollar goes.
           </p>
         )}
         <p className="mt-2 text-xs text-slate-600">
           <Info className="mr-1 inline-block h-3.5 w-3.5 align-[-0.15em] text-bff-600" aria-hidden="true" />{' '}
           {zh
-            ? `医疗保险（$300/月）已经从 Ben 的工资里扣掉了——这一项已经搞定，不算在这 ${usd(INCOME)} 里面。`
+            ? `医疗保险（$300/月）已经从 Ben 的工资里扣掉了，这一项已经搞定，不算在这 ${usd(INCOME)} 里面。`
             : es
-            ? `El seguro médico ($300/mes) ya se descuenta del cheque de Ben — está resuelto y no cuenta contra los ${usd(INCOME)}.`
-            : `Health insurance ($300/month) is already deducted from Ben's paycheck — it's handled and doesn't count against the ${usd(INCOME)}.`}
+            ? `El seguro médico ($300/mes) ya se descuenta del cheque de Ben, está resuelto y no cuenta contra los ${usd(INCOME)}.`
+            : `Health insurance ($300/month) is already deducted from Ben's paycheck, it's handled and doesn't count against the ${usd(INCOME)}.`}
         </p>
       </div>
 
       {/* Needs */}
       <section className="mt-6">
         <h2 className="font-display text-lg font-bold text-slate-900">
-          {zh ? '必需开支' : es ? 'Las necesidades' : 'The needs'} <span className="text-sm font-normal text-slate-500">{zh ? '（固定——Ben 跳不过这些）' : es ? '(fijas — Ben no puede saltárselas)' : "(locked in — Ben can't skip these)"}</span>
+          {zh ? '必需开支' : es ? 'Las necesidades' : 'The needs'} <span className="text-sm font-normal text-slate-500">{zh ? '（固定：Ben 跳不过这些）' : es ? '(fijas, Ben no puede saltárselas)' : "(locked in, Ben can't skip these)"}</span>
         </h2>
         <div className="mt-2 space-y-2">
           {NEEDS.map((n) => (
@@ -667,10 +667,10 @@ export default function BensBudget({ onComplete }: LiveGameProps) {
         {overBudget && (
           <p className="mt-2 text-sm font-semibold text-red-600" role="alert">
             {zh
-              ? `Ben 超支了 ${usd(-remaining)}——确定之前先砍掉一些东西。`
+              ? `Ben 超支了 ${usd(-remaining)}，确定之前先砍掉一些东西。`
               : es
-              ? `Ben está ${usd(-remaining)} sobre el presupuesto — recorta algo antes de confirmar.`
-              : `Ben is ${usd(-remaining)} over budget — cut something before locking in.`}
+              ? `Ben está ${usd(-remaining)} sobre el presupuesto, recorta algo antes de confirmar.`
+              : `Ben is ${usd(-remaining)} over budget, cut something before locking in.`}
           </p>
         )}
         {!overBudget && saved === null && (

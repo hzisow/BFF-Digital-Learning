@@ -81,7 +81,7 @@ export const ACTIVITIES: ActivityMeta[] = [
     title: "Ben's Insurance Situation",
     icon: 'umbrella',
     description:
-      'Ben has $500 for insurance. Choose his coverage — then find out what the month throws at his family.',
+      'Ben has $500 for insurance. Choose his coverage, then find out what the month throws at his family.',
     durationMin: 10,
     path: '/challenge/bens-insurance',
     sortKey: 103,
@@ -92,7 +92,7 @@ export const ACTIVITIES: ActivityMeta[] = [
     title: 'Paystub Detective',
     icon: 'receipt',
     description:
-      'Three paystubs, planted errors. Find every mistake before someone loses money — it pays to check your pay.',
+      'Three paystubs, planted errors. Find every mistake before someone loses money. It pays to check your pay.',
     durationMin: 10,
     path: '/challenge/paystub-detective',
     sortKey: 104,
@@ -103,7 +103,7 @@ export const ACTIVITIES: ActivityMeta[] = [
     title: 'Credit Score Builder',
     icon: 'gauge',
     description:
-      'Ten months of real-life credit decisions. Watch your score climb — or crater — with every choice.',
+      'Ten months of real-life credit decisions. Watch your score climb, or crater, with every choice.',
     durationMin: 12,
     path: '/challenge/credit-score',
     sortKey: 105,
@@ -148,7 +148,7 @@ export const ACTIVITIES: ActivityMeta[] = [
       ['taxes-deep-dive', 'Taxes Deep-Dive', 'landmark', 'Where taxes go, how brackets really work, and why refunds happen.', 2],
       ['paying-for-college', 'Paying for College', 'college', 'FAFSA, grants, scholarships, loans, and how to compare offers like a pro.', 3],
       ['entrepreneurship', 'Entrepreneurship & Side Hustles', 'rocket', 'Turn a skill into income: pricing, profit, and your first business.', 4],
-      ['crypto-and-scams', 'Crypto & Modern Money Traps', 'crypto', 'Crypto, hype, betting, and BNPL — spot the traps before they cost you.', 5],
+      ['crypto-and-scams', 'Crypto & Modern Money Traps', 'crypto', 'Crypto, hype, betting, and BNPL, spot the traps before they cost you.', 5],
     ] as Array<[string, string, IconName, string, number]>
   ).map(([slug, title, icon, description, day]) => ({
     slug,
@@ -335,15 +335,15 @@ const ACTIVITY_ZH: Record<string, { title?: string; description: string }> = {
   },
   'bens-insurance': {
     title: '本的保险难题',
-    description: '本有 $500 用于保险。为他选择保障——然后看看这个月给他一家带来了什么。',
+    description: '本有 $500 用于保险。为他选择保障，然后看看这个月给他一家带来了什么。',
   },
   'paystub-detective': {
     title: '工资单侦探',
-    description: '三张工资单，暗藏错误。在有人损失金钱之前找出每个错误——核对工资很值得。',
+    description: '三张工资单，暗藏错误。在有人损失金钱之前找出每个错误，核对工资很值得。',
   },
   'credit-score-sim': {
     title: '信用评分养成',
-    description: '十个月真实的信用决策。看着你的分数随每个选择上升——或暴跌。',
+    description: '十个月真实的信用决策。看着你的分数随每个选择上升，或暴跌。',
   },
   'scam-spotter': {
     title: '骗局识别器',
@@ -375,7 +375,7 @@ const ACTIVITY_ZH: Record<string, { title?: string; description: string }> = {
   },
   'crypto-and-scams': {
     title: '加密货币与现代金钱陷阱',
-    description: '加密货币、炒作、赌博和“先买后付”——在它们让你破财之前识破陷阱。',
+    description: '加密货币、炒作、赌博和“先买后付”，在它们让你破财之前识破陷阱。',
   },
 }
 

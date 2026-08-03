@@ -113,7 +113,7 @@ export default function OpenResponse({ prompt, rubric, id }: OpenResponseProps) 
             ? 'AI 反馈暂时不可用，但你仍然可以写下并保存你的答案，导师会阅读它。'
             : es
               ? 'Los comentarios con IA no están disponibles por ahora, pero aún puedes escribir tu respuesta y tu mentor la leerá.'
-              : 'AI feedback is unavailable right now, but you can still write your answer — your mentor can read it.'}
+              : 'AI feedback is unavailable right now, but you can still write your answer. Your mentor can read it.'}
         </p>
       )}
 
@@ -160,10 +160,10 @@ export default function OpenResponse({ prompt, rubric, id }: OpenResponseProps) 
         {status === 'not-configured' && (
           <div className="mt-4 rounded-[6px] border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
             {zh
-              ? 'AI 反馈还没有设置好——不过没关系，你的导师仍然可以阅读你的答案。'
+              ? 'AI 反馈还没有设置好，不过没关系，你的导师仍然可以阅读你的答案。'
               : es
                 ? 'Los comentarios con IA aún no están configurados, pero tu mentor todavía puede leer tu respuesta.'
-                : "AI feedback isn't set up yet — your mentor can still read your answer."}
+                : "AI feedback isn't set up yet. Your mentor can still read your answer."}
           </div>
         )}
 
@@ -173,10 +173,10 @@ export default function OpenResponse({ prompt, rubric, id }: OpenResponseProps) 
               <span className="block font-display font-bold">{offlineAICopy(lang).title}</span>
               <span className="mt-0.5 block text-ink/70">
                 {zh
-                  ? '你的答案已保留在这里——恢复网络后再提交即可。'
+                  ? '你的答案已保留在这里，恢复网络后再提交即可。'
                   : es
-                    ? 'Tu respuesta sigue aquí — envíala de nuevo cuando vuelvas a tener conexión.'
-                    : 'Your answer is still here — send it again once you are back online.'}
+                    ? 'Tu respuesta sigue aquí, envíala de nuevo cuando vuelvas a tener conexión.'
+                    : 'Your answer is still here, send it again once you are back online.'}
               </span>
             </span>
             <button type="button" onClick={handleSubmit} className="btn-secondary shrink-0">

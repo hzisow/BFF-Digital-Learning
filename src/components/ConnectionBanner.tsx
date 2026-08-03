@@ -26,15 +26,15 @@ export default function ConnectionBanner() {
   if (online && !recovered) return null
 
   const offlineText = zh
-    ? '你已离线——课程和挑战仍可使用，进度会保存在本设备上。'
+    ? '你已离线，课程和挑战仍可使用，进度会保存在本设备上。'
     : es
-      ? 'Estás sin conexión — las lecciones y los desafíos siguen funcionando y tu progreso se guarda en este dispositivo.'
-      : "You're offline — lessons and challenges still work, and your progress is saved on this device."
+      ? 'Estás sin conexión, las lecciones y los desafíos siguen funcionando y tu progreso se guarda en este dispositivo.'
+      : "You're offline, lessons and challenges still work, and your progress is saved on this device."
   const backText = zh
     ? '已重新连接，正在同步你的进度。'
     : es
-      ? 'Conexión restablecida — sincronizando tu progreso.'
-      : 'Back online — syncing your progress.'
+      ? 'Conexión restablecida, sincronizando tu progreso.'
+      : 'Back online, syncing your progress.'
 
   return (
     <div

@@ -104,10 +104,10 @@ function computeResults(picks: Picks, es: boolean, zh: boolean): Results {
     {
       icon: 'TreePalm',
       title: zh
-        ? '他们顺利到了海滩。没丢行李，没有延误——这个月旅行保险没派上用场。'
+        ? '他们顺利到了海滩。没丢行李，没有延误，这个月旅行保险没派上用场。'
         : es
-        ? 'Llegan a la playa. No se perdió equipaje, no hubo retrasos — el seguro de viaje no hizo falta este mes.'
-        : "They make it to the beach. No luggage lost, no delays — travel insurance wasn't needed this month.",
+        ? 'Llegan a la playa. No se perdió equipaje, no hubo retrasos, el seguro de viaje no hizo falta este mes.'
+        : "They make it to the beach. No luggage lost, no delays. Travel insurance wasn't needed this month.",
       outcome: has('travel')
         ? (zh ? '−$60 本来可以省下，但买个安心也是真的值。' : es ? '−$60 que pudiste conservar, pero la tranquilidad es real.' : '−$60 you could have kept, but peace of mind is real.')
         : (zh ? '这次没买也没出事。' : es ? 'Saltártelo salió bien esta vez.' : 'Skipping it worked out this time.'),
@@ -121,7 +121,7 @@ function computeResults(picks: Picks, es: boolean, zh: boolean): Results {
         : es
         ? 'Las alergias de primavera golpean FUERTE a la hija de Ben en la playa.'
         : "Springtime allergies hit Ben's daughter HARD at the beach.",
-      outcome: has('health') ? (zh ? '有保障——看医生和吃药都搞定了。' : es ? 'Cubierto — visita al doctor y medicinas resueltas.' : 'Covered — doctor visit and meds handled.') : (zh ? '−$200 的账单。' : es ? '−$200 en facturas.' : '−$200 in bills.'),
+      outcome: has('health') ? (zh ? '有保障，看医生和吃药都搞定了。' : es ? 'Cubierto, visita al doctor y medicinas resueltas.' : 'Covered, doctor visit and meds handled.') : (zh ? '−$200 的账单。' : es ? '−$200 en facturas.' : '−$200 in bills.'),
       tone: has('health') ? 'good' : 'bad',
       cost: has('health') ? 0 : 200,
     },
@@ -143,7 +143,7 @@ function computeResults(picks: Picks, es: boolean, zh: boolean): Results {
         : es
         ? '¡La familia llevó a la iguana. Se perdió en el océano!!'
         : 'The family brought the iguana. It got lost in the ocean!!',
-      outcome: has('pet') ? (zh ? '有保障——搜救 + 兽医检查都报销了。' : es ? 'Cubierto — rescate + revisión veterinaria pagados.' : 'Covered — rescue + vet check paid.') : '−$40.',
+      outcome: has('pet') ? (zh ? '有保障，搜救 + 兽医检查都报销了。' : es ? 'Cubierto, rescate + revisión veterinaria pagados.' : 'Covered, rescue + vet check paid.') : '−$40.',
       tone: has('pet') ? 'good' : 'bad',
       cost: has('pet') ? 0 : 40,
     },
@@ -345,10 +345,10 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
           </p>
           <p className="mt-1">
             {zh
-              ? '别把这些虚构的结果当成"可以不买人寿保险或房屋保险"的建议——在现实生活里，这些都是必不可少的，尤其是对 Ben 这样的家庭。只是这个月碰巧运气好。'
+              ? '别把这些虚构的结果当成"可以不买人寿保险或房屋保险"的建议，在现实生活里，这些都是必不可少的，尤其是对 Ben 这样的家庭。只是这个月碰巧运气好。'
               : es
-              ? 'No tomes estos resultados ficticios como un consejo para saltarte el seguro de vida o de vivienda — en la vida real esos son esenciales, sobre todo para una familia como la de Ben. Este mes simplemente resultó ser amable.'
-              : "Don't take these fictional results as advice to skip life or home insurance — in real life those are essential, especially for a family like Ben's. This month just happened to be kind."}
+              ? 'No tomes estos resultados ficticios como un consejo para saltarte el seguro de vida o de vivienda, en la vida real esos son esenciales, sobre todo para una familia como la de Ben. Este mes simplemente resultó ser amable.'
+              : "Don't take these fictional results as advice to skip life or home insurance, in real life those are essential, especially for a family like Ben's. This month just happened to be kind."}
           </p>
         </div>
 
@@ -390,13 +390,13 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
       <div className="card mt-4 border-bff-200 bg-bff-50 text-sm text-slate-700">
         {zh ? (
           <p>
-            Ben 的预算撑过了第 1 部分——海滩之旅就在<strong>这个月</strong>，而且没错，那只鬣蜥正式成了家里的一员。现在
+            Ben 的预算撑过了第 1 部分，海滩之旅就在<strong>这个月</strong>，而且没错，那只鬣蜥正式成了家里的一员。现在
             Ben 每个月有 <strong>{usd(BUDGET)}/月</strong> 用来买保险。保险的意思就是每个月付一点钱，好让一场灾难不至于一下子花掉你一大笔。但
             {usd(BUDGET)} 不够买下所有的保险……那么，Ben 要保障哪些呢？
           </p>
         ) : es ? (
           <p>
-            El presupuesto de Ben sobrevivió a la Parte 1 — el viaje a la playa es <strong>este mes</strong>, y
+            El presupuesto de Ben sobrevivió a la Parte 1, el viaje a la playa es <strong>este mes</strong>, y
             sí, la iguana es oficialmente parte de la familia. Ahora Ben tiene{' '}
             <strong>{usd(BUDGET)}/mes</strong> para primas de seguro. El seguro significa pagar un poco cada
             mes para que un desastre no te cueste MUCHÍSIMO de golpe. Pero {usd(BUDGET)} no alcanza para
@@ -404,7 +404,7 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
           </p>
         ) : (
           <p>
-            Ben's budget survived Part 1 — the beach trip is <strong>this month</strong>, and yes, the
+            Ben's budget survived Part 1. The beach trip is <strong>this month</strong>, and yes, the
             iguana is officially part of the family. Now Ben has <strong>{usd(BUDGET)}/month</strong>{' '}
             for insurance premiums. Insurance means paying a little every month so a disaster doesn't
             cost you a LOT all at once. But {usd(BUDGET)} won't cover everything… so what does Ben
@@ -444,7 +444,7 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
           <Car className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-bff-600" aria-hidden="true" />{' '}
           {zh ? '汽车保险' : es ? 'Seguro del carro' : 'Car insurance'}
         </h2>
-        <p className="text-xs text-slate-500">{zh ? '这家人有两辆车——Ben 的车和他妻子的车。' : es ? 'La familia tiene dos carros — el de Ben y el de su esposa.' : "The family has two cars — Ben's and his wife's."}</p>
+        <p className="text-xs text-slate-500">{zh ? '这家人有两辆车，Ben 的车和他妻子的车。' : es ? 'La familia tiene dos carros, el de Ben y el de su esposa.' : "The family has two cars, Ben's and his wife's."}</p>
         <div className="mt-2 space-y-2" role="radiogroup" aria-label={zh ? '汽车保险' : es ? 'Seguro del carro' : 'Car insurance'}>
           {(
             [
@@ -572,10 +572,10 @@ export default function BensInsurance({ onComplete }: LiveGameProps) {
         {overBudget && (
           <p className="mt-2 text-sm font-semibold text-red-600" role="alert">
             {zh
-              ? `Ben 超出了他 ${usd(BUDGET)} 的保险预算 ${usd(-remaining)}——先去掉一些吧。`
+              ? `Ben 超出了他 ${usd(BUDGET)} 的保险预算 ${usd(-remaining)}，先去掉一些吧。`
               : es
-              ? `Ben está ${usd(-remaining)} sobre su presupuesto de seguro de ${usd(BUDGET)} — quita algo primero.`
-              : `Ben is ${usd(-remaining)} over his ${usd(BUDGET)} insurance budget — drop something first.`}
+              ? `Ben está ${usd(-remaining)} sobre su presupuesto de seguro de ${usd(BUDGET)}, quita algo primero.`
+              : `Ben is ${usd(-remaining)} over his ${usd(BUDGET)} insurance budget. Drop something first.`}
           </p>
         )}
       </div>

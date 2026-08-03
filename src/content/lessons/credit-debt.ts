@@ -101,7 +101,7 @@ const lesson: Lesson = {
  type: 'video',
  heading: 'Watch: What Goes Into Your Credit Score?',
  body:
- 'Watch this quick BFF video on what actually moves your credit score. Heads up — it pauses to quiz you along the way, so pay attention!',
+ 'Watch this quick BFF video on what actually moves your credit score. Heads up, it pauses to quiz you along the way, so pay attention!',
  videoId: 'rNVIS8YsBbQ',
  source: 'BFF Classroom',
  questions: [
@@ -110,13 +110,13 @@ const lesson: Lesson = {
  question: 'Which factor counts the MOST in your credit score?',
  options: [
  'How many cards you own',
- 'Your payment history — paying on time',
+ 'Your payment history, paying on time',
  'Your salary',
  'How often you check your score',
  ],
  answerIndex: 1,
  explanation:
- 'Payment history is the heavyweight at about 35%. One missed payment can hurt for years — which is why autopay helps.',
+ 'Payment history is the heavyweight at about 35%. One missed payment can hurt for years, which is why autopay helps.',
  },
  {
   at: 127,
@@ -415,7 +415,7 @@ const lesson: Lesson = {
  type: 'video',
  heading: 'Mira el video: ¿Qué compone tu puntaje de crédito?',
  body:
- 'Mira este video rápido de BFF sobre lo que realmente mueve tu puntaje de crédito. ¡Ojo — se pausa para hacerte preguntas por el camino, así que presta atención!',
+ 'Mira este video rápido de BFF sobre lo que realmente mueve tu puntaje de crédito. ¡Ojo, se pausa para hacerte preguntas por el camino, así que presta atención!',
  videoId: 'rNVIS8YsBbQ',
  source: 'BFF Classroom',
  questions: [
@@ -424,13 +424,13 @@ const lesson: Lesson = {
  question: '¿Qué factor cuenta MÁS en tu puntaje de crédito?',
  options: [
  'Cuántas tarjetas tienes',
- 'Tu historial de pagos — pagar a tiempo',
+ 'Tu historial de pagos, pagar a tiempo',
  'Tu sueldo',
  'Qué tan seguido revisas tu puntaje',
  ],
  answerIndex: 1,
  explanation:
- 'El historial de pagos es el peso pesado, con cerca del 35%. Un solo pago perdido puede afectarte por años — por eso el pago automático ayuda.',
+ 'El historial de pagos es el peso pesado, con cerca del 35%. Un solo pago perdido puede afectarte por años, por eso el pago automático ayuda.',
  },
  {
   at: 127,
@@ -735,7 +735,7 @@ const lesson: Lesson = {
  type: 'video',
  heading: '观看：你的信用分数是由什么构成的？',
  body:
- '来看这段BFF的短视频，了解到底是什么在真正影响你的信用分数。注意——它中途会暂停来考考你，所以要集中注意力！',
+ '来看这段BFF的短视频，了解到底是什么在真正影响你的信用分数。注意，它中途会暂停来考考你，所以要集中注意力！',
  videoId: 'rNVIS8YsBbQ',
  source: 'BFF Classroom',
  questions: [
@@ -744,13 +744,13 @@ const lesson: Lesson = {
  question: '在你的信用分数里，哪个因素占的比重最大？',
  options: [
  '你拥有多少张卡',
- '你的还款记录——按时还款',
+ '你的还款记录，按时还款',
  '你的工资',
  '你查看自己分数的频率',
  ],
  answerIndex: 1,
  explanation:
- '还款记录是重量级选手，大约占35%。哪怕只错过一次付款，也可能影响你的分数好几年——这就是为什么自动扣款很有帮助。',
+ '还款记录是重量级选手，大约占35%。哪怕只错过一次付款，也可能影响你的分数好几年，这就是为什么自动扣款很有帮助。',
  },
  {
   at: 127,

@@ -55,7 +55,7 @@ function ProgressChip({ row, zh, es }: { row: ProgressRow | undefined; zh: boole
   if (!row) {
     return (
       <span className="chip bg-slate-100 text-slate-600">
-        <span aria-hidden="true">—</span>
+        <span aria-hidden="true">, </span>
         <span className="sr-only">{zh ? '未开始' : es ? 'Sin comenzar' : 'Not started'}</span>
       </span>
     )
@@ -584,10 +584,10 @@ export default function ClassroomDetail() {
           {assignments.length === 0 ? (
             <p className="card mt-4 text-sm text-slate-500">
               {zh
-                ? '还没有布置任何内容——在下方选择一个活动，它就会显示在每位学生的主页上。'
+                ? '还没有布置任何内容，在下方选择一个活动，它就会显示在每位学生的主页上。'
                 : es
                   ? 'Aún no hay nada asignado: elige una actividad abajo y aparecerá en la página de inicio de cada estudiante.'
-                  : "Nothing assigned yet — pick an activity below and it will show up on every student's home page."}
+                  : "Nothing assigned yet, pick an activity below and it will show up on every student's home page."}
             </p>
           ) : (
             <ul className="mt-4 flex flex-col gap-3">
@@ -633,7 +633,7 @@ export default function ClassroomDetail() {
             </h3>
             {unassigned.length === 0 ? (
               <p className="text-sm text-slate-500">
-                {zh ? '所有活动都已布置——太棒了！' : es ? 'Todas las actividades ya están asignadas. ¡Genial!' : 'Every activity is already assigned — nice!'}
+                {zh ? '所有活动都已布置，太棒了！' : es ? 'Todas las actividades ya están asignadas. ¡Genial!' : 'Every activity is already assigned, nice!'}
               </p>
             ) : (
               <>
@@ -771,7 +771,7 @@ export default function ClassroomDetail() {
                 {zh ? '完成率' : es ? 'Finalización' : 'Completion'}
               </dt>
               <dd className="mt-1 font-display text-2xl font-bold text-slate-900">
-                {assignments.length === 0 ? '—' : `${completionPct}%`}
+                {assignments.length === 0 ? ', ' : `${completionPct}%`}
               </dd>
             </div>
             <div className="card p-4">
@@ -779,7 +779,7 @@ export default function ClassroomDetail() {
                 {zh ? '班级平均分' : es ? 'Puntuación media de la clase' : 'Class avg score'}
               </dt>
               <dd className="mt-1 font-display text-2xl font-bold text-slate-900">
-                {classAvg == null ? '—' : classAvg}
+                {classAvg == null ? ', ' : classAvg}
               </dd>
             </div>
           </dl>
@@ -797,10 +797,10 @@ export default function ClassroomDetail() {
                 {classroom.code}
               </span>{' '}
               {zh
-                ? '——学生在本网站上点击「加入班级」，只需一个昵称即可加入。无需电子邮箱。'
+                ? '，学生在本网站上点击「加入班级」，只需一个昵称即可加入。无需电子邮箱。'
                 : es
-                  ? '— los estudiantes entran en este sitio y pulsan "Unirse a la clase", solo con un apodo. Sin correo electrónico.'
-                  : '— students join at this site by tapping "Join Class", with just a nickname. No email needed.'}
+                  ? ', los estudiantes entran en este sitio y pulsan "Unirse a la clase", solo con un apodo. Sin correo electrónico.'
+                  : ', students join at this site by tapping "Join Class", with just a nickname. No email needed.'}
             </p>
           </div>
         ) : (

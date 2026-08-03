@@ -9,10 +9,10 @@ import { ArrowRight, Bell, LineChart, Lock, Newspaper, PartyPopper, TrendingDown
 import type { LucideIcon } from 'lucide-react'
 
 const STAGE_TITLES: Record<number, { Icon: LucideIcon; title: string; titleEs: string; titleZh: string }> = {
-  1: { Icon: Bell, title: 'Opening Bell — pick your stocks', titleEs: 'Campana de apertura — elige tus acciones', titleZh: '开盘钟声——挑选你的股票' },
-  2: { Icon: Newspaper, title: 'Breaking News — round 1', titleEs: 'Última hora — ronda 1', titleZh: '突发新闻——第 1 轮' },
-  3: { Icon: Newspaper, title: 'Breaking News — round 2', titleEs: 'Última hora — ronda 2', titleZh: '突发新闻——第 2 轮' },
-  4: { Icon: Lock, title: 'Closing Bell — the results are in', titleEs: 'Campana de cierre — ya están los resultados', titleZh: '收盘钟声——结果揭晓' },
+  1: { Icon: Bell, title: 'Opening Bell, pick your stocks', titleEs: 'Campana de apertura, elige tus acciones', titleZh: '开盘钟声，挑选你的股票' },
+  2: { Icon: Newspaper, title: 'Breaking News, round 1', titleEs: 'Última hora, ronda 1', titleZh: '突发新闻，第 1 轮' },
+  3: { Icon: Newspaper, title: 'Breaking News, round 2', titleEs: 'Última hora, ronda 2', titleZh: '突发新闻，第 2 轮' },
+  4: { Icon: Lock, title: 'Closing Bell, the results are in', titleEs: 'Campana de cierre, ya están los resultados', titleZh: '收盘钟声，结果揭晓' },
 }
 
 export default function WolfSolo() {
@@ -80,10 +80,10 @@ export default function WolfSolo() {
           <button className="btn-primary" onClick={advance}>
             {stage === 1
               ? zh
-                ? '我投好了——敲响钟声'
+                ? '我投好了，敲响钟声'
                 : es
-                  ? 'Ya invertí — toca la campana'
-                  : "I'm invested — ring the bell"
+                  ? 'Ya invertí, toca la campana'
+                  : "I'm invested, ring the bell"
               : stage === 2
                 ? zh
                   ? '下一轮新闻'

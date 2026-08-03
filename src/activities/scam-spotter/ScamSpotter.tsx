@@ -70,7 +70,7 @@ const MESSAGES: InboxMessage[] = [
         'Dear Valued Customer, we detected unusual activity on your account. ',
         {
           cue: 'You must act in the next 10 minutes',
-          why: 'Manufactured urgency — real companies never give you a 10-minute countdown.',
+          why: 'Manufactured urgency, real companies never give you a 10-minute countdown.',
         },
         ' or your account will be permanently locked.',
       ],
@@ -106,7 +106,7 @@ const MESSAGES: InboxMessage[] = [
         '尊敬的贵宾客户，我们检测到你的账户有异常活动。',
         {
           cue: '你必须在接下来的 10 分钟内采取行动',
-          why: '人为制造的紧迫感——真正的公司绝不会给你一个 10 分钟的倒计时。',
+          why: '人为制造的紧迫感，真正的公司绝不会给你一个 10 分钟的倒计时。',
         },
         '，否则你的账户将被永久锁定。',
       ],
@@ -121,11 +121,11 @@ const MESSAGES: InboxMessage[] = [
     ],
     isScam: true,
     verdictNote:
-      'Classic phishing. Also check the sender: "amaz0n" with a zero, on a weird ".help" domain — not amazon.com.',
+      'Classic phishing. Also check the sender: "amaz0n" with a zero, on a weird ".help" domain, not amazon.com.',
     verdictNoteEs:
       'Phishing clásico. Fíjate también en el remitente: "amaz0n" con un cero, en un dominio raro ".help", no amazon.com.',
     verdictNoteZh:
-      '经典的钓鱼攻击。也留意一下发件人：「amaz0n」里用的是数字零，而且域名是奇怪的「.help」——根本不是 amazon.com。',
+      '经典的钓鱼攻击。也留意一下发件人：「amaz0n」里用的是数字零，而且域名是奇怪的「.help」，根本不是 amazon.com。',
   },
   {
     id: 'newsletter',
@@ -136,9 +136,9 @@ const MESSAGES: InboxMessage[] = [
     address: 'newsletter@jeffersonhigh.edu',
     addressEs: 'newsletter@jeffersonhigh.edu',
     addressZh: 'newsletter@jeffersonhigh.edu',
-    subject: 'Eagle Weekly — Spirit Week schedule',
-    subjectEs: 'Eagle Weekly — Horario de la Semana Escolar',
-    subjectZh: 'Eagle Weekly——校园精神周日程',
+    subject: 'Eagle Weekly, Spirit Week schedule',
+    subjectEs: 'Eagle Weekly, Horario de la Semana Escolar',
+    subjectZh: 'Eagle Weekly，校园精神周日程',
     body: [
       [
         'Hi Eagles! Spirit Week starts Monday: Pajama Day, Decades Day, and Friday pep rally in the gym at 2:00.',
@@ -147,7 +147,7 @@ const MESSAGES: InboxMessage[] = [
         'Yearbook photo retakes are Wednesday during lunch. ',
         {
           cue: 'Questions? Stop by the front office or call 555-0148.',
-          why: 'Trust signal: it points you to a place and phone number you already know — no links, no rush.',
+          why: 'Trust signal: it points you to a place and phone number you already know, no links, no rush.',
         },
       ],
     ],
@@ -171,17 +171,17 @@ const MESSAGES: InboxMessage[] = [
         '毕业纪念册的补拍安排在周三午餐时间。',
         {
           cue: '有疑问？到前台办公室来一趟，或拨打 555-0148。',
-          why: '可信信号：它把你指向一个你早就熟悉的地点和电话号码——没有链接，也不催你。',
+          why: '可信信号：它把你指向一个你早就熟悉的地点和电话号码，没有链接，也不催你。',
         },
       ],
     ],
     isScam: false,
     verdictNote:
-      'Legit. Calm tone, a school domain you recognize, and it asks for nothing — no links, no money, no personal info.',
+      'Legit. Calm tone, a school domain you recognize, and it asks for nothing, no links, no money, no personal info.',
     verdictNoteEs:
       'Legítimo. Tono tranquilo, un dominio escolar que reconoces y no pide nada: sin enlaces, sin dinero, sin información personal.',
     verdictNoteZh:
-      '合法。语气平和，是你认得的学校域名，而且什么都不索取——没有链接、不要钱、不要个人信息。',
+      '合法。语气平和，是你认得的学校域名，而且什么都不索取，没有链接、不要钱、不要个人信息。',
   },
   {
     id: 'giftcard-prize',
@@ -207,9 +207,9 @@ const MESSAGES: InboxMessage[] = [
       [
         {
           cue: 'Claim expires TODAY',
-          why: 'Urgency again — scammers rush you so you do not stop and think.',
+          why: 'Urgency again, scammers rush you so you do not stop and think.',
         },
-        ' — tap to collect: http://claim-prize.win/8842',
+        ', tap to collect: http://claim-prize.win/8842',
       ],
     ],
     bodyEs: [
@@ -226,7 +226,7 @@ const MESSAGES: InboxMessage[] = [
           cue: 'El reclamo vence HOY',
           why: 'Urgencia otra vez: los estafadores te apuran para que no te detengas a pensar.',
         },
-        ' — toca para cobrar: http://claim-prize.win/8842',
+        ', toca para cobrar: http://claim-prize.win/8842',
       ],
     ],
     bodyZh: [
@@ -241,9 +241,9 @@ const MESSAGES: InboxMessage[] = [
       [
         {
           cue: '领取资格今天到期',
-          why: '又是紧迫感——骗子催你赶紧行动，好让你没空停下来想一想。',
+          why: '又是紧迫感，骗子催你赶紧行动，好让你没空停下来想一想。',
         },
-        '——点击领取：http://claim-prize.win/8842',
+        '，点击领取：http://claim-prize.win/8842',
       ],
     ],
     isScam: true,
@@ -271,7 +271,7 @@ const MESSAGES: InboxMessage[] = [
         'Hello, your monthly account statement is now available. ',
         {
           cue: 'To view it, log in to online banking the way you normally do, or use our mobile app.',
-          why: 'Trust signal: it tells you to use your normal login — it does not hand you a link or ask for anything.',
+          why: 'Trust signal: it tells you to use your normal login. It does not hand you a link or ask for anything.',
         },
       ],
       [
@@ -301,7 +301,7 @@ const MESSAGES: InboxMessage[] = [
         '你好，你的每月账户对账单现已生成。',
         {
           cue: '要查看它，请像平常一样登录网上银行，或使用我们的手机 App。',
-          why: '可信信号：它让你用自己一贯的方式登录——不塞给你链接，也不索取任何东西。',
+          why: '可信信号：它让你用自己一贯的方式登录，不塞给你链接，也不索取任何东西。',
         },
       ],
       [
@@ -328,9 +328,9 @@ const MESSAGES: InboxMessage[] = [
     address: 'principal.desk@school-payments-portal.com',
     addressEs: 'principal.desk@school-payments-portal.com',
     addressZh: 'principal.desk@school-payments-portal.com',
-    subject: 'Overdue lunch balance — final notice',
-    subjectEs: 'Saldo de almuerzo vencido — aviso final',
-    subjectZh: '午餐费欠款逾期——最后通知',
+    subject: 'Overdue lunch balance, final notice',
+    subjectEs: 'Saldo de almuerzo vencido, aviso final',
+    subjectZh: '午餐费欠款逾期，最后通知',
     body: [
       [
         'Our records show an overdue cafeteria balance of $85. ',
@@ -449,9 +449,9 @@ const MESSAGES: InboxMessage[] = [
     address: 'Unknown international number',
     addressEs: 'Número internacional desconocido',
     addressZh: '未知的国际号码',
-    subject: 'Double your crypto — giveaway!',
-    subjectEs: '¡Duplica tu cripto — sorteo!',
-    subjectZh: '让你的加密币翻倍——免费赠送活动！',
+    subject: 'Double your crypto, giveaway!',
+    subjectEs: '¡Duplica tu cripto, sorteo!',
+    subjectZh: '让你的加密币翻倍，免费赠送活动！',
     body: [
       [
         'OFFICIAL GIVEAWAY: ',
@@ -459,12 +459,12 @@ const MESSAGES: InboxMessage[] = [
           cue: 'send 0.1 Bitcoin and receive 0.2 Bitcoin back instantly',
           why: '"Send money, get double back" is 100% a scam, 100% of the time. Money sent is money gone.',
         },
-        ' — guaranteed!',
+        ', guaranteed!',
       ],
       [
         {
           cue: 'Only the first 100 people qualify',
-          why: 'Fake scarcity — another pressure tactic to make you rush.',
+          why: 'Fake scarcity, another pressure tactic to make you rush.',
         },
         '. Wallet: bc1q-giveaway-now',
       ],
@@ -476,7 +476,7 @@ const MESSAGES: InboxMessage[] = [
           cue: 'envía 0.1 Bitcoin y recibe 0.2 Bitcoin de vuelta al instante',
           why: '"Envía dinero y recibe el doble" es una estafa el 100% de las veces. El dinero enviado es dinero perdido.',
         },
-        ' — ¡garantizado!',
+        ', ¡garantizado!',
       ],
       [
         {
@@ -493,12 +493,12 @@ const MESSAGES: InboxMessage[] = [
           cue: '发送 0.1 个比特币，立刻返还给你 0.2 个比特币',
           why: '「发钱给你返双倍」百分之百是骗局，每一次都是。钱一发出去就是有去无回。',
         },
-        '——保证到账！',
+        '，保证到账！',
       ],
       [
         {
           cue: '仅限前 100 名有资格',
-          why: '虚假的稀缺感——又一个催你赶紧行动的施压手段。',
+          why: '虚假的稀缺感，又一个催你赶紧行动的施压手段。',
         },
         '。钱包地址：bc1q-giveaway-now',
       ],
@@ -520,9 +520,9 @@ const MESSAGES: InboxMessage[] = [
     address: 'billing@netfIix-accounts.com',
     addressEs: 'billing@netfIix-accounts.com',
     addressZh: 'billing@netfIix-accounts.com',
-    subject: 'Payment declined — update card within 24 hours',
-    subjectEs: 'Pago rechazado — actualiza tu tarjeta en 24 horas',
-    subjectZh: '付款被拒——请在 24 小时内更新银行卡',
+    subject: 'Payment declined, update card within 24 hours',
+    subjectEs: 'Pago rechazado, actualiza tu tarjeta en 24 horas',
+    subjectZh: '付款被拒，请在 24 小时内更新银行卡',
     body: [
       [
         'We could not process your payment. ',
@@ -536,7 +536,7 @@ const MESSAGES: InboxMessage[] = [
         'Please ',
         {
           cue: 'confirm your card number and security code',
-          why: 'Real companies never ask you to type card details from an email link — that’s how cards get stolen.',
+          why: 'Real companies never ask you to type card details from an email link. That’s how cards get stolen.',
         },
         ' here: http://netfIix-accounts.com/billing',
       ],
@@ -572,7 +572,7 @@ const MESSAGES: InboxMessage[] = [
         '请在此',
         {
           cue: '确认你的卡号和安全码',
-          why: '真正的公司绝不会让你通过邮件里的链接输入银行卡信息——银行卡就是这么被盗的。',
+          why: '真正的公司绝不会让你通过邮件里的链接输入银行卡信息，银行卡就是这么被盗的。',
         },
         '：http://netfIix-accounts.com/billing',
       ],
@@ -740,7 +740,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="text-sm font-semibold text-slate-800">
                     <KindMark kind={m.kind} />
-                    {zh ? m.senderZh : es ? m.senderEs : m.sender} — {zh ? m.subjectZh : es ? m.subjectEs : m.subject}
+                    {zh ? m.senderZh : es ? m.senderEs : m.sender}, {zh ? m.subjectZh : es ? m.subjectEs : m.subject}
                   </p>
                   <span
                     className={`chip ${correct ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-700'}`}
@@ -787,7 +787,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
                   <ul className="mt-1 list-disc space-y-1 pl-4">
                     {cuesOf(m, es, zh).map((c) => (
                       <li key={c.cue}>
-                        <span className="font-semibold">“{c.cue}”</span> — {c.why}
+                        <span className="font-semibold">“{c.cue}”</span>, {c.why}
                       </li>
                     ))}
                   </ul>
@@ -826,7 +826,7 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
               <strong>S</strong>ecure your passwords · <strong>H</strong>ide your personal info ·{' '}
               <strong>I</strong>gnore suspicious messages · <strong>E</strong>nable 2FA ·{' '}
               <strong>L</strong>ock your devices · <strong>D</strong>on't shop on public Wi-Fi. When a
-              message pushes urgency, prizes, gift cards, or password links — slow down. Scammers need
+              message pushes urgency, prizes, gift cards, or password links. Slow down. Scammers need
               you rushing.
             </p>
           )}
@@ -917,10 +917,10 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
           <p className="mt-3 text-center text-xs text-slate-500" role="status" aria-live="polite">
             {v
               ? zh
-                ? `已标记为${v === 'scam' ? '骗局' : '合法'}——提交之前你随时可以改主意。`
+                ? `已标记为${v === 'scam' ? '骗局' : '合法'}，提交之前你随时可以改主意。`
                 : es
                 ? `Marcado como ${v === 'scam' ? 'estafa' : 'legítimo'}: puedes cambiar de opinión en cualquier momento antes de enviar.`
-                : `Marked as ${v === 'scam' ? 'scam' : 'legit'} — you can change your mind anytime before submitting.`
+                : `Marked as ${v === 'scam' ? 'scam' : 'legit'}. You can change your mind anytime before submitting.`
               : zh
                 ? '选一个判断来归档这条消息。'
                 : es
@@ -1063,10 +1063,10 @@ export default function ScamSpotter({ onComplete }: LiveGameProps) {
         {!allClassified && (
           <p className="mt-2 text-sm text-slate-500">
             {zh
-              ? `提交前请把每一条消息都分类好——还剩 ${MESSAGES.length - classifiedCount} 条。`
+              ? `提交前请把每一条消息都分类好，还剩 ${MESSAGES.length - classifiedCount} 条。`
               : es
-              ? `Clasifica todos los mensajes antes de enviar — faltan ${MESSAGES.length - classifiedCount}.`
-              : `Classify every message before submitting — ${MESSAGES.length - classifiedCount} to go.`}
+              ? `Clasifica todos los mensajes antes de enviar, faltan ${MESSAGES.length - classifiedCount}.`
+              : `Classify every message before submitting, ${MESSAGES.length - classifiedCount} to go.`}
           </p>
         )}
       </div>

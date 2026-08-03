@@ -139,7 +139,7 @@ const lesson: Lesson = {
  type: 'video',
  heading: 'Watch: Can I Skip Insurance?',
  body:
- "Watch this short BFF video on why insurance matters even when you're young and healthy. Heads up — it pauses to quiz you along the way, so pay attention!",
+ "Watch this short BFF video on why insurance matters even when you're young and healthy. Heads up, it pauses to quiz you along the way, so pay attention!",
  videoId: '64VPvCvBq3g',
  source: 'BFF Classroom',
  questions: [
@@ -150,7 +150,7 @@ const lesson: Lesson = {
  "It's a fashion statement",
  'Accidents and sudden illness can hit anyone, and the bills can be enormous',
  "Doctors won't see uninsured people",
- "They don't — young people never get sick",
+ "They don't, young people never get sick",
  ],
  answerIndex: 1,
  explanation:
@@ -168,7 +168,7 @@ const lesson: Lesson = {
   ],
   answerIndex: 1,
   explanation:
-   'Your premium is the regular payment that keeps you covered. Your deductible is what comes out of your own pocket before insurance starts paying — and a higher deductible usually means a lower premium.',
+   'Your premium is the regular payment that keeps you covered. Your deductible is what comes out of your own pocket before insurance starts paying, and a higher deductible usually means a lower premium.',
  },
  {
  at: 126,
@@ -181,7 +181,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- "Insurance trades a small, predictable premium for protection against a rare, catastrophic cost — that's its whole job.",
+ "Insurance trades a small, predictable premium for protection against a rare, catastrophic cost. That's its whole job.",
  },
  ],
  },
@@ -469,7 +469,7 @@ const lesson: Lesson = {
   ],
   answerIndex: 1,
   explanation:
-   'La prima es el pago regular que te mantiene cubierto. El deducible es lo que sale de tu bolsillo antes de que el seguro empiece a pagar — y un deducible más alto suele significar una prima más baja.',
+   'La prima es el pago regular que te mantiene cubierto. El deducible es lo que sale de tu bolsillo antes de que el seguro empiece a pagar, y un deducible más alto suele significar una prima más baja.',
  },
  {
  at: 126,
@@ -749,9 +749,9 @@ const lesson: Lesson = {
  question: '为什么连年轻、健康的人也需要健康保险？',
  options: [
  '这是一种时尚宣言',
- '事故和突发疾病可能降临到任何人头上——而账单可能是天文数字',
+ '事故和突发疾病可能降临到任何人头上，而账单可能是天文数字',
  '医生不给没保险的人看病',
- '不需要——年轻人永远不会生病',
+ '不需要，年轻人永远不会生病',
  ],
  answerIndex: 1,
  explanation:
@@ -769,7 +769,7 @@ const lesson: Lesson = {
   ],
   answerIndex: 1,
   explanation:
-   '保费是你为维持保障而定期支付的钱；免赔额是保险开始赔付前需要你自己先掏的部分——免赔额越高，保费通常越低。',
+   '保费是你为维持保障而定期支付的钱；免赔额是保险开始赔付前需要你自己先掏的部分，免赔额越高，保费通常越低。',
  },
  {
  at: 126,
@@ -782,7 +782,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '保险用一笔小额、可预测的保费，换取对罕见而灾难性开支的保障——这就是它的全部作用。',
+ '保险用一笔小额、可预测的保费，换取对罕见而灾难性开支的保障，这就是它的全部作用。',
  },
  ],
  },

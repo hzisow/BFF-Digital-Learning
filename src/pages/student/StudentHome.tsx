@@ -106,10 +106,10 @@ export default function StudentHome() {
       if (error) {
         setLoadError(
           zh
-            ? '现在没能加载你的作业——先看看下面的课程吧！'
+            ? '现在没能加载你的作业，先看看下面的课程吧！'
             : es
-            ? 'No pudimos cargar tus tareas ahora mismo — ¡mejor revisa las lecciones de abajo!'
-            : 'Could not load your assignments right now — pull up the lessons below instead!',
+            ? 'No pudimos cargar tus tareas ahora mismo, ¡mejor revisa las lecciones de abajo!'
+            : 'Could not load your assignments right now, pull up the lessons below instead!',
         )
         setAssignments([])
       } else {
@@ -172,18 +172,18 @@ export default function StudentHome() {
             {zh ? (
               <>
                 你的导师关闭了 <span className="font-semibold text-ink">{student.classroomName}</span>
-                ，所以它已不再活跃。你的进度仍然保存着——而且每一节课、每个游戏和挑战都依然开放，你可以自己去探索。
+                ，所以它已不再活跃。你的进度仍然保存着，而且每一节课、每个游戏和挑战都依然开放，你可以自己去探索。
               </>
             ) : es ? (
               <>
                 Tu mentor cerró <span className="font-semibold text-ink">{student.classroomName}</span>, así
-                que ya no está activa. Tu progreso sigue guardado — y cada lección, juego y desafío
+                que ya no está activa. Tu progreso sigue guardado, y cada lección, juego y desafío
                 sigue abierto para que lo explores por tu cuenta.
               </>
             ) : (
               <>
                 Your mentor closed <span className="font-semibold text-ink">{student.classroomName}</span>, so
-                it's no longer active. Your progress is still saved — and every lesson, game, and
+                it's no longer active. Your progress is still saved, and every lesson, game, and
                 challenge is still open to explore on your own.
               </>
             )}
@@ -287,10 +287,10 @@ export default function StudentHome() {
                 ? `Has completado ${completedCount} de ${allActivities.length} actividades`
                 : `You've completed ${completedCount} of ${allActivities.length} activities`
               : zh
-                ? `${allActivities.length} 个活动在等着你——一起把第一个搞定吧！`
+                ? `${allActivities.length} 个活动在等着你，一起把第一个搞定吧！`
                 : es
-                ? `${allActivities.length} actividades te esperan — ¡vamos a completar la primera!`
-                : `${allActivities.length} activities are waiting for you — let's get that first one done!`}
+                ? `${allActivities.length} actividades te esperan, ¡vamos a completar la primera!`
+                : `${allActivities.length} activities are waiting for you. Let's get that first one done!`}
           </p>
         </div>
       </div>
@@ -384,7 +384,7 @@ export default function StudentHome() {
             <div className="card mt-4 text-center">
               <Umbrella className="mx-auto h-10 w-10 text-bff-500" strokeWidth={1.5} aria-hidden="true" />
               <p className="mt-3 font-display font-semibold text-slate-700">
-                {zh ? '目前还没有布置作业——去下面探索吧！' : es ? 'Nada asignado todavía — ¡explora abajo!' : 'Nothing assigned yet — explore below!'}
+                {zh ? '目前还没有布置作业，去下面探索吧！' : es ? 'Nada asignado todavía, ¡explora abajo!' : 'Nothing assigned yet, explore below!'}
               </p>
               <p className="mt-1 text-sm text-slate-500">
                 {zh
@@ -506,10 +506,10 @@ export default function StudentHome() {
         </h2>
         <p className="mt-2 text-sm text-ink/60">
           {zh
-            ? 'BFF Classroom 里的一切都向你开放——无论是否被布置。'
+            ? 'BFF Classroom 里的一切都向你开放，无论是否被布置。'
             : es
-            ? 'Todo en BFF Classroom está disponible para ti — asignado o no.'
-            : 'Everything in BFF Classroom is open to you — assigned or not.'}
+            ? 'Todo en BFF Classroom está disponible para ti, asignado o no.'
+            : 'Everything in BFF Classroom is open to you, assigned or not.'}
         </p>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {allActivities.map((a) => {

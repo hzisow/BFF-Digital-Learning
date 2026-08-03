@@ -135,7 +135,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
             ? `你的应急基金支付了 ${usd(REPAIR_COST)} 的维修费：这个月的工资分文未动。`
             : es
             ? `Tu fondo de emergencia pagó la reparación de ${usd(REPAIR_COST)}: el sueldo de este mes queda intacto.`
-            : `Your emergency fund paid the ${usd(REPAIR_COST)} repair — this month's paycheck is untouched.`,
+            : `Your emergency fund paid the ${usd(REPAIR_COST)} repair. This month's paycheck is untouched.`,
         })
         setEventCard({
           icon: 'Smartphone',
@@ -182,7 +182,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
                 fromFund > 0
                   ? `基金被清空到 $0，剩下的 ${usd(REPAIR_COST - fromFund)} 再加上 ${usd(PLAN_FEE)} 的分期手续费，全都从这个月的收入里直接扣掉。`
                   : `没有任何缓冲垫，整整 ${usd(REPAIR_COST)} 再加上 ${usd(PLAN_FEE)} 的分期手续费，全都从这个月的收入里直接扣掉。`,
-                `这个月你只有 ${usd(BASE_INCOME - fromIncome)} 可以分配。这正是「先付给自己」为什么重要——第 1 个月留一个缓冲垫，本可以保护第 2 个月。`,
+                `这个月你只有 ${usd(BASE_INCOME - fromIncome)} 可以分配。这正是「先付给自己」为什么重要，第 1 个月留一个缓冲垫，本可以保护第 2 个月。`,
               ]
             : es
             ? [
@@ -193,11 +193,11 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
                 `Este mes solo tienes ${usd(BASE_INCOME - fromIncome)} para repartir. Por eso importa "págate a ti primero": un colchón en el mes 1 habría protegido el mes 2.`,
               ]
             : [
-                `The repair costs ${usd(REPAIR_COST)} — but your emergency fund only has ${usd(fromFund)}.`,
+                `The repair costs ${usd(REPAIR_COST)}, but your emergency fund only has ${usd(fromFund)}.`,
                 fromFund > 0
                   ? `The fund is drained to $0, and the remaining ${usd(REPAIR_COST - fromFund)} plus a ${usd(PLAN_FEE)} payment-plan fee comes straight out of this month's income.`
                   : `With no buffer, the whole ${usd(REPAIR_COST)} plus a ${usd(PLAN_FEE)} payment-plan fee comes straight out of this month's income.`,
-                `This month you only have ${usd(BASE_INCOME - fromIncome)} to allocate. This is why "pay yourself first" matters — a buffer in month 1 would have protected month 2.`,
+                `This month you only have ${usd(BASE_INCOME - fromIncome)} to allocate. This is why "pay yourself first" matters. A buffer in month 1 would have protected month 2.`,
               ],
           kind: 'info',
         })
@@ -233,7 +233,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
             ]
           : [
               `This month you have ${usd(BASE_INCOME + WINDFALL)} instead of ${usd(BASE_INCOME)}.`,
-              'A windfall is a chance to catch up on a goal — or to blow it all on fun. Your call.',
+              'A windfall is a chance to catch up on a goal, or to blow it all on fun. Your call.',
             ],
         kind: 'info',
       })
@@ -250,9 +250,9 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
           : `Your friends invite you on a ${usd(TRIP_COST)} day trip.`,
         lines: zh
           ? [
-              '听起来是真的好玩，而娱乐很重要——完全不允许娱乐的预算往往撑不下去。',
+              '听起来是真的好玩，而娱乐很重要，完全不允许娱乐的预算往往撑不下去。',
               `去的话，这个月的钱里会有 ${usd(TRIP_COST)} 在你分配其余部分之前就被锁定为娱乐。不去的话，你保留完整的 ${usd(BASE_INCOME)} 用于你的目标。`,
-              '没有唯一正确的答案——只有一个需要权衡的取舍。你怎么做？',
+              '没有唯一正确的答案，只有一个需要权衡的取舍。你怎么做？',
             ]
           : es
           ? [
@@ -261,9 +261,9 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
               'No hay una única respuesta correcta, solo una decisión con compensaciones. ¿Qué haces?',
             ]
           : [
-              'It sounds genuinely fun, and fun matters — budgets that allow zero fun tend to collapse.',
+              'It sounds genuinely fun, and fun matters, budgets that allow zero fun tend to collapse.',
               `Go, and ${usd(TRIP_COST)} of this month's money is committed to fun before you allocate the rest. Skip it, and you keep the full ${usd(BASE_INCOME)} for your goals.`,
-              'There is no single right answer — only a trade-off. What do you do?',
+              'There is no single right answer, only a trade-off. What do you do?',
             ],
         kind: 'trip',
       })
@@ -519,7 +519,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
           <p className="text-sm text-slate-600">
             {zh ? '一路上花在娱乐的钱' : es ? 'Dinero en diversión a lo largo del camino' : 'Fun money spent along the way'}:{' '}
             {usd(balances.fun)}
-            {tripTaken ? (zh ? '（含一日游！）' : es ? ' (¡excursión incluida!)' : ' (day trip included!)') : ''} —{' '}
+            {tripTaken ? (zh ? '（含一日游！）' : es ? ' (¡excursión incluida!)' : ' (day trip included!)') : ''}, {' '}
             {zh
               ? '娱乐是健康预算的一部分，而不是敌人。'
               : es
@@ -544,15 +544,15 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
               : "move money to your goals the moment you're paid, before fun gets a vote."}{' '}
             {repairCoveredByFund
               ? zh
-                ? `而且它奏效了——手机碎屏时，你的应急基金悄无声息地吞下了 ${usd(REPAIR_COST)} 的维修费，你为自行车和演唱会存的钱一点都没受影响。`
+                ? `而且它奏效了，手机碎屏时，你的应急基金悄无声息地吞下了 ${usd(REPAIR_COST)} 的维修费，你为自行车和演唱会存的钱一点都没受影响。`
                 : es
                 ? `Y funcionó: cuando el teléfono se rompió, tu fondo de emergencia se comió sin problema la reparación de ${usd(REPAIR_COST)}, así que tus ahorros para la bici y el concierto ni lo sintieron.`
-                : `And it worked — when the phone cracked, your emergency fund quietly ate the ${usd(REPAIR_COST)} repair, so your bike and concert savings never felt a thing.`
+                : `And it worked, when the phone cracked, your emergency fund quietly ate the ${usd(REPAIR_COST)} repair, so your bike and concert savings never felt a thing.`
               : zh
-                ? `手机碎屏时，你的应急基金无力承担 ${usd(REPAIR_COST)} 的维修费，于是它侵占了你的工资——上面还加了 ${usd(PLAN_FEE)} 的手续费。第 1 个月攒下的一个缓冲垫，本可以替你扛下那一击。这正是应急基金的用途。`
+                ? `手机碎屏时，你的应急基金无力承担 ${usd(REPAIR_COST)} 的维修费，于是它侵占了你的工资，上面还加了 ${usd(PLAN_FEE)} 的手续费。第 1 个月攒下的一个缓冲垫，本可以替你扛下那一击。这正是应急基金的用途。`
                 : es
                 ? `Cuando el teléfono se rompió, tu fondo de emergencia no pudo cubrir la reparación de ${usd(REPAIR_COST)}, así que asaltó tu sueldo, con una comisión de ${usd(PLAN_FEE)} encima. Un colchón construido en el mes 1 habría absorbido ese golpe por ti. Para eso sirven los fondos de emergencia.`
-                : `When the phone cracked, your emergency fund couldn't cover the ${usd(REPAIR_COST)} repair, so it raided your paycheck — with a ${usd(PLAN_FEE)} fee on top. A buffer built in month 1 would have taken that hit for you. That's what emergency funds are for.`}
+                : `When the phone cracked, your emergency fund couldn't cover the ${usd(REPAIR_COST)} repair, so it raided your paycheck, with a ${usd(PLAN_FEE)} fee on top. A buffer built in month 1 would have taken that hit for you. That's what emergency funds are for.`}
           </p>
         </div>
 
@@ -576,7 +576,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
         <header className="mb-2">
           <p className="eyebrow">
             <span className="eyebrow-line" aria-hidden="true" />
-            {zh ? '第' : es ? 'Mes' : 'Month'} {month} {zh ? '个月，共' : es ? 'de' : 'of'} {TOTAL_MONTHS}{zh ? ' 个月' : ''} —{' '}
+            {zh ? '第' : es ? 'Mes' : 'Month'} {month} {zh ? '个月，共' : es ? 'de' : 'of'} {TOTAL_MONTHS}{zh ? ' 个月' : ''}, {' '}
             {zh ? '生活总有意外……' : es ? 'la vida pasa…' : 'life happens…'}
           </p>
           <h1 className="mt-3 font-display text-3xl font-bold text-ink sm:text-4xl">
@@ -614,7 +614,7 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
           ) : (
             <div className="mt-5 text-center">
               <button className="btn-primary w-full sm:w-auto" onClick={dismissEvent}>
-                {zh ? `明白了——开始规划第 ${month} 个月` : es ? `Entendido — planear el mes ${month}` : `Got it — plan month ${month}`}
+                {zh ? `明白了，开始规划第 ${month} 个月` : es ? `Entendido, planear el mes ${month}` : `Got it, plan month ${month}`}
               </button>
             </div>
           )}
@@ -734,10 +734,10 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
         >
           {remaining === 0
             ? zh
-              ? `${usd(monthInfo.income)} 全部分配完毕——锁定第 ${month} 个月！`
+              ? `${usd(monthInfo.income)} 全部分配完毕，锁定第 ${month} 个月！`
               : es
-              ? `¡Repartiste los ${usd(monthInfo.income)} — confirma el mes ${month}!`
-              : `All ${usd(monthInfo.income)} allocated — lock in month ${month}!`
+              ? `¡Repartiste los ${usd(monthInfo.income)}, confirma el mes ${month}!`
+              : `All ${usd(monthInfo.income)} allocated, lock in month ${month}!`
             : remaining > 0
               ? zh
                 ? `还剩 ${usd(remaining)} 待分配`
@@ -749,10 +749,10 @@ export default function GoalGetter({ onComplete }: LiveGameProps) {
         {overAllocated && (
           <p className="mt-1 text-sm font-semibold text-red-600" role="alert">
             {zh
-              ? `你分配的金额比 ${usd(monthInfo.income)} 的工资多出了 ${usd(-remaining)}——收回一些。`
+              ? `你分配的金额比 ${usd(monthInfo.income)} 的工资多出了 ${usd(-remaining)}，收回一些。`
               : es
-              ? `Repartiste ${usd(-remaining)} más que tu sueldo de ${usd(monthInfo.income)} — quita un poco.`
-              : `You've allocated ${usd(-remaining)} more than your ${usd(monthInfo.income)} paycheck — take some back.`}
+              ? `Repartiste ${usd(-remaining)} más que tu sueldo de ${usd(monthInfo.income)}, quita un poco.`
+              : `You've allocated ${usd(-remaining)} more than your ${usd(monthInfo.income)} paycheck. Take some back.`}
           </p>
         )}
 

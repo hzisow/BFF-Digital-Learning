@@ -30,7 +30,7 @@ export function BackendOffCard() {
             ? '班级代码、作业和导师仪表板会在后端连接后启用；快速的 Supabase 配置方法请参见 README。课程和单人活动已可供所有人使用，无需后端。'
             : es
               ? 'Los códigos de clase, las tareas y el panel del mentor se activan una vez que el backend está conectado; consulta el README para la configuración rápida de Supabase. Las lecciones y las actividades individuales ya funcionan para todos, sin necesidad de backend.'
-              : 'Class codes, assignments, and the mentor dashboard activate once the backend is connected — see the README for the quick Supabase setup. Lessons and solo activities already work for everyone, no backend needed.'}
+              : 'Class codes, assignments, and the mentor dashboard activate once the backend is connected, see the README for the quick Supabase setup. Lessons and solo activities already work for everyone, no backend needed.'}
         </p>
         <Link to="/" className="btn-secondary mt-6">
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
@@ -150,10 +150,10 @@ export default function TeamAuth() {
 
         <p className="mt-6 text-center text-xs text-ink/50">
           {zh
-            ? '学生无需账户——他们用班级代码和昵称加入。此登录仅供 BFF 团队使用。'
+            ? '学生无需账户，他们用班级代码和昵称加入。此登录仅供 BFF 团队使用。'
             : es
               ? 'Los estudiantes nunca necesitan una cuenta: se unen con un código de clase y un apodo. Este acceso es solo para el equipo de BFF.'
-              : 'Students never need an account — they join with a class code and a nickname. This login is only for the BFF team.'}
+              : 'Students never need an account, they join with a class code and a nickname. This login is only for the BFF team.'}
         </p>
       </div>
     </div>

@@ -36,10 +36,10 @@ function SoloModeCard() {
       </h1>
       <p className="mx-auto mt-4 max-w-md leading-relaxed text-ink/70">
         {zh
-          ? '等教室正式启用后，你的 BFF 导师就会发放班级代码。在那之前，每一节课、每个游戏和挑战都完全开放——而且你的进度就保存在这台设备上。'
+          ? '等教室正式启用后，你的 BFF 导师就会发放班级代码。在那之前，每一节课、每个游戏和挑战都完全开放，而且你的进度就保存在这台设备上。'
           : es
-          ? 'Tu mentor de BFF repartirá los códigos de clase cuando las aulas estén activas. Mientras tanto, cada lección, juego y desafío está totalmente abierto — y tu progreso se guarda aquí mismo en este dispositivo.'
-          : 'Your BFF mentor will hand out class codes once classrooms go live. Until then, every lesson, game, and challenge is wide open — and your progress saves right on this device.'}
+          ? 'Tu mentor de BFF repartirá los códigos de clase cuando las aulas estén activas. Mientras tanto, cada lección, juego y desafío está totalmente abierto, y tu progreso se guarda aquí mismo en este dispositivo.'
+          : 'Your BFF mentor will hand out class codes once classrooms go live. Until then, every lesson, game, and challenge is wide open, and your progress saves right on this device.'}
       </p>
       <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
         <Link to="/lessons" className="btn-primary">
@@ -108,10 +108,10 @@ function JoinForm() {
         err instanceof Error
           ? err.message
           : zh
-            ? '出了点问题——再试一次吧！'
+            ? '出了点问题，再试一次吧！'
             : es
-            ? 'Algo salió mal — ¡inténtalo de nuevo!'
-            : 'Something went wrong — try again!',
+            ? 'Algo salió mal, ¡inténtalo de nuevo!'
+            : 'Something went wrong, try again!',
       )
     } finally {
       setBusy(false)
@@ -201,19 +201,19 @@ function JoinForm() {
             {zh ? (
               <>
                 你的导师会看到 <strong>{displayName || '小明 M.'}</strong>
-                ——只需要姓氏的第一个字母，不用填写全名 <Smile className="inline-block h-3.5 w-3.5 align-[-0.15em]" aria-hidden="true" />。
+                ，只需要姓氏的第一个字母，不用填写全名 <Smile className="inline-block h-3.5 w-3.5 align-[-0.15em]" aria-hidden="true" />。
                 用同样的名字在<strong>任何设备</strong>上重新加入，就能继续你的进度。
               </>
             ) : es ? (
               <>
-                Tu mentor verá <strong>{displayName || 'Jayden M.'}</strong> — solo la primera letra
+                Tu mentor verá <strong>{displayName || 'Jayden M.'}</strong>, solo la primera letra
                 del apellido, nunca el nombre completo{' '}
                 <Smile className="inline-block h-3.5 w-3.5 align-[-0.15em]" aria-hidden="true" />. Vuelve
                 a entrar con el mismo nombre en <strong>cualquier dispositivo</strong> para continuar.
               </>
             ) : (
               <>
-                Your mentor sees <strong>{displayName || 'Jayden M.'}</strong> — just the first letter
+                Your mentor sees <strong>{displayName || 'Jayden M.'}</strong>, just the first letter
                 of your last name, never your full name{' '}
                 <Smile className="inline-block h-3.5 w-3.5 align-[-0.15em]" aria-hidden="true" />. Join
                 again with the same name on <strong>any device</strong> to keep your progress.
@@ -248,7 +248,7 @@ function JoinForm() {
         <Link to="/lessons" className="font-semibold text-bff-700 hover:text-bff-800">
           {zh ? '自己探索全部内容' : es ? 'explorar todo por tu cuenta' : 'explore everything solo'}
         </Link>{' '}
-        {zh ? '——进度会保存在这台设备上。' : es ? '— tu progreso se guarda en este dispositivo.' : '— progress saves on this device.'}
+        {zh ? '，进度会保存在这台设备上。' : es ? ', tu progreso se guarda en este dispositivo.' : ', progress saves on this device.'}
       </p>
     </div>
   )

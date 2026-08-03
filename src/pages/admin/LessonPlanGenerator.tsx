@@ -496,7 +496,7 @@ export default function LessonPlanGenerator() {
               ? 'AI 功能尚未启用。请在 Supabase 的 Edge Functions 密钥中添加您的 Anthropic API 密钥。'
               : es
                 ? 'Las funciones de IA aún no están activas. Agrega tu clave de Anthropic en los secretos de Edge Functions de Supabase.'
-                : 'AI features are not set up yet — add your Anthropic key in Supabase (Edge Functions secrets).'}
+                : 'AI features are not set up yet. Add your Anthropic key in Supabase (Edge Functions secrets).'}
           </p>
         </div>
       )}

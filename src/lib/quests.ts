@@ -44,9 +44,9 @@ export function dailyQuests(progress: Record<string, ActivityProgress>): Quest[]
     {
       id: 'warmup',
       icon: 'sun',
-      en: 'Warm up — do any activity',
-      es: 'Calienta — haz cualquier actividad',
-      zh: '热身——做任意一个活动',
+      en: 'Warm up, do any activity',
+      es: 'Calienta, haz cualquier actividad',
+      zh: '热身，做任意一个活动',
       done: anyToday,
     },
     {

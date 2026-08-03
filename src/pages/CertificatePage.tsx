@@ -88,10 +88,10 @@ export default function CertificatePage() {
         </h1>
         <p className="mt-4 leading-relaxed text-ink/60">
           {zh
-            ? `完成 BFF Academy 全部 8 节课后就能解锁证书。你已经完成了 ${doneCount} / ${lessons.length} 节——继续加油！`
+            ? `完成 BFF Academy 全部 8 节课后就能解锁证书。你已经完成了 ${doneCount} / ${lessons.length} 节，继续加油！`
             : es
-            ? `El certificado se desbloquea al completar las 8 lecciones de BFF Academy. Llevas ${doneCount} de ${lessons.length} — ¡sigue así!`
-            : `The certificate unlocks when you complete all 8 BFF Academy lessons. You're at ${doneCount} of ${lessons.length} — keep going!`}
+            ? `El certificado se desbloquea al completar las 8 lecciones de BFF Academy. Llevas ${doneCount} de ${lessons.length}, ¡sigue así!`
+            : `The certificate unlocks when you complete all 8 BFF Academy lessons. You're at ${doneCount} of ${lessons.length}. Keep going!`}
         </p>
         <Link to="/lessons" className="btn-primary mt-8 inline-flex">
           {zh ? '返回我的学习路径' : es ? 'Volver a mi ruta' : 'Back to my path'} <ArrowRight className="nudge h-4 w-4" aria-hidden="true" />
@@ -185,10 +185,10 @@ export default function CertificatePage() {
           </p>
           <p className="mx-auto mt-8 max-w-lg leading-relaxed text-ink/70">
             {zh
-              ? '因成功完成 BFF Academy 金融素养课程——涵盖赚钱、预算、储蓄与投资、信用、保险、财务决策、规划和消费者保护的全部 8 节课。'
+              ? '因成功完成 BFF Academy 金融素养课程，涵盖赚钱、预算、储蓄与投资、信用、保险、财务决策、规划和消费者保护的全部 8 节课。'
               : es
-              ? 'por completar con éxito el plan de estudios de educación financiera BFF Academy — las 8 lecciones: ingresos, presupuesto, ahorro e inversión, crédito, seguros, decisiones financieras, planificación y protección al consumidor.'
-              : 'for successfully completing the BFF Academy financial literacy curriculum — all 8 lessons spanning earning, budgeting, saving & investing, credit, insurance, financial decision-making, planning, and consumer protection.'}
+              ? 'por completar con éxito el plan de estudios de educación financiera BFF Academy, las 8 lecciones: ingresos, presupuesto, ahorro e inversión, crédito, seguros, decisiones financieras, planificación y protección al consumidor.'
+              : 'for successfully completing the BFF Academy financial literacy curriculum, all 8 lessons spanning earning, budgeting, saving & investing, credit, insurance, financial decision-making, planning, and consumer protection.'}
           </p>
           {avgScore != null && (
             <p className="mt-5 inline-flex items-center gap-2 font-display font-bold text-bff-700">
@@ -218,10 +218,10 @@ export default function CertificatePage() {
 
       <p className="no-print mt-6 text-center text-sm text-ink/50">
         {zh
-          ? '你的名字不会被保存或发送到任何地方——它只存在于这个页面上。'
+          ? '你的名字不会被保存或发送到任何地方，它只存在于这个页面上。'
           : es
-          ? 'Tu nombre no se guarda ni se envía a ningún lado — solo vive en esta página.'
-          : 'Your name is never saved or sent anywhere — it only lives on this page.'}
+          ? 'Tu nombre no se guarda ni se envía a ningún lado. Solo vive en esta página.'
+          : 'Your name is never saved or sent anywhere. It only lives on this page.'}
       </p>
     </div>
   )

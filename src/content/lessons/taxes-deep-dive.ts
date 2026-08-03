@@ -7,37 +7,37 @@ const lesson: Lesson = {
  title: 'Taxes Deep-Dive',
  icon: 'landmark',
  description:
- 'Bust the biggest tax myths, decode how brackets really work, and find out exactly what all that withheld money builds — spoiler: raises are always worth taking.',
+ 'Bust the biggest tax myths, decode how brackets really work, and find out exactly what all that withheld money builds. Spoiler: raises are always worth taking.',
  durationMin: 15,
  sections: [
  {
  type: 'intro',
  heading: 'Taxes: The Subscription Fee for Society',
  body:
- "Nobody throws a party when taxes come up, but here's a reframe: taxes are like a group subscription that 330 million people split to run a country. The road to school, the firefighters down the street, the GPS satellites your phone uses — all tax-funded. Today we'll dig into why taxes exist, the different kinds you'll pay, and how tax brackets ACTUALLY work — including busting the most stubborn money myth in America.",
+ "Nobody throws a party when taxes come up, but here's a reframe: taxes are like a group subscription that 330 million people split to run a country. The road to school, the firefighters down the street, the GPS satellites your phone uses, all tax-funded. Today we'll dig into why taxes exist, the different kinds you'll pay, and how tax brackets ACTUALLY work, including busting the most stubborn money myth in America.",
  },
  {
  type: 'content',
  heading: 'What Do Taxes Actually Buy?',
  body:
- 'Governments do not have their own money — they have OUR money, pooled together. Federal, state, and local governments each collect taxes and spend them on different things. When you see a deduction on your paystub, this is where it goes.',
+ 'Governments do not have their own money. They have OUR money, pooled together. Federal, state, and local governments each collect taxes and spend them on different things. When you see a deduction on your paystub, this is where it goes.',
  bullets: [
  'Federal: Social Security and Medicare, national defense, highways, scientific research, national parks',
  'State: public universities, state roads, police, health programs',
  'Local: public schools, libraries, parks, firefighters, trash pickup',
- 'Fun one: public school spending often works out to more than $15,000 per student per year — your education is one of the biggest things taxes buy',
+ 'Fun one: public school spending often works out to more than $15,000 per student per year. Your education is one of the biggest things taxes buy',
  ],
  },
  {
  type: 'content',
  heading: 'The Tax Family: Four Kinds You Will Meet',
  body:
- "Income tax is the famous one, but it has siblings you'll bump into constantly. Sales tax gets added at the register when you buy stuff — a $60 hoodie with 7% sales tax actually costs $64.20. Property tax is paid yearly by people who own homes and land, and it mostly funds local schools. Payroll taxes are the FICA deductions from your paycheck that fund Social Security and Medicare. And income tax is charged on the money you earn, at both the federal level and in most states.",
+ "Income tax is the famous one, but it has siblings you'll bump into constantly. Sales tax gets added at the register when you buy stuff, a $60 hoodie with 7% sales tax actually costs $64.20. Property tax is paid yearly by people who own homes and land, and it mostly funds local schools. Payroll taxes are the FICA deductions from your paycheck that fund Social Security and Medicare. And income tax is charged on the money you earn, at both the federal level and in most states.",
  bullets: [
  'Sales tax: paid when you buy things (rates vary by state and city)',
  'Property tax: paid by property owners, funds local schools and services',
  'Payroll tax (FICA): flat percentage from every paycheck for Social Security and Medicare',
- 'Income tax: charged on earnings, and the federal version is progressive — higher incomes pay higher rates',
+ 'Income tax: charged on earnings, and the federal version is progressive. Higher incomes pay higher rates',
  ],
  },
  {
@@ -47,7 +47,7 @@ const lesson: Lesson = {
  {
  term: 'Progressive tax',
  definition:
- 'A tax where the rate increases as income increases — higher earners pay a larger percentage. The U.S. federal income tax is progressive.',
+ 'A tax where the rate increases as income increases. Higher earners pay a larger percentage. The U.S. federal income tax is progressive.',
  },
  {
  term: 'Tax bracket',
@@ -57,7 +57,7 @@ const lesson: Lesson = {
  {
  term: 'Marginal tax rate',
  definition:
- 'The rate you pay on your NEXT dollar of income — only the dollars inside a bracket get taxed at that bracket’s rate, not your whole income.',
+ 'The rate you pay on your NEXT dollar of income, only the dollars inside a bracket get taxed at that bracket’s rate, not your whole income.',
  },
  {
  term: 'Standard deduction',
@@ -96,19 +96,19 @@ const lesson: Lesson = {
  type: 'content',
  heading: 'How Tax Brackets REALLY Work',
  body:
- "Federal income tax is progressive, and brackets work like a stack of buckets. Picture pouring your income in from the top: the first bucket fills at a low rate, and only the overflow spills into the next bucket at a higher rate. Each rate applies ONLY to the dollars inside that bucket — never to your whole income. That per-bucket rate is called your marginal rate, and this one idea protects you from the most common tax myth out there.",
+ "Federal income tax is progressive, and brackets work like a stack of buckets. Picture pouring your income in from the top: the first bucket fills at a low rate, and only the overflow spills into the next bucket at a higher rate. Each rate applies ONLY to the dollars inside that bucket, never to your whole income. That per-bucket rate is called your marginal rate, and this one idea protects you from the most common tax myth out there.",
  },
  {
  type: 'example',
  heading: "Example: Zoe's Buckets",
  body:
- "Imagine a simple system with two brackets: 10% on your first $10,000 of income, and 20% on everything above that. Zoe earns $12,000 from her part-time job this year. Myth-thinking says she's 'in the 20% bracket' so she owes 20% of $12,000 = $2,400. Wrong! Here's the real math: her first $10,000 is taxed at 10% ($1,000), and only the $2,000 above the line is taxed at 20% ($400). Total: $1,400 — an overall rate of less than 12%, even though her top marginal rate is 20%. The buckets always work in her favor.",
+ "Imagine a simple system with two brackets: 10% on your first $10,000 of income, and 20% on everything above that. Zoe earns $12,000 from her part-time job this year. Myth-thinking says she's 'in the 20% bracket' so she owes 20% of $12,000 = $2,400. Wrong! Here's the real math: her first $10,000 is taxed at 10% ($1,000), and only the $2,000 above the line is taxed at 20% ($400). Total: $1,400, an overall rate of less than 12%, even though her top marginal rate is 20%. The buckets always work in her favor.",
  },
  {
  type: 'content',
  heading: 'Myth-Buster: "A Raise Can Lower Your Take-Home!"',
  body:
- "You will hear an adult say it someday: 'I can't take that raise, it'll bump me into a higher bracket and I'll take home LESS.' This is mathematically impossible under the bracket system. Moving into a higher bracket only changes the rate on the NEW dollars above the line — every dollar you already earned keeps its old, lower rate. If Zoe gets a raise from $12,000 to $13,000, only that new $1,000 is taxed at 20%; she keeps $800 of it. Earning more money ALWAYS means taking home more money. Say it loud.",
+ "You will hear an adult say it someday: 'I can't take that raise, it'll bump me into a higher bracket and I'll take home LESS.' This is mathematically impossible under the bracket system. Moving into a higher bracket only changes the rate on the NEW dollars above the line, every dollar you already earned keeps its old, lower rate. If Zoe gets a raise from $12,000 to $13,000, only that new $1,000 is taxed at 20%; she keeps $800 of it. Earning more money ALWAYS means taking home more money. Say it loud.",
  },
  {
  type: 'checkpoint',
@@ -116,32 +116,32 @@ const lesson: Lesson = {
  question:
  "Devin's raise pushes his income from the 12% bracket into the 22% bracket. What happens to his take-home pay?",
  options: [
- 'It goes down — his whole income is now taxed at 22%',
- 'It goes up — only the dollars above the bracket line are taxed at 22%',
+ 'It goes down. His whole income is now taxed at 22%',
+ 'It goes up, only the dollars above the bracket line are taxed at 22%',
  'It stays exactly the same',
  'He must refuse the raise to avoid a penalty',
  ],
  answerIndex: 1,
  explanation:
- 'You crushed the myth! Only the new dollars above the bracket threshold get taxed at 22% — everything below keeps its lower rates. His take-home pay definitely rises. A raise can never shrink your after-tax income under the bracket system.',
+ 'You crushed the myth! Only the new dollars above the bracket threshold get taxed at 22%. Everything below keeps its lower rates. His take-home pay definitely rises. A raise can never shrink your after-tax income under the bracket system.',
  },
  },
  {
  type: 'content',
  heading: 'Filing a Return (and Scoring a Refund)',
  body:
- "Each spring — the deadline is usually April 15 — people file a tax return, a form that adds up what you truly owed for last year and compares it to what your paychecks already withheld. Withheld too much? The government sends the difference back as a refund. Withheld too little? You pay the gap. For teens with part-time jobs, filing is often quick, free, and genuinely worth it: if you earned under the standard deduction, you likely owe $0 in federal income tax — and filing is the only way to get your withheld money back. That's real cash people leave on the table every year!",
+ "Each spring, the deadline is usually April 15, people file a tax return, a form that adds up what you truly owed for last year and compares it to what your paychecks already withheld. Withheld too much? The government sends the difference back as a refund. Withheld too little? You pay the gap. For teens with part-time jobs, filing is often quick, free, and genuinely worth it: if you earned under the standard deduction, you likely owe $0 in federal income tax, and filing is the only way to get your withheld money back. That's real cash people leave on the table every year!",
  },
  {
  type: 'content',
  heading: 'The Standard Deduction: Your Free Pass',
  body:
- 'Before any brackets kick in, the standard deduction shields a chunk of your income from federal income tax entirely — around $15,000 for a single filer. Earn $6,000 at a summer job? That is fully under the shield, so your federal income tax is $0, and any federal income tax that was withheld comes back to you when you file. (Heads up: FICA is different — Social Security and Medicare taxes apply from your very first dollar of wages and do not get refunded.)',
+ 'Before any brackets kick in, the standard deduction shields a chunk of your income from federal income tax entirely, around $15,000 for a single filer. Earn $6,000 at a summer job? That is fully under the shield, so your federal income tax is $0, and any federal income tax that was withheld comes back to you when you file. (Heads up: FICA is different, Social Security and Medicare taxes apply from your very first dollar of wages and do not get refunded.)',
  bullets: [
  'Around $15,000 of income is federally income-tax-free for a single filer',
  'Most teen part-time earnings fall entirely under the standard deduction',
  'Filing a return is how you reclaim over-withheld income tax',
- 'FICA (7.65%) still applies to all wages — the standard deduction does not block it',
+ 'FICA (7.65%) still applies to all wages. The standard deduction does not block it',
  ],
  },
  ],
@@ -162,10 +162,10 @@ const lesson: Lesson = {
  question:
  'In a system with 10% on the first $10,000 and 20% above that, how much tax does someone earning $15,000 owe?',
  options: [
- '$3,000 — 20% of the whole $15,000',
- '$1,500 — a flat 10% of everything',
- '$2,000 — 10% plus 20% split evenly',
- '$2,000 — $1,000 on the first bucket plus $1,000 on the $5,000 above the line',
+ '$3,000, 20% of the whole $15,000',
+ '$1,500, a flat 10% of everything',
+ '$2,000, 10% plus 20% split evenly',
+ '$2,000, $1,000 on the first bucket plus $1,000 on the $5,000 above the line',
  ],
  answerIndex: 3,
  explanation:
@@ -176,7 +176,7 @@ const lesson: Lesson = {
  options: ['Sales tax', 'Property tax', 'Payroll tax', 'Federal income tax'],
  answerIndex: 1,
  explanation:
- 'Property tax is charged yearly on homes and land, and it is the backbone of local budgets — especially public schools, along with libraries, parks, and fire departments.',
+ 'Property tax is charged yearly on homes and land, and it is the backbone of local budgets, especially public schools, along with libraries, parks, and fire departments.',
  },
  {
  question: 'What are payroll taxes?',
@@ -188,7 +188,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- 'Payroll taxes are the FICA deductions — 6.2% for Social Security and 1.45% for Medicare — taken from wages to fund those programs. Employers pay a matching share on top.',
+ 'Payroll taxes are the FICA deductions, 6.2% for Social Security and 1.45% for Medicare, taken from wages to fund those programs. Employers pay a matching share on top.',
  },
  {
  question: 'You get a $350 tax refund in the spring. What does that actually mean?',
@@ -213,42 +213,42 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- 'His $5,500 sits entirely under the standard deduction, so his federal income tax bill is $0 — filing returns the $200 that was withheld. FICA is the exception: Social Security and Medicare taxes apply to all wages and are not refunded.',
+ 'His $5,500 sits entirely under the standard deduction, so his federal income tax bill is $0. Filing returns the $200 that was withheld. FICA is the exception: Social Security and Medicare taxes apply to all wages and are not refunded.',
  },
  ],
  es: {
  title: 'Los impuestos a fondo',
  description:
- 'Derriba los mayores mitos sobre los impuestos, descifra cómo funcionan de verdad los tramos y descubre qué construye exactamente todo ese dinero retenido — spoiler: siempre vale la pena aceptar un aumento.',
+ 'Derriba los mayores mitos sobre los impuestos, descifra cómo funcionan de verdad los tramos y descubre qué construye exactamente todo ese dinero retenido, spoiler: siempre vale la pena aceptar un aumento.',
  sections: [
  {
  type: 'intro',
  heading: 'Los impuestos: la cuota de suscripción de la sociedad',
  body:
- 'Nadie hace una fiesta cuando salen a tema los impuestos, pero aquí va otra forma de verlo: los impuestos son como una suscripción grupal que 330 millones de personas se reparten para hacer funcionar un país. El camino a la escuela, los bomberos de tu cuadra, los satélites de GPS que usa tu teléfono — todo se financia con impuestos. Hoy vamos a profundizar en por qué existen los impuestos, los distintos tipos que pagarás y cómo funcionan DE VERDAD los tramos de impuestos — incluyendo derribar el mito sobre el dinero más terco de Estados Unidos.',
+ 'Nadie hace una fiesta cuando salen a tema los impuestos, pero aquí va otra forma de verlo: los impuestos son como una suscripción grupal que 330 millones de personas se reparten para hacer funcionar un país. El camino a la escuela, los bomberos de tu cuadra, los satélites de GPS que usa tu teléfono, todo se financia con impuestos. Hoy vamos a profundizar en por qué existen los impuestos, los distintos tipos que pagarás y cómo funcionan DE VERDAD los tramos de impuestos, incluyendo derribar el mito sobre el dinero más terco de Estados Unidos.',
  },
  {
  type: 'content',
  heading: '¿Qué compran realmente los impuestos?',
  body:
- 'Los gobiernos no tienen su propio dinero — tienen NUESTRO dinero, juntado en un solo fondo. Los gobiernos federal, estatal y local recaudan impuestos cada uno y los gastan en cosas distintas. Cuando ves una deducción en tu recibo de pago, aquí es a donde va.',
+ 'Los gobiernos no tienen su propio dinero. Tienen NUESTRO dinero, juntado en un solo fondo. Los gobiernos federal, estatal y local recaudan impuestos cada uno y los gastan en cosas distintas. Cuando ves una deducción en tu recibo de pago, aquí es a donde va.',
  bullets: [
  'Federal: Seguro Social y Medicare, defensa nacional, autopistas, investigación científica, parques nacionales',
  'Estatal: universidades públicas, carreteras estatales, policía, programas de salud',
  'Local: escuelas públicas, bibliotecas, parques, bomberos, recolección de basura',
- 'Dato curioso: el gasto en escuelas públicas suele salir en más de $15,000 por estudiante al año — tu educación es una de las cosas más grandes que compran los impuestos',
+ 'Dato curioso: el gasto en escuelas públicas suele salir en más de $15,000 por estudiante al año. Tu educación es una de las cosas más grandes que compran los impuestos',
  ],
  },
  {
  type: 'content',
  heading: 'La familia de los impuestos: cuatro tipos que conocerás',
  body:
- 'El impuesto sobre la renta es el famoso, pero tiene hermanos con los que te toparás a cada rato. El impuesto sobre las ventas (sales tax) se suma en la caja cuando compras cosas — una sudadera de $60 con 7% de impuesto sobre las ventas en realidad cuesta $64.20. El impuesto predial (property tax) lo pagan cada año las personas que son dueñas de casas y terrenos, y financia principalmente las escuelas locales. Los impuestos sobre la nómina (payroll taxes) son las deducciones de FICA de tu cheque que financian el Seguro Social y Medicare. Y el impuesto sobre la renta se cobra sobre el dinero que ganas, tanto a nivel federal como en la mayoría de los estados.',
+ 'El impuesto sobre la renta es el famoso, pero tiene hermanos con los que te toparás a cada rato. El impuesto sobre las ventas (sales tax) se suma en la caja cuando compras cosas, una sudadera de $60 con 7% de impuesto sobre las ventas en realidad cuesta $64.20. El impuesto predial (property tax) lo pagan cada año las personas que son dueñas de casas y terrenos, y financia principalmente las escuelas locales. Los impuestos sobre la nómina (payroll taxes) son las deducciones de FICA de tu cheque que financian el Seguro Social y Medicare. Y el impuesto sobre la renta se cobra sobre el dinero que ganas, tanto a nivel federal como en la mayoría de los estados.',
  bullets: [
  'Impuesto sobre las ventas: se paga al comprar cosas (las tasas varían según el estado y la ciudad)',
  'Impuesto predial: lo pagan los dueños de propiedades, financia escuelas y servicios locales',
  'Impuesto sobre la nómina (FICA): porcentaje fijo de cada cheque para el Seguro Social y Medicare',
- 'Impuesto sobre la renta: se cobra sobre las ganancias, y la versión federal es progresiva — los ingresos más altos pagan tasas más altas',
+ 'Impuesto sobre la renta: se cobra sobre las ganancias, y la versión federal es progresiva, los ingresos más altos pagan tasas más altas',
  ],
  },
  {
@@ -258,7 +258,7 @@ const lesson: Lesson = {
  {
  term: 'Impuesto progresivo (progressive tax)',
  definition:
- 'Un impuesto en el que la tasa aumenta a medida que aumenta el ingreso — quienes ganan más pagan un porcentaje mayor. El impuesto federal sobre la renta de EE. UU. es progresivo.',
+ 'Un impuesto en el que la tasa aumenta a medida que aumenta el ingreso, quienes ganan más pagan un porcentaje mayor. El impuesto federal sobre la renta de EE. UU. es progresivo.',
  },
  {
  term: 'Tramo de impuestos (tax bracket)',
@@ -268,7 +268,7 @@ const lesson: Lesson = {
  {
  term: 'Tasa impositiva marginal (marginal tax rate)',
  definition:
- 'La tasa que pagas sobre tu SIGUIENTE dólar de ingreso — solo los dólares dentro de un tramo se gravan a la tasa de ese tramo, no todo tu ingreso.',
+ 'La tasa que pagas sobre tu SIGUIENTE dólar de ingreso, solo los dólares dentro de un tramo se gravan a la tasa de ese tramo, no todo tu ingreso.',
  },
  {
  term: 'Deducción estándar (standard deduction)',
@@ -307,19 +307,19 @@ const lesson: Lesson = {
  type: 'content',
  heading: 'Cómo funcionan DE VERDAD los tramos de impuestos',
  body:
- 'El impuesto federal sobre la renta es progresivo, y los tramos funcionan como una pila de cubetas. Imagina que viertes tu ingreso desde arriba: la primera cubeta se llena a una tasa baja, y solo lo que se desborda cae a la siguiente cubeta a una tasa más alta. Cada tasa se aplica SOLO a los dólares dentro de esa cubeta — nunca a todo tu ingreso. Esa tasa por cubeta se llama tu tasa marginal, y esta sola idea te protege del mito sobre impuestos más común que existe.',
+ 'El impuesto federal sobre la renta es progresivo, y los tramos funcionan como una pila de cubetas. Imagina que viertes tu ingreso desde arriba: la primera cubeta se llena a una tasa baja, y solo lo que se desborda cae a la siguiente cubeta a una tasa más alta. Cada tasa se aplica SOLO a los dólares dentro de esa cubeta, nunca a todo tu ingreso. Esa tasa por cubeta se llama tu tasa marginal, y esta sola idea te protege del mito sobre impuestos más común que existe.',
  },
  {
  type: 'example',
  heading: 'Ejemplo: las cubetas de Zoe',
  body:
- 'Imagina un sistema sencillo con dos tramos: 10% sobre tus primeros $10,000 de ingreso, y 20% sobre todo lo que esté por encima de eso. Zoe gana $12,000 este año en su trabajo de medio tiempo. El pensamiento del mito dice que ella está "en el tramo del 20%", así que debe el 20% de $12,000 = $2,400. ¡Mal! Aquí están las cuentas reales: sus primeros $10,000 se gravan al 10% ($1,000), y solo los $2,000 por encima de la línea se gravan al 20% ($400). Total: $1,400 — una tasa general de menos del 12%, aunque su tasa marginal más alta sea 20%. Las cubetas siempre trabajan a su favor.',
+ 'Imagina un sistema sencillo con dos tramos: 10% sobre tus primeros $10,000 de ingreso, y 20% sobre todo lo que esté por encima de eso. Zoe gana $12,000 este año en su trabajo de medio tiempo. El pensamiento del mito dice que ella está "en el tramo del 20%", así que debe el 20% de $12,000 = $2,400. ¡Mal! Aquí están las cuentas reales: sus primeros $10,000 se gravan al 10% ($1,000), y solo los $2,000 por encima de la línea se gravan al 20% ($400). Total: $1,400, una tasa general de menos del 12%, aunque su tasa marginal más alta sea 20%. Las cubetas siempre trabajan a su favor.',
  },
  {
  type: 'content',
  heading: 'Cazamitos: "¡Un aumento puede reducir lo que te llevas a casa!"',
  body:
- 'Algún día oirás a un adulto decirlo: "No puedo aceptar ese aumento, me va a subir a un tramo más alto y me voy a llevar MENOS a casa". Esto es matemáticamente imposible bajo el sistema de tramos. Subir a un tramo más alto solo cambia la tasa sobre los dólares NUEVOS por encima de la línea — cada dólar que ya ganaste conserva su tasa antigua y más baja. Si Zoe recibe un aumento de $12,000 a $13,000, solo esos $1,000 nuevos se gravan al 20%; se queda con $800 de eso. Ganar más dinero SIEMPRE significa llevarte más dinero a casa. Dilo bien fuerte.',
+ 'Algún día oirás a un adulto decirlo: "No puedo aceptar ese aumento, me va a subir a un tramo más alto y me voy a llevar MENOS a casa". Esto es matemáticamente imposible bajo el sistema de tramos. Subir a un tramo más alto solo cambia la tasa sobre los dólares NUEVOS por encima de la línea, cada dólar que ya ganaste conserva su tasa antigua y más baja. Si Zoe recibe un aumento de $12,000 a $13,000, solo esos $1,000 nuevos se gravan al 20%; se queda con $800 de eso. Ganar más dinero SIEMPRE significa llevarte más dinero a casa. Dilo bien fuerte.',
  },
  {
  type: 'checkpoint',
@@ -327,32 +327,32 @@ const lesson: Lesson = {
  question:
  'El aumento de Devin sube su ingreso del tramo del 12% al tramo del 22%. ¿Qué pasa con lo que se lleva a casa?',
  options: [
- 'Baja — ahora todo su ingreso se grava al 22%',
- 'Sube — solo los dólares por encima de la línea del tramo se gravan al 22%',
+ 'Baja, ahora todo su ingreso se grava al 22%',
+ 'Sube, solo los dólares por encima de la línea del tramo se gravan al 22%',
  'Se queda exactamente igual',
  'Debe rechazar el aumento para evitar una multa',
  ],
  answerIndex: 1,
  explanation:
- '¡Aplastaste el mito! Solo los dólares nuevos por encima del umbral del tramo se gravan al 22% — todo lo que está por debajo conserva sus tasas más bajas. Lo que se lleva a casa definitivamente sube. Un aumento nunca puede achicar tu ingreso después de impuestos bajo el sistema de tramos.',
+ '¡Aplastaste el mito! Solo los dólares nuevos por encima del umbral del tramo se gravan al 22%, todo lo que está por debajo conserva sus tasas más bajas. Lo que se lleva a casa definitivamente sube. Un aumento nunca puede achicar tu ingreso después de impuestos bajo el sistema de tramos.',
  },
  },
  {
  type: 'content',
  heading: 'Presentar una declaración (y ganarte un reembolso)',
  body:
- 'Cada primavera — la fecha límite suele ser el 15 de abril — la gente presenta una declaración de impuestos, un formulario que suma lo que de verdad debías del año pasado y lo compara con lo que tus cheques ya retuvieron. ¿Te retuvieron de más? El gobierno te devuelve la diferencia como reembolso. ¿Te retuvieron de menos? Pagas la diferencia. Para los adolescentes con trabajos de medio tiempo, declarar suele ser rápido, gratis y de verdad vale la pena: si ganaste menos de la deducción estándar, probablemente debas $0 en impuesto federal sobre la renta — y declarar es la única forma de recuperar tu dinero retenido. ¡Ese es dinero real que la gente deja sobre la mesa cada año!',
+ 'Cada primavera, la fecha límite suele ser el 15 de abril, la gente presenta una declaración de impuestos, un formulario que suma lo que de verdad debías del año pasado y lo compara con lo que tus cheques ya retuvieron. ¿Te retuvieron de más? El gobierno te devuelve la diferencia como reembolso. ¿Te retuvieron de menos? Pagas la diferencia. Para los adolescentes con trabajos de medio tiempo, declarar suele ser rápido, gratis y de verdad vale la pena: si ganaste menos de la deducción estándar, probablemente debas $0 en impuesto federal sobre la renta, y declarar es la única forma de recuperar tu dinero retenido. ¡Ese es dinero real que la gente deja sobre la mesa cada año!',
  },
  {
  type: 'content',
  heading: 'La deducción estándar: tu pase gratis',
  body:
- 'Antes de que entren en juego los tramos, la deducción estándar protege una parte de tu ingreso del impuesto federal sobre la renta por completo — alrededor de $15,000 para quien declara solo. ¿Ganaste $6,000 en un trabajo de verano? Eso está totalmente bajo el escudo, así que tu impuesto federal sobre la renta es $0, y cualquier impuesto federal sobre la renta que te hayan retenido te lo devuelven al declarar. (Ojo: el FICA es diferente — los impuestos del Seguro Social y de Medicare se aplican desde tu primer dólar de salario y no se reembolsan.)',
+ 'Antes de que entren en juego los tramos, la deducción estándar protege una parte de tu ingreso del impuesto federal sobre la renta por completo, alrededor de $15,000 para quien declara solo. ¿Ganaste $6,000 en un trabajo de verano? Eso está totalmente bajo el escudo, así que tu impuesto federal sobre la renta es $0, y cualquier impuesto federal sobre la renta que te hayan retenido te lo devuelven al declarar. (Ojo: el FICA es diferente, los impuestos del Seguro Social y de Medicare se aplican desde tu primer dólar de salario y no se reembolsan.)',
  bullets: [
  'Alrededor de $15,000 de ingreso está libre de impuesto federal sobre la renta para quien declara solo',
  'La mayoría de las ganancias de medio tiempo de los adolescentes caen totalmente bajo la deducción estándar',
  'Presentar una declaración es como recuperas el impuesto sobre la renta retenido de más',
- 'El FICA (7.65%) sigue aplicándose a todos los salarios — la deducción estándar no lo bloquea',
+ 'El FICA (7.65%) sigue aplicándose a todos los salarios, la deducción estándar no lo bloquea',
  ],
  },
  ],
@@ -373,10 +373,10 @@ const lesson: Lesson = {
  question:
  'En un sistema con 10% sobre los primeros $10,000 y 20% por encima de eso, ¿cuánto impuesto debe alguien que gana $15,000?',
  options: [
- '$3,000 — el 20% de los $15,000 completos',
- '$1,500 — un 10% fijo sobre todo',
- '$2,000 — 10% más 20% repartido por igual',
- '$2,000 — $1,000 en la primera cubeta más $1,000 sobre los $5,000 por encima de la línea',
+ '$3,000, el 20% de los $15,000 completos',
+ '$1,500, un 10% fijo sobre todo',
+ '$2,000, 10% más 20% repartido por igual',
+ '$2,000, $1,000 en la primera cubeta más $1,000 sobre los $5,000 por encima de la línea',
  ],
  answerIndex: 3,
  explanation:
@@ -387,7 +387,7 @@ const lesson: Lesson = {
  options: ['Impuesto sobre las ventas', 'Impuesto predial', 'Impuesto sobre la nómina', 'Impuesto federal sobre la renta'],
  answerIndex: 1,
  explanation:
- 'El impuesto predial se cobra cada año sobre casas y terrenos, y es la columna vertebral de los presupuestos locales — sobre todo de las escuelas públicas, junto con bibliotecas, parques y cuerpos de bomberos.',
+ 'El impuesto predial se cobra cada año sobre casas y terrenos, y es la columna vertebral de los presupuestos locales, sobre todo de las escuelas públicas, junto con bibliotecas, parques y cuerpos de bomberos.',
  },
  {
  question: '¿Qué son los impuestos sobre la nómina?',
@@ -399,7 +399,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- 'Los impuestos sobre la nómina son las deducciones de FICA — 6.2% para el Seguro Social y 1.45% para Medicare — que se toman de los salarios para financiar esos programas. Los empleadores pagan una parte igualada encima.',
+ 'Los impuestos sobre la nómina son las deducciones de FICA, 6.2% para el Seguro Social y 1.45% para Medicare, que se toman de los salarios para financiar esos programas. Los empleadores pagan una parte igualada encima.',
  },
  {
  question: 'Recibes un reembolso de impuestos de $350 en la primavera. ¿Qué significa eso en realidad?',
@@ -424,43 +424,43 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- 'Sus $5,500 quedan totalmente bajo la deducción estándar, así que su cuenta de impuesto federal sobre la renta es $0 — declarar le devuelve los $200 que le retuvieron. El FICA es la excepción: los impuestos del Seguro Social y de Medicare se aplican a todos los salarios y no se reembolsan.',
+ 'Sus $5,500 quedan totalmente bajo la deducción estándar, así que su cuenta de impuesto federal sobre la renta es $0, declarar le devuelve los $200 que le retuvieron. El FICA es la excepción: los impuestos del Seguro Social y de Medicare se aplican a todos los salarios y no se reembolsan.',
  },
  ],
  },
  zh: {
  title: '深入了解税收',
  description:
- '打破最大的税收误区，看懂税级究竟是怎么运作的，弄清楚被扣掉的那些钱到底建成了什么——剧透一下：加薪永远都值得接受。',
+ '打破最大的税收误区，看懂税级究竟是怎么运作的，弄清楚被扣掉的那些钱到底建成了什么，剧透一下：加薪永远都值得接受。',
  sections: [
  {
  type: 'intro',
  heading: '税收：社会的订阅费',
  body:
- '一提到税，没人会开派对庆祝，但换个角度想想：税收就像一份3.3亿人一起分摊、用来运转一个国家的团体订阅。通往学校的道路、你家街尾的消防员、你手机用到的GPS卫星——全都靠税收来资助。今天我们会深入了解税为什么存在、你会缴哪几种税，以及税级究竟是怎么运作的——顺便打破美国最顽固的一个金钱误区。',
+ '一提到税，没人会开派对庆祝，但换个角度想想：税收就像一份3.3亿人一起分摊、用来运转一个国家的团体订阅。通往学校的道路、你家街尾的消防员、你手机用到的GPS卫星，全都靠税收来资助。今天我们会深入了解税为什么存在、你会缴哪几种税，以及税级究竟是怎么运作的，顺便打破美国最顽固的一个金钱误区。',
  },
  {
  type: 'content',
  heading: '税收到底买来了什么？',
  body:
- '政府并没有自己的钱——他们用的是我们的钱，汇集在一起。联邦、州和地方政府各自征税，再花在不同的事情上。当你在工资单上看到一项扣款时，钱就是流向了这些地方。',
+ '政府并没有自己的钱，他们用的是我们的钱，汇集在一起。联邦、州和地方政府各自征税，再花在不同的事情上。当你在工资单上看到一项扣款时，钱就是流向了这些地方。',
  bullets: [
  '联邦：Social Security和Medicare、国防、公路、科学研究、国家公园',
  '州：公立大学、州级道路、警察、健康项目',
  '地方：公立学校、图书馆、公园、消防员、垃圾清运',
- '有意思的一点：公立学校的开支往往算下来每名学生每年超过15,000美元——你的教育是税收买来的最大项目之一',
+ '有意思的一点：公立学校的开支往往算下来每名学生每年超过15,000美元，你的教育是税收买来的最大项目之一',
  ],
  },
  {
  type: 'content',
  heading: '税收大家族：你会遇到的四种税',
  body:
- '所得税是名气最大的那个，但它还有几个兄弟姐妹，你会经常碰到。销售税（sales tax）在你买东西时于收银台加上——一件60美元的连帽衫加上7%的销售税，实际上要花64.20美元。房产税（property tax）由拥有房屋和土地的人每年缴纳，主要用来资助本地学校。工资税（payroll taxes）就是从你工资里扣掉的FICA，用来资助Social Security和Medicare。而所得税则是对你赚到的钱征收的，联邦层面和大多数州都会收。',
+ '所得税是名气最大的那个，但它还有几个兄弟姐妹，你会经常碰到。销售税（sales tax）在你买东西时于收银台加上，一件60美元的连帽衫加上7%的销售税，实际上要花64.20美元。房产税（property tax）由拥有房屋和土地的人每年缴纳，主要用来资助本地学校。工资税（payroll taxes）就是从你工资里扣掉的FICA，用来资助Social Security和Medicare。而所得税则是对你赚到的钱征收的，联邦层面和大多数州都会收。',
  bullets: [
  '销售税：买东西时缴纳（税率因州和城市而异）',
  '房产税：由房产所有者缴纳，资助本地学校和服务',
  '工资税（FICA）：从每张工资里按固定比例扣除，用于Social Security和Medicare',
- '所得税：对收入征收，联邦版本是累进的——收入越高，税率越高',
+ '所得税：对收入征收，联邦版本是累进的，收入越高，税率越高',
  ],
  },
  {
@@ -470,7 +470,7 @@ const lesson: Lesson = {
  {
  term: '累进税（progressive tax）',
  definition:
- '一种税率随收入增加而提高的税——收入越高的人缴纳的比例越大。美国联邦所得税就是累进的。',
+ '一种税率随收入增加而提高的税，收入越高的人缴纳的比例越大。美国联邦所得税就是累进的。',
  },
  {
  term: '税级（tax bracket）',
@@ -480,7 +480,7 @@ const lesson: Lesson = {
  {
  term: '边际税率（marginal tax rate）',
  definition:
- '你下一美元收入所适用的税率——只有落在某个税级内的那部分美元才按该税级的税率征税，而不是你的全部收入。',
+ '你下一美元收入所适用的税率，只有落在某个税级内的那部分美元才按该税级的税率征税，而不是你的全部收入。',
  },
  {
  term: '标准扣除额（standard deduction）',
@@ -519,19 +519,19 @@ const lesson: Lesson = {
  type: 'content',
  heading: '税级究竟是怎么运作的',
  body:
- '联邦所得税是累进的，税级的运作就像一摞水桶。想象你的收入从顶部倒进去：第一个桶按较低的税率注满，只有溢出来的部分才流入下一个桶，按更高的税率征税。每个税率只适用于那个桶里的美元——绝不会适用于你的全部收入。这个按桶计算的税率就叫作你的边际税率，光是这一个概念，就能保护你不被最常见的税收误区骗到。',
+ '联邦所得税是累进的，税级的运作就像一摞水桶。想象你的收入从顶部倒进去：第一个桶按较低的税率注满，只有溢出来的部分才流入下一个桶，按更高的税率征税。每个税率只适用于那个桶里的美元，绝不会适用于你的全部收入。这个按桶计算的税率就叫作你的边际税率，光是这一个概念，就能保护你不被最常见的税收误区骗到。',
  },
  {
  type: 'example',
  heading: '例子：Zoe的水桶',
  body:
- '想象一个简单的两级税制：前10,000美元收入按10%征税，超过部分按20%征税。Zoe今年从她的兼职工作赚了12,000美元。误区思维会说她"处在20%税级里"，所以她欠12,000美元的20% = 2,400美元。错了！真正的算法是这样：她的前10,000美元按10%征税（1,000美元），只有超过分界线的那2,000美元按20%征税（400美元）。总计：1,400美元——总体税率还不到12%，尽管她最高的边际税率是20%。水桶永远对她有利。',
+ '想象一个简单的两级税制：前10,000美元收入按10%征税，超过部分按20%征税。Zoe今年从她的兼职工作赚了12,000美元。误区思维会说她"处在20%税级里"，所以她欠12,000美元的20% = 2,400美元。错了！真正的算法是这样：她的前10,000美元按10%征税（1,000美元），只有超过分界线的那2,000美元按20%征税（400美元）。总计：1,400美元，总体税率还不到12%，尽管她最高的边际税率是20%。水桶永远对她有利。',
  },
  {
  type: 'content',
  heading: '误区破解："加薪反而会让你到手更少！"',
  body:
- '总有一天你会听到某个大人说："我不能接受那笔加薪，它会把我推进更高的税级，我到手的反而会更少。"在税级制度下，这在数学上是不可能的。进入更高的税级只会改变超过分界线那部分新美元的税率——你已经赚到的每一美元仍然保持它原来的、更低的税率。如果Zoe从12,000美元加薪到13,000美元，只有那新增的1,000美元按20%征税；她还能留下其中的800美元。赚更多的钱永远意味着到手更多的钱。大声说出来。',
+ '总有一天你会听到某个大人说："我不能接受那笔加薪，它会把我推进更高的税级，我到手的反而会更少。"在税级制度下，这在数学上是不可能的。进入更高的税级只会改变超过分界线那部分新美元的税率，你已经赚到的每一美元仍然保持它原来的、更低的税率。如果Zoe从12,000美元加薪到13,000美元，只有那新增的1,000美元按20%征税；她还能留下其中的800美元。赚更多的钱永远意味着到手更多的钱。大声说出来。',
  },
  {
  type: 'checkpoint',
@@ -539,32 +539,32 @@ const lesson: Lesson = {
  question:
  'Devin的加薪把他的收入从12%的税级推进了22%的税级。他的到手工资会怎么样？',
  options: [
- '会下降——他的全部收入现在都按22%征税',
- '会上升——只有超过税级分界线的那部分美元才按22%征税',
+ '会下降，他的全部收入现在都按22%征税',
+ '会上升，只有超过税级分界线的那部分美元才按22%征税',
  '完全保持不变',
  '他必须拒绝加薪才能避免罚款',
  ],
  answerIndex: 1,
  explanation:
- '你破解了这个误区！只有超过税级门槛的新增美元才按22%征税——门槛以下的一切仍然保持更低的税率。他的到手工资肯定会上升。在税级制度下，加薪绝不可能缩水你的税后收入。',
+ '你破解了这个误区！只有超过税级门槛的新增美元才按22%征税，门槛以下的一切仍然保持更低的税率。他的到手工资肯定会上升。在税级制度下，加薪绝不可能缩水你的税后收入。',
  },
  },
  {
  type: 'content',
  heading: '申报报税表（顺便拿到退税）',
  body:
- '每年春天——截止日期通常是4月15日——人们会申报报税表，这份表格会算出你去年真正应缴的税，并和你工资里已经预扣的税作比较。预扣太多了？政府会把差额作为退税退还给你。预扣太少了？你补缴差额。对于有兼职工作的青少年来说，报税通常又快又免费，而且真的很值：如果你赚的钱低于标准扣除额，你的联邦所得税很可能是0美元——而报税是你拿回被预扣钱款的唯一途径。那可是实实在在的现金，每年都有人白白放弃！',
+ '每年春天，截止日期通常是4月15日，人们会申报报税表，这份表格会算出你去年真正应缴的税，并和你工资里已经预扣的税作比较。预扣太多了？政府会把差额作为退税退还给你。预扣太少了？你补缴差额。对于有兼职工作的青少年来说，报税通常又快又免费，而且真的很值：如果你赚的钱低于标准扣除额，你的联邦所得税很可能是0美元，而报税是你拿回被预扣钱款的唯一途径。那可是实实在在的现金，每年都有人白白放弃！',
  },
  {
  type: 'content',
  heading: '标准扣除额：你的免费通行证',
  body:
- '在任何税级开始起作用之前，标准扣除额会把你一部分收入完全挡在联邦所得税之外——单身申报者大约15,000美元。暑期工赚了6,000美元？那完全在这道护盾之下，所以你的联邦所得税是0美元，任何被预扣的联邦所得税都会在你报税时退还给你。（提醒一下：FICA不一样——Social Security和Medicare税从你工资的第一美元起就适用，而且不会退还。）',
+ '在任何税级开始起作用之前，标准扣除额会把你一部分收入完全挡在联邦所得税之外，单身申报者大约15,000美元。暑期工赚了6,000美元？那完全在这道护盾之下，所以你的联邦所得税是0美元，任何被预扣的联邦所得税都会在你报税时退还给你。（提醒一下：FICA不一样，Social Security和Medicare税从你工资的第一美元起就适用，而且不会退还。）',
  bullets: [
  '单身申报者大约有15,000美元的收入免缴联邦所得税',
  '大多数青少年的兼职收入完全落在标准扣除额之下',
  '申报报税表是你拿回被多预扣的所得税的方式',
- 'FICA（7.65%）仍然适用于所有工资——标准扣除额挡不住它',
+ 'FICA（7.65%）仍然适用于所有工资，标准扣除额挡不住它',
  ],
  },
  ],
@@ -585,10 +585,10 @@ const lesson: Lesson = {
  question:
  '在一个前10,000美元按10%、超过部分按20%征税的税制里，一个赚了15,000美元的人要缴多少税？',
  options: [
- '3,000美元——整个15,000美元的20%',
- '1,500美元——一律按10%',
- '2,000美元——10%加20%平均分',
- '2,000美元——第一个桶里的1,000美元加上分界线以上5,000美元的1,000美元',
+ '3,000美元，整个15,000美元的20%',
+ '1,500美元，一律按10%',
+ '2,000美元，10%加20%平均分',
+ '2,000美元，第一个桶里的1,000美元加上分界线以上5,000美元的1,000美元',
  ],
  answerIndex: 3,
  explanation:
@@ -599,7 +599,7 @@ const lesson: Lesson = {
  options: ['销售税', '房产税', '工资税', '联邦所得税'],
  answerIndex: 1,
  explanation:
- '房产税每年针对房屋和土地征收，是地方预算的支柱——尤其是公立学校，还有图书馆、公园和消防部门。',
+ '房产税每年针对房屋和土地征收，是地方预算的支柱，尤其是公立学校，还有图书馆、公园和消防部门。',
  },
  {
  question: '什么是工资税？',
@@ -611,7 +611,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- '工资税就是FICA扣款——6.2%用于Social Security，1.45%用于Medicare——从工资里扣出来资助这些项目。雇主还要额外配缴相同的份额。',
+ '工资税就是FICA扣款，6.2%用于Social Security，1.45%用于Medicare：从工资里扣出来资助这些项目。雇主还要额外配缴相同的份额。',
  },
  {
  question: '你在春天拿到了350美元的退税。这实际上意味着什么？',
@@ -636,7 +636,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- '他的5,500美元完全落在标准扣除额之下，所以他的联邦所得税单是0美元——报税会退还被预扣的那200美元。FICA是例外：Social Security和Medicare税适用于所有工资，而且不退还。',
+ '他的5,500美元完全落在标准扣除额之下，所以他的联邦所得税单是0美元，报税会退还被预扣的那200美元。FICA是例外：Social Security和Medicare税适用于所有工资，而且不退还。',
  },
  ],
  },

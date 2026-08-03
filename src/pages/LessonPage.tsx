@@ -66,6 +66,9 @@ function LangSwitch() {
       onClick={() => setLang(l)}
       aria-pressed={lang === l}
       aria-label={aria}
+      // Same reason as the global switcher: this label is in the target
+      // language, not the page's. WCAG 3.1.2.
+      lang={l}
       className={lang === l ? 'is-active' : ''}
     >
       {label}
@@ -633,11 +636,11 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
     const missedBy = total > 0 ? Math.ceil((PASS_SCORE / 100) * total) - correct : 0
     const tier = passed
       ? pct === 100
-        ? zh ? '满分——你正式成为理财高手了！' : es ? '¡Puntaje perfecto — eres un master del dinero!' : 'Perfect score — you are officially a money master.'
-        : zh ? '过关了——你是真的懂这些！' : es ? '¡Aprobada — de verdad sabes de esto!' : 'Passed — you really know your stuff.'
+        ? zh ? '满分，你正式成为理财高手了！' : es ? '¡Puntaje perfecto, eres un master del dinero!' : 'Perfect score, you are officially a money master.'
+        : zh ? '过关了：你是真的懂这些！' : es ? '¡Aprobada, de verdad sabes de esto!' : 'Passed, you really know your stuff.'
       : pct >= 60
-        ? zh ? '很接近了！再复习一下，重做测验就能过关。' : es ? '¡Muy cerca! Repasa un poco y repite el examen.' : 'So close — a quick review and a retake will get you there.'
-        : zh ? '很努力了！再把这节课过一遍、重做测验。' : es ? '¡Buen esfuerzo! Repasa la lección y repite el examen.' : 'Good effort — skim the lesson again and retake the quiz.'
+        ? zh ? '很接近了！再复习一下，重做测验就能过关。' : es ? '¡Muy cerca! Repasa un poco y repite el examen.' : 'So close, a quick review and a retake will get you there.'
+        : zh ? '很努力了！再把这节课过一遍、重做测验。' : es ? '¡Buen esfuerzo! Repasa la lección y repite el examen.' : 'Good effort, skim the lesson again and retake the quiz.'
 
     return (
       <div className="lz">
@@ -686,7 +689,7 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
                     </span>
                   </div>
                   <p style={{ marginTop: '12px', fontSize: '14px', color: '#4a5460' }}>
-                    <b style={{ color: '#2a3340' }}>{t('lesson.yourAnswer')}</b> {chosen != null ? q.options[chosen] : '—'}
+                    <b style={{ color: '#2a3340' }}>{t('lesson.yourAnswer')}</b> {chosen != null ? q.options[chosen] : ', '}
                   </p>
                   {!right && (
                     <p style={{ marginTop: '4px', fontSize: '14px', color: '#4a5460' }}>
@@ -713,10 +716,10 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
                 <Check className="h-4 w-4 shrink-0" aria-hidden="true" />
                 <span>
                   {zh
-                    ? `达到 ${PASS_SCORE}% 的过关线——下一课已解锁。`
+                    ? `达到 ${PASS_SCORE}% 的过关线，下一课已解锁。`
                     : es
-                      ? `Superaste el ${PASS_SCORE}% — la siguiente lección está desbloqueada.`
-                      : `You cleared the ${PASS_SCORE}% bar — the next lesson is unlocked.`}
+                      ? `Superaste el ${PASS_SCORE}%, la siguiente lección está desbloqueada.`
+                      : `You cleared the ${PASS_SCORE}% bar. The next lesson is unlocked.`}
                 </span>
               </>
             ) : (
@@ -724,10 +727,10 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
                 <Lock className="h-4 w-4 shrink-0" aria-hidden="true" />
                 <span>
                   {zh
-                    ? `解锁下一课需要 ${PASS_SCORE}%。再答对 ${missedBy} 题就够了——重做测验吧，我们只保留你的最高分。`
+                    ? `解锁下一课需要 ${PASS_SCORE}%。再答对 ${missedBy} 题就够了，重做测验吧，我们只保留你的最高分。`
                     : es
-                      ? `Necesitas ${PASS_SCORE}% para desbloquear la siguiente lección. Te ${missedBy === 1 ? 'falta' : 'faltan'} ${missedBy} ${missedBy === 1 ? 'respuesta' : 'respuestas'} — repite el examen, solo guardamos tu mejor puntaje.`
-                      : `You need ${PASS_SCORE}% to unlock the next lesson — ${missedBy} more right ${missedBy === 1 ? 'answer' : 'answers'} does it. Retake the quiz; we only ever keep your best score.`}
+                      ? `Necesitas ${PASS_SCORE}% para desbloquear la siguiente lección. Te ${missedBy === 1 ? 'falta' : 'faltan'} ${missedBy} ${missedBy === 1 ? 'respuesta' : 'respuestas'}, repite el examen, solo guardamos tu mejor puntaje.`
+                      : `You need ${PASS_SCORE}% to unlock the next lesson. ${missedBy} more right ${missedBy === 1 ? 'answer' : 'answers'} does it. Retake the quiz; we only ever keep your best score.`}
                 </span>
               </>
             )}

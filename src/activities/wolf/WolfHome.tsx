@@ -9,11 +9,11 @@ import { useLang } from '../../lib/i18n'
 import { LineChart, Monitor, Smartphone, Target } from 'lucide-react'
 
 const OFFLINE_NOTE =
-  'Live games unlock when the class backend is connected — solo mode is ready now!'
+  'Live games unlock when the class backend is connected. Solo mode is ready now!'
 const OFFLINE_NOTE_ES =
-  'Los juegos en vivo se activan cuando el backend de la clase está conectado — ¡el modo individual ya está listo!'
+  'Los juegos en vivo se activan cuando el backend de la clase está conectado, ¡el modo individual ya está listo!'
 const OFFLINE_NOTE_ZH =
-  '当班级后端接通后，实时对战就会解锁——单人模式现在就能玩！'
+  '当班级后端接通后，实时对战就会解锁，单人模式现在就能玩！'
 
 export default function WolfHome() {
   const navigate = useNavigate()
@@ -103,10 +103,10 @@ export default function WolfHome() {
           <h2 className="font-display text-lg font-bold text-ink">{zh ? '单人游戏' : es ? 'Juega individual' : 'Play solo'}</h2>
           <p className="flex-1 text-sm text-ink/70">
             {zh
-              ? '按自己的节奏练习——玩完每一轮交易，看看你的直觉有多准。'
+              ? '按自己的节奏练习，玩完每一轮交易，看看你的直觉有多准。'
               : es
-                ? 'Practica a tu propio ritmo — negocia en cada ronda y descubre qué tan buenos son tus instintos.'
-                : 'Practice at your own pace — trade through every round and see how your instincts stack up.'}
+                ? 'Practica a tu propio ritmo, negocia en cada ronda y descubre qué tan buenos son tus instintos.'
+                : 'Practice at your own pace, trade through every round and see how your instincts stack up.'}
           </p>
           <Link to="/wolf/solo" className="btn-primary w-full">
             {zh ? '开始单人游戏' : es ? 'Iniciar un juego individual' : 'Start a solo game'}
@@ -210,10 +210,10 @@ export default function WolfHome() {
         <h2 className="mb-1 font-display text-xl font-bold text-ink">{zh ? '认识这个市场' : es ? 'Conoce el mercado' : 'Meet the market'}</h2>
         <p className="mb-4 text-sm text-ink/60">
           {zh
-            ? '十二家公司，十二个故事——你会押注哪几家？'
+            ? '十二家公司，十二个故事，你会押注哪几家？'
             : es
-              ? 'Doce empresas, doce historias — ¿por cuáles vas a apostar?'
-              : 'Twelve companies, twelve stories — which ones will you back?'}
+              ? 'Doce empresas, doce historias, ¿por cuáles vas a apostar?'
+              : 'Twelve companies, twelve stories, which ones will you back?'}
         </p>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {COMPANIES.map((c) => (

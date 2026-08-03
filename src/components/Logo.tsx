@@ -12,7 +12,7 @@ export function Logo({
   return (
     <img
       src={src}
-      alt={decorative ? '' : 'BFF of America — Building Financial Futures of America'}
+      alt={decorative ? '' : 'BFF of America, Building Financial Futures of America'}
       aria-hidden={decorative || undefined}
       className={className}
     />

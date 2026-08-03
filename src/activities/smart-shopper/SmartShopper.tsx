@@ -114,11 +114,11 @@ const ROUNDS: Round[] = [
     ],
     betterIndex: 0,
     explanation:
-      'The "MEGA VALUE" 6-pack costs about 50% more per ounce (5.5¢ vs 3.7¢). The shelf tag shouts, but the unit price whispers the truth — always divide price by amount.',
+      'The "MEGA VALUE" 6-pack costs about 50% more per ounce (5.5¢ vs 3.7¢). The shelf tag shouts, but the unit price whispers the truth, always divide price by amount.',
     explanationEs:
-      'El paquete de 6 de "MEGA OFERTA" cuesta como 50% más por onza (5.5¢ vs 3.7¢). La etiqueta grita, pero el precio por unidad susurra la verdad — siempre divide el precio entre la cantidad.',
+      'El paquete de 6 de "MEGA OFERTA" cuesta como 50% más por onza (5.5¢ vs 3.7¢). La etiqueta grita, pero el precio por unidad susurra la verdad, siempre divide el precio entre la cantidad.',
     explanationZh:
-      '"超值" 6 连包每盎司贵了大约 50%（5.5¢ 对 3.7¢）。货架标签喊得响，但单价才悄悄说出真相——永远要用价格除以数量。',
+      '"超值" 6 连包每盎司贵了大约 50%（5.5¢ 对 3.7¢）。货架标签喊得响，但单价才悄悄说出真相，永远要用价格除以数量。',
   },
   {
     id: 'bulk',
@@ -137,9 +137,9 @@ const ROUNDS: Round[] = [
         name: '5-lb warehouse tub of spring mix',
         nameEs: 'Recipiente de mayoreo de 5 lb de mezcla de hojas',
         nameZh: '5 磅仓储装混合嫩叶菜',
-        shelfTag: 'WAREHOUSE DEAL — only $1.80/lb!',
-        shelfTagEs: 'OFERTA DE MAYOREO — ¡solo $1.80/lb!',
-        shelfTagZh: '仓储特惠——每磅只要 $1.80！',
+        shelfTag: 'WAREHOUSE DEAL, only $1.80/lb!',
+        shelfTagEs: 'OFERTA DE MAYOREO, ¡solo $1.80/lb!',
+        shelfTagZh: '仓储特惠，每磅只要 $1.80！',
         price: '$8.99',
         priceEs: '$8.99',
         priceZh: '$8.99',
@@ -176,11 +176,11 @@ const ROUNDS: Round[] = [
     ],
     betterIndex: 1,
     explanation:
-      'Bulk only wins if you USE it all. Salad you throw away is money you threw away: the "cheap" tub really cost $8.99 for one usable pound — more than double the small box. Bulk is great for rice; terrible for lettuce.',
+      'Bulk only wins if you USE it all. Salad you throw away is money you threw away: the "cheap" tub really cost $8.99 for one usable pound, more than double the small box. Bulk is great for rice; terrible for lettuce.',
     explanationEs:
-      'Comprar al por mayor solo conviene si lo USAS todo. La ensalada que tiras es dinero que tiraste: el recipiente "barato" en realidad costó $8.99 por una libra aprovechable — más del doble que la caja pequeña. El mayoreo es genial para el arroz; terrible para la lechuga.',
+      'Comprar al por mayor solo conviene si lo USAS todo. La ensalada que tiras es dinero que tiraste: el recipiente "barato" en realidad costó $8.99 por una libra aprovechable, más del doble que la caja pequeña. El mayoreo es genial para el arroz; terrible para la lechuga.',
     explanationZh:
-      '只有全部用完，大包装才划算。倒掉的沙拉就是倒掉的钱："便宜"的大桶其实是花 $8.99 换来一磅能用的量——比小盒贵了一倍多。大包装买米很好；买生菜很糟。',
+      '只有全部用完，大包装才划算。倒掉的沙拉就是倒掉的钱："便宜"的大桶其实是花 $8.99 换来一磅能用的量，比小盒贵了一倍多。大包装买米很好；买生菜很糟。',
   },
   {
     id: 'fake-sale',
@@ -196,9 +196,9 @@ const ROUNDS: Round[] = [
         name: 'Store A headphones',
         nameEs: 'Audífonos de la Tienda A',
         nameZh: 'A 店的耳机',
-        shelfTag: 'Was $80 — NOW $60! SAVE $20!',
-        shelfTagEs: '¡Antes $80 — AHORA $60! ¡AHORRA $20!',
-        shelfTagZh: '原价 $80——现价 $60！立省 $20！',
+        shelfTag: 'Was $80, NOW $60! SAVE $20!',
+        shelfTagEs: '¡Antes $80, AHORA $60! ¡AHORRA $20!',
+        shelfTagZh: '原价 $80，现价 $60！立省 $20！',
         price: '$60.00',
         priceEs: '$60.00',
         priceZh: '$60.00',
@@ -222,7 +222,7 @@ const ROUNDS: Round[] = [
         priceEs: '$55.00',
         priceZh: '$55.00',
         mathLines: [
-          { label: 'No sale, no drama', labelEs: 'Sin oferta, sin drama', labelZh: '没有促销，没有花招', value: '—', valueEs: '—', valueZh: '—' },
+          { label: 'No sale, no drama', labelEs: 'Sin oferta, sin drama', labelZh: '没有促销，没有花招', value: ', ', valueEs: ', ', valueZh: ', ' },
           { label: 'What leaves your wallet', labelEs: 'Lo que sale de tu cartera', labelZh: '从你钱包里掏出去的', value: '$55.00', valueEs: '$55.00', valueZh: '$55.00' },
         ],
         bottomLine: 'You pay $55',
@@ -244,11 +244,11 @@ const ROUNDS: Round[] = [
     titleEs: 'Marca reconocida vs. marca de la tienda',
     titleZh: '大牌 vs. 店铺自有品牌',
     scenario:
-      'Ibuprofen, 200 mg, 100 tablets. Check the "active ingredient" line — it is identical on both boxes.',
+      'Ibuprofen, 200 mg, 100 tablets. Check the "active ingredient" line. It is identical on both boxes.',
     scenarioEs:
-      'Ibuprofeno, 200 mg, 100 tabletas. Revisa la línea de "ingrediente activo" — es idéntica en ambas cajas.',
+      'Ibuprofeno, 200 mg, 100 tabletas. Revisa la línea de "ingrediente activo". Es idéntica en ambas cajas.',
     scenarioZh:
-      '布洛芬，200 毫克，100 片。看看"活性成分"那一行——两个盒子上是一模一样的。',
+      '布洛芬，200 毫克，100 片。看看"活性成分"那一行，两个盒子上是一模一样的。',
     offers: [
       {
         icon: 'Pill',
@@ -293,20 +293,20 @@ const ROUNDS: Round[] = [
     ],
     betterIndex: 1,
     explanation:
-      'Same active ingredient, same dose, same federal standards — less than half the price. For medicine and pantry staples, the store brand is usually the same product wearing a cheaper outfit.',
+      'Same active ingredient, same dose, same federal standards, less than half the price. For medicine and pantry staples, the store brand is usually the same product wearing a cheaper outfit.',
     explanationEs:
-      'Mismo ingrediente activo, misma dosis, mismos estándares federales — menos de la mitad del precio. Para las medicinas y los productos básicos de la despensa, la marca de la tienda suele ser el mismo producto con un empaque más barato.',
+      'Mismo ingrediente activo, misma dosis, mismos estándares federales, menos de la mitad del precio. Para las medicinas y los productos básicos de la despensa, la marca de la tienda suele ser el mismo producto con un empaque más barato.',
     explanationZh:
-      '同样的活性成分，同样的剂量，同样的联邦标准——价格却不到一半。对于药品和厨房常备品，店铺自有品牌通常就是同一款产品换了个更便宜的外包装。',
+      '同样的活性成分，同样的剂量，同样的联邦标准，价格却不到一半。对于药品和厨房常备品，店铺自有品牌通常就是同一款产品换了个更便宜的外包装。',
   },
   {
     id: 'bogo',
     title: 'BOGO brain teaser',
     titleEs: 'Acertijo del 2x1',
     titleZh: 'BOGO 脑筋急转弯',
-    scenario: 'You want two $20 T-shirts. Two stores, two "deals" — which discount is bigger?',
-    scenarioEs: 'Quieres dos camisetas de $20. Dos tiendas, dos "ofertas" — ¿cuál descuento es mayor?',
-    scenarioZh: '你想买两件 $20 的 T 恤。两家店，两种"优惠"——哪个折扣更大？',
+    scenario: 'You want two $20 T-shirts. Two stores, two "deals", which discount is bigger?',
+    scenarioEs: 'Quieres dos camisetas de $20. Dos tiendas, dos "ofertas". ¿cuál descuento es mayor?',
+    scenarioZh: '你想买两件 $20 的 T 恤。两家店，两种"优惠"，哪个折扣更大？',
     offers: [
       {
         icon: 'Shirt',
@@ -353,11 +353,11 @@ const ROUNDS: Round[] = [
     ],
     betterIndex: 1,
     explanation:
-      '"BOGO 50%" sounds like half off, but the discount only touches the second shirt — so the pair is just 25% off. A plain 30% beats it AND doesn\'t force you to buy two. Convert every deal to the total you\'ll pay.',
+      '"BOGO 50%" sounds like half off, but the discount only touches the second shirt, so the pair is just 25% off. A plain 30% beats it AND doesn\'t force you to buy two. Convert every deal to the total you\'ll pay.',
     explanationEs:
-      '"La segunda al 50%" suena como mitad de precio, pero el descuento solo toca la segunda camiseta — así que el par tiene solo 25% de descuento. Un simple 30% le gana Y no te obliga a comprar dos. Convierte cada oferta al total que vas a pagar.',
+      '"La segunda al 50%" suena como mitad de precio, pero el descuento solo toca la segunda camiseta. Así que el par tiene solo 25% de descuento. Un simple 30% le gana Y no te obliga a comprar dos. Convierte cada oferta al total que vas a pagar.',
     explanationZh:
-      '"第二件半价"听起来像打对折，但折扣只作用在第二件上——所以两件合起来只省了 25%。一个简简单单的 7 折就赢过它，而且还不逼你买两件。把每一种优惠都换算成你要付的总价。',
+      '"第二件半价"听起来像打对折，但折扣只作用在第二件上，所以两件合起来只省了 25%。一个简简单单的 7 折就赢过它，而且还不逼你买两件。把每一种优惠都换算成你要付的总价。',
   },
   {
     id: 'subscription',
@@ -376,9 +376,9 @@ const ROUNDS: Round[] = [
         name: 'Lifetime license',
         nameEs: 'Licencia de por vida',
         nameZh: '终身授权',
-        shelfTag: 'BEST VALUE — pay once, own it FOREVER!',
-        shelfTagEs: 'LA MEJOR OFERTA — ¡paga una vez y es tuyo PARA SIEMPRE!',
-        shelfTagZh: '最超值——付一次，永久拥有！',
+        shelfTag: 'BEST VALUE, pay once, own it FOREVER!',
+        shelfTagEs: 'LA MEJOR OFERTA. ¡paga una vez y es tuyo PARA SIEMPRE!',
+        shelfTagZh: '最超值，付一次，永久拥有！',
         price: '$60 one-time',
         priceEs: '$60 pago único',
         priceZh: '$60 一次性',
@@ -395,29 +395,29 @@ const ROUNDS: Round[] = [
         name: 'Monthly subscription',
         nameEs: 'Suscripción mensual',
         nameZh: '按月订阅',
-        shelfTag: 'Just $9.99/month — cancel anytime',
-        shelfTagEs: 'Solo $9.99/mes — cancela cuando quieras',
-        shelfTagZh: '每月只要 $9.99——随时取消',
+        shelfTag: 'Just $9.99/month, cancel anytime',
+        shelfTagEs: 'Solo $9.99/mes, cancela cuando quieras',
+        shelfTagZh: '每月只要 $9.99，随时取消',
         price: '$9.99/mo',
         priceEs: '$9.99/mes',
         priceZh: '$9.99/月',
         mathLines: [
           { label: '3 months × $9.99', labelEs: '3 meses × $9.99', labelZh: '3 个月 × $9.99', value: '$29.97', valueEs: '$29.97', valueZh: '$29.97' },
           { label: 'Then CANCEL (set a reminder!)', labelEs: 'Luego CANCELA (¡pon un recordatorio!)', labelZh: '然后取消（设个提醒！）', value: '$0 after', valueEs: '$0 después', valueZh: '之后 $0' },
-          { label: 'If you forget for a year', labelEs: 'Si se te olvida por un año', labelZh: '如果忘了一整年', value: '$119.88 — worse than lifetime', valueEs: '$119.88 — peor que la de por vida', valueZh: '$119.88——比终身版还亏' },
+          { label: 'If you forget for a year', labelEs: 'Si se te olvida por un año', labelZh: '如果忘了一整年', value: '$119.88, worse than lifetime', valueEs: '$119.88, peor que la de por vida', valueZh: '$119.88，比终身版还亏' },
         ],
-        bottomLine: '$29.97 — if you actually cancel',
-        bottomLineEs: '$29.97 — si de verdad cancelas',
-        bottomLineZh: '$29.97——前提是你真的会取消',
+        bottomLine: '$29.97, if you actually cancel',
+        bottomLineEs: '$29.97, si de verdad cancelas',
+        bottomLineZh: '$29.97，前提是你真的会取消',
       },
     ],
     betterIndex: 1,
     explanation:
-      '"Forever" is only valuable if you\'ll use it forever. For 3 months of real use, $29.97 beats $60 — but subscriptions bank on you forgetting: by month 7 the sub passes $60 and never stops. Match the deal to YOUR timeline, and set the cancel reminder the day you subscribe.',
+      '"Forever" is only valuable if you\'ll use it forever. For 3 months of real use, $29.97 beats $60, but subscriptions bank on you forgetting: by month 7 the sub passes $60 and never stops. Match the deal to YOUR timeline, and set the cancel reminder the day you subscribe.',
     explanationEs:
-      '"Para siempre" solo vale la pena si lo vas a usar para siempre. Para 3 meses de uso real, $29.97 le gana a $60 — pero las suscripciones apuestan a que se te olvide: para el mes 7 la suscripción supera los $60 y nunca para. Ajusta la oferta a TU plazo, y pon el recordatorio para cancelar el mismo día que te suscribas.',
+      '"Para siempre" solo vale la pena si lo vas a usar para siempre. Para 3 meses de uso real, $29.97 le gana a $60, pero las suscripciones apuestan a que se te olvide: para el mes 7 la suscripción supera los $60 y nunca para. Ajusta la oferta a TU plazo, y pon el recordatorio para cancelar el mismo día que te suscribas.',
     explanationZh:
-      '"永久"只有在你真的会永久使用时才值钱。对于 3 个月的实际使用，$29.97 胜过 $60——但订阅赌的就是你会忘：到第 7 个月，订阅费就超过 $60，而且永远停不下来。把优惠对准你自己的时间线，并在订阅当天就设好取消提醒。',
+      '"永久"只有在你真的会永久使用时才值钱。对于 3 个月的实际使用，$29.97 胜过 $60，但订阅赌的就是你会忘：到第 7 个月，订阅费就超过 $60，而且永远停不下来。把优惠对准你自己的时间线，并在订阅当天就设好取消提醒。',
   },
 ]
 
@@ -526,10 +526,10 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
           </p>
           <p className="mt-1">
             {zh
-              ? '做单价的计算——货架标签在做营销，不是做数学。用价格除以数量，比较最终总价（而不是"原价"），只买你真的会用完的大包装，并让订阅时长和你真正需要的时间对上。'
+              ? '做单价的计算，货架标签在做营销，不是做数学。用价格除以数量，比较最终总价（而不是"原价"），只买你真的会用完的大包装，并让订阅时长和你真正需要的时间对上。'
               : es
-              ? 'Haz la matemática por unidad — la etiqueta hace marketing, no matemáticas. Divide el precio entre la cantidad, compara los totales finales (no los precios "antes"), compra al por mayor solo lo que de verdad usarás, y ajusta las suscripciones al tiempo que realmente las necesitarás.'
-              : 'Do the per-unit math — the shelf tag is doing marketing, not math. Divide price by amount, compare final totals (not "was" prices), only buy bulk you\'ll actually use, and match subscriptions to how long you\'ll really need them.'}
+              ? 'Haz la matemática por unidad. La etiqueta hace marketing, no matemáticas. Divide el precio entre la cantidad, compara los totales finales (no los precios "antes"), compra al por mayor solo lo que de verdad usarás, y ajusta las suscripciones al tiempo que realmente las necesitarás.'
+              : 'Do the per-unit math. The shelf tag is doing marketing, not math. Divide price by amount, compare final totals (not "was" prices), only buy bulk you\'ll actually use, and match subscriptions to how long you\'ll really need them.'}
           </p>
         </div>
 
@@ -577,10 +577,10 @@ export default function SmartShopper({ onComplete }: LiveGameProps) {
         <div className="card mt-4 border-bff-200 bg-bff-50 text-sm text-slate-700">
           <p>
             {zh
-              ? '两款产品，一个更划算的选择——而货架标签正想糊弄你。选出更聪明的那笔买卖，然后我们一起来算真实的账。'
+              ? '两款产品，一个更划算的选择，而货架标签正想糊弄你。选出更聪明的那笔买卖，然后我们一起来算真实的账。'
               : es
-              ? 'Dos productos, una mejor oferta — y las etiquetas están tratando de engañarte. Elige la compra más inteligente, y luego haremos la matemática real juntos.'
-              : "Two products, one better deal — and the shelf tags are trying to fool you. Pick the smarter buy, then we'll do the real math together."}
+              ? 'Dos productos, una mejor oferta, y las etiquetas están tratando de engañarte. Elige la compra más inteligente, y luego haremos la matemática real juntos.'
+              : "Two products, one better deal, and the shelf tags are trying to fool you. Pick the smarter buy, then we'll do the real math together."}
           </p>
         </div>
       )}

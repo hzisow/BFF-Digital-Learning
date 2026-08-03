@@ -89,7 +89,7 @@ export default function HostLauncher({ classroomId }: { classroomId: string | nu
           disabled={busy}
         >
           <option value="wolf">{zh ? 'Wolf of Wall Street（实时市场）' : es ? 'Wolf of Wall Street (mercado en vivo)' : 'Wolf of Wall Street (live market)'}</option>
-          <optgroup label={zh ? '实时测验 — 选择一节课' : es ? 'Quiz en vivo — elige una lección' : 'Live quiz — pick a lesson'}>
+          <optgroup label={zh ? '实时测验 ， 选择一节课' : es ? 'Quiz en vivo, elige una lección' : 'Live quiz, pick a lesson'}>
             {lessons.map((l) => (
               <option key={l.slug} value={`quiz:${l.slug}`}>
                 {zh ? '测验：' : es ? 'Quiz: ' : 'Quiz: '}{l.title}

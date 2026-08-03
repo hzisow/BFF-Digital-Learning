@@ -104,7 +104,7 @@ const lesson: Lesson = {
  type: 'video',
  heading: 'Watch: Compound Interest in Action',
  body:
- "Watch this short BFF video on how compound interest works. Heads up — it pauses to quiz you along the way, so pay attention!",
+ "Watch this short BFF video on how compound interest works. Heads up, it pauses to quiz you along the way, so pay attention!",
  videoId: 'StjQs88nDZE',
  source: 'BFF Classroom',
  questions: [
@@ -129,7 +129,7 @@ const lesson: Lesson = {
  options: ['$120', '$121', '$110', '$200'],
  answerIndex: 1,
  explanation:
- "Year 2 you earn 10% on $110 — that's $11 — so $121. You earned interest on your interest.",
+ "Year 2 you earn 10% on $110. That's $11, so $121. You earned interest on your interest.",
  },
  {
  at: 107,
@@ -142,7 +142,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- "Simple interest pays only on your original deposit; compounding pays on your deposit plus everything it's already earned — which is why it snowballs.",
+ "Simple interest pays only on your original deposit; compounding pays on your deposit plus everything it's already earned, which is why it snowballs.",
  },
   {
   at: 141,
@@ -156,7 +156,7 @@ const lesson: Lesson = {
   ],
   answerIndex: 0,
   explanation:
-   "Dollar cost averaging is investing the same amount on a regular schedule — say $50 a month — so you are never trying to guess the market's highs and lows.",
+   "Dollar cost averaging is investing the same amount on a regular schedule, say $50 a month, so you are never trying to guess the market's highs and lows.",
  },
 ],
  },
@@ -425,7 +425,7 @@ const lesson: Lesson = {
  type: 'video',
  heading: 'Mira el video: El interés compuesto en acción',
  body:
- 'Mira este breve video de BFF sobre cómo funciona el interés compuesto. ¡Ojo! — se pausa para hacerte preguntas por el camino, así que pon atención.',
+ 'Mira este breve video de BFF sobre cómo funciona el interés compuesto. ¡Ojo!, se pausa para hacerte preguntas por el camino, así que pon atención.',
  videoId: 'StjQs88nDZE',
  source: 'BFF Classroom',
  questions: [
@@ -450,7 +450,7 @@ const lesson: Lesson = {
  options: ['$120', '$121', '$110', '$200'],
  answerIndex: 1,
  explanation:
- 'En el año 2 ganas el 10% sobre $110 — eso son $11 — así que $121. Ganaste interés sobre tu interés.',
+ 'En el año 2 ganas el 10% sobre $110, eso son $11, así que $121. Ganaste interés sobre tu interés.',
  },
  {
  at: 107,
@@ -463,7 +463,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- 'El interés simple paga solo sobre tu depósito original; el compuesto paga sobre tu depósito más todo lo que ya ha ganado — por eso crece como bola de nieve.',
+ 'El interés simple paga solo sobre tu depósito original; el compuesto paga sobre tu depósito más todo lo que ya ha ganado, por eso crece como bola de nieve.',
  },
   {
   at: 141,
@@ -477,7 +477,7 @@ const lesson: Lesson = {
   ],
   answerIndex: 0,
   explanation:
-   'El costo promedio en dólares es invertir la misma cantidad de forma regular — por ejemplo $50 al mes — para no tener que adivinar los altibajos del mercado.',
+   'El costo promedio en dólares es invertir la misma cantidad de forma regular, por ejemplo $50 al mes, para no tener que adivinar los altibajos del mercado.',
  },
 ],
  },
@@ -747,7 +747,7 @@ const lesson: Lesson = {
  type: 'video',
  heading: '观看：复利实战',
  body:
- '看这段 BFF 的短视频，了解复利是怎么运作的。提醒一下——它会中途暂停来考你，所以要认真看哦！',
+ '看这段 BFF 的短视频，了解复利是怎么运作的。提醒一下，它会中途暂停来考你，所以要认真看哦！',
  videoId: 'StjQs88nDZE',
  source: 'BFF Classroom',
  questions: [
@@ -772,7 +772,7 @@ const lesson: Lesson = {
  options: ['$120', '$121', '$110', '$200'],
  answerIndex: 1,
  explanation:
- '第 2 年你在 $110 上赚 10%——也就是 $11——所以是 $121。你赚到了利息之上的利息。',
+ '第 2 年你在 $110 上赚 10%，也就是 $11，所以是 $121。你赚到了利息之上的利息。',
  },
  {
  at: 107,
@@ -785,7 +785,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '单利只对你的原始存款支付利息；复利支付的是你的存款加上它已经赚到的一切之上的利息——这就是为什么它会滚雪球般增长。',
+ '单利只对你的原始存款支付利息；复利支付的是你的存款加上它已经赚到的一切之上的利息，这就是为什么它会滚雪球般增长。',
  },
   {
   at: 141,
@@ -799,7 +799,7 @@ const lesson: Lesson = {
   ],
   answerIndex: 0,
   explanation:
-   '定投就是按固定节奏投入相同金额——比如每月 $50——这样你就不必去猜市场的高点和低点。',
+   '定投就是按固定节奏投入相同金额，比如每月 $50，这样你就不必去猜市场的高点和低点。',
  },
 ],
  },

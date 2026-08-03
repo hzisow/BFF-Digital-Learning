@@ -77,7 +77,7 @@ export default function ClassLeaderboard({
               ? '还没有积分！完成一个活动就能登上榜单。'
               : es
                 ? '¡Aún no hay puntos! Completa una actividad para aparecer aquí.'
-                : 'No points yet — finish an activity to land on the board!'}
+                : 'No points yet, finish an activity to land on the board!'}
           </p>
         ) : (
           <ol className="space-y-1">

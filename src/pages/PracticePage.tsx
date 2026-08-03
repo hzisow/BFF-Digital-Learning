@@ -261,10 +261,10 @@ export default function PracticePage() {
                   ? '¡Ahora sí!'
                   : 'Got it this time!'
               : zh
-                ? `还没对——正确答案是“${q.options[q.answerIndex]}”`
+                ? `还没对，正确答案是“${q.options[q.answerIndex]}”`
                 : es
-                  ? `Todavía no — la respuesta es “${q.options[q.answerIndex]}”`
-                  : `Not yet — the answer is “${q.options[q.answerIndex]}”`}
+                  ? `Todavía no, la respuesta es “${q.options[q.answerIndex]}”`
+                  : `Not yet, the answer is “${q.options[q.answerIndex]}”`}
           </p>
           <p className={`mt-2 text-sm leading-relaxed ${gotIt ? 'text-green-800' : 'text-amber-800'}`}>
             {q.explanation}

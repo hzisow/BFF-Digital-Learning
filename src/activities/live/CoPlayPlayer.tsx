@@ -253,10 +253,10 @@ export default function CoPlayPlayer() {
             <p className="mt-1 text-sm text-ink/70">
               {activity ? activity.title : zh ? '实时挑战' : es ? 'Reto en vivo' : 'Live challenge'}{' '}
               {zh
-                ? '——起个昵称，好让大家知道你是谁。'
+                ? '，起个昵称，好让大家知道你是谁。'
                 : es
-                  ? '— pon tu nombre y la inicial de tu apellido.'
-                  : '— add your first name and last initial so everyone knows who you are.'}
+                  ? ', pon tu nombre y la inicial de tu apellido.'
+                  : ', add your first name and last initial so everyone knows who you are.'}
             </p>
           </div>
           <form className="space-y-3" onSubmit={handleJoin}>
@@ -301,7 +301,7 @@ export default function CoPlayPlayer() {
               {zh ? `你在 ${standings.length} 人中排名第 ${myRank}` : es ? `Terminaste en el puesto #${myRank} de ${standings.length}` : `You finished #${myRank} of ${standings.length}`}
               {myScore !== null && (
                 <>
-                  {' — '}
+                  {', '}
                   {myScore} pts
                 </>
               )}
@@ -354,10 +354,10 @@ export default function CoPlayPlayer() {
           </h1>
           <p className="text-sm text-ink/70">
             {zh
-              ? '看大屏幕——接下来交给你的主持人。'
+              ? '看大屏幕，接下来交给你的主持人。'
               : es
-                ? 'Mira la pantalla grande — tu anfitrión se encargará desde aquí.'
-                : 'Watch the big screen — your host will take it from here.'}
+                ? 'Mira la pantalla grande, tu anfitrión se encargará desde aquí.'
+                : 'Watch the big screen. Your host will take it from here.'}
           </p>
         </div>
       </Shell>

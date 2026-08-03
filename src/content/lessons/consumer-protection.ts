@@ -14,7 +14,7 @@ const lesson: Lesson = {
  type: 'intro',
  heading: 'Something Phishy Is Going On',
  body:
- 'What is the sketchiest text, email, or ad you have ever seen? How did you know it was fake — or did it trick you? Scammers are everywhere, and they love targeting people your age. Today you will learn how to spot their tricks, protect your identity, and know your rights as a consumer.',
+ 'What is the sketchiest text, email, or ad you have ever seen? How did you know it was fake, or did it trick you? Scammers are everywhere, and they love targeting people your age. Today you will learn how to spot their tricks, protect your identity, and know your rights as a consumer.',
  },
  {
  type: 'content',
@@ -68,7 +68,7 @@ const lesson: Lesson = {
  type: 'content',
  heading: 'Common Scams: Online',
  body:
- 'Unfortunately, scams can be found almost everywhere you go, whether you are offline or online. Online, a few classics show up again and again — and they are getting more convincing every year.',
+ 'Unfortunately, scams can be found almost everywhere you go, whether you are offline or online. Online, a few classics show up again and again, and they are getting more convincing every year.',
  bullets: [
  'Phishing - emails, texts, or DMs that pretend to be from banks, teachers, delivery services, and more.',
  'Fake online stores or social media giveaways ("Free AirPods if you fill this out!")',
@@ -89,7 +89,7 @@ const lesson: Lesson = {
  type: 'content',
  heading: 'Scam Red Flags',
  body:
- 'Most scams give themselves away if you know what to look for. Keep this red flag list in your back pocket — if a message hits even one of these, slow down before you tap anything.',
+ 'Most scams give themselves away if you know what to look for. Keep this red flag list in your back pocket, if a message hits even one of these, slow down before you tap anything.',
  bullets: [
  '"Too good to be true" offers',
  'Asking for gift card payments or personal info',
@@ -119,7 +119,7 @@ const lesson: Lesson = {
  type: 'content',
  heading: 'Identity Theft',
  body:
- 'Identity theft is when someone steals your personal info — your name, Social Security number, or bank info — to commit fraud. It usually starts with small mistakes that are easy to avoid once you know them.',
+ 'Identity theft is when someone steals your personal info, your name, Social Security number, or bank info, to commit fraud. It usually starts with small mistakes that are easy to avoid once you know them.',
  bullets: [
  'Not shredding sensitive information (like bank statements)',
  'Clicking fake links',
@@ -134,7 +134,7 @@ const lesson: Lesson = {
  body:
  'To protect yourself from identity theft, remember the acronym S.H.I.E.L.D. Six habits, one shield between you and the scammers.',
  bullets: [
- 'S - Secure your passwords: use strong, unique passwords for each account with upper- and lowercase letters, numbers, and symbols. Avoid obvious picks like your name or "123456." Consider a password manager — and do not just put them all in your Notes app!',
+ 'S - Secure your passwords: use strong, unique passwords for each account with upper- and lowercase letters, numbers, and symbols. Avoid obvious picks like your name or "123456." Consider a password manager, and do not just put them all in your Notes app!',
  'H - Hide your personal info: do not post private details like your birthday, address, school name, or phone number on public social media. Scammers can use them to answer security questions or pretend to be you.',
  'I - Ignore suspicious messages: if a strange text, email, or DM asks for money or personal info or says "Click here fast!", just delete it. Do not respond and do not click. Real companies do not ask for sensitive info this way.',
  'E - Enable 2FA: two-factor authentication requires two forms of identification to access your accounts, like a code sent to your phone. Even if someone has your password, they are locked out.',
@@ -161,13 +161,13 @@ const lesson: Lesson = {
  type: 'example',
  heading: 'Let’s Go Phishing! Activity',
  body:
- 'Time to think like a scammer (so you can beat them). In small groups, create your best fake phishing message: an email, a text, or a social media DM. Choose a fake identity like Amazon, USPS, Netflix, or the IRS. Pick a bait: a suspicious login alert, a missed delivery, or a free prize. Be creative but keep it appropriate — then present it and see if the class can spot the red flags.',
+ 'Time to think like a scammer (so you can beat them). In small groups, create your best fake phishing message: an email, a text, or a social media DM. Choose a fake identity like Amazon, USPS, Netflix, or the IRS. Pick a bait: a suspicious login alert, a missed delivery, or a free prize. Be creative but keep it appropriate, then present it and see if the class can spot the red flags.',
  },
  {
  type: 'content',
  heading: 'Thank You from BFF Academy',
  body:
- 'This concludes BFF Academy! Thank you for taking time out of your busy weeks to learn with BFF of America. You now know how to earn, budget, save, invest, manage credit, handle risk, plan your future, and protect yourself from scams. We look forward to seeing what you are capable of. One last quiz — let’s test your skills!',
+ 'This concludes BFF Academy! Thank you for taking time out of your busy weeks to learn with BFF of America. You now know how to earn, budget, save, invest, manage credit, handle risk, plan your future, and protect yourself from scams. We look forward to seeing what you are capable of. One last quiz. Let’s test your skills!',
  },
  ],
  quiz: [
@@ -181,7 +181,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- 'Consumer protection is the whole system of laws, agencies, and tools — like the FTC, CFPB, and BBB — that defends people against scams, fraud, and shady business practices.',
+ 'Consumer protection is the whole system of laws, agencies, and tools, like the FTC, CFPB, and BBB, that defends people against scams, fraud, and shady business practices.',
  },
  {
  question:
@@ -535,7 +535,7 @@ const lesson: Lesson = {
  type: 'intro',
  heading: '这里有点可疑',
  body:
- '你见过的最可疑的短信、邮件或广告是什么？你是怎么知道它是假的的——或者它骗到你了吗？骗子无处不在，而且他们特别喜欢盯上你这个年纪的人。今天你将学会如何识破他们的把戏、保护你的身份信息，并了解你作为消费者的权利。',
+ '你见过的最可疑的短信、邮件或广告是什么？你是怎么知道它是假的的，或者它骗到你了吗？骗子无处不在，而且他们特别喜欢盯上你这个年纪的人。今天你将学会如何识破他们的把戏、保护你的身份信息，并了解你作为消费者的权利。',
  },
  {
  type: 'content',
@@ -585,11 +585,11 @@ const lesson: Lesson = {
  type: 'content',
  heading: '常见骗局：线上',
  body:
- '不幸的是，无论你在线下还是线上，几乎在你去的任何地方都能碰到骗局。在网上，有几个经典套路一次又一次地出现——而且它们一年比一年更逼真。',
+ '不幸的是，无论你在线下还是线上，几乎在你去的任何地方都能碰到骗局。在网上，有几个经典套路一次又一次地出现，而且它们一年比一年更逼真。',
  bullets: [
- '网络钓鱼——假装来自银行、老师、快递公司等的邮件、短信或私信。',
+ '网络钓鱼：假装来自银行、老师、快递公司等的邮件、短信或私信。',
  '虚假的网店或社交媒体抽奖（"填了这个就送免费 AirPods！"）',
- '订阅陷阱——免费试用未经许可就自动续费，或者极难取消。',
+ '订阅陷阱，免费试用未经许可就自动续费，或者极难取消。',
  ],
  },
  {
@@ -598,15 +598,15 @@ const lesson: Lesson = {
  body:
  '线上骗局并不是唯一的危险。有些最古老的套路是面对面发生的，而它们之所以奏效，是因为它们滥用了你的信任。',
  bullets: [
- '亲和欺诈——有人谎称自己是同一个族裔、宗教、职业或社区群体的成员，以此骗取潜在投资者的信任。',
- '门票转售骗局——黄牛出售伪造或复制的演唱会或体育比赛门票。你付了现金，到了门口才发现票是无效的。',
+ '亲和欺诈，有人谎称自己是同一个族裔、宗教、职业或社区群体的成员，以此骗取潜在投资者的信任。',
+ '门票转售骗局，黄牛出售伪造或复制的演唱会或体育比赛门票。你付了现金，到了门口才发现票是无效的。',
  ],
  },
  {
  type: 'content',
  heading: '骗局的危险信号',
  body:
- '只要你知道该找什么，大多数骗局都会露出马脚。把这份危险信号清单揣在口袋里——如果一条消息哪怕只中了其中一条，在你点任何东西之前都要先慢下来。',
+ '只要你知道该找什么，大多数骗局都会露出马脚。把这份危险信号清单揣在口袋里，如果一条消息哪怕只中了其中一条，在你点任何东西之前都要先慢下来。',
  bullets: [
  '"好得令人难以置信"的优惠',
  '要求用礼品卡付款或索取个人信息',
@@ -636,7 +636,7 @@ const lesson: Lesson = {
  type: 'content',
  heading: '身份盗窃',
  body:
- '身份盗窃是指有人窃取你的个人信息——你的姓名、社会安全号或银行信息——用来实施欺诈。它通常始于一些小失误，而这些失误一旦你了解了就很容易避免。',
+ '身份盗窃是指有人窃取你的个人信息，你的姓名、社会安全号或银行信息，用来实施欺诈。它通常始于一些小失误，而这些失误一旦你了解了就很容易避免。',
  bullets: [
  '不粉碎敏感信息（比如银行对账单）',
  '点击虚假链接',
@@ -651,7 +651,7 @@ const lesson: Lesson = {
  body:
  '为了保护自己免受身份盗窃，记住这个缩写 S.H.I.E.L.D.（在英语中意为"盾牌"）。六个习惯，一面挡在你和骗子之间的盾牌。',
  bullets: [
- 'S - Secure your passwords（保护好你的密码）：为每个账户使用由大小写字母、数字和符号组成的、强而独特的密码。避免像你的名字或"123456"这样显而易见的选择。可以考虑用密码管理器——别把它们全都存在你的备忘录 App 里！',
+ 'S - Secure your passwords（保护好你的密码）：为每个账户使用由大小写字母、数字和符号组成的、强而独特的密码。避免像你的名字或"123456"这样显而易见的选择。可以考虑用密码管理器，别把它们全都存在你的备忘录 App 里！',
  'H - Hide your personal info（隐藏你的个人信息）：不要在公开的社交媒体上发布私人细节，比如你的生日、地址、学校名称或电话号码。骗子可以用它们来回答安全问题或冒充你。',
  'I - Ignore suspicious messages（忽略可疑消息）：如果一条奇怪的短信、邮件或私信索要钱财或个人信息，或者说"快点这里！"，直接删掉就好。不要回复，也不要点击。真正的公司不会用这种方式索要敏感信息。',
  'E - Enable 2FA（启用双重认证）：双重认证需要两种身份验证方式才能访问你的账户，比如发送到你手机上的验证码。即使有人拿到了你的密码，他们也进不去。',
@@ -678,13 +678,13 @@ const lesson: Lesson = {
  type: 'example',
  heading: '活动："我们去钓鱼吧！"',
  body:
- '是时候像骗子一样思考了（这样你才能打败他们）。分成小组，创作出你们最厉害的假冒钓鱼消息：一封邮件、一条短信，或者一条社交媒体私信。选一个假身份，比如 Amazon、USPS、Netflix 或 IRS。挑一个诱饵：一条可疑的登录提醒、一次错过的快递，或者一份免费奖品。要有创意，但要保持得体——然后把它展示出来，看看全班能不能找出那些危险信号。',
+ '是时候像骗子一样思考了（这样你才能打败他们）。分成小组，创作出你们最厉害的假冒钓鱼消息：一封邮件、一条短信，或者一条社交媒体私信。选一个假身份，比如 Amazon、USPS、Netflix 或 IRS。挑一个诱饵：一条可疑的登录提醒、一次错过的快递，或者一份免费奖品。要有创意，但要保持得体，然后把它展示出来，看看全班能不能找出那些危险信号。',
  },
  {
  type: 'content',
  heading: '来自 BFF Academy 的感谢',
  body:
- 'BFF Academy 到此就结束啦！感谢你在繁忙的几周里抽出时间和 BFF of America 一起学习。现在你已经知道如何赚钱、做预算、储蓄、投资、管理信用、应对风险、规划未来，以及保护自己免受骗局侵害。我们期待看到你能做出怎样的成绩。最后一个测验——让我们来检验一下你的本领吧！',
+ 'BFF Academy 到此就结束啦！感谢你在繁忙的几周里抽出时间和 BFF of America 一起学习。现在你已经知道如何赚钱、做预算、储蓄、投资、管理信用、应对风险、规划未来，以及保护自己免受骗局侵害。我们期待看到你能做出怎样的成绩。最后一个测验，让我们来检验一下你的本领吧！',
  },
  ],
  quiz: [
@@ -698,7 +698,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 1,
  explanation:
- '消费者保护是整套法律、机构和工具的体系——比如 FTC、CFPB 和 BBB——用来保护人们免受骗局、欺诈和不正当商业行为的侵害。',
+ '消费者保护是整套法律、机构和工具的体系，比如 FTC、CFPB 和 BBB，用来保护人们免受骗局、欺诈和不正当商业行为的侵害。',
  },
  {
  question: '哪个机构负责监管与消费者相关的金融产品和服务？',

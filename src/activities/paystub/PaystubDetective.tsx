@@ -94,11 +94,11 @@ const ROUNDS: StubRound[] = [
         amount: '$290.00',
         isError: true,
         reveal:
-          '22 hrs × $15.00 = $330.00 — not $290.00. Maya was shorted $40 before taxes were even taken out.',
+          '22 hrs × $15.00 = $330.00, not $290.00. Maya was shorted $40 before taxes were even taken out.',
         revealEs:
-          '22 hrs × $15.00 = $330.00 — no $290.00. A Maya le quitaron $40 antes de siquiera cobrar impuestos.',
+          '22 hrs × $15.00 = $330.00, no $290.00. A Maya le quitaron $40 antes de siquiera cobrar impuestos.',
         revealZh:
-          '22 hrs × $15.00 = $330.00——不是 $290.00。还没扣税，Maya 就被少算了 $40。',
+          '22 hrs × $15.00 = $330.00，不是 $290.00。还没扣税，Maya 就被少算了 $40。',
       },
       {
         id: 'maya-fed',
@@ -112,11 +112,11 @@ const ROUNDS: StubRound[] = [
         amount: '$10.00',
         isError: false,
         reveal:
-          'Federal withholding comes from the W-4 form Maya filled out when hired — $10.00 matches it. Nothing to recompute here.',
+          'Federal withholding comes from the W-4 form Maya filled out when hired, $10.00 matches it. Nothing to recompute here.',
         revealEs:
-          'La retención federal viene del formulario W-4 que Maya llenó al ser contratada — $10.00 coincide. Nada que recalcular aquí.',
+          'La retención federal viene del formulario W-4 que Maya llenó al ser contratada, $10.00 coincide. Nada que recalcular aquí.',
         revealZh:
-          '联邦代扣税来自 Maya 入职时填的 W-4 表格——$10.00 是对得上的。这里没什么要重新算的。',
+          '联邦代扣税来自 Maya 入职时填的 W-4 表格，$10.00 是对得上的。这里没什么要重新算的。',
       },
       {
         id: 'maya-state',
@@ -130,11 +130,11 @@ const ROUNDS: StubRound[] = [
         amount: '$6.60',
         isError: false,
         reveal:
-          '2.0% of the real gross: $330.00 × 0.02 = $6.60. Correct — payroll taxed her true earnings.',
+          '2.0% of the real gross: $330.00 × 0.02 = $6.60. Correct, payroll taxed her true earnings.',
         revealEs:
-          '2.0% del bruto real: $330.00 × 0.02 = $6.60. Correcto — nómina gravó sus ingresos reales.',
+          '2.0% del bruto real: $330.00 × 0.02 = $6.60. Correcto, nómina gravó sus ingresos reales.',
         revealZh:
-          '真实税前工资的 2.0%：$330.00 × 0.02 = $6.60。正确——工资部门是按她的真实收入计税的。',
+          '真实税前工资的 2.0%：$330.00 × 0.02 = $6.60。正确，工资部门是按她的真实收入计税的。',
       },
       {
         id: 'maya-ss',
@@ -190,11 +190,11 @@ const ROUNDS: StubRound[] = [
         amount: '$288.15',
         isError: false,
         reveal:
-          '$330.00 (the REAL gross) − $41.85 = $288.15. This line was computed correctly — the typo lives up on the gross pay line.',
+          '$330.00 (the REAL gross) − $41.85 = $288.15. This line was computed correctly. The typo lives up on the gross pay line.',
         revealEs:
-          '$330.00 (el bruto REAL) − $41.85 = $288.15. Esta línea se calculó bien — el error está arriba, en la línea del pago bruto.',
+          '$330.00 (el bruto REAL) − $41.85 = $288.15. Esta línea se calculó bien, el error está arriba, en la línea del pago bruto.',
         revealZh:
-          '$330.00（真实税前工资）− $41.85 = $288.15。这一行算得没错——出错的是上面那行税前工资。',
+          '$330.00（真实税前工资）− $41.85 = $288.15。这一行算得没错，出错的是上面那行税前工资。',
       },
     ],
   },
@@ -207,11 +207,11 @@ const ROUNDS: StubRound[] = [
     periodEs: '15 – 28 de junio de 2026',
     periodZh: '2026 年 6 月 15 日 – 6 月 28 日',
     story:
-      'Darius fixed claw machines for 25 hours. His manager said the uniform fee is $10 per paycheck — get that in writing, Darius. 2 errors hide on this stub.',
+      'Darius fixed claw machines for 25 hours. His manager said the uniform fee is $10 per paycheck. Get that in writing, Darius. 2 errors hide on this stub.',
     storyEs:
-      'Darius arregló máquinas de garra durante 25 horas. Su gerente dijo que la cuota del uniforme es de $10 por cheque — pídelo por escrito, Darius. 2 errores se esconden en este comprobante.',
+      'Darius arregló máquinas de garra durante 25 horas. Su gerente dijo que la cuota del uniforme es de $10 por cheque, pídelo por escrito, Darius. 2 errores se esconden en este comprobante.',
     storyZh:
-      'Darius 修抓娃娃机修了 25 个小时。他的经理说制服费是每张工资单扣 $10——Darius，这个要让他写下来。这张工资单上藏着 2 个错误。',
+      'Darius 修抓娃娃机修了 25 个小时。他的经理说制服费是每张工资单扣 $10，Darius，这个要让他写下来。这张工资单上藏着 2 个错误。',
     errorCount: 2,
     lines: [
       {
@@ -271,11 +271,11 @@ const ROUNDS: StubRound[] = [
         amount: '$48.00',
         isError: true,
         reveal:
-          'Social Security is 6.2%: $400.00 × 0.062 = $24.80. The $48.00 shown is 12% — Darius was charged nearly double the legal rate.',
+          'Social Security is 6.2%: $400.00 × 0.062 = $24.80. The $48.00 shown is 12%. Darius was charged nearly double the legal rate.',
         revealEs:
-          'El Seguro Social es 6.2%: $400.00 × 0.062 = $24.80. Los $48.00 que aparecen son el 12% — a Darius le cobraron casi el doble de la tasa legal.',
+          'El Seguro Social es 6.2%: $400.00 × 0.062 = $24.80. Los $48.00 que aparecen son el 12%, a Darius le cobraron casi el doble de la tasa legal.',
         revealZh:
-          'Social Security 是 6.2%：$400.00 × 0.062 = $24.80。显示的 $48.00 是 12%——Darius 被扣了差不多两倍于法定税率的钱。',
+          'Social Security 是 6.2%：$400.00 × 0.062 = $24.80。显示的 $48.00 是 12%，Darius 被扣了差不多两倍于法定税率的钱。',
       },
       {
         id: 'darius-medicare',
@@ -304,11 +304,11 @@ const ROUNDS: StubRound[] = [
         amount: '$20.00',
         isError: true,
         reveal:
-          'The agreement was $10.00 per paycheck — this fee was charged twice. Always compare fees on your stub to what you agreed to in writing.',
+          'The agreement was $10.00 per paycheck. This fee was charged twice. Always compare fees on your stub to what you agreed to in writing.',
         revealEs:
-          'El acuerdo era de $10.00 por cheque — esta cuota se cobró dos veces. Siempre compara las cuotas de tu comprobante con lo que acordaste por escrito.',
+          'El acuerdo era de $10.00 por cheque. Esta cuota se cobró dos veces. Siempre compara las cuotas de tu comprobante con lo que acordaste por escrito.',
         revealZh:
-          '约定是每张工资单 $10.00——这笔费用被收了两次。永远要拿工资单上的费用和你书面约定的内容对照。',
+          '约定是每张工资单 $10.00，这笔费用被收了两次。永远要拿工资单上的费用和你书面约定的内容对照。',
       },
       {
         id: 'darius-total-ded',
@@ -319,11 +319,11 @@ const ROUNDS: StubRound[] = [
         amount: '$99.80',
         isError: false,
         reveal:
-          'The lines shown do add to $99.80 — the addition is fine, but two of the lines being added are wrong. It should be $14.00 + $12.00 + $24.80 + $5.80 + $10.00 = $66.60.',
+          'The lines shown do add to $99.80. The addition is fine, but two of the lines being added are wrong. It should be $14.00 + $12.00 + $24.80 + $5.80 + $10.00 = $66.60.',
         revealEs:
-          'Las líneas mostradas sí suman $99.80 — la suma está bien, pero dos de las líneas sumadas están mal. Debería ser $14.00 + $12.00 + $24.80 + $5.80 + $10.00 = $66.60.',
+          'Las líneas mostradas sí suman $99.80, la suma está bien, pero dos de las líneas sumadas están mal. Debería ser $14.00 + $12.00 + $24.80 + $5.80 + $10.00 = $66.60.',
         revealZh:
-          '显示的这几行加起来确实是 $99.80——加法本身没错，但被加的其中两行是错的。正确的应该是 $14.00 + $12.00 + $24.80 + $5.80 + $10.00 = $66.60。',
+          '显示的这几行加起来确实是 $99.80，加法本身没错，但被加的其中两行是错的。正确的应该是 $14.00 + $12.00 + $24.80 + $5.80 + $10.00 = $66.60。',
       },
       {
         id: 'darius-net',
@@ -354,11 +354,11 @@ const ROUNDS: StubRound[] = [
     periodEs: '1 – 14 de julio de 2026',
     periodZh: '2026 年 7 月 1 日 – 7 月 14 日',
     story:
-      'Sofia watered 4,000 succulents across 30 hours. At first glance this check looks GREAT — suspiciously great. 2 errors hide on this stub.',
+      'Sofia watered 4,000 succulents across 30 hours. At first glance this check looks GREAT, suspiciously great. 2 errors hide on this stub.',
     storyEs:
-      'Sofia regó 4,000 suculentas a lo largo de 30 horas. A primera vista este cheque se ve GENIAL — sospechosamente genial. 2 errores se esconden en este comprobante.',
+      'Sofia regó 4,000 suculentas a lo largo de 30 horas. A primera vista este cheque se ve GENIAL, sospechosamente genial. 2 errores se esconden en este comprobante.',
     storyZh:
-      'Sofia 花了 30 个小时给 4,000 株多肉植物浇水。乍一看这张工资单好得很——好得可疑。这张工资单上藏着 2 个错误。',
+      'Sofia 花了 30 个小时给 4,000 株多肉植物浇水。乍一看这张工资单好得很，好得可疑。这张工资单上藏着 2 个错误。',
     errorCount: 2,
     lines: [
       {
@@ -404,11 +404,11 @@ const ROUNDS: StubRound[] = [
         isError: false,
         aliasOf: 'sofia-state-2',
         reveal:
-          '2.5% of $435.00 = $10.875, which rounds to $10.88, so this line’s own math is fine — but the SAME tax appears twice on this stub. Flagging either copy counts as the catch.',
+          '2.5% of $435.00 = $10.875, which rounds to $10.88, so this line’s own math is fine, but the SAME tax appears twice on this stub. Flagging either copy counts as the catch.',
         revealEs:
-          '2.5% de $435.00 = $10.875, que se redondea a $10.88, así que la matemática de esta línea está bien — pero el MISMO impuesto aparece dos veces en este comprobante. Marcar cualquiera de las dos copias cuenta como acierto.',
+          '2.5% de $435.00 = $10.875, que se redondea a $10.88, así que la matemática de esta línea está bien, pero el MISMO impuesto aparece dos veces en este comprobante. Marcar cualquiera de las dos copias cuenta como acierto.',
         revealZh:
-          '$435.00 的 2.5% = $10.875，四舍五入为 $10.88，所以这一行本身的算法没错——但同一笔税在这张工资单上出现了两次。标记其中任意一份都算抓到。',
+          '$435.00 的 2.5% = $10.875，四舍五入为 $10.88，所以这一行本身的算法没错，但同一笔税在这张工资单上出现了两次。标记其中任意一份都算抓到。',
       },
       {
         id: 'sofia-state-2',
@@ -422,11 +422,11 @@ const ROUNDS: StubRound[] = [
         amount: '$10.88',
         isError: true,
         reveal:
-          'Duplicate! State income tax was already taken a line above — Sofia paid $10.88 twice for the same tax. One state, one state tax.',
+          'Duplicate! State income tax was already taken a line above, Sofia paid $10.88 twice for the same tax. One state, one state tax.',
         revealEs:
-          '¡Duplicado! El impuesto estatal ya se cobró una línea arriba — Sofia pagó $10.88 dos veces por el mismo impuesto. Un estado, un impuesto estatal.',
+          '¡Duplicado! El impuesto estatal ya se cobró una línea arriba, Sofia pagó $10.88 dos veces por el mismo impuesto. Un estado, un impuesto estatal.',
         revealZh:
-          '重复了！州所得税上面那一行已经扣过了——Sofia 为同一笔税付了两次 $10.88。一个州，只有一笔州税。',
+          '重复了！州所得税上面那一行已经扣过了，Sofia 为同一笔税付了两次 $10.88。一个州，只有一笔州税。',
       },
       {
         id: 'sofia-ss',
@@ -467,11 +467,11 @@ const ROUNDS: StubRound[] = [
         amount: '$71.04',
         isError: false,
         reveal:
-          'The lines shown do add to $71.04 — but one of them is a duplicate. The correct total is $16.00 + $10.88 + $26.97 + $6.31 = $60.16.',
+          'The lines shown do add to $71.04, but one of them is a duplicate. The correct total is $16.00 + $10.88 + $26.97 + $6.31 = $60.16.',
         revealEs:
-          'Las líneas mostradas sí suman $71.04 — pero una de ellas es un duplicado. El total correcto es $16.00 + $10.88 + $26.97 + $6.31 = $60.16.',
+          'Las líneas mostradas sí suman $71.04, pero una de ellas es un duplicado. El total correcto es $16.00 + $10.88 + $26.97 + $6.31 = $60.16.',
         revealZh:
-          '显示的这几行加起来确实是 $71.04——但其中一行是重复的。正确的合计是 $16.00 + $10.88 + $26.97 + $6.31 = $60.16。',
+          '显示的这几行加起来确实是 $71.04，但其中一行是重复的。正确的合计是 $16.00 + $10.88 + $26.97 + $6.31 = $60.16。',
       },
       {
         id: 'sofia-net',
@@ -553,21 +553,21 @@ function gradeFor(score: number, es: boolean, zh: boolean): [title: string, icon
       : ['Chief Paystub Inspector', 'SearchCheck', 'Payroll departments fear you. Nothing gets past that magnifying glass.']
   if (score >= 70)
     return zh
-      ? ['火眼金睛审计员', 'Search', '大部分猫腻你都抓到了——你未来的工资单有着落了。']
+      ? ['火眼金睛审计员', 'Search', '大部分猫腻你都抓到了，你未来的工资单有着落了。']
       : es
-      ? ['Auditor de Ojo Agudo', 'Search', 'Atrapaste la mayoría de los enredos — tus futuros cheques están en buenas manos.']
-      : ['Sharp-Eyed Auditor', 'Search', 'You caught most of the funny business — your future paychecks are in good hands.']
+      ? ['Auditor de Ojo Agudo', 'Search', 'Atrapaste la mayoría de los enredos, tus futuros cheques están en buenas manos.']
+      : ['Sharp-Eyed Auditor', 'Search', 'You caught most of the funny business. Your future paychecks are in good hands.']
   if (score >= 45)
     return zh
-      ? ['新手侦探', 'Glasses', '你嗅出了一些错误——继续练习"小时数 × 时薪"的算法。']
+      ? ['新手侦探', 'Glasses', '你嗅出了一些错误，继续练习"小时数 × 时薪"的算法。']
       : es
-      ? ['Detective Novato', 'Glasses', 'Olfateaste algunos errores — sigue practicando esa matemática de horas × tarifa.']
-      : ['Rookie Detective', 'Glasses', 'You sniffed out some errors — keep practicing that hours × rate math.']
+      ? ['Detective Novato', 'Glasses', 'Olfateaste algunos errores, sigue practicando esa matemática de horas × tarifa.']
+      : ['Rookie Detective', 'Glasses', 'You sniffed out some errors. Keep practicing that hours × rate math.']
   return zh
-    ? ['工资部门蒙混过关了', 'Frown', '这次错误溜走了。再来一次——你的钱值得你多核对一遍。']
+    ? ['工资部门蒙混过关了', 'Frown', '这次错误溜走了。再来一次，你的钱值得你多核对一遍。']
     : es
-    ? ['La Nómina Se Salió con la Suya', 'Frown', 'Los errores se escaparon esta vez. Inténtalo otra vez — tu dinero merece la doble revisión.']
-    : ['Payroll Got Away With It', 'Frown', 'The errors slipped by this time. Run it back — your money is worth the double-check.']
+    ? ['La Nómina Se Salió con la Suya', 'Frown', 'Los errores se escaparon esta vez. Inténtalo otra vez, tu dinero merece la doble revisión.']
+    : ['Payroll Got Away With It', 'Frown', 'The errors slipped by this time. Run it back. Your money is worth the double-check.']
 }
 
 // ---------- Presentational helpers ----------
@@ -731,15 +731,15 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
           </h2>
           <p className="mt-1 text-sm font-semibold text-slate-700">
             {zh
-              ? '一定要核对你的工资单——错误很常见，而且那是你的钱。'
+              ? '一定要核对你的工资单，错误很常见，而且那是你的钱。'
               : es
-              ? 'Siempre revisa tu comprobante de pago — los errores son comunes y es TU dinero.'
-              : "Always check your paystub — errors are common and it's YOUR money."}
+              ? 'Siempre revisa tu comprobante de pago. Los errores son comunes y es TU dinero.'
+              : "Always check your paystub. Errors are common and it's YOUR money."}
           </p>
           <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
             <li>{zh ? '用你的小时数 × 你的时薪。每一次都应该等于税前工资。' : es ? 'Multiplica tus horas × tu tarifa. Debe ser igual al pago bruto, siempre.' : 'Multiply your hours × your rate. It should equal gross pay, every time.'}</li>
             <li>{zh ? '记住固定税率：Social Security 是税前工资的 6.2%，Medicare 是 1.45%。' : es ? 'Conoce las tasas fijas: el Seguro Social es 6.2% y Medicare es 1.45% del bruto.' : 'Know the fixed rates: Social Security is 6.2% and Medicare is 1.45% of gross.'}</li>
-            <li>{zh ? '任何你没书面同意的费用都要质疑——还有任何出现两次的税。' : es ? 'Cuestiona cualquier cuota que no acordaste por escrito — y cualquier impuesto que aparezca dos veces.' : "Question any fee you didn't agree to in writing — and any tax listed twice."}</li>
+            <li>{zh ? '任何你没书面同意的费用都要质疑，还有任何出现两次的税。' : es ? 'Cuestiona cualquier cuota que no acordaste por escrito, y cualquier impuesto que aparezca dos veces.' : "Question any fee you didn't agree to in writing, and any tax listed twice."}</li>
             <li>{zh ? '税后实发工资应该等于税前工资减去扣除项，绝不可能比税前工资还高。' : es ? 'El pago neto debe ser igual al pago bruto menos las deducciones. Nunca puede ser mayor que el bruto.' : 'Net pay must equal gross pay minus deductions. It can never be bigger than gross.'}</li>
           </ul>
         </div>
@@ -789,11 +789,11 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
       <div className="card mt-4 border-bff-200 bg-bff-50 text-sm text-slate-700">
         {zh ? (
           <p>
-            三个青少年打工者都怀疑自己的工资算错了——而工资单上的错误比你想的要常见。<strong>把每一行看起来可疑的都点一下</strong>，然后提交。如果某一行的数字和它自己标签上的算法对不上，或者有一笔本不该出现的费用，就标记这一行。每抓到一个 +{POINTS_PER_CATCH}；每次误报 −{FALSE_ALARM_PENALTY}。
+            三个青少年打工者都怀疑自己的工资算错了，而工资单上的错误比你想的要常见。<strong>把每一行看起来可疑的都点一下</strong>，然后提交。如果某一行的数字和它自己标签上的算法对不上，或者有一笔本不该出现的费用，就标记这一行。每抓到一个 +{POINTS_PER_CATCH}；每次误报 −{FALSE_ALARM_PENALTY}。
           </p>
         ) : es ? (
           <p>
-            Tres trabajadores adolescentes sospechan que sus cheques están mal — y los errores de
+            Tres trabajadores adolescentes sospechan que sus cheques están mal, y los errores de
             nómina son más comunes de lo que crees. <strong>Toca cada línea que se vea sospechosa</strong>,
             luego envía. Marca una línea si su número no coincide con la matemática de su propia etiqueta,
             o si hay un cargo que no debería estar ahí. Cada acierto vale +{POINTS_PER_CATCH}; cada falsa
@@ -801,7 +801,7 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
           </p>
         ) : (
           <p>
-            Three teen workers suspect their paychecks are wrong — and payroll errors are more common
+            Three teen workers suspect their paychecks are wrong, and payroll errors are more common
             than you'd think. <strong>Tap every line that looks fishy</strong>, then submit. Flag a
             line if its number doesn't match its own label's math, or if a charge shouldn't be there
             at all. Each catch is worth +{POINTS_PER_CATCH}; each false alarm costs −
@@ -814,7 +814,7 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
       <div className="card mt-4">
         <p className="text-sm text-slate-700">
           <RoundIcon className="mr-1 inline-block h-5 w-5 align-[-0.2em] text-bff-600" aria-hidden="true" />
-          <strong>{zh ? '案件' : es ? 'Caso' : 'Case'} #{roundIndex + 1}: {round.worker}</strong> — {zh ? round.storyZh : es ? round.storyEs : round.story}
+          <strong>{zh ? '案件' : es ? 'Caso' : 'Case'} #{roundIndex + 1}: {round.worker}</strong>, {zh ? round.storyZh : es ? round.storyEs : round.story}
         </p>
       </div>
 
@@ -932,7 +932,7 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
                 : es
                 ? ' sin ninguna falsa alarma'
                 : ' with zero false alarms'}
-            {' — '}
+            {', '}
             <strong className="text-bff-700">
               {roundResult.points >= 0 ? `+${roundResult.points}` : roundResult.points} {zh ? '分' : es ? 'puntos' : 'points'}
             </strong>
@@ -953,10 +953,10 @@ export default function PaystubDetective({ onComplete }: LiveGameProps) {
             disabled={selected.size === 0}
           >
             {zh
-              ? `提交本轮——已标记 ${selected.size} 行`
+              ? `提交本轮，已标记 ${selected.size} 行`
               : es
-              ? `Enviar ronda — ${selected.size} línea${selected.size === 1 ? '' : 's'} marcada${selected.size === 1 ? '' : 's'}`
-              : `Submit round — ${selected.size} line${selected.size === 1 ? '' : 's'} flagged`}
+              ? `Enviar ronda, ${selected.size} línea${selected.size === 1 ? '' : 's'} marcada${selected.size === 1 ? '' : 's'}`
+              : `Submit round, ${selected.size} line${selected.size === 1 ? '' : 's'} flagged`}
           </button>
           {selected.size === 0 && (
             <p className="mt-2 text-sm text-slate-500">

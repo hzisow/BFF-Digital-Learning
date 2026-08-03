@@ -67,7 +67,7 @@ export default function TradingBoard({ stage, cash, holdings, onTrade, locked }:
         <div className="card space-y-2 border-amber-200 bg-amber-50">
           <h2 className="flex items-center gap-1.5 font-display text-sm font-bold uppercase tracking-wide text-amber-700">
             <Newspaper className="h-4 w-4 shrink-0" aria-hidden="true" />
-            {zh ? `突发新闻——第 ${stage - 1} 轮` : es ? `Última hora — ronda ${stage - 1}` : `Breaking news — round ${stage - 1}`}
+            {zh ? `突发新闻，第 ${stage - 1} 轮` : es ? `Última hora, ronda ${stage - 1}` : `Breaking news, round ${stage - 1}`}
           </h2>
           <ul className="space-y-1.5">
             {news.map((n) => (

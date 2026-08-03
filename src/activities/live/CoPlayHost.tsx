@@ -312,10 +312,10 @@ export default function CoPlayHost() {
           <ControlBar>
             <p className="mr-auto hidden text-bff-300 sm:block">
               {zh
-                ? '每个人都按自己的节奏玩——等大家都玩完了再结束游戏。'
+                ? '每个人都按自己的节奏玩：等大家都玩完了再结束游戏。'
                 : es
-                  ? 'Cada quien juega a su propio ritmo — termina el juego cuando la sala haya acabado.'
-                  : 'Everyone plays at their own pace — end the game when the room is done.'}
+                  ? 'Cada quien juega a su propio ritmo, termina el juego cuando la sala haya acabado.'
+                  : 'Everyone plays at their own pace, end the game when the room is done.'}
             </p>
             <button className={BIG_BUTTON} onClick={() => setState('ended')}>
               {zh ? '结束游戏' : es ? 'Terminar juego' : 'End game'}{' '}
@@ -370,7 +370,7 @@ export default function CoPlayHost() {
                     {i + 4}. {p.nickname}
                   </span>
                   <span className="font-display font-bold text-bff-100">
-                    {p.score !== null ? `${p.score} pts` : '—'}
+                    {p.score !== null ? `${p.score} pts` : ', '}
                   </span>
                 </li>
               ))}

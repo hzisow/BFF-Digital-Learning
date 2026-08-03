@@ -75,7 +75,7 @@ function friendly(message: string): string {
 
 function assertBackend(): void {
   if (!BACKEND_ENABLED) {
-    throw new Error('Accounts are not switched on yet — everything still works without one.')
+    throw new Error('Accounts are not switched on yet. Everything still works without one.')
   }
 }
 

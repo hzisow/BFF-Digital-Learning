@@ -179,10 +179,10 @@ export default function MoneyCoach() {
       ? 'El asesor de dinero aún no está conectado. Vuelve más tarde o pregunta a tu mentor de BFF.'
       : "The Money Coach isn't connected yet. Check back later, or ask your BFF mentor."
   const notSetUpText = zh
-    ? 'AI 理财教练尚未设置——请询问你的 BFF 导师。'
+    ? 'AI 理财教练尚未设置，请询问你的 BFF 导师。'
     : es
       ? 'El asesor de dinero con IA aún no está configurado: pregunta a tu mentor de BFF.'
-      : "The AI coach isn't set up yet — ask your BFF mentor."
+      : "The AI coach isn't set up yet, ask your BFF mentor."
 
   const header = (
     <header className="ed-hero chamfer px-6 py-9 sm:px-10 sm:py-11">

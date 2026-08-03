@@ -14,15 +14,15 @@ const lesson: Lesson = {
  type: 'intro',
  heading: 'Welcome to the Wild West of Money',
  body:
- "Your feed is full of it: coins going 'to the moon,' influencers flashing rented Lamborghinis, betting apps promising easy parlays, and checkout buttons whispering 'only 4 easy payments!' Some of this is real technology, some is gambling in a costume, and some is straight-up scam. Today we're building your radar — so you can tell innovation from trap, and keep your money out of other people's pockets.",
+ "Your feed is full of it: coins going 'to the moon,' influencers flashing rented Lamborghinis, betting apps promising easy parlays, and checkout buttons whispering 'only 4 easy payments!' Some of this is real technology, some is gambling in a costume, and some is straight-up scam. Today we're building your radar, so you can tell innovation from trap, and keep your money out of other people's pockets.",
  },
  {
  type: 'content',
  heading: 'What Cryptocurrency Actually Is',
  body:
- "Strip away the hype and cryptocurrency is digital money that isn't issued by any government or bank. Instead of a bank keeping the records, transactions are tracked on a blockchain — a shared public ledger copied across thousands of computers, which makes the record very hard to fake. Bitcoin was the first; thousands of others followed. The tech is genuinely clever. But here's the catch: most crypto has no cash flow behind it — no rent, no profits, no interest. Its price is purely what the next person will pay, and that can change violently in a day.",
+ "Strip away the hype and cryptocurrency is digital money that isn't issued by any government or bank. Instead of a bank keeping the records, transactions are tracked on a blockchain, a shared public ledger copied across thousands of computers, which makes the record very hard to fake. Bitcoin was the first; thousands of others followed. The tech is genuinely clever. But here's the catch: most crypto has no cash flow behind it, no rent, no profits, no interest. Its price is purely what the next person will pay, and that can change violently in a day.",
  bullets: [
- 'Digital money tracked on a blockchain — a shared public record, not a bank ledger',
+ 'Digital money tracked on a blockchain, a shared public record, not a bank ledger',
  'No government backing and, in the U.S., no FDIC insurance if an exchange fails or you get hacked',
  "Most coins' prices rest entirely on what the next buyer will pay",
  'Real technology AND real risk can be true at the same time',
@@ -32,10 +32,10 @@ const lesson: Lesson = {
  type: 'content',
  heading: 'Volatility vs. Saving: Not the Same Sport',
  body:
- "Volatility means how wildly a price swings. A savings account moves like a calm escalator: slow, boring, insured, always upward. Crypto moves like an untested rollercoaster — Bitcoin has dropped more than 50% in a few months multiple times, and smaller coins have gone to zero. That's why money you NEED — emergency fund, car savings, college money — never belongs in something that can lose half its value before homecoming. Saving and speculating are different sports with different rules.",
+ "Volatility means how wildly a price swings. A savings account moves like a calm escalator: slow, boring, insured, always upward. Crypto moves like an untested rollercoaster. Bitcoin has dropped more than 50% in a few months multiple times, and smaller coins have gone to zero. That's why money you NEED, emergency fund, car savings, college money, never belongs in something that can lose half its value before homecoming. Saving and speculating are different sports with different rules.",
  bullets: [
  'Savings account: insured up to $250,000, grows slowly, never drops',
- 'Crypto: can rise or crash 20% in a single day — and some coins never recover',
+ 'Crypto: can rise or crash 20% in a single day, and some coins never recover',
  'Money you need soon belongs in savings, full stop',
  'If someone calls crypto "just like a savings account," they are wrong or lying',
  ],
@@ -57,17 +57,17 @@ const lesson: Lesson = {
  {
  term: 'Pump-and-dump',
  definition:
- 'A scheme where insiders hype an asset to pump up its price, then dump their own holdings on the fans who bought in — crashing the price.',
+ 'A scheme where insiders hype an asset to pump up its price, then dump their own holdings on the fans who bought in, crashing the price.',
  },
  {
  term: 'House edge',
  definition:
- 'The built-in mathematical advantage that guarantees casinos, betting apps, and loot boxes profit over time — meaning players, as a group, must lose.',
+ 'The built-in mathematical advantage that guarantees casinos, betting apps, and loot boxes profit over time, meaning players, as a group, must lose.',
  },
  {
  term: 'FOMO',
  definition:
- 'Fear of missing out — the anxious urge to jump in because everyone else seems to be winning. The #1 emotion scammers weaponize.',
+ 'Fear of missing out, the anxious urge to jump in because everyone else seems to be winning. The #1 emotion scammers weaponize.',
  },
  {
  term: 'Buy now, pay later (BNPL)',
@@ -83,24 +83,24 @@ const lesson: Lesson = {
  'Kayla has $800 saved for a car she needs to buy in 6 months. A friend says to put it all in a hot new coin. What is the biggest problem with that plan?',
  options: [
  'Crypto apps are too hard to download',
- 'The coin could easily drop 50% before she needs the money — savings for near-term needs should not be gambled',
+ 'The coin could easily drop 50% before she needs the money. Savings for near-term needs should not be gambled',
  'She would owe extra FICA taxes on it',
- 'Nothing — coins always bounce back eventually',
+ 'Nothing, coins always bounce back eventually',
  ],
  answerIndex: 1,
  explanation:
- "Volatility is the dealbreaker: money she NEEDS on a deadline cannot ride something that can crash 20-50% in weeks — and no, coins do not always come back. Savings and speculation are different sports, and her car fund belongs in savings.",
+ "Volatility is the dealbreaker: money she NEEDS on a deadline cannot ride something that can crash 20-50% in weeks, and no, coins do not always come back. Savings and speculation are different sports, and her car fund belongs in savings.",
  },
  },
  {
  type: 'content',
  heading: '"Get Rich Quick" Is Always a Red Flag',
  body:
- "Burn this into your brain: real wealth compounds slowly, so anyone promising fast, easy, guaranteed money is selling something — and it's usually you. 'Guaranteed 10x!' '... before it's too late!' 'Everyone is getting in!' These phrases are engineered pressure. And influencer shills are the modern version: that creator hyping a coin was often paid to promote it, or bought early hoping YOUR purchase pumps their price. When they sell — and they do — the fans hold the crash. If a stranger truly had a guaranteed money machine, they would not be sharing it on TikTok.",
+ "Burn this into your brain: real wealth compounds slowly, so anyone promising fast, easy, guaranteed money is selling something, and it's usually you. 'Guaranteed 10x!' '... before it's too late!' 'Everyone is getting in!' These phrases are engineered pressure. And influencer shills are the modern version: that creator hyping a coin was often paid to promote it, or bought early hoping YOUR purchase pumps their price. When they sell, and they do, the fans hold the crash. If a stranger truly had a guaranteed money machine, they would not be sharing it on TikTok.",
  bullets: [
  "Words that should trigger your alarm: 'guaranteed,' 'can't lose,' 'act now,' 'secret method'",
  'Urgency is a weapon: real opportunities do not expire in 24 hours',
- 'Ask who profits if you buy — with paid shills, the answer is them, not you',
+ 'Ask who profits if you buy, with paid shills, the answer is them, not you',
  'If it sounds too good to be true, it is. Every time. No exceptions',
  ],
  },
@@ -108,17 +108,17 @@ const lesson: Lesson = {
  type: 'example',
  heading: 'Example: The $200 Rocket That Crashed',
  body:
- "Devon, 16, sees a gaming influencer hyping 'MoonRocketCoin — 100x incoming, NOT financial advice.' Comments are full of people posting gains. Devon puts in $200 of lawn-mowing money at $0.40 per coin. It jumps to $0.55 in two days — he's up 37% and feels like a genius! What Devon can't see: the influencer and insiders bought millions of coins at $0.02 and are selling into the hype. A week later the coin sits at $0.03, the influencer has deleted the video, and Devon's $200 is worth $15. That's a pump-and-dump — and versions of it have been run since long before crypto existed.",
+ "Devon, 16, sees a gaming influencer hyping 'MoonRocketCoin, 100x incoming, NOT financial advice.' Comments are full of people posting gains. Devon puts in $200 of lawn-mowing money at $0.40 per coin. It jumps to $0.55 in two days. He's up 37% and feels like a genius! What Devon can't see: the influencer and insiders bought millions of coins at $0.02 and are selling into the hype. A week later the coin sits at $0.03, the influencer has deleted the video, and Devon's $200 is worth $15. That's a pump-and-dump, and versions of it have been run since long before crypto existed.",
  },
  {
  type: 'content',
  heading: 'The House Always Wins: Betting & Loot Boxes',
  body:
- "Sports betting apps and video game loot boxes run on the same engine: the house edge. Every game is mathematically tilted so that, across all players, the company MUST come out ahead — that's how they afford those ads. Individual wins absolutely happen (that's the hook!), but the math grinds everyone down over time. Betting apps even celebrate your wins with confetti to keep you playing. Loot boxes are the same psychology in miniature: pay $5 for a chance at a rare skin, and the odds quietly guarantee the game company profits. An occasional win is the bait — the edge is the trap.",
+ "Sports betting apps and video game loot boxes run on the same engine: the house edge. Every game is mathematically tilted so that, across all players, the company MUST come out ahead, that's how they afford those ads. Individual wins absolutely happen (that's the hook!), but the math grinds everyone down over time. Betting apps even celebrate your wins with confetti to keep you playing. Loot boxes are the same psychology in miniature: pay $5 for a chance at a rare skin, and the odds quietly guarantee the game company profits. An occasional win is the bait, the edge is the trap.",
  bullets: [
  'House edge means the odds are set so the company always profits over time',
- 'A 5% edge sounds tiny, but bet $50 weekly and it averages out to losing about $130 per year — and streaks can be far worse',
- 'Wins are engineered to feel amazing so you keep playing — confetti is not your friend',
+ 'A 5% edge sounds tiny, but bet $50 weekly and it averages out to losing about $130 per year, and streaks can be far worse',
+ 'Wins are engineered to feel amazing so you keep playing. Confetti is not your friend',
  'Loot boxes are gambling mechanics aimed at players your age; many countries regulate them like casinos',
  ],
  },
@@ -126,40 +126,40 @@ const lesson: Lesson = {
  type: 'checkpoint',
  checkpoint: {
  question:
- "An influencer posts: 'This coin is GUARANTEED to 50x by Friday — my followers are all in! Link in bio, don't miss out!!' What are the red flags?",
+ "An influencer posts: 'This coin is GUARANTEED to 50x by Friday. My followers are all in! Link in bio, don't miss out!!' What are the red flags?",
  options: [
- 'None — followers posting gains is proof it works',
+ 'None, followers posting gains is proof it works',
  'Only the emoji use',
- "The word 'coin' — everything else is normal marketing",
- "'Guaranteed' returns, extreme urgency, and hype from someone who profits if you buy — the full pump-and-dump starter pack",
+ "The word 'coin'. Everything else is normal marketing",
+ "'Guaranteed' returns, extreme urgency, and hype from someone who profits if you buy, the full pump-and-dump starter pack",
  ],
  answerIndex: 3,
  explanation:
- "You spotted all three! Nothing in investing is guaranteed, urgency exists to stop you from thinking, and a promoter who benefits from your purchase is not advice — it is an ad. That post is the anatomy of a pump-and-dump.",
+ "You spotted all three! Nothing in investing is guaranteed, urgency exists to stop you from thinking, and a promoter who benefits from your purchase is not advice. It is an ad. That post is the anatomy of a pump-and-dump.",
  },
  },
  {
  type: 'content',
  heading: 'FOMO: The Hack for Your Brain',
  body:
- "Why do smart people fall for obvious traps? FOMO — fear of missing out. Your brain is wired to copy the crowd and to fear losing a chance more than it fears losing money. Scammers know this, so they manufacture crowds (fake comments, bots posting gains) and deadlines ('window closes tonight!'). The defense is beautifully simple: slow down. Real opportunities survive a 48-hour think-it-over. Anything that punishes you for pausing to think was never an opportunity — it was an ambush.",
+ "Why do smart people fall for obvious traps? FOMO, fear of missing out. Your brain is wired to copy the crowd and to fear losing a chance more than it fears losing money. Scammers know this, so they manufacture crowds (fake comments, bots posting gains) and deadlines ('window closes tonight!'). The defense is beautifully simple: slow down. Real opportunities survive a 48-hour think-it-over. Anything that punishes you for pausing to think was never an opportunity, it was an ambush.",
  },
  {
  type: 'example',
  heading: 'Example: The $60 Hoodie That Cost $95',
  body:
- "Lena, 17, wants a $60 hoodie. Checkout offers '4 easy payments of $15!' — feels basically free. Two weeks later she splits $80 of sneakers, then $48 of concert merch. Now three plans overlap: $47 is auto-drafting from her account every two weeks, more than half her part-time paycheck. When a payment bounces during a slow work week, she gets a $10 late fee, a $32 overdraft fee from her bank, and a warning on her account. Her 'easy payments' hoodie effectively cost $95 (that's 58% extra!) — and BNPL companies count on exactly this stacking. If you cannot afford it today, four slices of it are still unaffordable.",
+ "Lena, 17, wants a $60 hoodie. Checkout offers '4 easy payments of $15!', feels basically free. Two weeks later she splits $80 of sneakers, then $48 of concert merch. Now three plans overlap: $47 is auto-drafting from her account every two weeks, more than half her part-time paycheck. When a payment bounces during a slow work week, she gets a $10 late fee, a $32 overdraft fee from her bank, and a warning on her account. Her 'easy payments' hoodie effectively cost $95 (that's 58% extra!), and BNPL companies count on exactly this stacking. If you cannot afford it today, four slices of it are still unaffordable.",
  },
  {
  type: 'content',
  heading: 'The Golden Rule (Tattoo This on Your Brain)',
  body:
- "Here it is — the rule that would have saved every victim of every scheme in this lesson: never invest money you can't afford to lose, and never invest in anything you don't understand. Two parts, both mandatory. If losing the money would wreck your plans, it doesn't belong in anything risky. And if you can't explain how the thing makes money in two plain sentences, you're not investing — you're donating to someone who can. Curious about crypto someday? Fine: tiny amounts, fully-funded savings first, full understanding, zero borrowed money. Boring? Maybe. But boring is how people actually get rich.",
+ "Here it is, the rule that would have saved every victim of every scheme in this lesson: never invest money you can't afford to lose, and never invest in anything you don't understand. Two parts, both mandatory. If losing the money would wreck your plans, it doesn't belong in anything risky. And if you can't explain how the thing makes money in two plain sentences, you're not investing, you're donating to someone who can. Curious about crypto someday? Fine: tiny amounts, fully-funded savings first, full understanding, zero borrowed money. Boring? Maybe. But boring is how people actually get rich.",
  bullets: [
  "Part 1: only risk money whose loss you could shrug off completely",
  "Part 2: if you can't explain how it makes money, you don't buy it",
- 'Emergency fund and goal savings come first — always in insured accounts',
- 'Slow, diversified, boring investing beats hype in the long run — every reliable study agrees',
+ 'Emergency fund and goal savings come first, always in insured accounts',
+ 'Slow, diversified, boring investing beats hype in the long run, every reliable study agrees',
  ],
  },
  ],
@@ -174,7 +174,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 0,
  explanation:
- 'Crypto is digital money tracked on a blockchain — a shared public ledger — instead of by a bank, with no government backing. The technology is real, but most coins have no cash flow behind them, so prices swing on pure supply and demand.',
+ 'Crypto is digital money tracked on a blockchain, a shared public ledger, instead of by a bank, with no government backing. The technology is real, but most coins have no cash flow behind them, so prices swing on pure supply and demand.',
  },
  {
  question: 'Why is crypto a bad place for your emergency fund or car savings?',
@@ -194,11 +194,11 @@ const lesson: Lesson = {
  'The insiders who bought early',
  'The fans who bought during the hype, right before insiders sold',
  'The blockchain itself',
- 'Nobody — prices always recover',
+ 'Nobody, prices always recover',
  ],
  answerIndex: 1,
  explanation:
- 'Insiders buy cheap, manufacture hype to pump the price, then dump their coins on the fans buying in at the top. When the selling crashes the price, the late buyers hold the losses — that is the entire design of the scheme.',
+ 'Insiders buy cheap, manufacture hype to pump the price, then dump their coins on the fans buying in at the top. When the selling crashes the price, the late buyers hold the losses. That is the entire design of the scheme.',
  },
  {
  question: 'What does the "house edge" mean for sports betting apps and loot boxes?',
@@ -210,7 +210,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 3,
  explanation:
- 'The house edge is a built-in mathematical tilt: across all players and all bets, the company is guaranteed to come out ahead. Individual wins happen — they are the hook — but the longer you play, the more the math grinds you down.',
+ 'The house edge is a built-in mathematical tilt: across all players and all bets, the company is guaranteed to come out ahead. Individual wins happen. They are the hook, but the longer you play, the more the math grinds you down.',
  },
  {
  question: 'How can buy-now-pay-later plans become a money trap?',
@@ -218,11 +218,11 @@ const lesson: Lesson = {
  'They require a college degree to use',
  'Stacking several "small" payment plans adds up to real debt, and missed payments trigger late fees and overdrafts',
  'They only work on purchases over $500',
- 'They cannot — splitting payments is always free money',
+ 'They cannot, splitting payments is always free money',
  ],
  answerIndex: 1,
  explanation:
- 'Each plan feels tiny, but three or four overlapping ones can quietly claim most of a paycheck — and one bounced payment can snowball into late fees and overdraft charges. If you cannot afford it today, four slices of it are still unaffordable.',
+ 'Each plan feels tiny, but three or four overlapping ones can quietly claim most of a paycheck, and one bounced payment can snowball into late fees and overdraft charges. If you cannot afford it today, four slices of it are still unaffordable.',
  },
  {
  question: 'What is the golden rule for risky investments like crypto?',
@@ -234,7 +234,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- 'Both halves are mandatory: risk only money whose loss would not wreck your plans, and only put it in things you can explain in plain words. Everything else in this lesson — FOMO, shills, house edges — is defeated by this one rule.',
+ 'Both halves are mandatory: risk only money whose loss would not wreck your plans, and only put it in things you can explain in plain words. Everything else in this lesson, FOMO, shills, house edges, is defeated by this one rule.',
  },
  ],
  es: {
@@ -479,15 +479,15 @@ const lesson: Lesson = {
  type: 'intro',
  heading: '欢迎来到金钱的蛮荒西部',
  body:
- '你的信息流里满是这些：要"冲上月球"的币、炫耀租来的兰博基尼的网红、承诺轻松串关的博彩App，还有小声嘀咕"只要4笔轻松付款！"的结账按钮。这里面有些是真正的技术，有些是披着外衣的赌博，还有些干脆就是骗局。今天我们要给你装上雷达——让你能把创新和陷阱分开，把你的钱留在别人的口袋之外。',
+ '你的信息流里满是这些：要"冲上月球"的币、炫耀租来的兰博基尼的网红、承诺轻松串关的博彩App，还有小声嘀咕"只要4笔轻松付款！"的结账按钮。这里面有些是真正的技术，有些是披着外衣的赌博，还有些干脆就是骗局。今天我们要给你装上雷达，让你能把创新和陷阱分开，把你的钱留在别人的口袋之外。',
  },
  {
  type: 'content',
  heading: '加密货币究竟是什么',
  body:
- '剥去炒作的外衣，加密货币就是一种不由任何政府或银行发行的数字货币。交易不是由银行来记账，而是记录在区块链（blockchain）上——一个被复制到成千上万台电脑上的、共享的公开账本，这让记录非常难以造假。Bitcoin是第一个；之后又冒出了成千上万种其他币。这项技术确实很巧妙。但问题在这儿：大多数加密货币背后没有现金流——没有租金、没有利润、没有利息。它的价格完全取决于下一个人愿意付多少，而这在一天之内就可能剧烈变化。',
+ '剥去炒作的外衣，加密货币就是一种不由任何政府或银行发行的数字货币。交易不是由银行来记账，而是记录在区块链（blockchain）上，一个被复制到成千上万台电脑上的、共享的公开账本，这让记录非常难以造假。Bitcoin是第一个；之后又冒出了成千上万种其他币。这项技术确实很巧妙。但问题在这儿：大多数加密货币背后没有现金流，没有租金、没有利润、没有利息。它的价格完全取决于下一个人愿意付多少，而这在一天之内就可能剧烈变化。',
  bullets: [
- '记录在区块链上的数字货币——一个共享的公开记录，而不是银行账本',
+ '记录在区块链上的数字货币，一个共享的公开记录，而不是银行账本',
  '没有政府背书，而且在美国，如果交易所倒闭或你被黑，也没有FDIC保险',
  '大多数币的价格完全取决于下一个买家愿意付多少',
  '"是真正的技术"和"有真实的风险"可以同时成立',
@@ -497,10 +497,10 @@ const lesson: Lesson = {
  type: 'content',
  heading: '波动 vs. 储蓄：不是同一项运动',
  body:
- '波动指的是一个价格摆动得有多剧烈。储蓄账户像一部平缓的自动扶梯那样移动：慢、无聊、有保险、始终向上。加密货币则像一台没经过测试的过山车——Bitcoin曾多次在几个月内下跌超过50%，更小的币则跌到了归零。这就是为什么你需要用到的钱——应急基金、买车的存款、上大学的钱——永远都不该放进一个在返校节之前就可能损失一半价值的东西里。储蓄和投机是两项不同的运动，规则也不同。',
+ '波动指的是一个价格摆动得有多剧烈。储蓄账户像一部平缓的自动扶梯那样移动：慢、无聊、有保险、始终向上。加密货币则像一台没经过测试的过山车，Bitcoin曾多次在几个月内下跌超过50%，更小的币则跌到了归零。这就是为什么你需要用到的钱，应急基金、买车的存款、上大学的钱，永远都不该放进一个在返校节之前就可能损失一半价值的东西里。储蓄和投机是两项不同的运动，规则也不同。',
  bullets: [
  '储蓄账户：最高25万美元有保险，增长缓慢，从不下跌',
- '加密货币：可能在一天内上涨或暴跌20%——而且有些币再也回不来了',
+ '加密货币：可能在一天内上涨或暴跌20%，而且有些币再也回不来了',
  '你很快要用的钱就该放在储蓄里，没得商量',
  '如果有人说加密货币"就跟储蓄账户一样"，他要么错了，要么在撒谎',
  ],
@@ -522,17 +522,17 @@ const lesson: Lesson = {
  {
  term: '拉高出货（pump-and-dump）',
  definition:
- '一种骗局，内部人炒作某个资产以拉高它的价格，然后把自己手里的持仓倾销给买进来的粉丝——把价格砸崩。',
+ '一种骗局，内部人炒作某个资产以拉高它的价格，然后把自己手里的持仓倾销给买进来的粉丝，把价格砸崩。',
  },
  {
  term: '庄家优势（house edge）',
  definition:
- '一种内建的数学优势，保证赌场、博彩App和开箱（loot box）长期都能盈利——也就是说玩家作为一个整体注定要输。',
+ '一种内建的数学优势，保证赌场、博彩App和开箱（loot box）长期都能盈利，也就是说玩家作为一个整体注定要输。',
  },
  {
  term: 'FOMO',
  definition:
- '害怕错过（fear of missing out）——因为看起来别人都在赢而焦虑地想冲进去的冲动。骗子最爱当武器用的头号情绪。',
+ '害怕错过（fear of missing out），因为看起来别人都在赢而焦虑地想冲进去的冲动。骗子最爱当武器用的头号情绪。',
  },
  {
  term: '先买后付（BNPL）',
@@ -548,24 +548,24 @@ const lesson: Lesson = {
  'Kayla攒了800美元，准备6个月后买一辆她需要的车。一个朋友让她把这钱全押进一个火爆的新币。这个计划最大的问题是什么？',
  options: [
  '加密货币App太难下载了',
- '这个币很可能在她需要用钱之前就跌掉50%——为近期需求准备的存款不该拿去赌',
+ '这个币很可能在她需要用钱之前就跌掉50%，为近期需求准备的存款不该拿去赌',
  '她得为它额外缴FICA税',
- '没问题——币最终总会反弹',
+ '没问题，币最终总会反弹',
  ],
  answerIndex: 1,
  explanation:
- '波动性就是那个致命伤：她有截止期限、必须要用的钱，不能押在一个几周内就可能暴跌20-50%的东西上——而且不，币并不总会回来。储蓄和投机是两项不同的运动，她的购车基金属于储蓄。',
+ '波动性就是那个致命伤：她有截止期限、必须要用的钱，不能押在一个几周内就可能暴跌20-50%的东西上，而且不，币并不总会回来。储蓄和投机是两项不同的运动，她的购车基金属于储蓄。',
  },
  },
  {
  type: 'content',
  heading: '"快速致富"永远是一面红旗',
  body:
- '把这个刻进你的脑子里：真正的财富慢慢复利增长，所以任何承诺又快、又轻松、又有保证的钱的人都在卖东西——而被卖的通常就是你。"保证10倍！""……趁还不算太晚！""所有人都在进场！"这些话都是精心制造出来的压力。而带货的网红就是它的现代版本：那个炒作某个币的创作者，往往是被付了钱去推广的，或者早早买了进去、指望着你的购买去拉高他的价格。当他们卖出时——他们一定会卖——粉丝们就接住了那场暴跌。如果一个陌生人真有一台保证赚钱的机器，他不会把它发到TikTok上。',
+ '把这个刻进你的脑子里：真正的财富慢慢复利增长，所以任何承诺又快、又轻松、又有保证的钱的人都在卖东西，而被卖的通常就是你。"保证10倍！""……趁还不算太晚！""所有人都在进场！"这些话都是精心制造出来的压力。而带货的网红就是它的现代版本：那个炒作某个币的创作者，往往是被付了钱去推广的，或者早早买了进去、指望着你的购买去拉高他的价格。当他们卖出时，他们一定会卖，粉丝们就接住了那场暴跌。如果一个陌生人真有一台保证赚钱的机器，他不会把它发到TikTok上。',
  bullets: [
  '应该触发你警报的词："保证"、"不会亏"、"马上行动"、"秘密方法"',
  '紧迫感是一件武器：真正的机会不会在24小时内到期',
- '问问如果你买了谁会赚钱——碰上被付钱的带货者，答案是他们，不是你',
+ '问问如果你买了谁会赚钱，碰上被付钱的带货者，答案是他们，不是你',
  '如果听起来好得不真实，那它就是不真实。每一次。没有例外',
  ],
  },
@@ -573,17 +573,17 @@ const lesson: Lesson = {
  type: 'example',
  heading: '例子：那枚坠毁的200美元火箭',
  body:
- '16岁的Devon看到一个游戏网红在炒作"MoonRocketCoin——100倍就要来了，这不是投资建议"。评论区满是晒收益的人。Devon把200美元的割草钱以每枚0.40美元投了进去。两天内它涨到了0.55美元——他赚了37%，觉得自己是个天才！Devon看不到的是：那个网红和内部人以每枚0.02美元买了几百万枚币，正趁着这股热潮在抛售。一周后这个币停在0.03美元，网红把视频删了，Devon的200美元只值15美元了。这就是拉高出货（pump-and-dump）——而它的各种版本早在加密货币出现之前很久就有人在玩了。',
+ '16岁的Devon看到一个游戏网红在炒作"MoonRocketCoin，100倍就要来了，这不是投资建议"。评论区满是晒收益的人。Devon把200美元的割草钱以每枚0.40美元投了进去。两天内它涨到了0.55美元，他赚了37%，觉得自己是个天才！Devon看不到的是：那个网红和内部人以每枚0.02美元买了几百万枚币，正趁着这股热潮在抛售。一周后这个币停在0.03美元，网红把视频删了，Devon的200美元只值15美元了。这就是拉高出货（pump-and-dump），而它的各种版本早在加密货币出现之前很久就有人在玩了。',
  },
  {
  type: 'content',
  heading: '庄家永远赢：博彩与开箱',
  body:
- '体育博彩App和电子游戏开箱靠的是同一台引擎：庄家优势。每一局游戏在数学上都被做了倾斜，好让公司在所有玩家中间必定占上风——那些广告就是这么付得起的。个人赢钱当然会发生（那正是鱼钩！），但数学会随着时间把每个人一点点磨下去。博彩App甚至用彩带庆祝你的胜利，好让你继续玩。开箱是同一套心理学的缩小版：花5美元买一次抽到稀有皮肤的机会，而概率悄悄保证了游戏公司稳赚。偶尔赢一次是诱饵——那个优势才是陷阱。',
+ '体育博彩App和电子游戏开箱靠的是同一台引擎：庄家优势。每一局游戏在数学上都被做了倾斜，好让公司在所有玩家中间必定占上风，那些广告就是这么付得起的。个人赢钱当然会发生（那正是鱼钩！），但数学会随着时间把每个人一点点磨下去。博彩App甚至用彩带庆祝你的胜利，好让你继续玩。开箱是同一套心理学的缩小版：花5美元买一次抽到稀有皮肤的机会，而概率悄悄保证了游戏公司稳赚。偶尔赢一次是诱饵，那个优势才是陷阱。',
  bullets: [
  '庄家优势意味着概率被设定成让公司长期总是盈利',
- '5%的优势听起来微不足道，但每周下注50美元，平均算下来一年要亏大约130美元——运气差的连串下来还会糟糕得多',
- '赢的时刻被设计得感觉超爽，好让你继续玩——彩带不是你的朋友',
+ '5%的优势听起来微不足道，但每周下注50美元，平均算下来一年要亏大约130美元，运气差的连串下来还会糟糕得多',
+ '赢的时刻被设计得感觉超爽，好让你继续玩，彩带不是你的朋友',
  '开箱是瞄准你这个年龄段玩家的赌博机制；许多国家像监管赌场一样监管它们',
  ],
  },
@@ -591,40 +591,40 @@ const lesson: Lesson = {
  type: 'checkpoint',
  checkpoint: {
  question:
- '一个网红发帖："这个币保证在周五前涨50倍——我的粉丝全都进场了！链接在简介里，别错过！！"这里有哪些红旗？',
+ '一个网红发帖："这个币保证在周五前涨50倍，我的粉丝全都进场了！链接在简介里，别错过！！"这里有哪些红旗？',
  options: [
- '没有——粉丝晒收益就是它管用的证明',
+ '没有，粉丝晒收益就是它管用的证明',
  '只有表情符号的用法',
- '"币"这个字——其他一切都是正常营销',
- '"保证"的回报、极端的紧迫感，以及一个你买了就能获利的人在炒作——一整套拉高出货的入门套装',
+ '"币"这个字，其他一切都是正常营销',
+ '"保证"的回报、极端的紧迫感，以及一个你买了就能获利的人在炒作，一整套拉高出货的入门套装',
  ],
  answerIndex: 3,
  explanation:
- '你把三样都揪出来了！投资里没有任何东西是有保证的，紧迫感的存在就是为了不让你思考，而一个从你的购买中获益的推广者给的不是建议——那是广告。那条帖子就是一场拉高出货的解剖图。',
+ '你把三样都揪出来了！投资里没有任何东西是有保证的，紧迫感的存在就是为了不让你思考，而一个从你的购买中获益的推广者给的不是建议，那是广告。那条帖子就是一场拉高出货的解剖图。',
  },
  },
  {
  type: 'content',
  heading: 'FOMO：针对你大脑的漏洞',
  body:
- '为什么聪明人会掉进明显的陷阱？FOMO——害怕错过。你的大脑天生就会去模仿人群，而且害怕失去一个机会甚于害怕失去金钱。骗子们知道这一点，所以他们制造出人群（假评论、晒收益的机器人）和截止期限（"窗口今晚关闭！"）。防御的办法简单得漂亮：慢下来。真正的机会经得起48小时的深思熟虑。任何因为你停下来想一想就惩罚你的东西，从来都不是机会——那是一场埋伏。',
+ '为什么聪明人会掉进明显的陷阱？FOMO，害怕错过。你的大脑天生就会去模仿人群，而且害怕失去一个机会甚于害怕失去金钱。骗子们知道这一点，所以他们制造出人群（假评论、晒收益的机器人）和截止期限（"窗口今晚关闭！"）。防御的办法简单得漂亮：慢下来。真正的机会经得起48小时的深思熟虑。任何因为你停下来想一想就惩罚你的东西，从来都不是机会，那是一场埋伏。',
  },
  {
  type: 'example',
  heading: '例子：那件花了95美元的60美元连帽衫',
  body:
- '17岁的Lena想要一件60美元的连帽衫。结账时提供"4笔轻松付款，每笔15美元！"——感觉基本上跟免费似的。两周后她又把80美元的球鞋分了期，接着是48美元的演唱会周边。现在三个方案重叠在一起：每两周有47美元从她账户里自动扣走，超过了她兼职工资的一半。当某笔付款在一个工作清淡的周里跳票时，她被收了10美元滞纳金、来自她银行的32美元透支费，账户上还挂了一条警告。她那件"轻松付款"的连帽衫实际上花了95美元（那可是多出58%！）——而先买后付公司正是指望着这种叠加。如果你今天付不起它，把它切成四份仍然是付不起。',
+ '17岁的Lena想要一件60美元的连帽衫。结账时提供"4笔轻松付款，每笔15美元！"，感觉基本上跟免费似的。两周后她又把80美元的球鞋分了期，接着是48美元的演唱会周边。现在三个方案重叠在一起：每两周有47美元从她账户里自动扣走，超过了她兼职工资的一半。当某笔付款在一个工作清淡的周里跳票时，她被收了10美元滞纳金、来自她银行的32美元透支费，账户上还挂了一条警告。她那件"轻松付款"的连帽衫实际上花了95美元（那可是多出58%！），而先买后付公司正是指望着这种叠加。如果你今天付不起它，把它切成四份仍然是付不起。',
  },
  {
  type: 'content',
  heading: '黄金法则（把它刺在你的脑子上）',
  body:
- '就是它了——这条法则本可以拯救这节课里每一个骗局的每一个受害者：永远不要投入你亏不起的钱，也永远不要投资任何你不理解的东西。两个部分，都是必须的。如果亏掉这笔钱会毁掉你的计划，它就不该放进任何有风险的东西里。而如果你没法用两句大白话解释这东西是怎么赚钱的，你就不是在投资——你是在给一个能解释清楚的人捐款。哪天对加密货币好奇了？可以：极小的金额、先把储蓄填满、完全理解、绝不借钱。无聊？也许吧。但无聊正是人们真正致富的方式。',
+ '就是它了，这条法则本可以拯救这节课里每一个骗局的每一个受害者：永远不要投入你亏不起的钱，也永远不要投资任何你不理解的东西。两个部分，都是必须的。如果亏掉这笔钱会毁掉你的计划，它就不该放进任何有风险的东西里。而如果你没法用两句大白话解释这东西是怎么赚钱的，你就不是在投资，你是在给一个能解释清楚的人捐款。哪天对加密货币好奇了？可以：极小的金额、先把储蓄填满、完全理解、绝不借钱。无聊？也许吧。但无聊正是人们真正致富的方式。',
  bullets: [
  '第一部分：只拿那些亏了也能完全一笑而过的钱去冒险',
  '第二部分：如果你没法解释它是怎么赚钱的，你就不买它',
- '应急基金和目标储蓄排在最前面——永远放在有保险的账户里',
- '缓慢、分散、无聊的投资长期下来胜过炒作——每一项可靠的研究都同意这一点',
+ '应急基金和目标储蓄排在最前面，永远放在有保险的账户里',
+ '缓慢、分散、无聊的投资长期下来胜过炒作，每一项可靠的研究都同意这一点',
  ],
  },
  ],
@@ -659,11 +659,11 @@ const lesson: Lesson = {
  '早早买进的内部人',
  '在热潮中买入、恰好赶在内部人卖出之前的粉丝',
  '区块链本身',
- '没人——价格总会恢复',
+ '没人，价格总会恢复',
  ],
  answerIndex: 1,
  explanation:
- '内部人低价买进，制造热潮来拉高价格，然后在高位把币倾销给买进来的粉丝。当抛售把价格砸崩时，晚进场的买家接住了亏损——这就是整个骗局的设计。',
+ '内部人低价买进，制造热潮来拉高价格，然后在高位把币倾销给买进来的粉丝。当抛售把价格砸崩时，晚进场的买家接住了亏损，这就是整个骗局的设计。',
  },
  {
  question: '对体育博彩App和开箱来说，"庄家优势"意味着什么？',
@@ -675,7 +675,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 3,
  explanation:
- '庄家优势是一种内建的数学倾斜：在所有玩家和所有下注中间，公司稳赢。个人赢钱会发生——那是鱼钩——但你玩得越久，数学就把你磨得越狠。',
+ '庄家优势是一种内建的数学倾斜：在所有玩家和所有下注中间，公司稳赢。个人赢钱会发生，那是鱼钩，但你玩得越久，数学就把你磨得越狠。',
  },
  {
  question: '先买后付方案怎么会变成一个金钱陷阱？',
@@ -683,11 +683,11 @@ const lesson: Lesson = {
  '使用它们需要大学学位',
  '把好几个"小额"付款方案叠在一起会累成实实在在的债务，而错过付款会触发滞纳金和透支',
  '它们只对500美元以上的消费有效',
- '不会——分期付款永远是免费的钱',
+ '不会，分期付款永远是免费的钱',
  ],
  answerIndex: 1,
  explanation:
- '每个方案感觉都微不足道，但三四个重叠在一起就可能悄悄占去一份工资的大部分——而一次跳票的付款就可能滚成滞纳金和透支费的雪球。如果你今天付不起它，把它切成四份仍然是付不起。',
+ '每个方案感觉都微不足道，但三四个重叠在一起就可能悄悄占去一份工资的大部分，而一次跳票的付款就可能滚成滞纳金和透支费的雪球。如果你今天付不起它，把它切成四份仍然是付不起。',
  },
  {
  question: '对加密货币这类高风险投资来说，黄金法则是什么？',
@@ -699,7 +699,7 @@ const lesson: Lesson = {
  ],
  answerIndex: 2,
  explanation:
- '两半都是必须的：只拿那些亏了也不会毁掉你计划的钱去冒险，而且只把它投进你能用大白话解释清楚的东西里。这节课里其他的一切——FOMO、带货者、庄家优势——都被这一条法则打败。',
+ '两半都是必须的：只拿那些亏了也不会毁掉你计划的钱去冒险，而且只把它投进你能用大白话解释清楚的东西里。这节课里其他的一切，FOMO、带货者、庄家优势，都被这一条法则打败。',
  },
  ],
  },

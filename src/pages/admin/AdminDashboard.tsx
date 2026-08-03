@@ -241,10 +241,10 @@ export default function AdminDashboard() {
             {zh ? '您已登录为 ' : es ? 'Has iniciado sesión como ' : "You're signed in as "}
             <span className="font-semibold">{adminUser.email}</span>.
             {zh
-              ? ' BFF 管理员需要先审批您的账户，之后您才能创建班级和主持游戏。审批通过后您即可进入——请稍后再回来查看。'
+              ? ' BFF 管理员需要先审批您的账户，之后您才能创建班级和主持游戏。审批通过后您即可进入，请稍后再回来查看。'
               : es
                 ? ' Un administrador de BFF debe aprobar tu cuenta antes de que puedas crear aulas y organizar juegos. Entrarás en cuanto lo haga; solo vuelve a comprobarlo.'
-                : ' A BFF administrator needs to approve your account before you can create classrooms and host games. You\'ll get in as soon as they do — just check back.'}
+                : ' A BFF administrator needs to approve your account before you can create classrooms and host games. You\'ll get in as soon as they do, just check back.'}
           </p>
           <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
             <button type="button" className="btn-primary" onClick={() => void load()}>
@@ -255,7 +255,7 @@ export default function AdminDashboard() {
             </button>
           </div>
           <p className="mt-6 text-xs text-slate-400">
-            {zh ? '您是学生吗？无需账户，只需' : es ? '¿Eres estudiante? No necesitas una cuenta, solo ' : "Are you a student? You don't need an account — just "}
+            {zh ? '您是学生吗？无需账户，只需' : es ? '¿Eres estudiante? No necesitas una cuenta, solo ' : "Are you a student? You don't need an account, just "}
             <Link to="/join" className="font-semibold text-bff-700 hover:underline">
               {zh ? '用班级代码加入' : es ? 'únete con tu código de clase' : 'join with your class code'}
             </Link>
@@ -301,10 +301,10 @@ export default function AdminDashboard() {
             </h1>
             <p className="mt-5 text-lg leading-relaxed text-white/70">
               {zh
-                ? `您好，${displayName(adminUser, zh, es)} — 班级、作业和实时游戏，尽在此处。`
+                ? `您好，${displayName(adminUser, zh, es)} ， 班级、作业和实时游戏，尽在此处。`
                 : es
-                  ? `Hola, ${displayName(adminUser, zh, es)} — aulas, tareas y juegos en vivo, todo en un lugar.`
-                  : `Hey, ${displayName(adminUser, zh, es)} — classrooms, assignments, and live games, all in one place.`}
+                  ? `Hola, ${displayName(adminUser, zh, es)}, aulas, tareas y juegos en vivo, todo en un lugar.`
+                  : `Hey, ${displayName(adminUser, zh, es)}, classrooms, assignments, and live games, all in one place.`}
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -425,7 +425,7 @@ export default function AdminDashboard() {
                     ? '创建您的第一个班级，分享其 6 位字母代码，学生几秒内即可加入，无需电子邮箱。'
                     : es
                       ? 'Crea tu primera clase, comparte su código de 6 letras y los estudiantes se unen en segundos, sin correo electrónico.'
-                      : 'Create your first class, share its 6-letter code, and students join in seconds — no email needed.'}
+                      : 'Create your first class, share its 6-letter code, and students join in seconds, no email needed.'}
                 </p>
               </div>
             )}
@@ -447,7 +447,7 @@ export default function AdminDashboard() {
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder={zh ? '第 3 节课 — 财商教育' : es ? 'Periodo 3 — Educación financiera' : 'Period 3 — Financial Literacy'}
+                  placeholder={zh ? '第 3 节课 ， 财商教育' : es ? 'Periodo 3, Educación financiera' : 'Period 3, Financial Literacy'}
                   required
                 />
               </label>
@@ -491,10 +491,10 @@ export default function AdminDashboard() {
         </h2>
         <p className="mt-1 text-sm text-slate-600">
           {zh
-            ? '立即开始一场实时游戏——无需班级。玩家用大屏幕上显示的代码加入。'
+            ? '立即开始一场实时游戏，无需班级。玩家用大屏幕上显示的代码加入。'
             : es
               ? 'Inicia un juego en vivo ahora mismo, sin necesidad de un aula. Los jugadores se unen con el código de la pantalla grande.'
-              : 'Start a live game right now — no classroom needed. Players join with the code on the big screen.'}
+              : 'Start a live game right now, no classroom needed. Players join with the code on the big screen.'}
         </p>
         <div className="mt-4">
           <HostLauncher classroomId={null} />

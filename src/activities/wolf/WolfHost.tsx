@@ -171,10 +171,10 @@ export default function WolfHost() {
           <p className="text-sm text-ink/70">
             {!BACKEND_ENABLED
               ? zh
-                ? '当班级后端接通后，实时对战就会解锁——单人模式现在就能玩！'
+                ? '当班级后端接通后，实时对战就会解锁，单人模式现在就能玩！'
                 : es
-                  ? 'Los juegos en vivo se activan cuando el backend de la clase está conectado — ¡el modo individual ya está listo!'
-                  : 'Live games unlock when the class backend is connected — solo mode is ready now!'
+                  ? 'Los juegos en vivo se activan cuando el backend de la clase está conectado, ¡el modo individual ya está listo!'
+                  : 'Live games unlock when the class backend is connected. Solo mode is ready now!'
               : zh
                 ? '主持实时对战需要 BFF 导师登录后进行。前往团队页面登录吧。'
                 : es
@@ -418,10 +418,10 @@ export default function WolfHost() {
           <ControlBar>
             <p className="mr-auto hidden text-bff-300 sm:block">
               {zh
-                ? '每个人都在自己的设备上交易——等大家准备好了再推进。'
+                ? '每个人都在自己的设备上交易：等大家准备好了再推进。'
                 : es
-                  ? 'Cada quien negocia en su propio dispositivo — avanza cuando la sala esté lista.'
-                  : 'Everyone trades on their own device — advance when the room is ready.'}
+                  ? 'Cada quien negocia en su propio dispositivo, avanza cuando la sala esté lista.'
+                  : 'Everyone trades on their own device. Advance when the room is ready.'}
             </p>
             <button className={BIG_BUTTON} onClick={() => setStage(stage + 1)}>
               {zh ? ADVANCE_LABELS[stage].labelZh : es ? ADVANCE_LABELS[stage].labelEs : ADVANCE_LABELS[stage].label}
@@ -443,7 +443,7 @@ export default function WolfHost() {
       {stage === 4 && (
         <div className="space-y-6 pt-2">
           <h1 className="font-display text-4xl font-bold sm:text-5xl">
-            <Lock className="inline h-9 w-9 align-[-0.12em] text-bff-300 sm:h-10 sm:w-10" aria-hidden="true" /> {zh ? '收盘钟声——结果揭晓' : es ? 'Campana de cierre — ya están los resultados' : 'Closing Bell — the results are in'}
+            <Lock className="inline h-9 w-9 align-[-0.12em] text-bff-300 sm:h-10 sm:w-10" aria-hidden="true" /> {zh ? '收盘钟声，结果揭晓' : es ? 'Campana de cierre, ya están los resultados' : 'Closing Bell, the results are in'}
           </h1>
           {session.reveal_index === 0 && (
             <p className="text-2xl text-bff-200">
@@ -555,7 +555,7 @@ export default function WolfHost() {
             ))}
           </div>
           {standings.length === 0 && (
-            <p className="text-2xl text-bff-200">{zh ? '这一轮没有投资者——市场一片冷清！' : es ? 'No hubo inversionistas esta ronda — ¡el mercado estuvo tranquilo!' : 'No traders this round — the market was quiet!'}</p>
+            <p className="text-2xl text-bff-200">{zh ? '这一轮没有投资者，市场一片冷清！' : es ? 'No hubo inversionistas esta ronda, ¡el mercado estuvo tranquilo!' : 'No traders this round. The market was quiet!'}</p>
           )}
           {standings.length > 3 && (
             <ol className="w-full max-w-xl space-y-2">

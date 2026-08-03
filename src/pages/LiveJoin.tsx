@@ -38,10 +38,10 @@ export default function LiveJoin() {
       if (!found) {
         setError(
           zh
-            ? '现在没有使用这个代码的实时游戏——找主持人再核对一下吧！'
+            ? '现在没有使用这个代码的实时游戏，找主持人再核对一下吧！'
             : es
-              ? 'No hay ningún juego en vivo con ese código ahora mismo — ¡verifícalo con tu anfitrión!'
-              : 'No live game with that code right now — double-check it with your host!',
+              ? 'No hay ningún juego en vivo con ese código ahora mismo, ¡verifícalo con tu anfitrión!'
+              : 'No live game with that code right now, double-check it with your host!',
         )
         return
       }
@@ -58,10 +58,10 @@ export default function LiveJoin() {
         err instanceof Error
           ? err.message
           : zh
-            ? '出了点问题——再试一次吧！'
+            ? '出了点问题，再试一次吧！'
             : es
-              ? 'Algo salió mal — ¡inténtalo de nuevo!'
-              : 'Something went wrong — try again!',
+              ? 'Algo salió mal, ¡inténtalo de nuevo!'
+              : 'Something went wrong, try again!',
       )
     } finally {
       setBusy(false)
@@ -113,10 +113,10 @@ export default function LiveJoin() {
               <Users className="mt-0.5 h-4 w-4 shrink-0 text-bff-300" aria-hidden="true" />
               <span>
                 {zh
-                  ? '你的导师正在大屏幕上主持一个游戏——输入屏幕上显示的代码就能加入。'
+                  ? '你的导师正在大屏幕上主持一个游戏，输入屏幕上显示的代码就能加入。'
                   : es
-                    ? 'Tu mentor está organizando un juego en la pantalla grande — escribe el código que muestra para entrar.'
-                    : 'Your mentor is hosting a game on the big screen — type the code they show to jump in.'}
+                    ? 'Tu mentor está organizando un juego en la pantalla grande, escribe el código que muestra para entrar.'
+                    : 'Your mentor is hosting a game on the big screen, type the code they show to jump in.'}
               </span>
             </p>
           </div>

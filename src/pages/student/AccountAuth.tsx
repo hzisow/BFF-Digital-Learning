@@ -61,10 +61,10 @@ export default function AccountAuth() {
     signup: {
       title: zh ? '创建账号' : es ? 'Crea tu cuenta' : 'Create your account',
       lede: zh
-        ? '把你的进度保存下来，换一台设备也能继续——课程结业证书也需要它。'
+        ? '把你的进度保存下来，换一台设备也能继续，课程结业证书也需要它。'
         : es
-          ? 'Guarda tu progreso para seguir desde cualquier dispositivo — y para que tu certificado sea tuyo.'
-          : 'Save your progress so you can pick it up on any device — and so your certificate is really yours.',
+          ? 'Guarda tu progreso para seguir desde cualquier dispositivo, y para que tu certificado sea tuyo.'
+          : 'Save your progress so you can pick it up on any device, and so your certificate is really yours.',
       submit: zh ? '创建账号' : es ? 'Crear cuenta' : 'Create account',
     },
     signin: {
@@ -115,10 +115,10 @@ export default function AccountAuth() {
       <Shell title={t.title}>
         <p className="text-ink/70">
           {zh
-            ? '账号功能还没开启。别担心——课程、游戏和进度在没有账号的情况下也完全可用。'
+            ? '账号功能还没开启。别担心，课程、游戏和进度在没有账号的情况下也完全可用。'
             : es
-              ? 'Las cuentas aún no están activas. Tranquilo — las lecciones, los juegos y tu progreso funcionan igual sin una.'
-              : 'Accounts are not switched on yet. Nothing is blocked — lessons, games and your progress all work without one.'}
+              ? 'Las cuentas aún no están activas. Tranquilo, las lecciones, los juegos y tu progreso funcionan igual sin una.'
+              : 'Accounts are not switched on yet. Nothing is blocked, lessons, games and your progress all work without one.'}
         </p>
         <Link to="/lessons" className="btn-primary mt-6">
           {zh ? '去上课' : es ? 'Ir a las lecciones' : 'Go to the lessons'}

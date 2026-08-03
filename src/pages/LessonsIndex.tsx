@@ -57,9 +57,9 @@ const WEEK_THEMES: Record<number, WeekTheme> = {
     name: 'Money In, Money Out',
     nameEs: 'Dinero que entra, dinero que sale',
     nameZh: '钱进，钱出',
-    blurb: 'Where money comes from — and where yours goes.',
-    blurbEs: 'De dónde viene el dinero — y a dónde se va el tuyo.',
-    blurbZh: '钱从哪里来——你的钱又去了哪里。',
+    blurb: 'Where money comes from, and where yours goes.',
+    blurbEs: 'De dónde viene el dinero, y a dónde se va el tuyo.',
+    blurbZh: '钱从哪里来，你的钱又去了哪里。',
     banner: 'bg-bff-700',
     nodeBg: 'bg-bff-600',
     nodeShadow: 'shadow-[0_4px_0_#075178]',
@@ -164,10 +164,10 @@ function Stars({ score, lang }: { score: number | null; lang: 'en' | 'es' | 'zh'
   const pct = Math.round(score)
   const label =
     lang === 'zh'
-      ? `得分 ${pct}% — 3 颗星中的 ${n} 颗`
+      ? `得分 ${pct}% ， 3 颗星中的 ${n} 颗`
       : lang === 'es'
-        ? `Puntaje ${pct}% — ${n} de 3 estrellas`
-        : `Score ${pct}% — ${n} of 3 stars`
+        ? `Puntaje ${pct}%, ${n} de 3 estrellas`
+        : `Score ${pct}%, ${n} of 3 stars`
   return (
     <span
       role="img"
@@ -382,10 +382,10 @@ export default function LessonsIndex() {
           </h1>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/80">
             {zh
-              ? '4 周，8 节课，每节约 20 分钟。沿着路径走——完成一节课就能解锁下一站，并在终点赢得奖杯。'
+              ? '4 周，8 节课，每节约 20 分钟。沿着路径走，完成一节课就能解锁下一站，并在终点赢得奖杯。'
               : es
               ? '4 semanas, 8 lecciones, ~20 minutos cada una. Sigue la ruta: termina una lección para desbloquear la siguiente parada y gana el trofeo al final.'
-              : '4 weeks, 8 lessons, ~20 minutes each. Follow the path — finish a lesson to unlock the next stop and claim the trophy at the end.'}
+              : '4 weeks, 8 lessons, ~20 minutes each. Follow the path, finish a lesson to unlock the next stop and claim the trophy at the end.'}
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-2">
             <span className="chip bg-white/10 text-white ring-1 ring-inset ring-white/15">
@@ -400,7 +400,7 @@ export default function LessonsIndex() {
                   : es
                   ? `Racha de ${streak.current} ${streak.current === 1 ? 'día' : 'días'}`
                   : `${streak.current}-day streak`}
-                {!streak.activeToday && (zh ? '——今天来练习吧！' : es ? ' — ¡practica hoy!' : ' — practice today!')}
+                {!streak.activeToday && (zh ? '，今天来练习吧！' : es ? ', ¡practica hoy!' : ', practice today!')}
               </span>
             )}
             {missedCount > 0 && (
@@ -440,7 +440,7 @@ export default function LessonsIndex() {
           {allDone ? (
             <p className="mt-6 flex flex-col items-start gap-3 font-display text-lg font-bold text-white sm:flex-row sm:items-center">
               <span>
-                {zh ? '课程完成——你太棒了！' : es ? '¡Curso completado — leyenda!' : 'Course complete — you legend!'}{' '}
+                {zh ? '课程完成，你太棒了！' : es ? '¡Curso completado, leyenda!' : 'Course complete, you legend!'}{' '}
                 <Trophy className="h-4 w-4" aria-hidden="true" />
               </span>
               <Link to="/certificate" className="btn-primary">
@@ -458,10 +458,10 @@ export default function LessonsIndex() {
               </Link>
               <p className="mt-2 text-sm text-white/70">
                 {zh
-                  ? `第 ${resume.position.step} 步，共 ${resume.position.totalSteps} 步——你的答案已保存。`
+                  ? `第 ${resume.position.step} 步，共 ${resume.position.totalSteps} 步，你的答案已保存。`
                   : es
-                    ? `Paso ${resume.position.step} de ${resume.position.totalSteps} — tus respuestas están guardadas.`
-                    : `Step ${resume.position.step} of ${resume.position.totalSteps} — your answers are saved.`}
+                    ? `Paso ${resume.position.step} de ${resume.position.totalSteps}, tus respuestas están guardadas.`
+                    : `Step ${resume.position.step} of ${resume.position.totalSteps}. Your answers are saved.`}
               </p>
             </div>
           ) : (
@@ -656,8 +656,8 @@ export default function LessonsIndex() {
                                       zh
                                         ? `，得分 ${Math.round(node.score ?? 0)}%，需要 ${PASS_SCORE}% 才能解锁下一课`
                                         : es
-                                          ? `, ${Math.round(node.score ?? 0)}% — necesitas ${PASS_SCORE}% para desbloquear la siguiente`
-                                          : `, scored ${Math.round(node.score ?? 0)}% — needs ${PASS_SCORE}% to unlock the next lesson`
+                                          ? `, ${Math.round(node.score ?? 0)}%, necesitas ${PASS_SCORE}% para desbloquear la siguiente`
+                                          : `, scored ${Math.round(node.score ?? 0)}%. Needs ${PASS_SCORE}% to unlock the next lesson`
                                     }`
                                   : `${label}${zh ? '，当前课程' : es ? ', lección actual' : ', current lesson'}`
                             }
@@ -678,7 +678,7 @@ export default function LessonsIndex() {
                         ) : (
                           <button
                             type="button"
-                            aria-label={`${label}${zh ? '，已锁定 — 打开确认框' : es ? ', bloqueada — abre una confirmación' : ', locked — opens a confirmation'}`}
+                            aria-label={`${label}${zh ? '，已锁定 ， 打开确认框' : es ? ', bloqueada, abre una confirmación' : ', locked, opens a confirmation'}`}
                             onClick={(e) => {
                               jumpTriggerRef.current = e.currentTarget
                               setJumpTarget(node.meta!)
@@ -746,10 +746,10 @@ export default function LessonsIndex() {
           </h2>
           <p className="mt-2 max-w-2xl text-slate-600">
             {zh
-              ? '五个额外的深入单元，随时都能探索——它们不在 4 周路径内，但仍会计入你的进度和连续记录。'
+              ? '五个额外的深入单元，随时都能探索，它们不在 4 周路径内，但仍会计入你的进度和连续记录。'
               : es
-              ? 'Cinco temas extra para profundizar cuando quieras — no son parte de las 4 semanas, pero cuentan para tu progreso y racha.'
-              : "Five extra deep-dives to explore anytime — they're off the 4-week path, but still count toward your progress and streak."}
+              ? 'Cinco temas extra para profundizar cuando quieras. No son parte de las 4 semanas, pero cuentan para tu progreso y racha.'
+              : "Five extra deep-dives to explore anytime. They're off the 4-week path, but still count toward your progress and streak."}
           </p>
           <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {ACTIVITIES.filter((a) => a.kind === 'elective').map((meta) => {
@@ -801,10 +801,10 @@ export default function LessonsIndex() {
             </p>
             <p className="mt-1 text-sm text-slate-600">
               {zh
-                ? 'Wolf of Wall Street 和 Ben 的挑战自成一体——随时都能玩，不需要跟着路径走。'
+                ? 'Wolf of Wall Street 和 Ben 的挑战自成一体，随时都能玩，不需要跟着路径走。'
                 : es
-                  ? 'Wolf of Wall Street y los desafíos de Ben van por su cuenta — juégalos cuando quieras, sin necesidad de la ruta.'
-                  : "Wolf of Wall Street and Ben's challenges are their own thing — play them anytime, no path required."}
+                  ? 'Wolf of Wall Street y los desafíos de Ben van por su cuenta, juégalos cuando quieras, sin necesidad de la ruta.'
+                  : "Wolf of Wall Street and Ben's challenges are their own thing, play them anytime, no path required."}
             </p>
           </div>
           <Link to="/activities" className="btn-secondary shrink-0">
@@ -847,10 +847,10 @@ export default function LessonsIndex() {
             {current && needsRetake(progress[current.slug]) && (
               <p className="mt-2 text-sm font-semibold text-amber-700">
                 {zh
-                  ? `你在《${lessonTitle(current)}》拿到 ${Math.round(progress[current.slug]?.score ?? 0)}%——重做测验就能过关。`
+                  ? `你在《${lessonTitle(current)}》拿到 ${Math.round(progress[current.slug]?.score ?? 0)}%，重做测验就能过关。`
                   : es
-                    ? `Sacaste ${Math.round(progress[current.slug]?.score ?? 0)}% en ${lessonTitle(current)} — repite el examen para aprobarla.`
-                    : `You scored ${Math.round(progress[current.slug]?.score ?? 0)}% on ${lessonTitle(current)} — retake the quiz to clear it.`}
+                    ? `Sacaste ${Math.round(progress[current.slug]?.score ?? 0)}% en ${lessonTitle(current)}, repite el examen para aprobarla.`
+                    : `You scored ${Math.round(progress[current.slug]?.score ?? 0)}% on ${lessonTitle(current)}, retake the quiz to clear it.`}
               </p>
             )}
             <div className="mt-5 flex flex-col gap-2">

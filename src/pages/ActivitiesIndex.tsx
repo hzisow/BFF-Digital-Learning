@@ -81,10 +81,10 @@ export default function ActivitiesIndex() {
           </h1>
           <p className="mt-4 max-w-xl leading-relaxed text-white/70">
             {zh
-              ? '这些正是 BFF 导师在学校访问时现场带的游戏和挑战——全班的最爱。现在你随时都能玩：上课前练一把模拟，跟朋友一决高下，或者干脆看看你能不能跑赢市场。'
+              ? '这些正是 BFF 导师在学校访问时现场带的游戏和挑战，全班的最爱。现在你随时都能玩：上课前练一把模拟，跟朋友一决高下，或者干脆看看你能不能跑赢市场。'
               : es
-                ? 'Estos son exactamente los juegos y desafíos que los mentores de BFF hacen en vivo durante las visitas escolares — los favoritos de la clase. Ahora puedes jugarlos cuando quieras: practica una simulación antes de clase, arregla cuentas con un amigo, o simplemente comprueba si puedes ganarle al mercado.'
-                : 'These are the exact games and challenges BFF mentors run live during school visits — the class favorites. Now you can play them anytime: practice a simulation before class, settle a score with a friend, or just see if you can beat the market.'}
+                ? 'Estos son exactamente los juegos y desafíos que los mentores de BFF hacen en vivo durante las visitas escolares, los favoritos de la clase. Ahora puedes jugarlos cuando quieras: practica una simulación antes de clase, arregla cuentas con un amigo, o simplemente comprueba si puedes ganarle al mercado.'
+                : 'These are the exact games and challenges BFF mentors run live during school visits, the class favorites. Now you can play them anytime: practice a simulation before class, settle a score with a friend, or just see if you can beat the market.'}
           </p>
         </div>
       </section>

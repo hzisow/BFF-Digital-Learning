@@ -120,6 +120,11 @@ function LangSwitcher() {
       onClick={() => setLang(l)}
       aria-pressed={lang === l}
       aria-label={ariaFor[l]}
+      // The label, the glyph and the aria-label are all in the language this
+      // button switches to, not the language of the page around it. Without
+      // this a screen reader reads "切换到中文" and the 中 glyph with English
+      // phonetics. WCAG 3.1.2, Language of Parts.
+      lang={l}
       className={`flex items-center gap-1.5 rounded-md px-2 py-1 font-display text-xs font-bold transition ${
         lang === l ? 'bg-white text-bff-700 shadow-sm' : 'text-slate-600 hover:text-slate-800'
       }`}
@@ -132,6 +137,8 @@ function LangSwitcher() {
     <div
       className="ml-1 flex items-center gap-0.5 rounded-lg bg-slate-100 p-0.5"
       role="group"
+      // Deliberately no lang: the label names three languages at once, so any
+      // single value would mispronounce two thirds of it.
       aria-label="Language / Idioma / 语言"
     >
       {opt('en', 'EN', <FlagUS />)}

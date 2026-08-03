@@ -38,7 +38,7 @@ export default class ErrorBoundary extends Component<Props, State> {
             Something went wrong
           </h1>
           <p className="mt-2 text-ink/70">
-            The page hit an unexpected snag. Reloading usually fixes it — your saved progress is safe.
+            The page hit an unexpected snag. Reloading usually fixes it. Your saved progress is safe.
           </p>
           <p className="mt-1 text-sm text-ink/50" lang="es">
             Algo salió mal. Recargar suele solucionarlo; tu progreso está a salvo.

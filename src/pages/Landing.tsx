@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { Logo } from '../components/Logo'
 import PhotoPanel from '../components/PhotoPanel'
+import { hasPhoto } from '../lib/photos'
 import { useLang } from '../lib/i18n'
 import { resumeLesson } from '../lib/resume'
 import { ACTIVITIES } from '../lib/activities'
@@ -77,10 +78,10 @@ export default function Landing() {
             </h1>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/70">
               {zh
-                ? `BFF Academy 是一门 ${LESSON_COUNT} 节课的免费课程，由高中生为高中生打造。在课堂上跟导师一起学，或者自己随时学。`
+                ? `BFF Academy 是一门 ${LESSON_COUNT} 节课的免费课程，由青少年为青少年打造。在课堂上跟导师一起学，或者自己随时学。`
                 : es
-                  ? `BFF Academy es un curso gratuito de ${LESSON_COUNT} lecciones, hecho por estudiantes de secundaria para estudiantes de secundaria. Tómalo en clase con tu mentor, o por tu cuenta.`
-                  : `BFF Academy is a free ${LESSON_COUNT}-lesson course, built by high schoolers for high schoolers. Take it in class with a mentor, or on your own.`}
+                  ? `BFF Academy es un curso gratuito de ${LESSON_COUNT} lecciones, hecho por jóvenes, para jóvenes. Tómalo en clase con tu mentor, o por tu cuenta.`
+                  : `BFF Academy is a free ${LESSON_COUNT}-lesson course, built by youth, for youth. Take it in class with a mentor, or on your own.`}
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Link to={primaryTo} className="btn-primary w-full px-7 py-3 sm:w-auto">
@@ -135,10 +136,10 @@ export default function Landing() {
             title={zh ? '游戏与挑战' : es ? 'Juegos y desafíos' : 'Games & Challenges'}
             body={
               zh
-                ? `BFF 导师在课堂上带的那 ${ACTIVITY_COUNT} 个活动——自己玩，或者和全班一起玩。`
+                ? `BFF 导师在课堂上带的那 ${ACTIVITY_COUNT} 个活动，自己玩，或者和全班一起玩。`
                 : es
-                  ? `Las ${ACTIVITY_COUNT} actividades que los mentores de BFF hacen en los salones — solo o con toda la clase.`
-                  : `The ${ACTIVITY_COUNT} activities BFF mentors run in classrooms — solo, or live with your whole class.`
+                  ? `Las ${ACTIVITY_COUNT} actividades que los mentores de BFF hacen en los salones, solo o con toda la clase.`
+                  : `The ${ACTIVITY_COUNT} activities BFF mentors run in classrooms. Solo, or live with your whole class.`
             }
             cta={zh ? '开始玩' : es ? 'Jugar' : 'Play now'}
           />
@@ -149,8 +150,16 @@ export default function Landing() {
           One band, not three. The credibility claims that were spread across a
           stat strip and a paragraph now sit on a single line. */}
       <section className="border-t border-ink/10 bg-white">
-        <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-14 lg:flex-row lg:items-center lg:gap-16 lg:py-16">
-          <div className="lg:flex-1">
+        {/* Two columns only when there is a photo to fill the second one.
+            Without it the copy was stranded in the left half against a large
+            empty right half, which reads as a failed image rather than as
+            deliberate whitespace. */}
+        <div
+          className={`mx-auto flex max-w-6xl flex-col gap-8 px-4 py-14 lg:py-16 ${
+            hasPhoto('schools') ? 'lg:flex-row lg:items-center lg:gap-16' : ''
+          }`}
+        >
+          <div className={hasPhoto('schools') ? 'lg:flex-1' : 'max-w-3xl'}>
             <p className="eyebrow">
               <span className="eyebrow-line" aria-hidden="true" />
               {zh ? '关于我们' : es ? 'Quiénes somos' : 'Who we are'}
@@ -158,24 +167,24 @@ export default function Landing() {
             <h2 className="mt-3 max-w-lg font-display text-2xl font-bold text-ink sm:text-3xl">
               {zh ? (
                 <>
-                  高中生教高中生<em>理财</em>。
+                  青少年教青少年<em>理财</em>。
                 </>
               ) : es ? (
                 <>
-                  Estudiantes de secundaria enseñando <em>dinero</em> a estudiantes de secundaria.
+                  Jóvenes enseñando <em>dinero</em> a jóvenes.
                 </>
               ) : (
                 <>
-                  High schoolers teaching high schoolers about <em>money</em>.
+                  Youth teaching youth about <em>money</em>.
                 </>
               )}
             </h2>
             <p className="mt-4 max-w-xl leading-relaxed text-ink/65">
               {zh
-                ? 'BFF of America 是一家由学生创办的 501(c)(3) 非营利组织。我们的导师走进初高中课堂免费授课，BFF Classroom 把同一套课程搬到了网上，永久免费。'
+                ? 'BFF of America 是一家由学生创办的 501(c)(3) 非营利组织。我们的导师走进课堂为青少年免费授课，BFF Classroom 把同一套课程搬到了网上，永久免费。'
                 : es
-                  ? 'BFF of America es una organización 501(c)(3) fundada por estudiantes. Nuestros mentores dan clases gratis en escuelas medias y secundarias, y BFF Classroom lleva ese mismo programa a internet — gratis, para siempre.'
-                  : 'BFF of America is a student-founded 501(c)(3) nonprofit. Our mentors teach for free in middle and high school classrooms, and BFF Classroom puts that same program online — free, forever.'}
+                  ? 'BFF of America es una organización 501(c)(3) fundada por estudiantes. Nuestros mentores enseñan gratis a jóvenes en las aulas, y BFF Classroom lleva ese mismo programa a internet, gratis, para siempre.'
+                  : 'BFF of America is a student-founded 501(c)(3) nonprofit. Our mentors teach youth for free in classrooms, and BFF Classroom puts that same program online, free, forever.'}
             </p>
             <a
               href="https://www.bffofamerica.org"
@@ -187,11 +196,13 @@ export default function Landing() {
               <ArrowRight className="nudge h-4 w-4" aria-hidden="true" />
             </a>
           </div>
-          <div className="lz-frame w-full overflow-hidden lg:w-[42%]">
-            <div className="aspect-[3/2]">
-              <PhotoPanel slot="schools" motif="grid" />
+          {hasPhoto('schools') && (
+            <div className="lz-frame w-full overflow-hidden lg:w-[42%]">
+              <div className="aspect-[3/2]">
+                <PhotoPanel slot="schools" motif="grid" />
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
     </div>
@@ -228,9 +239,17 @@ function DoorCard({
       to={to}
       className={`ed-door group flex flex-col ${primary ? 'ed-door--primary' : ''} ${className}`}
     >
-      <div className={`ed-door-frame ${frameClass}`}>
-        <PhotoPanel slot={slot} motif={motif} />
-      </div>
+      {/* Only rendered once a real photograph exists. The designed ink panel
+          that used to stand in for one was doing more harm than good: a large
+          empty dark box above the title reads as a broken image rather than as
+          a treatment, and it pushed the actual words down the page. Drop
+          academy.jpg into src/assets/photos and the frame comes back on its
+          own, with no code change. */}
+      {hasPhoto(slot) && (
+        <div className={`ed-door-frame ${frameClass}`}>
+          <PhotoPanel slot={slot} motif={motif} />
+        </div>
+      )}
       {/* Not flex-1: the image frame is what absorbs spare height, so a short
           caption does not leave a pocket of dead white under the link. */}
       <div className="flex flex-col p-6 sm:p-7">

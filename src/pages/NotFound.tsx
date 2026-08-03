@@ -15,11 +15,11 @@ export default function NotFound() {
       <h1 className="mt-3 font-display text-6xl font-extrabold text-ink sm:text-7xl">404</h1>
       <h2 className="mt-4 font-display text-2xl font-bold text-ink sm:text-3xl">
         {zh ? (
-          <>这个页面<em>跳票</em>了——就像一张空头支票。</>
+          <>这个页面<em>跳票</em>了，就像一张空头支票。</>
         ) : es ? (
-          <>Esta página <em>rebotó</em> — como un cheque sin fondos.</>
+          <>Esta página <em>rebotó</em>, como un cheque sin fondos.</>
         ) : (
-          <>This page <em>bounced</em> — like a bad check.</>
+          <>This page <em>bounced</em>, like a bad check.</>
         )}
       </h2>
       <p className="mt-4 leading-relaxed text-ink/60">

@@ -428,7 +428,7 @@ export default function AIPractice() {
                 type="button"
                 disabled={revealed}
                 onClick={() => pick(i)}
-                aria-label={marker ? `${opt} — ${marker}` : undefined}
+                aria-label={marker ? `${opt}, ${marker}` : undefined}
                 className={`flex w-full items-start justify-between gap-3 rounded-[8px] border-2 px-4 py-3 text-left font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-bff-400 focus-visible:ring-offset-2 disabled:cursor-default ${cls}`}
               >
                 <span className="flex items-start gap-3">
@@ -480,10 +480,10 @@ export default function AIPractice() {
                   ? '¡Correcto!'
                   : 'Correct!'
               : zh
-                ? `不对 —— 正确答案是“${q.options[q.answerIndex]}”`
+                ? `不对 ， 正确答案是“${q.options[q.answerIndex]}”`
                 : es
-                  ? `Incorrecto — la respuesta es “${q.options[q.answerIndex]}”`
-                  : `Incorrect — the answer is “${q.options[q.answerIndex]}”`}
+                  ? `Incorrecto, la respuesta es “${q.options[q.answerIndex]}”`
+                  : `Incorrect, the answer is “${q.options[q.answerIndex]}”`}
           </p>
           <p className={`mt-2 text-sm leading-relaxed ${gotIt ? 'text-green-800' : 'text-amber-800'}`}>
             {q.explanation}

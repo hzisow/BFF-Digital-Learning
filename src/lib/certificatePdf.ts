@@ -48,7 +48,7 @@ function copyFor(lang: CertificateInput['lang'], lessonCount: number): Copy {
     return {
       eyebrow: 'CERTIFICADO DE LOGRO',
       presented: 'Se otorga con orgullo a',
-      body: `por completar con exito el plan de estudios de educacion financiera de BFF Academy — las ${lessonCount} lecciones, desde ingresos y presupuesto hasta credito, seguros y proteccion al consumidor.`,
+      body: `por completar con exito el plan de estudios de educacion financiera de BFF Academy, las ${lessonCount} lecciones, desde ingresos y presupuesto hasta credito, seguros y proteccion al consumidor.`,
       average: (n) => `Promedio de examenes: ${n}%`,
       date: 'FECHA',
       org: 'BUILDING FINANCIAL FUTURES OF AMERICA',
@@ -58,7 +58,7 @@ function copyFor(lang: CertificateInput['lang'], lessonCount: number): Copy {
   return {
     eyebrow: 'CERTIFICATE OF ACHIEVEMENT',
     presented: 'Proudly presented to',
-    body: `for successfully completing the BFF Academy financial literacy curriculum — all ${lessonCount} lessons, from earning and budgeting through credit, insurance and consumer protection.`,
+    body: `for successfully completing the BFF Academy financial literacy curriculum, all ${lessonCount} lessons, from earning and budgeting through credit, insurance and consumer protection.`,
     average: (n) => `Quiz average: ${n}%`,
     date: 'DATE',
     org: 'BUILDING FINANCIAL FUTURES OF AMERICA',
@@ -128,7 +128,9 @@ export async function renderCertificate(
   doc.text(c.presented, cx, y + 60, { align: 'center' })
 
   // The name, shrunk to fit rather than overflowing the rule beneath it.
-  const name = input.name.trim() || '—'
+  // No name typed: draw nothing and let the signature rule stand on its own. A
+  // literal placeholder character would print onto the certificate.
+  const name = input.name.trim()
   doc.setFont('times', 'bold')
   doc.setTextColor(INK)
   let nameSize = 40

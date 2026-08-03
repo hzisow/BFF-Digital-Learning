@@ -225,10 +225,10 @@ export default function QuizPlay() {
           </h1>
           <p className="text-sm text-ink/70">
             {zh
-              ? '实时测验会在班级后台连接后开启——课程还是可以自己单独学习哦！'
+              ? '实时测验会在班级后台连接后开启，课程还是可以自己单独学习哦！'
               : es
                 ? 'Los quiz en vivo se activan cuando se conecta el servidor de la clase; ¡las lecciones siguen funcionando por tu cuenta!'
-                : 'Live quizzes unlock when the class backend is connected — the lessons still work solo!'}
+                : 'Live quizzes unlock when the class backend is connected. The lessons still work solo!'}
           </p>
           <Link to="/activities" className="btn-primary">
             {zh ? '返回活动' : es ? 'Volver a las actividades' : 'Back to activities'}
@@ -390,7 +390,7 @@ export default function QuizPlay() {
               ? '看大屏幕，测验马上就要开始了。'
               : es
                 ? 'Mira la pantalla grande; el quiz empieza pronto.'
-                : 'Watch the big screen — the quiz starts soon.'}
+                : 'Watch the big screen, the quiz starts soon.'}
           </p>
         </div>
       )}
@@ -411,7 +411,7 @@ export default function QuizPlay() {
                 ? '答得又快又对能拿到更多分数。看大屏幕吧！'
                 : es
                   ? 'Las respuestas correctas más rápidas ganan más puntos. ¡Mira la pantalla grande!'
-                  : 'Faster correct answers earn more points — watch the big screen!'}
+                  : 'Faster correct answers earn more points, watch the big screen!'}
             </p>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -466,7 +466,7 @@ export default function QuizPlay() {
                 ? '时间到啦，这一轮你没有作答'
                 : es
                   ? 'El tiempo voló; no respondiste esta ronda'
-                  : 'Time flew by — no answer this round'
+                  : 'Time flew by, no answer this round'
               : gotIt
                 ? zh
                   ? `答对了！+${myAnswer.points.toLocaleString()} 分`

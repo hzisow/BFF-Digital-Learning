@@ -132,18 +132,18 @@ const MONTHS: MonthCard[] = [
         labelZh: '只还最低还款额 $25',
         delta: 5,
         explanation:
-          "Still on time — that's what payment history records — but the leftover $60 rolls over and starts collecting interest at around 24% APR.",
+          "Still on time. That's what payment history records, but the leftover $60 rolls over and starts collecting interest at around 24% APR.",
         explanationEs:
-          'Sigue siendo a tiempo —eso es lo que registra el historial de pagos—, pero los $60 restantes se arrastran y empiezan a generar intereses de alrededor del 24% anual.',
+          'Sigue siendo a tiempo, eso es lo que registra el historial de pagos, pero los $60 restantes se arrastran y empiezan a generar intereses de alrededor del 24% anual.',
         explanationZh:
-          '仍然算按时还款——这正是还款记录所记录的——但剩下的 $60 会结转到下期，并开始以约 24% 的年利率（APR）计息。',
+          '仍然算按时还款，这正是还款记录所记录的，但剩下的 $60 会结转到下期，并开始以约 24% 的年利率（APR）计息。',
         factors: ['payment'],
       },
       {
         id: 'skip',
-        label: 'Skip it — tickets first',
+        label: 'Skip it, tickets first',
         labelEs: 'Saltártelo: primero las entradas',
-        labelZh: '不还了——门票优先',
+        labelZh: '不还了，门票优先',
         delta: -85,
         explanation:
           'The payment goes 30+ days late and hits your credit report. One late mark is the biggest single hit your score can take, and it can stick around for up to 7 years.',
@@ -169,9 +169,9 @@ const MONTHS: MonthCard[] = [
     choices: [
       {
         id: 'decline',
-        label: 'No thanks — just the hoodie',
+        label: 'No thanks, just the hoodie',
         labelEs: 'No gracias, solo la sudadera',
-        labelZh: '不用了——只买这件卫衣',
+        labelZh: '不用了，只买这件卫衣',
         delta: 5,
         explanation:
           'No hard inquiry, no brand-new account. Your existing accounts quietly get older, which slowly helps your score.',
@@ -244,11 +244,11 @@ const MONTHS: MonthCard[] = [
         labelZh: '新额度，新生活方式',
         delta: -30,
         explanation:
-          "Spending up to the new limit pushes utilization near 100% — the classic 'maxed out' signal lenders hate.",
+          "Spending up to the new limit pushes utilization near 100%, the classic 'maxed out' signal lenders hate.",
         explanationEs:
           'Gastar hasta el nuevo límite lleva tu uso del crédito cerca del 100%: la clásica señal de "tarjeta al tope" que los prestamistas odian.',
         explanationZh:
-          '花到新额度的上限会把使用率推到接近 100%——这正是放贷方最讨厌的经典「刷爆」信号。',
+          '花到新额度的上限会把使用率推到接近 100%，这正是放贷方最讨厌的经典「刷爆」信号。',
         factors: ['utilization'],
       },
     ],
@@ -281,9 +281,9 @@ const MONTHS: MonthCard[] = [
       },
       {
         id: 'close-it',
-        label: 'Close it — feels tidy',
+        label: 'Close it, feels tidy',
         labelEs: 'Cerrarla: se siente ordenado',
-        labelZh: '注销它——感觉更清爽',
+        labelZh: '注销它，感觉更清爽',
         delta: -20,
         explanation:
           'Closing your oldest card shrinks your available credit (utilization jumps) and will eventually shorten your credit history.',
@@ -323,9 +323,9 @@ const MONTHS: MonthCard[] = [
       },
       {
         id: 'cosign',
-        label: 'Co-sign — what could go wrong?',
+        label: 'Co-sign, what could go wrong?',
         labelEs: 'Ser aval: ¿qué podría salir mal?',
-        labelZh: '做担保人——能出什么岔子呢？',
+        labelZh: '做担保人，能出什么岔子呢？',
         delta: -25,
         explanation:
           "A hard inquiry, plus the whole loan lands on YOUR report. When your friend pays late next month, that late mark is yours too.",
@@ -342,11 +342,11 @@ const MONTHS: MonthCard[] = [
     title: 'Autopilot',
     titleEs: 'Piloto automático',
     titleZh: '自动挡',
-    scenario: "School, practice, work — life is getting busy. Set up autopay on your card?",
+    scenario: "School, practice, work. Life is getting busy. Set up autopay on your card?",
     scenarioEs:
       'Escuela, entrenamiento, trabajo: la vida se está poniendo ocupada. ¿Configuras el pago automático en tu tarjeta?',
     scenarioZh:
-      '上学、训练、打工——生活越来越忙。要给你的卡设置自动还款吗？',
+      '上学、训练、打工，生活越来越忙。要给你的卡设置自动还款吗？',
     choices: [
       {
         id: 'auto-full',
@@ -369,11 +369,11 @@ const MONTHS: MonthCard[] = [
         labelZh: '自动还最低额，多出来的手动还',
         delta: 8,
         explanation:
-          'A late payment is now impossible — solid. Just remember that carrying a balance still costs interest.',
+          'A late payment is now impossible, solid. Just remember that carrying a balance still costs interest.',
         explanationEs:
           'Ahora es imposible atrasarte: muy bien. Solo recuerda que arrastrar un saldo igual cuesta intereses.',
         explanationZh:
-          '现在逾期已经不可能了——很稳。只是别忘了，结转欠款照样要付利息。',
+          '现在逾期已经不可能了，很稳。只是别忘了，结转欠款照样要付利息。',
         factors: ['payment'],
       },
       {
@@ -383,11 +383,11 @@ const MONTHS: MonthCard[] = [
         labelZh: '算了，我自己记着就行',
         delta: 0,
         explanation:
-          'You remembered… 3 days late. Under 30 days late never reaches your credit report, so your score survives — but you paid a $30 late fee. Living dangerously.',
+          'You remembered… 3 days late. Under 30 days late never reaches your credit report, so your score survives, but you paid a $30 late fee. Living dangerously.',
         explanationEs:
           'Te acordaste… 3 días tarde. Un atraso de menos de 30 días nunca llega a tu reporte de crédito, así que tu puntaje sobrevive, pero pagaste una multa de $30 por atraso. Viviendo al límite.',
         explanationZh:
-          '你记起来了……晚了 3 天。逾期不满 30 天不会进入你的信用报告，所以信用分保住了——但你付了 $30 的滞纳金。玩得挺悬。',
+          '你记起来了……晚了 3 天。逾期不满 30 天不会进入你的信用报告，所以信用分保住了，但你付了 $30 的滞纳金。玩得挺悬。',
         factors: ['payment'],
       },
     ],
@@ -411,11 +411,11 @@ const MONTHS: MonthCard[] = [
         labelZh: '查一下',
         delta: 10,
         explanation:
-          "Checking your OWN report is a soft inquiry — zero harm, ever. Good thing too: you find a card you never opened, dispute it, and it's removed.",
+          "Checking your OWN report is a soft inquiry, zero harm, ever. Good thing too: you find a card you never opened, dispute it, and it's removed.",
         explanationEs:
           'Revisar TU PROPIO reporte es una consulta blanda: nunca hace daño. Y menos mal: encuentras una tarjeta que nunca abriste, la disputas y la eliminan.',
         explanationZh:
-          '查看「你自己的」报告是一次软查询——永远不会有任何损害。而且幸好查了：你发现了一张自己从没开过的卡，提出异议后它被删掉了。',
+          '查看「你自己的」报告是一次软查询，永远不会有任何损害。而且幸好查了：你发现了一张自己从没开过的卡，提出异议后它被删掉了。',
         factors: ['payment', 'new'],
       },
       {
@@ -425,11 +425,11 @@ const MONTHS: MonthCard[] = [
         labelZh: '听起来很无聊',
         delta: 0,
         explanation:
-          'Nothing changes today — but about 1 in 4 credit reports contains an error, and errors you never see can quietly drag your score for years.',
+          'Nothing changes today, but about 1 in 4 credit reports contains an error, and errors you never see can quietly drag your score for years.',
         explanationEs:
           'Hoy no cambia nada, pero cerca de 1 de cada 4 reportes de crédito tiene un error, y los errores que nunca ves pueden arrastrar tu puntaje durante años sin que te des cuenta.',
         explanationZh:
-          '今天什么都不会变——但大约每 4 份信用报告里就有 1 份含有错误，而那些你从没看到的错误，可能会在多年里悄悄拖累你的信用分。',
+          '今天什么都不会变，但大约每 4 份信用报告里就有 1 份含有错误，而那些你从没看到的错误，可能会在多年里悄悄拖累你的信用分。',
         factors: [],
       },
     ],
@@ -480,11 +480,11 @@ const MONTHS: MonthCard[] = [
         labelZh: '拆成 4 期「轻松」还款',
         delta: -5,
         explanation:
-          'Buy-now-pay-later plans increasingly show up on credit reports — and a missed installment hurts just like a missed card payment.',
+          'Buy-now-pay-later plans increasingly show up on credit reports, and a missed installment hurts just like a missed card payment.',
         explanationEs:
           'Los planes de "compra ahora, paga después" aparecen cada vez más en los reportes de crédito, y una cuota no pagada duele igual que un pago de tarjeta no hecho.',
         explanationZh:
-          '「先买后付」计划越来越多地出现在信用报告上——而漏还一期的伤害，和漏还一次信用卡账单一样。',
+          '「先买后付」计划越来越多地出现在信用报告上，而漏还一期的伤害，和漏还一次信用卡账单一样。',
         factors: ['new', 'payment'],
       },
     ],
@@ -537,11 +537,11 @@ const MONTHS: MonthCard[] = [
     titleEs: 'El gran final de la pantalla rota',
     titleZh: '碎屏大结局',
     scenario:
-      "Month 10: your phone screen finally gives out completely. You need a replacement — how do you pay?",
+      "Month 10: your phone screen finally gives out completely. You need a replacement. How do you pay?",
     scenarioEs:
       'Mes 10: la pantalla de tu teléfono finalmente muere por completo. Necesitas un reemplazo. ¿Cómo pagas?',
     scenarioZh:
-      '第 10 个月：你的手机屏幕终于彻底罢工了。你得换一台——你怎么付钱？',
+      '第 10 个月：你的手机屏幕终于彻底罢工了。你得换一台，你怎么付钱？',
     choices: [
       {
         id: 'refurb-cash',
@@ -564,11 +564,11 @@ const MONTHS: MonthCard[] = [
         labelZh: '运营商 0 利率分期，绑定自动还款',
         delta: 5,
         explanation:
-          "A small installment loan paid on time is fine — it even adds to your mix. Just don't stack five of these.",
+          "A small installment loan paid on time is fine. It even adds to your mix. Just don't stack five of these.",
         explanationEs:
           'Un pequeño préstamo a plazos pagado a tiempo está bien; hasta suma a la variedad de tu crédito. Solo no acumules cinco de estos.',
         explanationZh:
-          '一笔按时偿还的小额分期贷款没问题——它甚至会丰富你的信用类型组合。只是别一口气叠上五笔这样的。',
+          '一笔按时偿还的小额分期贷款没问题，它甚至会丰富你的信用类型组合。只是别一口气叠上五笔这样的。',
         factors: ['mix', 'payment'],
       },
       {
@@ -594,10 +594,10 @@ const MONTHS: MonthCard[] = [
 function titleFor(score: number, es: boolean, zh: boolean): [title: string, icon: string, blurb: string] {
   if (score >= 800)
     return zh
-      ? ['信用传奇', 'Trophy', '一个极佳的分数。放贷方会为你铺上红地毯——所有产品都给你最优利率。']
+      ? ['信用传奇', 'Trophy', '一个极佳的分数。放贷方会为你铺上红地毯，所有产品都给你最优利率。']
       : es
       ? ['Leyenda del crédito', 'Trophy', 'Un puntaje excepcional. Los prestamistas te alfombrarán el camino: las mejores tasas en todo.']
-      : ['Credit Legend', 'Trophy', 'An exceptional score. Lenders will roll out the red carpet — best rates on everything.']
+      : ['Credit Legend', 'Trophy', 'An exceptional score. Lenders will roll out the red carpet, best rates on everything.']
   if (score >= 740)
     return zh
       ? ['信用分大师', 'Medal', '很好。你养成了大多数成年人一辈子都没弄明白的好习惯。']
@@ -606,10 +606,10 @@ function titleFor(score: number, es: boolean, zh: boolean): [title: string, icon
       : ['Score Sensei', 'Medal', 'Very good. You built habits most adults never figure out.']
   if (score >= 670)
     return zh
-      ? ['稳健的建设者', 'BrickWall', '一个良好的分数——习惯稳定，成长稳定。继续一笔一笔地累积按时还款吧。']
+      ? ['稳健的建设者', 'BrickWall', '一个良好的分数，习惯稳定，成长稳定。继续一笔一笔地累积按时还款吧。']
       : es
       ? ['Constructor sólido', 'BrickWall', 'Un buen puntaje: hábitos constantes, crecimiento constante. Sigue acumulando pagos a tiempo.']
-      : ['Solid Builder', 'BrickWall', 'A good score — steady habits, steady growth. Keep stacking on-time payments.']
+      : ['Solid Builder', 'BrickWall', 'A good score. Steady habits, steady growth. Keep stacking on-time payments.']
   if (score >= 580)
     return zh
       ? ['仍在努力中', 'TrafficCone', '一般。有些选择让你付出了代价，但没有什么是持续按时还款修复不了的。']
@@ -620,7 +620,7 @@ function titleFor(score: number, es: boolean, zh: boolean): [title: string, icon
     ? ['重建模式', 'Wrench', '信用分受到了实实在在的损伤。好消息是：还款记录会随时间慢慢愈合，从今天就开始。']
     : es
     ? ['Modo reconstrucción', 'Wrench', 'El puntaje sufrió un daño real. La buena noticia: el historial de pagos sana con el tiempo, empezando hoy.']
-    : ['Rebuild Mode', 'Wrench', 'The score took real damage — the good news: payment history heals with time, starting today.']
+    : ['Rebuild Mode', 'Wrench', 'The score took real damage, the good news: payment history heals with time, starting today.']
 }
 
 function clampScore(n: number): number {
@@ -652,7 +652,7 @@ function ScoreMeter({ score, es, zh }: { score: number; es: boolean; zh: boolean
         aria-valuemin={SCORE_MIN}
         aria-valuemax={SCORE_MAX}
         aria-valuenow={score}
-        aria-valuetext={`${score} — ${zh ? band.nameZh : es ? band.nameEs : band.name}`}
+        aria-valuetext={`${score}, ${zh ? band.nameZh : es ? band.nameEs : band.name}`}
         aria-label={zh ? '信用分仪表' : es ? 'Medidor de puntaje de crédito' : 'Credit score meter'}
       >
         <div className="flex h-4 w-full overflow-hidden rounded-full">
@@ -785,7 +785,7 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
           </p>
           <h1 className="font-display text-3xl font-bold text-slate-900">{title}</h1>
           <p className="font-display text-lg font-bold text-bff-700">
-            {zh ? '最终分数' : es ? 'Puntaje final' : 'Final score'}: {score} — {zh ? band.nameZh : es ? band.nameEs : band.name}
+            {zh ? '最终分数' : es ? 'Puntaje final' : 'Final score'}: {score}, {zh ? band.nameZh : es ? band.nameEs : band.name}
           </p>
           <p className="mx-auto max-w-md text-sm text-slate-700">{blurb}</p>
           <div className="px-2 pt-2 text-left">
@@ -809,7 +809,7 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
               {zh ? '第' : es ? 'Mes' : 'Month'} {best.month}{zh ? ' 个月' : ''}: {zh ? best.choiceLabelZh : es ? best.choiceLabelEs : best.choiceLabel}
             </p>
             <p className="mt-1 text-sm text-slate-700">
-              {best.delta >= 0 ? `+${best.delta}` : best.delta} {pts} —{' '}
+              {best.delta >= 0 ? `+${best.delta}` : best.delta} {pts}, {' '}
               {zh ? best.explanationZh : es ? best.explanationEs : best.explanation}
             </p>
           </div>
@@ -822,7 +822,7 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
               {zh ? '第' : es ? 'Mes' : 'Month'} {worst.month}{zh ? ' 个月' : ''}: {zh ? worst.choiceLabelZh : es ? worst.choiceLabelEs : worst.choiceLabel}
             </p>
             <p className="mt-1 text-sm text-slate-700">
-              {worst.delta >= 0 ? `+${worst.delta}` : worst.delta} {pts} —{' '}
+              {worst.delta >= 0 ? `+${worst.delta}` : worst.delta} {pts}, {' '}
               {zh ? worst.explanationZh : es ? worst.explanationEs : worst.explanation}
             </p>
           </div>
@@ -835,10 +835,10 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
           </h2>
           <p className="mt-1 text-sm text-slate-700">
             {zh
-              ? '每一张账单都按时还，把欠款保持在低位，让账户慢慢变老，少开新的信用账户。这就是全部的通关秘籍——下面这五个因素就是 FICO 衡量它的方式。'
+              ? '每一张账单都按时还，把欠款保持在低位，让账户慢慢变老，少开新的信用账户。这就是全部的通关秘籍，下面这五个因素就是 FICO 衡量它的方式。'
               : es
               ? 'Paga cada factura a tiempo, mantén los saldos bajos, deja que las cuentas ganen antigüedad y abre crédito nuevo pocas veces. Ese es todo el truco: los cinco factores de abajo son cómo FICO lo mide.'
-              : "Pay every bill on time, keep balances low, let accounts age, and open new credit rarely. That's the whole cheat code — the five factors below are how FICO weighs it."}
+              : "Pay every bill on time, keep balances low, let accounts age, and open new credit rarely. That's the whole cheat code. The five factors below are how FICO weighs it."}
           </p>
           <ul className="mt-2 flex flex-wrap gap-1.5">
             {(Object.keys(FACTORS) as Factor[]).map((f) => (
@@ -894,7 +894,7 @@ export default function CreditScoreSim({ onComplete }: LiveGameProps) {
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <p className="font-display text-lg font-bold text-slate-900" aria-live="polite">
             {zh ? '分数' : es ? 'Puntaje' : 'Score'}: {score}{' '}
-            <span className="font-semibold text-bff-700">— {zh ? band.nameZh : es ? band.nameEs : band.name}</span>
+            <span className="font-semibold text-bff-700">, {zh ? band.nameZh : es ? band.nameEs : band.name}</span>
           </p>
           <p className="text-sm text-slate-500">
             {zh ? '第' : es ? 'Mes' : 'Month'} {monthIndex + 1} {zh ? '个月，共' : es ? 'de' : 'of'} {MONTHS.length}{zh ? ' 个月' : ''}

@@ -18,6 +18,7 @@ interface YTPlayer {
   seekTo(seconds: number, allowSeekAhead: boolean): void
   pauseVideo(): void
   playVideo(): void
+  setPlaybackQuality(suggestedQuality: string): void
   destroy(): void
 }
 
@@ -246,7 +247,7 @@ function FallbackQuestions({
               >
                 在新标签页中打开视频
               </a>
-              ——或者直接回答下面的视频问题以继续。
+              ，或者直接回答下面的视频问题以继续。
             </>
           ) : es ? (
             <>
@@ -259,7 +260,7 @@ function FallbackQuestions({
               >
                 abrir el video en una pestaña nueva
               </a>{' '}
-              — o simplemente responder las preguntas del video de abajo para seguir.
+              , o simplemente responder las preguntas del video de abajo para seguir.
             </>
           ) : (
             <>
@@ -272,7 +273,7 @@ function FallbackQuestions({
               >
                 open the video in a new tab
               </a>{' '}
-              — or just answer the video questions below to keep going.
+              , or just answer the video questions below to keep going.
             </>
           )}
         </p>
@@ -283,7 +284,7 @@ function FallbackQuestions({
           className="flex items-center justify-center gap-1.5 rounded-[6px] bg-green-50 p-4 text-center text-sm font-bold text-green-700"
         >
           <CheckCircle2 className="h-4 w-4" aria-hidden="true" />{' '}
-          {zh ? '所有视频检查都完成了，继续前进吧！' : es ? '¡Listos todos los controles del video, sigue adelante!' : 'All video checks done — keep going!'}
+          {zh ? '所有视频检查都完成了，继续前进吧！' : es ? '¡Listos todos los controles del video, sigue adelante!' : 'All video checks done. Keep going!'}
         </p>
       ) : (
         <QuestionCard
@@ -364,10 +365,32 @@ export default function VideoCheckpoint({
         if (cancelled || !hostRef.current) return
         const player = new YT.Player(hostRef.current, {
           videoId,
-          playerVars: { rel: 0, playsinline: 1, modestbranding: 1, origin: window.location.origin },
+          // `vq` asks YouTube to start at 720p. School wifi often lands
+          // students on 360p, where a paystub or a chart on screen is
+          // unreadable and the checkpoint question that follows is unfair.
+          //
+          // Both of these are a *request*, not a guarantee: YouTube dropped
+          // hard quality control years ago and still overrides the ask when the
+          // connection cannot sustain it. That is the right outcome anyway,
+          // since a stalling 720p stream is worse than a clean 480p one, so
+          // neither call is checked for success.
+          playerVars: {
+            rel: 0,
+            playsinline: 1,
+            modestbranding: 1,
+            vq: 'hd720',
+            origin: window.location.origin,
+          },
           events: {
             onReady: () => {
               if (cancelled) return
+              // Second half of the 720p ask: playerVars alone is ignored by
+              // some clients, so repeat it once the player exists.
+              try {
+                player.setPlaybackQuality('hd720')
+              } catch {
+                // Older API surface without the method. Not worth failing over.
+              }
               setReady(true)
               setDuration(player.getDuration())
             },
@@ -486,10 +509,10 @@ export default function VideoCheckpoint({
             aria-modal="true"
             aria-label={
               zh
-                ? '视频问题——回答后继续观看'
+                ? '视频问题，回答后继续观看'
                 : es
-                  ? 'Pregunta del video — responde para seguir viendo'
-                  : 'Video question — answer to keep watching'
+                  ? 'Pregunta del video, responde para seguir viendo'
+                  : 'Video question, answer to keep watching'
             }
             className="absolute inset-0 z-10 flex items-stretch justify-end"
           >
@@ -567,17 +590,17 @@ export default function VideoCheckpoint({
           </span>
           {watchDone ? (
             <span className="flex items-center gap-1 text-green-700">
-              {zh ? '所有检查都完成了，请在下方继续！' : es ? '¡Listos todos los controles, continúa abajo!' : 'All checks done — continue below!'}{' '}
+              {zh ? '所有检查都完成了，请在下方继续！' : es ? '¡Listos todos los controles, continúa abajo!' : 'All checks done, continue below!'}{' '}
               <Check className="h-3.5 w-3.5" aria-hidden="true" />
             </span>
           ) : (
             <span className="flex items-center gap-1">
               <Zap className="h-3.5 w-3.5" aria-hidden="true" />{' '}
               {zh
-                ? '视频会暂停来考考你——不要快进哦！'
+                ? '视频会暂停来考考你，不要快进哦！'
                 : es
                   ? 'El video se pausa para hacerte preguntas; ¡no adelantes!'
-                  : 'The video pauses to quiz you — no skipping ahead!'}
+                  : 'The video pauses to quiz you, no skipping ahead!'}
             </span>
           )}
         </div>

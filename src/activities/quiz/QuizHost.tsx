@@ -345,7 +345,7 @@ export default function QuizHost() {
           </p>
           <h1 className="font-display text-4xl font-bold sm:text-5xl">
             <AppIcon name={lesson.icon} className="inline h-9 w-9 align-[-0.12em] sm:h-11 sm:w-11" />{' '}
-            {zh ? '实时测验' : es ? 'Quiz en vivo' : 'Live Quiz'} — {lesson.title}
+            {zh ? '实时测验' : es ? 'Quiz en vivo' : 'Live Quiz'}, {lesson.title}
           </h1>
           <p className="text-xl text-bff-200">
             {zh
@@ -442,10 +442,10 @@ export default function QuizHost() {
           <ControlBar>
             <p className="mr-auto hidden text-bff-300 sm:block">
               {zh
-                ? '计时器只是为了营造气氛——等大家准备好了再揭晓答案吧。'
+                ? '计时器只是为了营造气氛：等大家准备好了再揭晓答案吧。'
                 : es
                   ? 'El temporizador es solo para dar emoción; revela cuando la clase esté lista.'
-                  : 'The timer is just for hype — reveal whenever the room is ready.'}
+                  : 'The timer is just for hype. Reveal whenever the room is ready.'}
             </p>
             <button className={BIG_BUTTON} onClick={() => patchSession({ state: 'reveal' })}>
               {zh ? '揭晓答案' : es ? 'Revelar respuesta' : 'Reveal answer'}{' '}
@@ -460,10 +460,10 @@ export default function QuizHost() {
         <div className="space-y-6 pt-2">
           <p className="font-display text-xl font-bold uppercase tracking-wide text-bff-200">
             {zh
-              ? `第 ${qIndex + 1} 题，共 ${total} 题 —— 答案是……`
+              ? `第 ${qIndex + 1} 题，共 ${total} 题 ， 答案是……`
               : es
-                ? `Pregunta ${qIndex + 1} de ${total} — la respuesta es…`
-                : `Question ${qIndex + 1} of ${total} — the answer is…`}
+                ? `Pregunta ${qIndex + 1} de ${total}. La respuesta es…`
+                : `Question ${qIndex + 1} of ${total}. The answer is…`}
           </p>
           <h1 className="font-display text-4xl font-bold leading-tight sm:text-5xl">
             {q.question}
@@ -488,7 +488,7 @@ export default function QuizHost() {
                         {' '}
                         <Check className="inline h-6 w-6 align-[-0.15em]" aria-hidden="true" />
                         <span className="sr-only">
-                          {zh ? ' —— 正确答案' : es ? ' — respuesta correcta' : ' — correct answer'}
+                          {zh ? ' ， 正确答案' : es ? ', respuesta correcta' : ', correct answer'}
                         </span>
                       </>
                     )}
@@ -596,10 +596,10 @@ export default function QuizHost() {
           {standings.length === 0 && (
             <p className="text-2xl text-bff-200">
               {zh
-                ? '这一轮没有人参与——好安静的教室！'
+                ? '这一轮没有人参与，好安静的教室！'
                 : es
                   ? 'Nadie jugó esta ronda; ¡qué salón tan callado!'
-                  : 'Nobody played this round — quiet classroom!'}
+                  : 'Nobody played this round, quiet classroom!'}
             </p>
           )}
           {standings.length > 3 && (
