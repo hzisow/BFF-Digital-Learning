@@ -47,7 +47,7 @@ Deno.serve(async (req) => {
             ? '先写下你的想法吧——哪怕一两句话，我就能给你反馈。'
             : lang === 'es'
               ? 'Escribe tu idea primero: aunque sean una o dos frases, y te daré comentarios.'
-              : 'Write your thinking first — even a sentence or two — and I can give you feedback.',
+              : 'Write your thinking first, even a sentence or two, and I can give you feedback.',
         strengths: [],
         improve: [],
       })
@@ -96,7 +96,7 @@ Deno.serve(async (req) => {
       // Model declined — hand back a graceful, gradeless card instead of an error.
       return json({
         score: null,
-        summary: 'I could not grade that one — try rephrasing your answer about the money topic.',
+        summary: 'I could not grade that one. Try rephrasing your answer about the money topic.',
         strengths: [],
         improve: [],
       })

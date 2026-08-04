@@ -62,6 +62,21 @@ function toGeminiSchema(node: unknown): unknown {
 }
 
 /**
+ * House style, appended to every system prompt.
+ *
+ * The rest of the site had 1,212 em dashes swept out of it because reviewers
+ * read them as a machine-written tell. Model output was still producing them,
+ * which put the one part of the site a student talks to at odds with every
+ * other part. Living here rather than in each function means a new function
+ * cannot forget it.
+ *
+ * Chinese is exempt on purpose: 破折号 is ordinary punctuation there, not a tell.
+ */
+const HOUSE_STYLE = `
+
+When writing English or Spanish, never use an em dash (—). Use a comma, a full stop, or a rewrite. Chinese is exempt: there the dash is ordinary punctuation.`
+
+/**
  * Call Gemini and return the model's text. Throws 'AI_NOT_CONFIGURED' if the
  * key is missing, 'AI_REFUSED' if the model declined / was safety-blocked, or an
  * error whose message carries the upstream detail so the UI can show it.
@@ -90,7 +105,7 @@ export async function callAI(opts: CallAIOptions): Promise<string> {
   }
 
   const body = JSON.stringify({
-    systemInstruction: { parts: [{ text: opts.system }] },
+    systemInstruction: { parts: [{ text: opts.system + HOUSE_STYLE }] },
     contents,
     generationConfig,
   })

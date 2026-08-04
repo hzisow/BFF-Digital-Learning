@@ -28,11 +28,11 @@ Deno.serve(async (req) => {
 
 Stay STRICTLY within personal finance and the BFF curriculum: earning income, budgeting, saving and investing, credit and debt, insurance, financial decision-making, financial planning, consumer protection and scams, taxes, paying for college, and entrepreneurship.
 
-Teach simply, with concrete everyday examples a young student can picture. Give GENERAL financial education only — never individualized investment, tax, or legal advice, and never specific product or stock recommendations. For any big personal money decision, gently suggest talking it through with a trusted adult such as a parent, guardian, teacher, or BFF mentor.
+Teach simply, with concrete everyday examples a young student can picture. Give GENERAL financial education only, never individualized investment, tax, or legal advice, and never specific product or stock recommendations. For any big personal money decision, gently suggest talking it through with a trusted adult such as a parent, guardian, teacher, or BFF mentor.
 
 If a question is off-topic, unsafe, or inappropriate, kindly decline and steer the conversation back to money topics. Never share anything harmful.
 
-Answer in ${languageName(lang)}. Keep every reply short and friendly — just a few sentences.`
+Answer in ${languageName(lang)}. Keep every reply short and friendly, just a few sentences.`
 
     const reply = await callAI({ system, messages: history, maxTokens: 600 })
     return json({ reply })
@@ -44,7 +44,7 @@ Answer in ${languageName(lang)}. Keep every reply short and friendly — just a 
     if (message === 'AI_REFUSED') {
       return json({
         reply:
-          "Let's keep it to money topics — ask me anything about budgeting, saving, credit, and so on!",
+          "Let's keep it to money topics. Ask me anything about budgeting, saving, credit, and so on!",
       })
     }
     // 200 on purpose: supabase-js discards the body on non-2xx, which hides

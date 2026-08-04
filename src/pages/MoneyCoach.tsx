@@ -4,7 +4,14 @@
 // This page is the chat UI: message log, input, starter prompts, and calm
 // handling for the "not set up yet" and transient-error cases.
 
-import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+  type KeyboardEvent,
+  type ReactNode,
+} from 'react'
 import { MessageCircle, Send, RefreshCw, Bot } from 'lucide-react'
 import { invokeAI, AI_ENABLED, AINotConfiguredError, AIOfflineError } from '../lib/ai'
 import { offlineAICopy } from '../lib/offlineCopy'
@@ -39,7 +46,7 @@ export default function MoneyCoach() {
   const [offline, setOffline] = useState(false)
   const [failReason, setFailReason] = useState<string | null>(null)
 
-  const inputRef = useRef<HTMLInputElement>(null)
+  const inputRef = useRef<HTMLTextAreaElement>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
 
   // Keep the newest message in view as the conversation grows and while the
@@ -47,6 +54,32 @@ export default function MoneyCoach() {
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ block: 'end' })
   }, [messages, busy])
+
+  // Grow the box to fit what has been typed. Reset to auto first, otherwise
+  // scrollHeight is measured against the height already set and the field can
+  // only ever get taller, never shrink back after a delete. The max-height in
+  // the class caps it and turns on scrolling past that.
+  useEffect(() => {
+    const el = inputRef.current
+    if (!el) return
+    // Empty: drop the inline height entirely and let rows={1} govern. Measuring
+    // an empty textarea returns the height of the *wrapped placeholder*, which
+    // left the box sitting two lines tall before anyone had typed anything.
+    if (!input) {
+      el.style.height = ''
+      return
+    }
+    el.style.height = 'auto'
+    el.style.height = `${el.scrollHeight}px`
+  }, [input])
+
+  // Enter sends, Shift+Enter starts a new line. A textarea's default is the
+  // other way round, and this is a chat.
+  function onKeyDown(e: KeyboardEvent<HTMLTextAreaElement>) {
+    if (e.key !== 'Enter' || e.shiftKey) return
+    e.preventDefault()
+    send(input)
+  }
 
   const starters = zh
     ? [
@@ -339,29 +372,38 @@ export default function MoneyCoach() {
         )}
 
         <form onSubmit={onSubmit} aria-busy={busy} className="flex items-end gap-2">
-          <div className="flex-1">
+          <div className="min-w-0 flex-1">
             <label htmlFor="coach-input" className="sr-only">
               {inputLabel}
             </label>
-            <input
+            {/* A textarea, not a single-line input: a real question runs past
+                one line, and on a phone that meant the start of your own
+                sentence scrolled out of sight while you were still typing it.
+                It starts one line tall and grows to five, then scrolls. */}
+            <textarea
               id="coach-input"
               ref={inputRef}
-              type="text"
-              className="input"
+              rows={1}
+              className="input max-h-[7.5rem] resize-none overflow-y-auto leading-relaxed"
               placeholder={placeholder}
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              onKeyDown={onKeyDown}
               disabled={busy}
               autoComplete="off"
             />
           </div>
+          {/* On a phone the word "Send" was costing the question box about a
+              quarter of its width. The paper plane alone is understood, and the
+              accessible name still says it in full. */}
           <button
             type="submit"
-            className="btn-primary"
+            className="btn-primary shrink-0"
+            aria-label={sendLabel}
             disabled={busy || !input.trim()}
           >
             <Send className="h-4 w-4" aria-hidden="true" />
-            {sendLabel}
+            <span className="hidden sm:inline">{sendLabel}</span>
           </button>
         </form>
       </div>
