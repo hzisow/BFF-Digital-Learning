@@ -126,9 +126,12 @@ function MoreMenu({
           <PrefetchNavLink chunk="practice" to="/practice" className={itemClass}>
             {t('nav.practice')}
           </PrefetchNavLink>
-          {/* Accounts are opt-in, so this lives in the overflow menu rather than
-              the main bar — nobody needs to be nagged to sign up to take a
-              lesson, but somebody coming back on a new phone needs to find it. */}
+          {/* The two sign-ins are ruled off from the pages above them so they
+              read as a pair of doors rather than as two more destinations.
+              Accounts are opt-in, which is why they live in the overflow menu at
+              all: nobody needs to be nagged to sign up to take a lesson, but
+              somebody coming back on a new phone needs to find it. */}
+          <div className="my-1 h-px bg-ink/10" />
           {!hasAccount && (
             <PrefetchNavLink chunk="signIn" to="/signin?mode=signin" className={itemClass}>
               {t('nav.signIn')}
@@ -383,6 +386,19 @@ export default function Layout() {
               ) : (
                 <PrefetchNavLink chunk="join" to="/join" className={mobileLinkClass}>
                   {t('nav.join')}
+                </PrefetchNavLink>
+              )}
+              {/* Student sign-in was reachable only from the desktop overflow
+                  menu, so a student coming back on a new phone, which is most of
+                  them, had no way to get their progress back. */}
+              <div className="my-1 h-px bg-ink/10" />
+              {!account && (
+                <PrefetchNavLink
+                  chunk="signIn"
+                  to="/signin?mode=signin"
+                  className={mobileLinkClass}
+                >
+                  {t('nav.signIn')}
                 </PrefetchNavLink>
               )}
               {adminUser ? (
