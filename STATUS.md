@@ -646,10 +646,16 @@ All four recordings are live and embedded, presented by Alvin Lee, BFF-original:
 
 | Lesson | Video ID | Length | Checkpoints pause at |
 |---|---|---|---|
-| `spending-budgeting` | `AbqJUXeviI0` | ~3:40 | 0:38, 2:30 |
-| `saving-investing` | `StjQs88nDZE` | ~3:00 | 1:20, 1:48 |
-| `credit-debt` | `rNVIS8YsBbQ` | ~3:07 | 1:06, 2:30 |
-| `risk-insurance` | `64VPvCvBq3g` | ~2:11 | 1:16, 2:06 |
+| `spending-budgeting` | `AbqJUXeviI0` | ~3:40 | 0:36, 2:32, 3:24 |
+| `saving-investing` | `StjQs88nDZE` | ~3:00 | 0:41, 1:29, 1:47, 2:21 |
+| `credit-debt` | `rNVIS8YsBbQ` | ~3:07 | 1:06, 2:07, 2:28, 3:02 |
+| `risk-insurance` | `64VPvCvBq3g` | ~2:11 | 1:16, 1:37, 2:06 |
+
+One coverage gap is left: `spending-budgeting` runs 116 seconds between its
+first checkpoint and its second, the longest untested stretch in any of the
+four. Closing it needs the transcript for roughly 0:40 to 2:30, because a
+checkpoint written from the lesson text rather than the recording is how you
+end up asking about something the video never says.
 
 `videoId` and each `at:` are duplicated **three times per file** (en/es/zh) — a
 change to one language and not the others is the easy mistake here.
