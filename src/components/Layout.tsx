@@ -1,12 +1,12 @@
-import { Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import type { NavLinkProps } from 'react-router-dom'
-import { Volume2, VolumeX, Menu, X, ArrowRight, ChevronDown, Check } from 'lucide-react'
+import { Volume2, VolumeX, Menu, X, ArrowRight, ChevronDown } from 'lucide-react'
 import { Logo } from './Logo'
+import { LangPicker } from './LangPicker'
 import { AppIcon } from '../lib/icons'
 import { accountDisplayName, useAccount, useAdmin, useStudent } from '../lib/session'
 import { useLang } from '../lib/i18n'
-import type { Lang } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
 import { totalXp, levelInfo } from '../lib/xp'
 import { titleForPath } from '../lib/pageTitle'
@@ -67,141 +67,6 @@ const mobileLinkClass = ({ isActive }: { isActive: boolean }) =>
   `block rounded-xl px-4 py-3 font-display text-base font-semibold transition ${
     isActive ? 'bg-bff-50 text-bff-700' : 'text-slate-700 hover:bg-slate-100'
   }`
-
-// Simple inline SVG flags (not emoji, so they render identically everywhere).
-const flagClass = 'h-3 w-[18px] rounded-[2px] ring-1 ring-black/10'
-
-function FlagUS() {
-  return (
-    <svg viewBox="0 0 20 14" className={flagClass} aria-hidden="true" focusable="false">
-      <rect width="20" height="14" fill="#fff" />
-      {[0, 4, 8, 12].map((y) => (
-        <rect key={y} y={y} width="20" height="2" fill="#b22234" />
-      ))}
-      <rect width="9" height="8" fill="#3c3b6e" />
-    </svg>
-  )
-}
-
-function FlagES() {
-  return (
-    <svg viewBox="0 0 20 14" className={flagClass} aria-hidden="true" focusable="false">
-      <rect width="20" height="14" fill="#c60b1e" />
-      <rect y="3.5" width="20" height="7" fill="#ffc400" />
-    </svg>
-  )
-}
-
-function FlagCN() {
-  return (
-    <svg viewBox="0 0 20 14" className={flagClass} aria-hidden="true" focusable="false">
-      <rect width="20" height="14" fill="#de2910" />
-      <path fill="#ffde00" d="m3.5 2.2 0.65 2 1.7 0-1.37 1.02 0.52 2-1.5-1.24-1.5 1.24 0.52-2-1.37-1.02 1.7 0z" />
-      <g fill="#ffde00">
-        <circle cx="8" cy="1.6" r="0.5" />
-        <circle cx="9.3" cy="2.8" r="0.5" />
-        <circle cx="9.3" cy="4.5" r="0.5" />
-        <circle cx="8" cy="5.6" r="0.5" />
-      </g>
-    </svg>
-  )
-}
-
-/** The three languages, each labelled in itself rather than in English. */
-const LANGS: Array<{ code: Lang; short: string; name: string; flag: ReactNode }> = [
-  { code: 'en', short: 'EN', name: 'English', flag: <FlagUS /> },
-  { code: 'es', short: 'ES', name: 'Español', flag: <FlagES /> },
-  { code: 'zh', short: '中', name: '中文', flag: <FlagCN /> },
-]
-
-/**
- * Language picker as a dropdown rather than three buttons in a row.
- *
- * The row put every language permanently in the header, which crowded the bar
- * on desktop and squeezed the nav on small screens, for a control almost
- * everybody touches once. A menu shows the language you are in and gets out of
- * the way.
- */
-function LangSwitcher() {
-  const { lang, setLang } = useLang()
-  const [open, setOpen] = useState(false)
-  const wrapRef = useRef<HTMLDivElement | null>(null)
-  const current = LANGS.find((l) => l.code === lang) ?? LANGS[0]
-
-  useEffect(() => {
-    if (!open) return
-    function onDown(e: MouseEvent) {
-      if (!wrapRef.current?.contains(e.target as Node)) setOpen(false)
-    }
-    function onKey(e: KeyboardEvent) {
-      if (e.key !== 'Escape') return
-      setOpen(false)
-      // Escape should leave focus on the control that opened the menu, not
-      // adrift at the top of the document.
-      wrapRef.current?.querySelector('button')?.focus()
-    }
-    document.addEventListener('mousedown', onDown)
-    document.addEventListener('keydown', onKey)
-    return () => {
-      document.removeEventListener('mousedown', onDown)
-      document.removeEventListener('keydown', onKey)
-    }
-  }, [open])
-
-  return (
-    <div className="relative ml-1" ref={wrapRef}>
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        aria-expanded={open}
-        aria-haspopup="menu"
-        // Deliberately no lang on the trigger: the accessible name has to name
-        // three languages at once, so any single value mispronounces two thirds
-        // of it. The individual options carry their own lang below.
-        aria-label="Language / Idioma / 语言"
-        className="flex items-center gap-1.5 rounded-lg bg-slate-100 px-2.5 py-1.5 font-display text-xs font-bold text-slate-700 transition hover:bg-slate-200"
-      >
-        {current.flag}
-        <span lang={current.code}>{current.short}</span>
-        <ChevronDown
-          className={`h-3.5 w-3.5 transition-transform ${open ? 'rotate-180' : ''}`}
-          aria-hidden="true"
-        />
-      </button>
-      {open && (
-        <div
-          role="menu"
-          aria-label="Language / Idioma / 语言"
-          className="absolute right-0 top-full z-50 mt-1 w-40 rounded-[8px] border border-ink/10 bg-white p-1.5 shadow-card"
-        >
-          {LANGS.map((l) => (
-            <button
-              key={l.code}
-              type="button"
-              role="menuitemradio"
-              aria-checked={lang === l.code}
-              onClick={() => {
-                setLang(l.code)
-                setOpen(false)
-              }}
-              // The name of each language is written in that language, so it
-              // needs its own lang or a screen reader gives "Español" and "中文"
-              // English phonetics. WCAG 3.1.2, Language of Parts.
-              lang={l.code}
-              className={`flex w-full items-center gap-2.5 rounded-[5px] px-2.5 py-2 text-left font-display text-sm font-semibold transition-colors ${
-                lang === l.code ? 'bg-bff-50 text-bff-700' : 'text-ink hover:bg-ink/5'
-              }`}
-            >
-              {l.flag}
-              <span className="flex-1">{l.name}</span>
-              {lang === l.code && <Check className="h-4 w-4" aria-hidden="true" />}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  )
-}
 
 /** Overflow menu for the secondary destinations and the sound toggle. */
 function MoreMenu({
@@ -301,6 +166,34 @@ export default function Layout() {
   useEffect(() => {
     setMenuOpen(false)
   }, [location.pathname])
+
+  // Hold the page still while the mobile menu is open.
+  //
+  // The menu is a normal block inside a sticky header, so without this the page
+  // behind it scrolled freely: open the menu on a phone, swipe, and every card
+  // on the page slid away underneath while the menu sat there pinned. It read
+  // as the whole site sliding off screen.
+  //
+  // Restoring the previous value rather than clearing it outright means this
+  // cannot clobber another component that is also locking scroll.
+  useEffect(() => {
+    if (!menuOpen) return
+    const previous = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = previous
+    }
+  }, [menuOpen])
+
+  // Escape closes the menu, matching the two dropdowns in the same header.
+  useEffect(() => {
+    if (!menuOpen) return
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') setMenuOpen(false)
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [menuOpen])
 
   // Once the first paint is done and the browser is idle, quietly fetch the two
   // routes almost everyone opens next. Hovering a nav link does the same thing
@@ -430,12 +323,12 @@ export default function Layout() {
             <MoreMenu adminUser={adminUser} hasAccount={Boolean(account)} t={t} />
             <span aria-hidden="true" className="mx-1 h-5 w-px bg-ink/10" />
             {accountLink}
-            <LangSwitcher />
+            <LangPicker />
           </nav>
 
           {/* Mobile: compact language switch + hamburger */}
           <div className="flex items-center gap-2 md:hidden">
-            <LangSwitcher />
+            <LangPicker />
             <button
               type="button"
               onClick={() => setMenuOpen((o) => !o)}
@@ -458,7 +351,11 @@ export default function Layout() {
           <nav
             id="mobile-menu"
             aria-label={t('a11y.primaryNav')}
-            className="animate-slide-up border-t border-slate-200 bg-white px-4 py-3 md:hidden"
+            // Scrolls within itself when the list is taller than what is left
+            // of the viewport under the 4rem header, instead of pushing its own
+            // last items out of reach. `overscroll-contain` stops that scroll
+            // from chaining to the locked page behind it.
+            className="animate-slide-up max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain border-t border-slate-200 bg-white px-4 py-3 md:hidden"
           >
             <div className="flex flex-col gap-1">
               <PrefetchNavLink chunk="lessons" to="/lessons" className={mobileLinkClass}>

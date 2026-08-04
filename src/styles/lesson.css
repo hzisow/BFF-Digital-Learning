@@ -99,17 +99,6 @@
 }
 .lz-tools { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
 
-/* Compact language switch */
-.lz-lang { display: inline-flex; gap: 2px; background: var(--lz-paper-deep); padding: 3px; }
-.lz-lang button {
-  border: 0; background: none; padding: 4px 8px;
-  font-size: 11px; font-weight: 800; letter-spacing: 0.04em;
-  color: var(--lz-muted);
-  transition: color var(--dur-hover, 160ms) var(--ease-out, ease-out),
-    background var(--dur-hover, 160ms) var(--ease-out, ease-out);
-}
-.lz-lang button.is-active { background: var(--lz-ink); color: #fff; }
-
 /* Full-width progress hairline under the bar */
 .lz-progress { height: 3px; background: var(--lz-paper-deep); }
 .lz-progress-fill { height: 100%; background: var(--lz-blue); transition: width 0.35s cubic-bezier(0.65, 0, 0.35, 1); }
@@ -361,6 +350,11 @@
   text-transform: uppercase;
   color: var(--lz-muted);
   white-space: nowrap;
+  /* The label must never push past the meter and under the Continue button. It
+     is `nowrap` so "STEP 1 / 25" cannot break mid-phrase, which means the
+     overflow needs somewhere to go. */
+  min-width: 0;
+  overflow: hidden;
 }
 .lz-meter-label b { color: var(--lz-ink); font-size: 12px; }
 .lz-meter-of { opacity: 0.75; }
@@ -475,6 +469,14 @@
   .lz-btn--compact span { display: none; }
   .lz-btn--compact { padding-left: 12px; padding-right: 12px; }
   .lz-meter-label { font-size: 9px; letter-spacing: 0.1em; }
+}
+
+/* Narrow phones: the step count and the minutes-left figure will not both fit
+   beside the Continue button, and the one that got clipped was the minutes.
+   Drop it deliberately instead. The step count is the more useful of the two
+   anyway, and the segmented track still shows how much is left. */
+@media (max-width: 430px) {
+  .lz-meter-left { display: none; }
 }
 
 /* Respect reduced motion (global rule also applies, this is belt-and-braces) */

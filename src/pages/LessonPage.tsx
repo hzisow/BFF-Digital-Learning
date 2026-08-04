@@ -10,7 +10,7 @@ import { LessonArt } from '../components/lesson/LessonArt'
 import { LessonFallback } from '../components/RouteFallback'
 import { ACTIVITIES } from '../lib/activities'
 import { useLang, localizeLesson } from '../lib/i18n'
-import type { Lang } from '../lib/i18n'
+import { LangPicker } from '../components/LangPicker'
 import { saveProgress } from '../lib/progress'
 import { PASS_SCORE } from '../lib/mastery'
 import {
@@ -56,32 +56,6 @@ interface AnswerState {
 const EMPTY_ANSWER: AnswerState = { chosen: null, revealed: false }
 
 // ---------- Compact chrome pieces ----------
-
-function LangSwitch() {
-  const { lang, setLang } = useLang()
-  const opt = (l: Lang, label: string, aria: string) => (
-    <button
-      key={l}
-      type="button"
-      onClick={() => setLang(l)}
-      aria-pressed={lang === l}
-      aria-label={aria}
-      // Same reason as the global switcher: this label is in the target
-      // language, not the page's. WCAG 3.1.2.
-      lang={l}
-      className={lang === l ? 'is-active' : ''}
-    >
-      {label}
-    </button>
-  )
-  return (
-    <div className="lz-lang" role="group" aria-label="Language / Idioma / 语言">
-      {opt('en', 'EN', 'Switch to English')}
-      {opt('es', 'ES', 'Cambiar a español')}
-      {opt('zh', '中', '切换到中文')}
-    </div>
-  )
-}
 
 // ---------- Eyebrow with step number ----------
 
@@ -605,7 +579,7 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
         </div>
         <div className="lz-tools">
           {readText && <ReadAloud text={readText} />}
-          <LangSwitch />
+          <LangPicker tone="lesson" />
         </div>
       </div>
       <div

@@ -179,7 +179,7 @@ async function loadLogo(): Promise<string | null> {
 }
 
 /** Aspect ratio of `logo-wide.png`, so the draw box never distorts the mark. */
-const LOGO_RATIO = 900 / 397
+const LOGO_RATIO = 900 / 398
 
 /** Short gold brackets at each corner of the inner frame. */
 function cornerMarks(doc: jsPDF, x: number, y: number, w: number, h: number) {
