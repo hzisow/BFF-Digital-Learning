@@ -12,7 +12,7 @@ import {
   type KeyboardEvent,
   type ReactNode,
 } from 'react'
-import { MessageCircle, Send, RefreshCw, Bot } from 'lucide-react'
+import { MessageCircle, ArrowUp, RefreshCw, Bot } from 'lucide-react'
 import { invokeAI, AI_ENABLED, AINotConfiguredError, AIOfflineError } from '../lib/ai'
 import { offlineAICopy } from '../lib/offlineCopy'
 import { useLang } from '../lib/i18n'
@@ -58,7 +58,7 @@ export default function MoneyCoach() {
   // Grow the box to fit what has been typed. Reset to auto first, otherwise
   // scrollHeight is measured against the height already set and the field can
   // only ever get taller, never shrink back after a delete. The max-height in
-  // the class caps it and turns on scrolling past that.
+  // the class caps it (about seven lines) and turns on scrolling past that.
   useEffect(() => {
     const el = inputRef.current
     if (!el) return
@@ -371,40 +371,56 @@ export default function MoneyCoach() {
           </div>
         )}
 
-        <form onSubmit={onSubmit} aria-busy={busy} className="flex items-end gap-2">
-          <div className="min-w-0 flex-1">
-            <label htmlFor="coach-input" className="sr-only">
-              {inputLabel}
-            </label>
-            {/* A textarea, not a single-line input: a real question runs past
-                one line, and on a phone that meant the start of your own
-                sentence scrolled out of sight while you were still typing it.
-                It starts one line tall and grows to five, then scrolls. */}
-            <textarea
-              id="coach-input"
-              ref={inputRef}
-              rows={1}
-              className="input max-h-[7.5rem] resize-none overflow-y-auto leading-relaxed"
-              placeholder={placeholder}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={onKeyDown}
-              disabled={busy}
-              autoComplete="off"
-            />
+        {/* One composer, not a field with a button parked beside it. The border
+            and focus ring belong to the container, so the whole thing lights up
+            as a single control and the send action can never drift out of
+            alignment with the box it belongs to. */}
+        <form
+          onSubmit={onSubmit}
+          aria-busy={busy}
+          className="rounded-[10px] border border-ink/15 bg-white transition focus-within:border-bff-500 focus-within:ring-2 focus-within:ring-bff-200"
+        >
+          <label htmlFor="coach-input" className="sr-only">
+            {inputLabel}
+          </label>
+          {/* A textarea, not a single-line input: a real question runs past one
+              line, and on a phone that meant the start of your own sentence
+              scrolled out of sight while you were still typing it. It starts one
+              line tall and grows to five, then scrolls.
+
+              `block` matters here too: a textarea is inline by default and would
+              leave a strip of descender space inside the container. */}
+          <textarea
+            id="coach-input"
+            ref={inputRef}
+            rows={1}
+            // The global a11y rule puts a focus ring on every textarea, which
+            // here drew a second ring *inside* the container's own. Suppressed
+            // on the field and carried by the container instead: focus is still
+            // plainly visible, it just outlines the whole composer, which is the
+            // control the student is actually in.
+            className="block max-h-[11rem] w-full resize-none overflow-y-auto bg-transparent px-4 pt-3 leading-relaxed text-ink placeholder-ink/40 outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+            placeholder={placeholder}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={onKeyDown}
+            disabled={busy}
+            autoComplete="off"
+          />
+          <div className="flex items-center justify-end px-2 pb-2 pt-1">
+            <button
+              type="submit"
+              // A round icon button inside the composer. The label is carried by
+              // aria-label rather than on screen: at this size the word would
+              // crowd the box, and every chat on a student's phone already uses
+              // exactly this affordance.
+              aria-label={sendLabel}
+              disabled={busy || !input.trim()}
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-bff-600 text-white transition hover:bg-bff-700 disabled:bg-ink/15 disabled:text-ink/40"
+            >
+              <ArrowUp className="h-[18px] w-[18px]" aria-hidden="true" />
+            </button>
           </div>
-          {/* On a phone the word "Send" was costing the question box about a
-              quarter of its width. The paper plane alone is understood, and the
-              accessible name still says it in full. */}
-          <button
-            type="submit"
-            className="btn-primary shrink-0"
-            aria-label={sendLabel}
-            disabled={busy || !input.trim()}
-          >
-            <Send className="h-4 w-4" aria-hidden="true" />
-            <span className="hidden sm:inline">{sendLabel}</span>
-          </button>
         </form>
       </div>
 
