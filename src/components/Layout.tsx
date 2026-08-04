@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import type { NavLinkProps } from 'react-router-dom'
-import { Volume2, VolumeX, Menu, X, ArrowRight, ChevronDown } from 'lucide-react'
+import { Volume2, VolumeX, Menu, X, ArrowRight, ChevronDown, Check } from 'lucide-react'
 import { Logo } from './Logo'
 import { AppIcon } from '../lib/icons'
 import { accountDisplayName, useAccount, useAdmin, useStudent } from '../lib/session'
@@ -107,43 +107,98 @@ function FlagCN() {
   )
 }
 
+/** The three languages, each labelled in itself rather than in English. */
+const LANGS: Array<{ code: Lang; short: string; name: string; flag: ReactNode }> = [
+  { code: 'en', short: 'EN', name: 'English', flag: <FlagUS /> },
+  { code: 'es', short: 'ES', name: 'Español', flag: <FlagES /> },
+  { code: 'zh', short: '中', name: '中文', flag: <FlagCN /> },
+]
+
+/**
+ * Language picker as a dropdown rather than three buttons in a row.
+ *
+ * The row put every language permanently in the header, which crowded the bar
+ * on desktop and squeezed the nav on small screens, for a control almost
+ * everybody touches once. A menu shows the language you are in and gets out of
+ * the way.
+ */
 function LangSwitcher() {
   const { lang, setLang } = useLang()
-  const ariaFor: Record<Lang, string> = {
-    en: 'Switch to English',
-    es: 'Cambiar a español',
-    zh: '切换到中文',
-  }
-  const opt = (l: Lang, label: string, flag: ReactNode) => (
-    <button
-      type="button"
-      onClick={() => setLang(l)}
-      aria-pressed={lang === l}
-      aria-label={ariaFor[l]}
-      // The label, the glyph and the aria-label are all in the language this
-      // button switches to, not the language of the page around it. Without
-      // this a screen reader reads "切换到中文" and the 中 glyph with English
-      // phonetics. WCAG 3.1.2, Language of Parts.
-      lang={l}
-      className={`flex items-center gap-1.5 rounded-md px-2 py-1 font-display text-xs font-bold transition ${
-        lang === l ? 'bg-white text-bff-700 shadow-sm' : 'text-slate-600 hover:text-slate-800'
-      }`}
-    >
-      {flag}
-      {label}
-    </button>
-  )
+  const [open, setOpen] = useState(false)
+  const wrapRef = useRef<HTMLDivElement | null>(null)
+  const current = LANGS.find((l) => l.code === lang) ?? LANGS[0]
+
+  useEffect(() => {
+    if (!open) return
+    function onDown(e: MouseEvent) {
+      if (!wrapRef.current?.contains(e.target as Node)) setOpen(false)
+    }
+    function onKey(e: KeyboardEvent) {
+      if (e.key !== 'Escape') return
+      setOpen(false)
+      // Escape should leave focus on the control that opened the menu, not
+      // adrift at the top of the document.
+      wrapRef.current?.querySelector('button')?.focus()
+    }
+    document.addEventListener('mousedown', onDown)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('mousedown', onDown)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [open])
+
   return (
-    <div
-      className="ml-1 flex items-center gap-0.5 rounded-lg bg-slate-100 p-0.5"
-      role="group"
-      // Deliberately no lang: the label names three languages at once, so any
-      // single value would mispronounce two thirds of it.
-      aria-label="Language / Idioma / 语言"
-    >
-      {opt('en', 'EN', <FlagUS />)}
-      {opt('es', 'ES', <FlagES />)}
-      {opt('zh', '中', <FlagCN />)}
+    <div className="relative ml-1" ref={wrapRef}>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        aria-haspopup="menu"
+        // Deliberately no lang on the trigger: the accessible name has to name
+        // three languages at once, so any single value mispronounces two thirds
+        // of it. The individual options carry their own lang below.
+        aria-label="Language / Idioma / 语言"
+        className="flex items-center gap-1.5 rounded-lg bg-slate-100 px-2.5 py-1.5 font-display text-xs font-bold text-slate-700 transition hover:bg-slate-200"
+      >
+        {current.flag}
+        <span lang={current.code}>{current.short}</span>
+        <ChevronDown
+          className={`h-3.5 w-3.5 transition-transform ${open ? 'rotate-180' : ''}`}
+          aria-hidden="true"
+        />
+      </button>
+      {open && (
+        <div
+          role="menu"
+          aria-label="Language / Idioma / 语言"
+          className="absolute right-0 top-full z-50 mt-1 w-40 rounded-[8px] border border-ink/10 bg-white p-1.5 shadow-card"
+        >
+          {LANGS.map((l) => (
+            <button
+              key={l.code}
+              type="button"
+              role="menuitemradio"
+              aria-checked={lang === l.code}
+              onClick={() => {
+                setLang(l.code)
+                setOpen(false)
+              }}
+              // The name of each language is written in that language, so it
+              // needs its own lang or a screen reader gives "Español" and "中文"
+              // English phonetics. WCAG 3.1.2, Language of Parts.
+              lang={l.code}
+              className={`flex w-full items-center gap-2.5 rounded-[5px] px-2.5 py-2 text-left font-display text-sm font-semibold transition-colors ${
+                lang === l.code ? 'bg-bff-50 text-bff-700' : 'text-ink hover:bg-ink/5'
+              }`}
+            >
+              {l.flag}
+              <span className="flex-1">{l.name}</span>
+              {lang === l.code && <Check className="h-4 w-4" aria-hidden="true" />}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

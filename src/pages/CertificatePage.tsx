@@ -196,21 +196,24 @@ export default function CertificatePage() {
               {zh ? `测验平均分：${avgScore}%` : es ? `Promedio de exámenes: ${avgScore}%` : `Quiz average: ${avgScore}%`}
             </p>
           )}
-          <div className="mt-12 flex items-end justify-between gap-8 text-left">
+          {/* Values above their rules and labels below, matching the downloaded
+              PDF. A student who prints this and a student who saves the file
+              should end up holding the same document. */}
+          <div className="mt-14 grid grid-cols-3 items-end gap-6">
             <div>
-              <p className="border-t border-ink/40 pt-2 text-xs font-semibold uppercase tracking-wide text-ink/60">
+              <p className="pb-1.5 text-sm text-ink">{dateStr}</p>
+              <p className="border-t border-ink/50 pt-2 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-ink/60">
                 {zh ? '日期' : es ? 'Fecha' : 'Date'}
               </p>
-              <p className="text-sm text-ink">{dateStr}</p>
             </div>
-            <span className="text-ink" aria-hidden="true">
-              <Trophy className="h-9 w-9" />
-            </span>
+            <p className="self-end text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-ink/60">
+              Building Financial Futures of America
+            </p>
             <div>
-              <p className="border-t border-ink/40 pt-2 text-xs font-semibold uppercase tracking-wide text-ink/60">
-                Building Financial Futures of America
+              <p className="pb-1 font-display text-xl italic text-ink">BFF of America</p>
+              <p className="border-t border-ink/50 pt-2 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-ink/60">
+                {zh ? 'BFF Academy 导师' : es ? 'Mentor de BFF Academy' : 'BFF Academy Mentor'}
               </p>
-              <p className="text-sm text-ink">{zh ? 'BFF 导师' : es ? 'Mentor BFF' : 'BFF Mentor'}</p>
             </div>
           </div>
         </div>
