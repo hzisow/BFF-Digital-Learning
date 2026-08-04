@@ -95,20 +95,37 @@ export async function callAI(opts: CallAIOptions): Promise<string> {
     parts: [{ text: m.content }],
   }))
 
-  const generationConfig: Record<string, unknown> = {
-    maxOutputTokens: opts.maxTokens ?? 1024,
-    temperature: opts.outputSchema ? 0.2 : 0.7,
+  /**
+   * The request body, built per model because one field is model-specific.
+   *
+   * Gemini 2.5 models think before answering, and those hidden thinking tokens
+   * are billed against maxOutputTokens. With a 600-token budget the coach spent
+   * nearly all of it reasoning and had about thirty tokens left for the reply,
+   * so students got half a sentence and a finishReason of MAX_TOKENS. Setting
+   * thinkingBudget to 0 turns it off: this is short tutoring copy and a
+   * structured worksheet, neither of which needs a scratchpad.
+   *
+   * Only sent to 2.5 models. The 2.0 models do not have the field and there is
+   * no reason to find out how they handle being given it.
+   */
+  function bodyFor(model: string): string {
+    const generationConfig: Record<string, unknown> = {
+      maxOutputTokens: opts.maxTokens ?? 1024,
+      temperature: opts.outputSchema ? 0.2 : 0.7,
+    }
+    if (model.includes('2.5')) {
+      generationConfig.thinkingConfig = { thinkingBudget: 0 }
+    }
+    if (opts.outputSchema) {
+      generationConfig.responseMimeType = 'application/json'
+      generationConfig.responseSchema = toGeminiSchema(opts.outputSchema)
+    }
+    return JSON.stringify({
+      systemInstruction: { parts: [{ text: opts.system + HOUSE_STYLE }] },
+      contents,
+      generationConfig,
+    })
   }
-  if (opts.outputSchema) {
-    generationConfig.responseMimeType = 'application/json'
-    generationConfig.responseSchema = toGeminiSchema(opts.outputSchema)
-  }
-
-  const body = JSON.stringify({
-    systemInstruction: { parts: [{ text: opts.system + HOUSE_STYLE }] },
-    contents,
-    generationConfig,
-  })
 
   let lastStatus = 0
   let lastDetail = ''
@@ -123,7 +140,7 @@ export async function callAI(opts: CallAIOptions): Promise<string> {
         // Header auth rather than ?key= so the secret never lands in a URL,
         // which is what proxies and error messages tend to echo back.
         headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
-        body,
+        body: bodyFor(model),
       })
     } catch (e) {
       lastStatus = 0
@@ -142,6 +159,18 @@ export async function callAI(opts: CallAIOptions): Promise<string> {
       }
       const parts: Array<{ text?: string }> = candidate.content?.parts ?? []
       const text = parts.map((p) => p.text ?? '').join('').trim()
+      // A truncated answer used to be indistinguishable from a complete one:
+      // the partial text came back, and a student read half a sentence. Say so
+      // in the logs, with the token accounting that explains it, so the next
+      // person does not have to infer this from response latency.
+      if (candidate.finishReason === 'MAX_TOKENS') {
+        const u = data.usageMetadata ?? {}
+        console.error(
+          `Gemini hit MAX_TOKENS on ${model}: budget=${opts.maxTokens ?? 1024} ` +
+            `thoughts=${u.thoughtsTokenCount ?? 0} output=${u.candidatesTokenCount ?? 0} ` +
+            `text=${text.length} chars`,
+        )
+      }
       if (text) return text
       throw new Error('AI_REFUSED')
     }

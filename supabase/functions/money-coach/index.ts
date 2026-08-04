@@ -34,7 +34,9 @@ If a question is off-topic, unsafe, or inappropriate, kindly decline and steer t
 
 Answer in ${languageName(lang)}. Keep every reply short and friendly, just a few sentences.`
 
-    const reply = await callAI({ system, messages: history, maxTokens: 600 })
+    // Headroom: 600 was tight enough that any future model quietly reserving
+    // tokens for itself would truncate the reply again.
+    const reply = await callAI({ system, messages: history, maxTokens: 1000 })
     return json({ reply })
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err)
