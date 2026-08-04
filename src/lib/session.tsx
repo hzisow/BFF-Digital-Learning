@@ -11,7 +11,6 @@ import type { Session, User } from '@supabase/supabase-js'
 import { getSupabase, hasStoredSession, requireSupabase } from './supabase'
 import { BACKEND_ENABLED } from './config'
 import { reconcileProgress } from './progress'
-import { isStudentAccount as isStudentRole } from './studentAuth'
 
 // ---------- Student session (class code + first name & last initial) ----------
 //
@@ -61,25 +60,9 @@ interface AdminCtx {
 
 const AdminContext = createContext<AdminCtx>({ adminUser: null, adminReady: true })
 
-// ---------- Student account (optional email + password) ----------
-//
-// Separate from StudentSession above, which is class membership. A student can
-// have either, both, or neither: an account without a class (solo learner
-// keeping their progress), a class without an account (the classroom default),
-// or both.
-
-interface AccountCtx {
-  /** The signed-in student's account, or null. Never a BFF team member. */
-  account: User | null
-  accountReady: boolean
-}
-
-const AccountContext = createContext<AccountCtx>({ account: null, accountReady: true })
-
 export function SessionProvider({ children }: { children: ReactNode }) {
   const [student, setStudent] = useState<StudentSession | null>(loadStudent)
   const [adminUser, setAdminUser] = useState<User | null>(null)
-  const [account, setAccount] = useState<User | null>(null)
   // With nothing stored to restore there is no session to wait for, so the app
   // is "ready" immediately and never loads the auth client at all.
   const [adminReady, setAdminReady] = useState(!BACKEND_ENABLED || !hasStoredSession())
@@ -96,14 +79,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 
     function applySession(session: Session | null) {
       const user = session?.user ?? null
-      // Three kinds of session now share one auth system: anonymous (a student
-      // who has not made an account), a student account, and a BFF team member.
-      // Before student accounts existed, "not anonymous" was a good enough test
-      // for "team member" — it no longer is, and without the role check a
-      // student who signs up would be shown the team dashboard link.
-      const isStudentAccount = isStudentRole(user?.user_metadata)
-      setAdminUser(user && !user.is_anonymous && !isStudentAccount ? user : null)
-      setAccount(user && !user.is_anonymous && isStudentAccount ? user : null)
+      // Two kinds of session share one auth system: anonymous, which is every
+      // student, and a signed-in BFF team member. Students never hold a
+      // credentialed account, so "not anonymous" is once again the whole test.
+      setAdminUser(user && !user.is_anonymous ? user : null)
     }
 
     void getSupabase().then(async (client) => {
@@ -194,18 +173,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     [student, joinClass, leaveClass],
   )
   const adminValue = useMemo(() => ({ adminUser, adminReady }), [adminUser, adminReady])
-  // Account readiness rides along with admin readiness — they are answered by
-  // the same getSession call.
-  const accountValue = useMemo(
-    () => ({ account, accountReady: adminReady }),
-    [account, adminReady],
-  )
-
   return (
     <AdminContext.Provider value={adminValue}>
-      <AccountContext.Provider value={accountValue}>
-        <StudentContext.Provider value={studentValue}>{children}</StudentContext.Provider>
-      </AccountContext.Provider>
+      <StudentContext.Provider value={studentValue}>{children}</StudentContext.Provider>
     </AdminContext.Provider>
   )
 }
@@ -220,13 +190,3 @@ export function useAdmin(): AdminCtx {
   return useContext(AdminContext)
 }
 
-export function useAccount(): AccountCtx {
-  return useContext(AccountContext)
-}
-
-/** Best display name for a signed-in student: their own, then their class name. */
-export function accountDisplayName(user: User | null): string | null {
-  const full = user?.user_metadata?.full_name
-  if (typeof full === 'string' && full.trim()) return full.trim()
-  return null
-}

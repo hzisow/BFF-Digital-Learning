@@ -10,7 +10,7 @@ import { lessonPassed } from '../lib/mastery'
 import { ACTIVITIES } from '../lib/activities'
 import { useLang } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
-import { accountDisplayName, useAccount, useStudent } from '../lib/session'
+import { useStudent } from '../lib/session'
 import { downloadCertificate } from '../lib/certificatePdf'
 
 export default function CertificatePage() {
@@ -18,14 +18,11 @@ export default function CertificatePage() {
   const es = lang === 'es'
   const zh = lang === 'zh'
   const { student } = useStudent()
-  const { account } = useAccount()
   const progress = useMemo(() => loadLocalProgress(), [])
-  // Prefer the name on the account: a student typed it once at sign-up
-  // specifically so this would fill itself in, and it is a full name rather than
-  // the "Jayden M." shorthand a classroom roster uses.
-  const [name, setName] = useState(
-    () => accountDisplayName(account) ?? student?.nickname ?? '',
-  )
+  // Seeded from the roster name ("Jayden M.") and editable, because a
+  // certificate should carry the student's full name and the roster only ever
+  // holds a last initial.
+  const [name, setName] = useState(() => student?.nickname ?? '')
   const [saving, setSaving] = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
 

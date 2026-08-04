@@ -30,15 +30,13 @@ const STRINGS: Record<string, Variants> = {
   'nav.playLive': { en: 'Play Live', es: 'Jugar en vivo', zh: '实时游戏' },
   'nav.coach': { en: 'AI Coach', es: 'Tutor IA', zh: 'AI 辅导' },
   'nav.myClass': { en: 'My Class', es: 'Mi clase', zh: '我的班级' },
-  // "Sign in" and "Team" sat next to each other in the same menu and read as two
-  // routes to the same place. They are not: one is a student keeping their own
-  // progress across devices, the other is a BFF mentor with a roster and a
-  // dashboard, behind Google and an approval check. Naming the audience in the
-  // label is what makes the pair make sense.
+  // Named for its audience: this is the only sign-in in the app, and it is not
+  // for students. They identify with a class code and their name, never an
+  // account, so a bare "Sign in" here would point most visitors at a door that
+  // is not theirs.
   'nav.team': { en: 'Mentor sign in', es: 'Acceso de mentores', zh: '导师登录' },
   'nav.dashboard': { en: 'Dashboard', es: 'Panel', zh: '仪表板' },
   'nav.more': { en: 'More', es: 'Más', zh: '更多' },
-  'nav.signIn': { en: 'Student sign in', es: 'Acceso de estudiantes', zh: '学生登录' },
   'nav.practice': { en: 'Practice', es: 'Práctica', zh: '练习' },
   'nav.sound': { en: 'Sound', es: 'Sonido', zh: '音效' },
   'a11y.skip': {

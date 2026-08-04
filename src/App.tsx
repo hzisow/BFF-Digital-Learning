@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
 import Landing from './pages/Landing'
 import NotFound from './pages/NotFound'
@@ -25,8 +25,6 @@ const AIPractice = lazy(routeChunks.aiPractice)
 const MoneyCoach = lazy(routeChunks.coach)
 const JoinPage = lazy(routeChunks.join)
 const StudentHome = lazy(routeChunks.student)
-const AccountAuth = lazy(routeChunks.signIn)
-const ResetPassword = lazy(routeChunks.resetPassword)
 const LiveJoin = lazy(routeChunks.liveJoin)
 
 const BensBudget = lazy(routeChunks.bensBudget)
@@ -70,10 +68,15 @@ export default function App() {
         <Route path="/practice/ai" element={<AIPractice />} />
         <Route path="/coach" element={<MoneyCoach />} />
         <Route path="/join" element={<JoinPage />} />
+        {/* Student email accounts are gone: students identify with a class code
+            and their name, which is also how they get their progress back on a
+            new device. These two paths existed for a few days, so anyone
+            holding a bookmark or an unopened reset email lands on the join
+            screen instead of a 404. */}
+        <Route path="/signin" element={<Navigate to="/join" replace />} />
+        <Route path="/reset-password" element={<Navigate to="/join" replace />} />
         <Route path="/game" element={<LiveJoin />} />
         <Route path="/student" element={<StudentHome />} />
-        <Route path="/signin" element={<AccountAuth />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/challenge/bens-budget" element={<BensBudget />} />
         <Route path="/challenge/bens-insurance" element={<BensInsurance />} />
         <Route path="/challenge/paystub-detective" element={<PaystubDetective />} />

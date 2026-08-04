@@ -5,7 +5,7 @@ import { Volume2, VolumeX, Menu, X, ArrowRight, ChevronDown } from 'lucide-react
 import { Logo } from './Logo'
 import { LangPicker } from './LangPicker'
 import { AppIcon } from '../lib/icons'
-import { accountDisplayName, useAccount, useAdmin, useStudent } from '../lib/session'
+import { useAdmin, useStudent } from '../lib/session'
 import { useLang } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
 import { totalXp, levelInfo } from '../lib/xp'
@@ -71,11 +71,9 @@ const mobileLinkClass = ({ isActive }: { isActive: boolean }) =>
 /** Overflow menu for the secondary destinations and the sound toggle. */
 function MoreMenu({
   adminUser,
-  hasAccount,
   t,
 }: {
   adminUser: unknown
-  hasAccount: boolean
   t: (k: string) => string
 }) {
   const [open, setOpen] = useState(false)
@@ -126,17 +124,9 @@ function MoreMenu({
           <PrefetchNavLink chunk="practice" to="/practice" className={itemClass}>
             {t('nav.practice')}
           </PrefetchNavLink>
-          {/* The two sign-ins are ruled off from the pages above them so they
-              read as a pair of doors rather than as two more destinations.
-              Accounts are opt-in, which is why they live in the overflow menu at
-              all: nobody needs to be nagged to sign up to take a lesson, but
-              somebody coming back on a new phone needs to find it. */}
+          {/* Ruled off from the pages above it: this is a door for staff, not
+              another destination. Students never sign in here, or anywhere. */}
           <div className="my-1 h-px bg-ink/10" />
-          {!hasAccount && (
-            <PrefetchNavLink chunk="signIn" to="/signin?mode=signin" className={itemClass}>
-              {t('nav.signIn')}
-            </PrefetchNavLink>
-          )}
           {adminUser ? (
             <PrefetchNavLink chunk="admin" to="/admin" className={itemClass}>
               {t('nav.dashboard')}
@@ -159,7 +149,6 @@ function MoreMenu({
 export default function Layout() {
   const { student } = useStudent()
   const { adminUser } = useAdmin()
-  const { account } = useAccount()
   const { t, lang } = useLang()
   const { toast } = useToast()
   const [menuOpen, setMenuOpen] = useState(false)
@@ -274,10 +263,9 @@ export default function Layout() {
   )
 
   // The student's own space is the one persistent call to action on the right.
-  // Order matters: a student in a class sees their class identity, a student
-  // with only an account still gets a way back to their own space, and a
-  // first-time visitor sees the class-code door rather than a sign-up wall.
-  const accountLink = student || account ? (
+  // A student in a class sees their class identity; everyone else sees the
+  // class-code door, which is the only way in.
+  const accountLink = student ? (
     <PrefetchNavLink
       chunk="student"
       to="/student"
@@ -290,7 +278,7 @@ export default function Layout() {
         <AppIcon name={level.tier.icon} className="h-3.5 w-3.5" /> {level.level}
       </span>
       <span className="max-w-[9ch] truncate">
-        {student?.nickname ?? accountDisplayName(account) ?? account?.email?.split('@')[0]}
+        {student?.nickname}
       </span>
     </PrefetchNavLink>
   ) : (
@@ -323,7 +311,7 @@ export default function Layout() {
           {/* Desktop nav */}
           <nav className="hidden items-center gap-1 md:flex" aria-label={t('a11y.primaryNav')}>
             {primaryLinks}
-            <MoreMenu adminUser={adminUser} hasAccount={Boolean(account)} t={t} />
+            <MoreMenu adminUser={adminUser} t={t} />
             <span aria-hidden="true" className="mx-1 h-5 w-px bg-ink/10" />
             {accountLink}
             <LangPicker />
@@ -388,19 +376,7 @@ export default function Layout() {
                   {t('nav.join')}
                 </PrefetchNavLink>
               )}
-              {/* Student sign-in was reachable only from the desktop overflow
-                  menu, so a student coming back on a new phone, which is most of
-                  them, had no way to get their progress back. */}
               <div className="my-1 h-px bg-ink/10" />
-              {!account && (
-                <PrefetchNavLink
-                  chunk="signIn"
-                  to="/signin?mode=signin"
-                  className={mobileLinkClass}
-                >
-                  {t('nav.signIn')}
-                </PrefetchNavLink>
-              )}
               {adminUser ? (
                 <PrefetchNavLink chunk="admin" to="/admin" className={mobileLinkClass}>
                   {t('nav.dashboard')}
