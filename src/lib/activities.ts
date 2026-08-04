@@ -231,6 +231,7 @@ const ACTIVITY_ES: Record<string, { title?: string; description: string }> = {
     description: 'Detectar estafas, fraudes y conocer tus derechos.',
   },
   'wolf-of-wall-street': {
+    title: 'El Lobo de Wall Street',
     description:
       'Invierte $1,000 en 12 empresas, reacciona a las noticias de última hora y sobrevive al mercado. Juega solo o en vivo con tu clase.',
   },
@@ -327,6 +328,7 @@ const ACTIVITY_ZH: Record<string, { title?: string; description: string }> = {
     description: '识别骗局、欺诈，并了解你的权利。',
   },
   'wolf-of-wall-street': {
+    title: '华尔街之狼',
     description: '用 $1,000 投资 12 家公司，应对突发新闻，在市场中生存。可单人游玩或与全班实时对战。',
   },
   'bens-budget': {

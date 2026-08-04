@@ -15,7 +15,7 @@ import { invokeAI, AI_ENABLED, AINotConfiguredError, AIOfflineError } from '../l
 import { offlineAICopy } from '../lib/offlineCopy'
 import { useLang } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
-import { ACTIVITIES } from '../lib/activities'
+import { ACTIVITIES, localizeActivity } from '../lib/activities'
 import { Loading, SkeletonQuestion } from '../components/Skeleton'
 
 interface Q {
@@ -28,7 +28,7 @@ interface Q {
 // Below this score a completed activity counts as a weak area worth practicing.
 const WEAK_SCORE = 80
 
-/** Detect the topics this student struggles with, as human-readable titles. */
+/** Slugs of the activities this student struggles with. */
 function detectWeakTopics(): string[] {
   const progress = loadLocalProgress()
   const weakSlugs = new Set<string>()
@@ -52,16 +52,17 @@ function detectWeakTopics(): string[] {
     }
   }
 
-  const titles: string[] = []
-  for (const slug of weakSlugs) {
-    const title = ACTIVITIES.find((a) => a.slug === slug)?.title
-    if (title) titles.push(title)
-  }
-  return titles
+  // Slugs, not titles. The list is used twice with different needs: shown to
+  // the student, who should read it in their own language, and sent to the
+  // model, which is prompted against the English curriculum. Resolving to a
+  // title here forced both to be English and a Chinese-reading student was told
+  // to practise "Saving & Investing".
+  return [...weakSlugs].filter((slug) => ACTIVITIES.some((a) => a.slug === slug))
 }
 
 // Sensible default so the feature is never a dead end for a fresh student.
-const FALLBACK_TOPICS = ['Budgeting', 'Saving & Investing', 'Credit & Debt']
+// Slugs, for the same reason as above.
+const FALLBACK_TOPICS = ['spending-budgeting', 'saving-investing', 'credit-debt']
 
 export default function AIPractice() {
   const { lang } = useLang()
@@ -70,7 +71,21 @@ export default function AIPractice() {
 
   const weakTopics = useMemo(detectWeakTopics, [])
   const usingFallback = weakTopics.length === 0
-  const topics = usingFallback ? FALLBACK_TOPICS : weakTopics
+  const topicSlugs = usingFallback ? FALLBACK_TOPICS : weakTopics
+  // Two views of the same list: English titles for the model, which is prompted
+  // against the English curriculum, and the reader's language for the chips.
+  const topics = useMemo(
+    () =>
+      topicSlugs.map((slug) => {
+        const meta = ACTIVITIES.find((a) => a.slug === slug)
+        return {
+          slug,
+          en: meta?.title ?? slug,
+          label: meta ? localizeActivity(meta, lang).title : slug,
+        }
+      }),
+    [topicSlugs, lang],
+  )
 
   const [questions, setQuestions] = useState<Q[] | null>(null)
   const [loading, setLoading] = useState(false)
@@ -92,7 +107,9 @@ export default function AIPractice() {
     setCorrectCount(0)
     try {
       const data = await invokeAI<{ questions: Q[] }>('ai-practice', {
-        topics,
+        // English titles: the prompt describes the BFF curriculum in English,
+        // and the function is separately told which language to answer in.
+        topics: topics.map((t) => t.en),
         count: 4,
         lang,
       })
@@ -213,8 +230,8 @@ export default function AIPractice() {
       </p>
       <ul className="mt-3 flex flex-wrap gap-2">
         {topics.map((topic) => (
-          <li key={topic} className="chip border border-ink/15 bg-paper text-ink/80">
-            {topic}
+          <li key={topic.slug} className="chip border border-ink/15 bg-paper text-ink/80">
+            {topic.label}
           </li>
         ))}
       </ul>

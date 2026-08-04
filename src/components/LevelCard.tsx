@@ -2,7 +2,7 @@
 // XP is passed in (computed from local progress or the server leaderboard).
 
 import { Crown, Star } from 'lucide-react'
-import { levelInfo } from '../lib/xp'
+import { levelInfo, tierName } from '../lib/xp'
 import { useLang } from '../lib/i18n'
 
 export default function LevelCard({ xp }: { xp: number }) {
@@ -25,7 +25,7 @@ export default function LevelCard({ xp }: { xp: number }) {
           </span>
           <div>
             <p className="eyebrow text-bff-300">
-              {zh ? '等级' : es ? 'Nivel' : 'Level'} {info.level} · {info.tier.name}
+              {zh ? '等级' : es ? 'Nivel' : 'Level'} {info.level} · {tierName(info.tier, lang)}
             </p>
             <p className="mt-0.5 font-display text-3xl font-extrabold tabular-nums text-gold-400">
               {xp.toLocaleString()} <span className="text-xl text-white">XP</span>

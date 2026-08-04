@@ -4,7 +4,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Trophy, Crown, Medal, RefreshCw } from 'lucide-react'
 import { fetchLeaderboard, type LeaderboardRow } from '../lib/leaderboard'
-import { levelInfo } from '../lib/xp'
+import { levelInfo, tierName } from '../lib/xp'
 import { useLang } from '../lib/i18n'
 import { Loading, SkeletonRow } from './Skeleton'
 
@@ -115,7 +115,7 @@ export default function ClassLeaderboard({
                       </span>
                     )}
                     <span className="ml-2 text-xs font-normal uppercase tracking-wide text-ink/40">
-                      {info.tier.name}
+                      {tierName(info.tier, lang)}
                     </span>
                   </span>
                   <span className="shrink-0 font-display text-sm font-bold tabular-nums text-bff-700">

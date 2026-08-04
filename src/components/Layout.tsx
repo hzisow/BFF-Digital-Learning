@@ -8,7 +8,7 @@ import { AppIcon } from '../lib/icons'
 import { useAdmin, useStudent } from '../lib/session'
 import { useLang } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
-import { totalXp, levelInfo } from '../lib/xp'
+import { totalXp, levelInfo, tierName } from '../lib/xp'
 import { titleForPath } from '../lib/pageTitle'
 import { isSoundOn, setSoundOn, playSound } from '../lib/sound'
 import { celebrate } from '../lib/celebrate'
@@ -226,10 +226,13 @@ export default function Layout() {
     leveledInit.current = true
     if (prev != null && level.level > prev) {
       celebrate('levelup')
+      const rank = tierName(level.tier, lang)
       toast(
-        lang === 'es'
-          ? `¡Subiste de nivel! Ahora eres ${level.tier.name}`
-          : `Level up! You're now a ${level.tier.name}`,
+        lang === 'zh'
+          ? `升级了！你现在是${rank}`
+          : lang === 'es'
+            ? `¡Subiste de nivel! Ahora eres ${rank}`
+            : `Level up! You're now a ${rank}`,
         'success',
       )
     }
@@ -240,7 +243,7 @@ export default function Layout() {
         /* ignore */
       }
     }
-  }, [level.level, level.tier.name, lang, toast])
+  }, [level.level, level.tier, lang, toast])
 
   // Only the four learning destinations stay in the bar. Everything else moves
   // into "More" so the header reads as a short, scannable row instead of a wall
@@ -273,7 +276,7 @@ export default function Layout() {
     >
       <span
         className="inline-flex items-center gap-1 rounded-[4px] bg-bff-100 px-1.5 py-0.5 text-xs font-bold text-bff-700"
-        title={`Level ${level.level} · ${level.tier.name}`}
+        title={`${t('common.level')} ${level.level} · ${tierName(level.tier, lang)}`}
       >
         <AppIcon name={level.tier.icon} className="h-3.5 w-3.5" /> {level.level}
       </span>

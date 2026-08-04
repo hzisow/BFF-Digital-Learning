@@ -29,7 +29,7 @@ import { useLang } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
 import type { ActivityProgress } from '../lib/progress'
 import { getStreak } from '../lib/streak'
-import { totalXp, levelInfo } from '../lib/xp'
+import { totalXp, levelInfo, tierName } from '../lib/xp'
 import { dailyQuests } from '../lib/quests'
 
 // ---------- Path data ----------
@@ -390,7 +390,7 @@ export default function LessonsIndex() {
           <div className="mt-6 flex flex-wrap items-center gap-2">
             <span className="chip bg-white/10 text-white ring-1 ring-inset ring-white/15">
               <AppIcon name={level.tier.icon} className="h-4 w-4" />{' '}
-              {zh ? '等级' : es ? 'Nivel' : 'Level'} {level.level} · {level.tier.name}
+              {zh ? '等级' : es ? 'Nivel' : 'Level'} {level.level} · {tierName(level.tier, lang)}
             </span>
             {streak.current > 0 && (
               <span className="chip bg-orange-100 text-orange-800">

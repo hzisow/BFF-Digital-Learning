@@ -30,6 +30,11 @@ declare global {
 }
 
 const GSI_SRC = 'https://accounts.google.com/gsi/client'
+
+// Thrown from loadGsi(), which runs outside React and so has no access to the
+// language context. The caller swaps it for a translated message; the sentinel
+// is what lets it tell this failure apart from an error text from Google.
+export const GSI_LOAD_FAILED = 'GSI_LOAD_FAILED'
 let gsiPromise: Promise<void> | null = null
 
 function loadGsi(): Promise<void> {
@@ -43,7 +48,7 @@ function loadGsi(): Promise<void> {
     s.onload = () => resolve()
     s.onerror = () => {
       gsiPromise = null
-      reject(new Error('Could not load Google sign-in.'))
+      reject(new Error(GSI_LOAD_FAILED))
     }
     document.head.appendChild(s)
   })
@@ -122,7 +127,19 @@ export default function GoogleSignInButton({
       } catch (err) {
         if (!cancelled) {
           setLoading(false)
-          onError(err instanceof Error ? err.message : 'Google sign-in unavailable.')
+          // Two failure shapes: our own sentinel for "the script never
+          // loaded", which we can phrase properly, and anything Google itself
+          // reports, which is already in the browser's language.
+          const raw = err instanceof Error ? err.message : ''
+          onError(
+            raw && raw !== GSI_LOAD_FAILED
+              ? raw
+              : zh
+                ? '无法加载 Google 登录，请检查网络后重试。'
+                : es
+                  ? 'No se pudo cargar el acceso con Google. Revisa tu conexión e inténtalo de nuevo.'
+                  : 'Could not load Google sign-in. Check your connection and try again.',
+          )
         }
       }
     })()
@@ -130,7 +147,7 @@ export default function GoogleSignInButton({
     return () => {
       cancelled = true
     }
-  }, [onError])
+  }, [onError, es, zh])
 
   // No client ID configured yet, so render nothing (email sign-in still works).
   if (!GOOGLE_CLIENT_ID) return null

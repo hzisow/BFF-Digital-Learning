@@ -39,6 +39,7 @@ const STRINGS: Record<string, Variants> = {
   'nav.more': { en: 'More', es: 'Más', zh: '更多' },
   'nav.practice': { en: 'Practice', es: 'Práctica', zh: '练习' },
   'nav.sound': { en: 'Sound', es: 'Sonido', zh: '音效' },
+  'common.level': { en: 'Level', es: 'Nivel', zh: '等级' },
   'a11y.skip': {
     en: 'Skip to main content',
     es: 'Saltar al contenido principal',

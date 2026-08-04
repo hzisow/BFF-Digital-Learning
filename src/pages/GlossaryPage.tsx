@@ -119,7 +119,11 @@ export default function GlossaryPage() {
               />
             </div>
             <p role="status" className="mt-2 text-left text-sm text-white/60">
-              {filtered.length} {filtered.length === 1 ? 'term' : 'terms'}
+              {lang === 'zh'
+                ? `${filtered.length} 个术语`
+                : lang === 'es'
+                  ? `${filtered.length} ${filtered.length === 1 ? 'término' : 'términos'}`
+                  : `${filtered.length} ${filtered.length === 1 ? 'term' : 'terms'}`}
             </p>
           </div>
         </div>

@@ -26,6 +26,9 @@ export function totalXp(progress: Record<string, ActivityProgress>): number {
 
 export interface LevelTier {
   name: string
+  /** Spanish and Simplified Chinese rank names. See `tierName`. */
+  es: string
+  zh: string
   icon: IconName
   /** Cumulative XP needed to reach this tier. */
   minXp: number
@@ -36,14 +39,28 @@ export interface LevelTier {
 // activities in the catalog (perfect play ≈ 2100 XP): Broker takes near-total
 // completion, and Tycoon is reserved for excellent scores across the board.
 export const LEVELS: LevelTier[] = [
-  { name: 'Penny Starter', icon: 'egg', minXp: 0 },
-  { name: 'Budgeter', icon: 'pie', minXp: 150 },
-  { name: 'Saver', icon: 'piggy', minXp: 400 },
-  { name: 'Investor', icon: 'growth', minXp: 720 },
-  { name: 'Dealmaker', icon: 'handshake', minXp: 1100 },
-  { name: 'Broker', icon: 'briefcase', minXp: 1500 },
-  { name: 'Tycoon', icon: 'trophy', minXp: 1900 },
+  { name: 'Penny Starter', es: 'Aprendiz del Centavo', zh: '攒钱新手', icon: 'egg', minXp: 0 },
+  { name: 'Budgeter', es: 'Presupuestador', zh: '预算达人', icon: 'pie', minXp: 150 },
+  { name: 'Saver', es: 'Ahorrador', zh: '储蓄能手', icon: 'piggy', minXp: 400 },
+  { name: 'Investor', es: 'Inversionista', zh: '投资新星', icon: 'growth', minXp: 720 },
+  { name: 'Dealmaker', es: 'Negociador', zh: '交易高手', icon: 'handshake', minXp: 1100 },
+  { name: 'Broker', es: 'Corredor', zh: '经纪人', icon: 'briefcase', minXp: 1500 },
+  { name: 'Tycoon', es: 'Magnate', zh: '理财大亨', icon: 'trophy', minXp: 1900 },
 ]
+
+/**
+ * A rank in the reader's language.
+ *
+ * These are the one piece of student-facing copy that never got translated:
+ * a Chinese-reading student levelled up and was told, in English, that they
+ * were now a "Penny Starter". They are game ranks rather than finance terms,
+ * so they are localised rather than transliterated.
+ */
+export function tierName(tier: LevelTier, lang: string): string {
+  if (lang === 'es') return tier.es
+  if (lang === 'zh') return tier.zh
+  return tier.name
+}
 
 export interface LevelInfo {
   /** 1-based level number. */
