@@ -428,18 +428,12 @@ export default function Layout() {
           </a>
         </div>
         {/* Build credit. Its own rule below the organisation's row, and quiet
-            enough that it reads as a signature rather than as a second brand. */}
+            enough that it reads as a signature rather than as a second brand.
+            Deliberately not a link: the only outbound link in the footer should
+            be BFF's own. */}
         <div className="border-t border-white/10">
           <p className="mx-auto max-w-6xl px-4 py-3 text-center text-xs text-white/40">
-            Created by{' '}
-            <a
-              href="https://henryzisow.com"
-              target="_blank"
-              rel="noreferrer"
-              className="underline-offset-2 transition-colors hover:text-white/70 hover:underline"
-            >
-              Henry Zisow
-            </a>
+            Created by Henry Zisow
           </p>
         </div>
       </footer>
