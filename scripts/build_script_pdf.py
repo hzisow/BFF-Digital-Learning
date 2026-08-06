@@ -105,6 +105,10 @@ S = {
         "note", fontName=BODY, fontSize=10.5, leading=17, textColor=MUTED,
         spaceAfter=9,
     ),
+    "toc": ParagraphStyle(
+        "toc", fontName=BODY, fontSize=10, leading=14.5, textColor=MUTED,
+        spaceAfter=5, leftIndent=10,
+    ),
     "checkpoint": ParagraphStyle(
         "checkpoint", fontName=BOLD, fontSize=8.5, leading=12, textColor=colors.HexColor("#8a5a12"),
         backColor=colors.HexColor("#fdf4e3"),
@@ -163,37 +167,42 @@ def build() -> None:
         story.append(Image(str(logo), width=1.9 * inch, height=1.9 * inch / 2.264))
         story.append(Spacer(1, 26))
     story.append(Paragraph("Video scripts", S["cover_title"]))
-    story.append(Paragraph(
-        "Nine lessons without a recording, written to match the four that have one.",
-        S["cover_sub"],
-    ))
 
-    story.append(NextPageTemplate("script"))
-    story.append(PageBreak())
-
-    # Front matter. Markdown hard-wraps its paragraphs, so join the lines back up
-    # before setting them or every line becomes its own paragraph.
+    # Markdown hard-wraps its paragraphs, so join the lines back up before
+    # setting them or every line becomes a paragraph of its own.
     for block in re.split(r"\n\s*\n", head.strip()):
         block = block.strip()
         if not block or block.startswith("# "):
             continue
-        if block.startswith("## "):
-            story.append(Paragraph(md_inline(block[3:].strip()), S["h2"]))
-            continue
-        # A numbered list is one paragraph per item, not one per wrapped line.
-        items = re.split(r"\n(?=\d+\.\s)", block)
-        for item in items:
-            story.append(Paragraph(md_inline(" ".join(item.split())), S["note"]))
+        story.append(Paragraph(md_inline(" ".join(block.split())), S["note"]))
 
-    story.append(PageBreak())
-
-    # Each "## n. slug" starts a page.
     parts = re.split(r"^## ", scripts_md, flags=re.M)[1:]
+
+    # Contents, so the pairing of lesson to video title is visible without
+    # turning to the script.
+    story.append(Paragraph("What is in here", S["h2"]))
+    for part in parts:
+        lesson = part.splitlines()[0].strip()
+        t = re.search(r"\*\*Title:\*\*\s*(.+)", part)
+        story.append(Paragraph(
+            f'<b>{md_inline(lesson)}</b><br/>{md_inline(t.group(1).strip()) if t else ""}',
+            S["toc"],
+        ))
+
+    story.append(NextPageTemplate("script"))
+    story.append(PageBreak())
     for i, part in enumerate(parts):
         lines = part.splitlines()
-        heading = lines[0].strip()
-        slug = re.sub(r"^\d+\.\s*", "", heading)
+        lesson = lines[0].strip()
         rest = "\n".join(lines[1:])
+
+        track, slug = "", ""
+        m = re.search(r"\*\*Lesson:\*\*\s*(.+)", rest)
+        if m:
+            rest = rest.replace(m.group(0), "")
+            bits = m.group(1).split("·")
+            track = bits[0].strip()
+            slug = bits[1].strip().strip("`") if len(bits) > 1 else ""
 
         title = ""
         m = re.search(r"\*\*Title:\*\*\s*(.+)", rest)
@@ -208,10 +217,11 @@ def build() -> None:
 
         if i:
             story.append(PageBreak())
-        story.append(Paragraph(slug.upper(), S["slug"]))
-        story.append(Paragraph(md_inline(title or slug), S["title"]))
+        story.append(Paragraph(md_inline(lesson).upper(), S["slug"]))
+        story.append(Paragraph(md_inline(title or lesson), S["title"]))
+        meta = f"{track.upper()}  &nbsp;·&nbsp;  {slug}  &nbsp;·&nbsp;  " if track else ""
         story.append(Paragraph(
-            f"{words} WORDS  &nbsp;·&nbsp;  ABOUT {mins}:{secs:02d} SPOKEN", S["meta"],
+            f"{meta}{words} WORDS  &nbsp;·&nbsp;  ABOUT {mins}:{secs:02d} SPOKEN", S["meta"],
         ))
 
         for para in [p.strip() for p in rest.split("\n\n") if p.strip()]:

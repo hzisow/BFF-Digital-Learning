@@ -427,6 +427,21 @@ export default function Layout() {
             <ArrowRight className="nudge h-4 w-4" aria-hidden="true" />
           </a>
         </div>
+        {/* Build credit. Its own rule below the organisation's row, and quiet
+            enough that it reads as a signature rather than as a second brand. */}
+        <div className="border-t border-white/10">
+          <p className="mx-auto max-w-6xl px-4 py-3 text-center text-xs text-white/40">
+            Created by{' '}
+            <a
+              href="https://henryzisow.com"
+              target="_blank"
+              rel="noreferrer"
+              className="underline-offset-2 transition-colors hover:text-white/70 hover:underline"
+            >
+              Henry Zisow
+            </a>
+          </p>
+        </div>
       </footer>
     </div>
   )

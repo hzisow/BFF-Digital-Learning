@@ -1,36 +1,22 @@
-# Video scripts for the nine lessons without a recording
+# Video scripts
 
-Nine of the thirteen lessons have no video. These are the scripts for them,
-written to match the four already recorded.
+Scripts for the nine BFF Academy lessons that do not have a recording yet, four
+core and five electives. Written to match the four already recorded: about three
+minutes each, three or four checkpoint beats, and a title in the form
+"Watch: <the question the video answers>".
 
-## What they were matched against
+Beats are marked `[CHECKPOINT]` rather than timed. Timings have to come off a
+real transcript, because a mark here says where a beat sits in the writing, not
+where it lands in a recording.
 
-The recorded four run 2:11 to 3:40 and carry three or four checkpoints each.
-Their titles all take the form "Watch: <the question the video answers>". The
-voice is second person, leans on dollar figures a student can picture, and
-never explains a term without immediately using it in an example.
-
-These scripts target **about 3 minutes**, roughly 430 words at a normal speaking
-pace. Each one is built around three or four beats, and the beats are marked
-`[CHECKPOINT]` so the questions can be written once the recording exists.
-
-## How to use one
-
-1. Record it. Presenter is whoever is on camera; the existing four are Alvin Lee.
-2. Upload to YouTube. Unlisted is fine. The ID is the part after `watch?v=`.
-3. Paste the real transcript with timings into a session, and the checkpoint
-   questions plus their `at:` seconds get written from it. Do not set timings
-   from this document: the marks below are where a beat *lands in the script*,
-   not where it lands in a recording, and the two will not match.
-4. Add the `video` section to `src/content/lessons/<slug>.ts` **three times**,
-   once each for English, Spanish and Chinese. Same `videoId`, same `at:`
-   values, translated question text. See STATUS.md for the exact shape.
-
-House rules that apply here as everywhere: no em dashes, no emoji.
+The recording and wiring steps are in STATUS.md, under "Adding the rest of the
+videos later".
 
 ---
 
-## 1. earning-income
+## Earning Income
+
+**Lesson:** Core lesson 1  ·  `earning-income`
 
 **Title:** Watch: Where Your Money Actually Comes From
 
@@ -78,7 +64,9 @@ a mistake before it costs you.
 
 ---
 
-## 2. financial-decision-making
+## Financial Decision-Making
+
+**Lesson:** Core lesson 6  ·  `financial-decision-making`
 
 **Title:** Watch: Every Choice Has a Price
 
@@ -127,7 +115,9 @@ make defensible ones, which is the actual goal.
 
 ---
 
-## 3. financial-planning
+## Financial Planning
+
+**Lesson:** Core lesson 7  ·  `financial-planning`
 
 **Title:** Watch: Turning "Someday" Into a Number and a Date
 
@@ -175,7 +165,9 @@ adjusting a plan instead of starting from nothing.
 
 ---
 
-## 4. consumer-protection
+## Consumer Protection
+
+**Lesson:** Core lesson 8  ·  `consumer-protection`
 
 **Title:** Watch: How to Spot a Scam Before It Costs You
 
@@ -225,7 +217,9 @@ and never let someone else's urgency become yours.
 
 ---
 
-## 5. first-paycheck
+## Your First Paycheck
+
+**Lesson:** Elective  ·  `first-paycheck`
 
 **Title:** Watch: Where Did My Paycheck Go?
 
@@ -274,7 +268,9 @@ Your paystub is not paperwork. It is a receipt for your own work.
 
 ---
 
-## 6. taxes-deep-dive
+## Taxes Deep-Dive
+
+**Lesson:** Elective  ·  `taxes-deep-dive`
 
 **Title:** Watch: How Tax Brackets Really Work
 
@@ -324,7 +320,9 @@ the IRS waiting for you to ask.
 
 ---
 
-## 7. paying-for-college
+## Paying for College
+
+**Lesson:** Elective  ·  `paying-for-college`
 
 **Title:** Watch: The Sticker Price Is Not the Price
 
@@ -375,7 +373,9 @@ what does it realistically pay?
 
 ---
 
-## 8. entrepreneurship
+## Entrepreneurship & Side Hustles
+
+**Lesson:** Elective  ·  `entrepreneurship`
 
 **Title:** Watch: Start Embarrassingly Small
 
@@ -423,7 +423,9 @@ months of planning a business you never launched.
 
 ---
 
-## 9. crypto-and-scams
+## Crypto & Modern Money Traps
+
+**Lesson:** Elective  ·  `crypto-and-scams`
 
 **Title:** Watch: "Get Rich Quick" Is Always the Tell
 
