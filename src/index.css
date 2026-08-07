@@ -38,18 +38,6 @@
     --dur-move: 220ms;
   }
 
-  /* No rubber-banding past the ends of the page. The default lets a phone or a
-     trackpad drag the whole document up past the footer and back, which shows a
-     strip of nothing under it and reads as a rendering fault rather than as a
-     gesture. Set on both elements: the spec applies it from the viewport-defining
-     element, and some iOS versions only honour it on body.
-
-     Known cost: this also turns off pull-to-refresh on Android Chrome. That is
-     the same gesture, and there is no way to keep one without the other. */
-  html,
-  body {
-    overscroll-behavior-y: none;
-  }
   html {
     @apply font-body text-ink antialiased;
   }
