@@ -99,6 +99,7 @@ const lesson: Lesson = {
      'Watch this quick BFF video on where taxes go and why a raise never leaves you with less. Heads up, it pauses to quiz you along the way, so pay attention!',
    videoId: 'Uat5nnzQgP8',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 47,
@@ -377,6 +378,7 @@ const lesson: Lesson = {
      'Mira este video corto de BFF sobre a dónde van los impuestos y por qué un aumento nunca te deja con menos. Ojo, se detiene para hacerte preguntas, así que presta atención.',
    videoId: 'Uat5nnzQgP8',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 47,
@@ -656,6 +658,7 @@ const lesson: Lesson = {
      '看看这个 BFF 短视频，了解税钱花在哪里，以及为什么加薪绝不会让你拿得更少。注意，视频中途会暂停提问，认真看哦！',
    videoId: 'Uat5nnzQgP8',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 47,

@@ -121,6 +121,7 @@ const lesson: Lesson = {
      'Watch this quick BFF video on the two kinds of income and what actually moves your pay. Heads up, it pauses to quiz you along the way, so pay attention!',
    videoId: 'cq05mzpGdFk',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 47,
@@ -440,6 +441,7 @@ const lesson: Lesson = {
      'Mira este video corto de BFF sobre los dos tipos de ingresos y qué mueve de verdad tu paga. Ojo, se detiene para hacerte preguntas, así que presta atención.',
    videoId: 'cq05mzpGdFk',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 47,
@@ -762,6 +764,7 @@ const lesson: Lesson = {
      '看看这个 BFF 短视频，了解两种收入以及真正影响你薪水的因素。注意，视频中途会暂停提问，认真看哦！',
    videoId: 'cq05mzpGdFk',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 47,

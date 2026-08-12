@@ -35,6 +35,16 @@ export interface VideoSection {
   videoId: string
   /** Attribution shown under the player, e.g. "Two Cents · PBS Digital Studios". */
   source: string
+  /**
+   * Width divided by height of the SOURCE footage, when it is not 16:9.
+   *
+   * YouTube's player pads a non-matching video rather than cropping it, so a
+   * 3:2 recording inside a 16:9 frame gets black pillars down both sides. The
+   * fix is to make the frame match the footage; there is no way to ask the
+   * IFrame API what the ratio is, so it has to be stated here. Defaults to
+   * 16 / 9.
+   */
+  aspect?: number
   questions: VideoQuestion[]
 }
 

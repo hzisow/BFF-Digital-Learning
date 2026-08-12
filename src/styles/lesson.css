@@ -466,8 +466,11 @@
      slot shrinks so the Continue button keeps a comfortable tap target. */
   .lz-actionbar-inner { gap: 10px; padding: 12px 14px; }
   .lz-actionbar-spacer { width: 40px; }
-  .lz-btn--compact span { display: none; }
+  /* Back keeps its word on a phone. As a bare 40px arrow next to a large
+     Continue it read as decoration, and students did not find it. Dropping the
+     minutes-left figure under 430px freed the room for it. */
   .lz-btn--compact { padding-left: 12px; padding-right: 12px; }
+  .lz-btn--compact span { font-size: 12px; }
   .lz-meter-label { font-size: 9px; letter-spacing: 0.1em; }
 }
 

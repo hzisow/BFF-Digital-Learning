@@ -110,6 +110,7 @@ const lesson: Lesson = {
      'Watch this quick BFF video on opportunity cost and the three tools that make a money decision easier. Heads up, it pauses to quiz you along the way, so pay attention!',
    videoId: 'rZ2zfIRNmNk',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 50,
@@ -428,6 +429,7 @@ const lesson: Lesson = {
      'Mira este video corto de BFF sobre el costo de oportunidad y las tres herramientas que facilitan una decisión de dinero. Ojo, se detiene para hacerte preguntas, así que presta atención.',
    videoId: 'rZ2zfIRNmNk',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 50,
@@ -746,6 +748,7 @@ const lesson: Lesson = {
      '看看这个 BFF 短视频，了解机会成本以及让花钱决定更容易的三个工具。注意，视频中途会暂停提问，认真看哦！',
    videoId: 'rZ2zfIRNmNk',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 50,

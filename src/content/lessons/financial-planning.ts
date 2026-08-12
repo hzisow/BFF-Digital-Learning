@@ -114,6 +114,7 @@ const lesson: Lesson = {
      'Watch this quick BFF video on ranking your goals and making them specific enough to track. Heads up, it pauses to quiz you along the way, so pay attention!',
    videoId: 'HdqDwHZQlqc',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 63,
@@ -416,6 +417,7 @@ const lesson: Lesson = {
      'Mira este video corto de BFF sobre cómo ordenar tus metas y hacerlas lo bastante específicas para seguirlas. Ojo, se detiene para hacerte preguntas, así que presta atención.',
    videoId: 'HdqDwHZQlqc',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 63,
@@ -736,6 +738,7 @@ const lesson: Lesson = {
      '看看这个 BFF 短视频，学会给目标排序，并让它具体到可以追踪。注意，视频中途会暂停提问，认真看哦！',
    videoId: 'HdqDwHZQlqc',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 63,

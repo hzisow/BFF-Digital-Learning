@@ -7,12 +7,22 @@
 // "Loading…" once rather than reading a wall of empty boxes. The `Loading`
 // wrapper below does that for you.
 
+import type { CSSProperties } from 'react'
 import type { ReactNode } from 'react'
 
-export function Skeleton({ className = '' }: { className?: string }) {
+export function Skeleton({
+  className = '',
+  style,
+}: {
+  className?: string
+  /** For a placeholder that has to match a measured shape, such as a video's
+   *  aspect ratio, which cannot be expressed as a fixed utility class. */
+  style?: CSSProperties
+}) {
   return (
     <div
       className={`animate-pulse rounded-[6px] bg-ink/[0.07] ${className}`}
+      style={style}
       aria-hidden="true"
     />
   )

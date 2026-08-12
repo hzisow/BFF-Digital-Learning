@@ -269,6 +269,7 @@ function SectionView({
             key={section.videoId}
             videoId={section.videoId}
             questions={section.questions}
+            aspect={section.aspect}
             onDone={onVideoDone}
           />
           <p style={{ marginTop: '12px', fontSize: '12px', color: 'var(--lz-muted)' }}>
@@ -865,7 +866,16 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
       <div className="lz-actionbar">
         <div className="lz-actionbar-inner">
           {phase === 'lesson' && sectionIndex > 0 ? (
-            <button type="button" onClick={goBack} className="lz-btn lz-btn--compact">
+            <button
+              type="button"
+              onClick={goBack}
+              // The label is hidden by CSS on a phone to save room, and
+              // `display: none` takes it out of the accessibility tree with it,
+              // which left this button with no accessible name at all. The
+              // aria-label is what it is called either way.
+              aria-label={tr({ en: 'Back', es: 'Atrás', zh: '返回' })}
+              className="lz-btn lz-btn--compact"
+            >
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               <span>{tr({ en: 'Back', es: 'Atrás', zh: '返回' })}</span>
             </button>

@@ -99,6 +99,7 @@ const lesson: Lesson = {
      'Watch this quick BFF video on finding a problem worth solving and the one formula you cannot skip. Heads up, it pauses to quiz you along the way, so pay attention!',
    videoId: 'amnwyA9Mb6o',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 57,
@@ -395,6 +396,7 @@ const lesson: Lesson = {
      'Mira este video corto de BFF sobre cómo encontrar un problema que valga la pena resolver y la única fórmula que no puedes saltarte. Ojo, se detiene para hacerte preguntas, así que presta atención.',
    videoId: 'amnwyA9Mb6o',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 57,
@@ -692,6 +694,7 @@ const lesson: Lesson = {
      '看看这个 BFF 短视频，学会找到值得解决的问题，以及那条绝不能跳过的公式。注意，视频中途会暂停提问，认真看哦！',
    videoId: 'amnwyA9Mb6o',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 57,

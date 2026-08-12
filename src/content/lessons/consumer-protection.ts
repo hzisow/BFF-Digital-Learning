@@ -122,6 +122,7 @@ const lesson: Lesson = {
      'Watch this quick BFF video on phishing, the red flags every scam shares, and who has your back. Heads up, it pauses to quiz you along the way, so pay attention!',
    videoId: 't7tLcoyRBOc',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 43,
@@ -441,6 +442,7 @@ const lesson: Lesson = {
      'Mira este video corto de BFF sobre el phishing, las señales que comparten todas las estafas y quién te respalda. Ojo, se detiene para hacerte preguntas, así que presta atención.',
    videoId: 't7tLcoyRBOc',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 43,
@@ -773,6 +775,7 @@ const lesson: Lesson = {
      '看看这个 BFF 短视频，认识钓鱼诈骗、所有骗局共有的危险信号，以及谁在保护你。注意，视频中途会暂停提问，认真看哦！',
    videoId: 't7tLcoyRBOc',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 43,

@@ -99,6 +99,7 @@ const lesson: Lesson = {
      'Watch this quick BFF video on what crypto actually is and how the traps around it work. Heads up, it pauses to quiz you along the way, so pay attention!',
    videoId: 'q-IzijaDfZI',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 62,
@@ -398,6 +399,7 @@ const lesson: Lesson = {
      'Mira este video corto de BFF sobre qué es realmente el cripto y cómo funcionan las trampas a su alrededor. Ojo, se detiene para hacerte preguntas, así que presta atención.',
    videoId: 'q-IzijaDfZI',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 62,
@@ -698,6 +700,7 @@ const lesson: Lesson = {
      '看看这个 BFF 短视频，弄清加密货币到底是什么，以及围绕它的那些陷阱怎么运作。注意，视频中途会暂停提问，认真看哦！',
    videoId: 'q-IzijaDfZI',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 62,

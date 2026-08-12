@@ -307,10 +307,13 @@ function FallbackQuestions({
 export default function VideoCheckpoint({
   videoId,
   questions,
+  aspect = 16 / 9,
   onDone,
 }: {
   videoId: string
   questions: VideoQuestion[]
+  /** Width / height of the source footage. See VideoSection.aspect. */
+  aspect?: number
   onDone: () => void
 }) {
   const { lang } = useLang()
@@ -490,17 +493,17 @@ export default function VideoCheckpoint({
     <div>
       {/* Player + question overlay */}
       <div className="relative overflow-hidden rounded-[8px] border border-ink/10 bg-ink shadow-card">
-        <div className="aspect-video w-full">
+        <div className="w-full" style={{ aspectRatio: String(aspect) }}>
           <div ref={hostRef} className="h-full w-full" />
         </div>
         {!ready && (
-          // Player-shaped placeholder: the 16:9 block keeps the frame while the
-          // YouTube iframe boots, instead of a bare line of text.
+          // Player-shaped placeholder, at the video's own ratio, so the frame
+          // does not resize the moment the YouTube iframe boots.
           <Loading
             label={zh ? '正在加载视频…' : es ? 'Cargando video…' : 'Loading video…'}
             className="absolute inset-0 bg-paper"
           >
-            <Skeleton className="aspect-video w-full rounded-none" />
+            <Skeleton className="w-full rounded-none" style={{ aspectRatio: String(aspect) }} />
           </Loading>
         )}
         {active != null && (

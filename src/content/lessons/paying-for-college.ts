@@ -99,6 +99,7 @@ const lesson: Lesson = {
      'Watch this quick BFF video on net price, the FAFSA, and reading an award letter properly. Heads up, it pauses to quiz you along the way, so pay attention!',
    videoId: 'jrg1XZYTpKM',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 44,
@@ -401,6 +402,7 @@ const lesson: Lesson = {
      'Mira este video corto de BFF sobre el precio neto, la FAFSA y cómo leer bien una carta de ayuda financiera. Ojo, se detiene para hacerte preguntas, así que presta atención.',
    videoId: 'jrg1XZYTpKM',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 44,
@@ -704,6 +706,7 @@ const lesson: Lesson = {
      '看看这个 BFF 短视频，了解净价、FAFSA，以及如何正确读懂助学金通知书。注意，视频中途会暂停提问，认真看哦！',
    videoId: 'jrg1XZYTpKM',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 44,

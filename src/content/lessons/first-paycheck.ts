@@ -92,6 +92,7 @@ const lesson: Lesson = {
      'Watch this quick BFF video on the gap between what you earn and what lands in your account. Heads up, it pauses to quiz you along the way, so pay attention!',
    videoId: 'xNkc1us-WlY',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 43,
@@ -380,6 +381,7 @@ const lesson: Lesson = {
      'Mira este video corto de BFF sobre la diferencia entre lo que ganas y lo que llega a tu cuenta. Ojo, se detiene para hacerte preguntas, así que presta atención.',
    videoId: 'xNkc1us-WlY',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 43,
@@ -669,6 +671,7 @@ const lesson: Lesson = {
      '看看这个 BFF 短视频，弄清你赚到的钱和真正到账的钱之间差在哪里。注意，视频中途会暂停提问，认真看哦！',
    videoId: 'xNkc1us-WlY',
    source: 'BFF Classroom',
+   aspect: 3 / 2,
    questions: [
      {
        at: 43,
