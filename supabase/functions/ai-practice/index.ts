@@ -69,14 +69,25 @@ Deno.serve(async (req) => {
       n === 1 ? '' : 's'
     } that help a student review these topics they are struggling with: ${topicsText}. Spread the questions across the topics when there is more than one. Each question needs exactly 4 options and a single correct answer. Set answerIndex to the 0-based index of the correct option.`
 
+    // Six questions with four options and an explanation each, in Spanish or
+    // Chinese, do not reliably fit in 1500. A schema-forced answer cannot be
+    // continued the way prose can, since half an object will not parse, so the
+    // budget has to be big enough the first time.
     const text = await callAI({
       system,
       messages: [{ role: 'user', content: prompt }],
-      maxTokens: 1500,
+      maxTokens: 4000,
       outputSchema,
     })
 
-    const parsed = JSON.parse(text)
+    let parsed: unknown
+    try {
+      parsed = JSON.parse(text)
+    } catch {
+      // Truncated JSON. An empty set sends the student to the friendly "no
+      // practice available" state instead of a raw parse error.
+      return json({ questions: [] })
+    }
     return json(parsed)
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err)

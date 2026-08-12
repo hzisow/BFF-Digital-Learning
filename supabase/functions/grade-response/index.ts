@@ -78,14 +78,34 @@ Deno.serve(async (req) => {
       .filter(Boolean)
       .join('\n')
 
+    // A schema-forced answer cannot be continued, since half an object will not
+    // parse, so the budget has to cover a summary plus two lists on the first
+    // try. 700 left no room for Chinese, where the same feedback runs longer.
     const raw = await callAI({
       system,
       messages: [{ role: 'user', content: userContent }],
-      maxTokens: 700,
+      maxTokens: 2000,
       outputSchema,
     })
 
-    const parsed = JSON.parse(raw)
+    let parsed: unknown
+    try {
+      parsed = JSON.parse(raw)
+    } catch {
+      // Truncated JSON. A student who wrote a thoughtful answer should see a
+      // gradeless card asking for a retry, not a parse error.
+      return json({
+        score: null,
+        summary:
+          lang === 'zh'
+            ? '这次没能给出反馈，请再试一次。'
+            : lang === 'es'
+              ? 'No pude dar comentarios esta vez. Inténtalo de nuevo.'
+              : 'I could not finish the feedback that time. Give it another try.',
+        strengths: [],
+        improve: [],
+      })
+    }
     return json(parsed)
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
