@@ -340,16 +340,32 @@ export default function VideoCheckpoint({
 
   const sorted = useRef([...questions].sort((a, b) => a.at - b.at)).current
   const allAnswered = answered.every(Boolean)
-  const watchDone = allAnswered && (ended || sorted.length > 0)
 
-  // Fire onDone exactly once when requirements are met.
+  // Watched to the end, not merely quizzed to the end.
+  //
+  // This used to read `ended || sorted.length > 0`, and since a video with any
+  // questions always satisfies the right-hand side, the `ended` requirement was
+  // dead. Answering the last checkpoint unlocked Continue with minutes of the
+  // video left to run.
+  //
+  // The percentage is a safety net rather than the main test: ENDED does not
+  // always arrive, and a checkpoint sitting a second from the end can be
+  // answered after playback has already stopped. maxWatched only moves forward
+  // and the poll loop rewinds any seek past it, so 97% cannot be reached by
+  // skipping.
+  const finishedWatching = ended || (duration > 0 && watchedPct >= 97)
+  const watchDone = allAnswered && finishedWatching
+
+  // Fire onDone exactly once when requirements are met. A video with no
+  // questions needs only the watching half, which `every` on an empty array
+  // gives for free.
   useEffect(() => {
-    if ((watchDone || (sorted.length === 0 && ended)) && !doneFiredRef.current) {
+    if (watchDone && !doneFiredRef.current) {
       doneFiredRef.current = true
       onDone()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [watchDone, ended])
+  }, [watchDone])
 
   // When a question overlay opens, move keyboard focus to its first option so
   // screen-reader / keyboard users land inside the required dialog.
@@ -595,6 +611,18 @@ export default function VideoCheckpoint({
             <span className="flex items-center gap-1 text-green-700">
               {zh ? '所有检查都完成了，请在下方继续！' : es ? '¡Listos todos los controles, continúa abajo!' : 'All checks done, continue below!'}{' '}
               <Check className="h-3.5 w-3.5" aria-hidden="true" />
+            </span>
+          ) : allAnswered ? (
+            // Every question is done but the video is still running. Say which
+            // half is outstanding, or the student reads a locked Continue as a
+            // bug rather than as the last minute of the video.
+            <span className="flex items-center gap-1">
+              <Zap className="h-3.5 w-3.5" aria-hidden="true" />{' '}
+              {zh
+                ? '看完整段视频后才能继续。'
+                : es
+                  ? 'Termina el video para continuar.'
+                  : 'Finish the video to continue.'}
             </span>
           ) : (
             <span className="flex items-center gap-1">
