@@ -104,6 +104,73 @@ const lesson: Lesson = {
  },
  },
  {
+   type: 'video',
+   heading: 'Watch: Every Choice Has a Price',
+   body:
+     'Watch this quick BFF video on opportunity cost and the three tools that make a money decision easier. Heads up, it pauses to quiz you along the way, so pay attention!',
+   videoId: 'rZ2zfIRNmNk',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 50,
+       question:
+         'What is opportunity cost?',
+       options: [
+         'The sales tax added at checkout',
+         'The value of the thing you gave up to get what you chose',
+         'The interest you pay on a loan',
+         'The difference between the sticker price and what you pay',
+       ],
+       answerIndex: 1,
+       explanation:
+         'The shoes did not just cost you money, they cost you the concert ticket you did not buy. That reframe means you are comparing two real things instead of comparing one thing to a number.',
+     },
+     {
+       at: 74,
+       question:
+         'Headphones for $40 that last four months, or $80 that last three years. Which is more expensive?',
+       options: [
+         'The $80 pair, since it costs more up front',
+         'The $40 pair, because you keep replacing them',
+         'They cost the same',
+         'It cannot be worked out',
+       ],
+       answerIndex: 1,
+       explanation:
+         "Comparison shopping is not just checking two prices. Alvin's point is that a cheap thing you replace over and over costs more than the pricier thing that lasts.",
+     },
+     {
+       at: 102,
+       question:
+         'What is the 24 hour rule for?',
+       options: [
+         'Getting a refund after you buy something',
+         'Letting the urge to buy pass before you commit',
+         'Comparing prices at three different stores',
+         'Waiting for a sale to start',
+       ],
+       answerIndex: 1,
+       explanation:
+         'The urge is real and it is also temporary. Companies design checkout flows specifically to catch you inside it, so waiting a day kills a surprising number of buys you would have regretted.',
+     },
+     {
+       at: 155,
+       question:
+         'EasyBank is free but has 12 ATMs and a bad app. SecurePlus costs $5 a month with ATMs everywhere. Which is better?',
+       options: [
+         'SecurePlus, since a better app is worth it',
+         'EasyBank, because free always wins',
+         'It depends on how you actually use a bank',
+         'Neither is worth opening',
+       ],
+       answerIndex: 2,
+       explanation:
+         "Alvin's answer is that it depends entirely on you. If you take out cash twice a week, $60 a year buys real convenience. If you never touch cash, you just found $60.",
+     },
+   ],
+ },
+
+ {
  type: 'content',
  heading: 'Evaluating Financial Services',
  body:
@@ -355,6 +422,73 @@ const lesson: Lesson = {
  },
  },
  {
+   type: 'video',
+   heading: 'Míralo: Toda elección tiene un precio',
+   body:
+     'Mira este video corto de BFF sobre el costo de oportunidad y las tres herramientas que facilitan una decisión de dinero. Ojo, se detiene para hacerte preguntas, así que presta atención.',
+   videoId: 'rZ2zfIRNmNk',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 50,
+       question:
+         '¿Qué es el costo de oportunidad?',
+       options: [
+         'El impuesto que se suma al pagar',
+         'El valor de aquello a lo que renunciaste para obtener lo que elegiste',
+         'El interés que pagas por un préstamo',
+         'La diferencia entre el precio de lista y lo que pagas',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Los tenis no solo te costaron dinero, te costaron el boleto del concierto que no compraste. Ese cambio de enfoque hace que compares dos cosas reales en lugar de comparar una cosa contra un número.',
+     },
+     {
+       at: 74,
+       question:
+         'Audífonos de $40 que duran cuatro meses, o de $80 que duran tres años. ¿Cuáles salen más caros?',
+       options: [
+         'Los de $80, porque cuestan más al inicio',
+         'Los de $40, porque los sigues reemplazando',
+         'Cuestan lo mismo',
+         'No se puede calcular',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Comparar no es solo mirar dos precios. El punto de Alvin es que algo barato que reemplazas una y otra vez sale más caro que lo costoso que dura.',
+     },
+     {
+       at: 102,
+       question:
+         '¿Para qué sirve la regla de las 24 horas?',
+       options: [
+         'Para pedir un reembolso después de comprar',
+         'Para dejar pasar el impulso antes de comprometerte',
+         'Para comparar precios en tres tiendas',
+         'Para esperar a que empiece una oferta',
+       ],
+       answerIndex: 1,
+       explanation:
+         'El impulso es real y también es pasajero. Las empresas diseñan sus procesos de pago justo para atraparte dentro de él, así que esperar un día evita muchas compras de las que te arrepentirías.',
+     },
+     {
+       at: 155,
+       question:
+         'EasyBank es gratis pero tiene 12 cajeros y una app mala. SecurePlus cuesta $5 al mes con cajeros por todos lados. ¿Cuál es mejor?',
+       options: [
+         'SecurePlus, porque una mejor app lo vale',
+         'EasyBank, porque lo gratis siempre gana',
+         'Depende de cómo uses el banco en realidad',
+         'Ninguno vale la pena',
+       ],
+       answerIndex: 2,
+       explanation:
+         'La respuesta de Alvin es que depende completamente de ti. Si sacas efectivo dos veces por semana, $60 al año te compran comodidad real. Si nunca usas efectivo, acabas de encontrarte $60.',
+     },
+   ],
+ },
+
+ {
  type: 'content',
  heading: 'Cómo evaluar servicios financieros',
  body:
@@ -605,6 +739,73 @@ const lesson: Lesson = {
  '在购买前跨不同商家比较价格和功能，这就是货比三家，它刚刚为Deja省下了一半的价钱。',
  },
  },
+ {
+   type: 'video',
+   heading: '观看：每个选择都有代价',
+   body:
+     '看看这个 BFF 短视频，了解机会成本以及让花钱决定更容易的三个工具。注意，视频中途会暂停提问，认真看哦！',
+   videoId: 'rZ2zfIRNmNk',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 50,
+       question:
+         '什么是机会成本？',
+       options: [
+         '结账时加收的销售税',
+         '为了得到你选的东西而放弃的那样东西的价值',
+         '贷款要付的利息',
+         '标价和实付价之间的差额',
+       ],
+       answerIndex: 1,
+       explanation:
+         '那双鞋花掉的不只是钱，还有你没买成的演唱会门票。这个视角的转换意味着你在比较两样真实的东西，而不是拿一样东西去和一个数字比。',
+     },
+     {
+       at: 74,
+       question:
+         '$40 的耳机能用四个月，$80 的能用三年。哪个更贵？',
+       options: [
+         '$80 那副，因为一开始花得多',
+         '$40 那副，因为你要不停地换',
+         '一样贵',
+         '算不出来',
+       ],
+       answerIndex: 1,
+       explanation:
+         '比价不只是看两个价格。Alvin 的意思是：便宜但要反复更换的东西，总花费比贵一点却耐用的更高。',
+     },
+     {
+       at: 102,
+       question:
+         '24 小时法则是干什么用的？',
+       options: [
+         '买完之后申请退款',
+         '让购买冲动先过去，再决定要不要买',
+         '去三家店比价',
+         '等打折开始',
+       ],
+       answerIndex: 1,
+       explanation:
+         '冲动是真实的，也是短暂的。商家专门设计结账流程来趁你冲动时下手，所以等一天能省下很多你事后会后悔的消费。',
+     },
+     {
+       at: 155,
+       question:
+         'EasyBank 免费但只有 12 台 ATM、App 很差。SecurePlus 每月 $5，ATM 到处都是。哪个更好？',
+       options: [
+         'SecurePlus，好用的 App 值这个钱',
+         'EasyBank，免费永远赢',
+         '取决于你实际怎么用银行',
+         '两个都不值得开',
+       ],
+       answerIndex: 2,
+       explanation:
+         'Alvin 的答案是：完全取决于你。如果你每周取两次现金，一年 $60 换来的是实实在在的方便。如果你从不用现金，那你等于白赚了 $60。',
+     },
+   ],
+ },
+
  {
  type: 'content',
  heading: '评估金融服务',

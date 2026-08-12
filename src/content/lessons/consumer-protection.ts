@@ -116,6 +116,73 @@ const lesson: Lesson = {
  },
  },
  {
+   type: 'video',
+   heading: 'Watch: How to Spot a Scam Before It Costs You',
+   body:
+     'Watch this quick BFF video on phishing, the red flags every scam shares, and who has your back. Heads up, it pauses to quiz you along the way, so pay attention!',
+   videoId: 't7tLcoyRBOc',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 43,
+       question:
+         'What is phishing?',
+       options: [
+         'A virus that spreads through email attachments',
+         'Someone pretending to be an organization you trust to get something out of you',
+         'A company selling your data to advertisers',
+         'A fake product listing on a shopping site',
+       ],
+       answerIndex: 1,
+       explanation:
+         "Usually they are after your password, sometimes your money, often both. Alvin's point is that it works on smart people constantly, because it is not testing intelligence.",
+     },
+     {
+       at: 70,
+       question:
+         'Which of these is a red flag on an email from your "bank"?',
+       options: [
+         'It addresses you by name',
+         'It carries the company logo',
+         'It gives you four hours before your account is locked',
+         'It arrives on a weekday',
+       ],
+       answerIndex: 2,
+       explanation:
+         'Urgency is the tell, because a real bank does not give you four hours. Threats stop you checking, and an address like bank.co instead of bank.com is almost right on purpose.',
+     },
+     {
+       at: 95,
+       question:
+         'Which agency handles complaints about banks, lenders, and debt collectors?',
+       options: [
+         'The Federal Trade Commission',
+         'The Consumer Financial Protection Bureau',
+         'The Better Business Bureau',
+         'The Federal Reserve',
+       ],
+       answerIndex: 1,
+       explanation:
+         'The CFPB covers banks, lenders and debt collectors. The FTC takes scam reports more broadly, and the BBB tracks complaints so you can look up a business before handing over money.',
+     },
+     {
+       at: 130,
+       question:
+         'Why use a different password on every site?',
+       options: [
+         'Sites require it now',
+         'So one leak does not unlock your whole life',
+         'It makes passwords easier to remember',
+         'It speeds up how fast you can log in',
+       ],
+       answerIndex: 1,
+       explanation:
+         'One breach somewhere should not open everything else. Alvin pairs it with two-factor authentication, which makes a stolen password useless on its own, and a free yearly credit report check.',
+     },
+   ],
+ },
+
+ {
  type: 'content',
  heading: 'Identity Theft',
  body:
@@ -367,6 +434,73 @@ const lesson: Lesson = {
  'Ese mensaje acumula varias señales de alerta: urgencia falsa con cuenta regresiva, un enlace sospechoso y un dominio.xyz raro. Las empresas reales no te presionan así. Si tienes dudas, bórralo y entra tú mismo al sitio web oficial.',
  },
  },
+ {
+   type: 'video',
+   heading: 'Míralo: Cómo detectar una estafa antes de que te cueste',
+   body:
+     'Mira este video corto de BFF sobre el phishing, las señales que comparten todas las estafas y quién te respalda. Ojo, se detiene para hacerte preguntas, así que presta atención.',
+   videoId: 't7tLcoyRBOc',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 43,
+       question:
+         '¿Qué es el phishing?',
+       options: [
+         'Un virus que se propaga por archivos adjuntos',
+         'Alguien que finge ser una organización en la que confías para sacarte algo',
+         'Una empresa que vende tus datos a anunciantes',
+         'Un producto falso en una tienda en línea',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Normalmente buscan tu contraseña, a veces tu dinero y muchas veces ambos. El punto de Alvin es que funciona con gente inteligente todo el tiempo, porque no está midiendo tu inteligencia.',
+     },
+     {
+       at: 70,
+       question:
+         '¿Cuál de estas es una señal de alerta en un correo de tu "banco"?',
+       options: [
+         'Que te llame por tu nombre',
+         'Que traiga el logo de la empresa',
+         'Que te dé cuatro horas antes de bloquear tu cuenta',
+         'Que llegue entre semana',
+       ],
+       answerIndex: 2,
+       explanation:
+         'La urgencia es la señal, porque un banco real no te da cuatro horas. Las amenazas te impiden verificar, y una dirección como banco.co en vez de banco.com está casi bien a propósito.',
+     },
+     {
+       at: 95,
+       question:
+         '¿Qué agencia atiende quejas sobre bancos, prestamistas y cobradores?',
+       options: [
+         'La Comisión Federal de Comercio (FTC)',
+         'La Oficina de Protección Financiera del Consumidor (CFPB)',
+         'El Better Business Bureau (BBB)',
+         'La Reserva Federal',
+       ],
+       answerIndex: 1,
+       explanation:
+         'La CFPB cubre bancos, prestamistas y cobradores. La FTC recibe reportes de estafas en general, y el BBB registra quejas para que investigues un negocio antes de entregar tu dinero.',
+     },
+     {
+       at: 130,
+       question:
+         '¿Por qué usar una contraseña distinta en cada sitio?',
+       options: [
+         'Porque los sitios ya lo exigen',
+         'Para que una sola filtración no abra toda tu vida',
+         'Porque hace más fácil recordarlas',
+         'Porque acelera el inicio de sesión',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Una filtración en un lugar no debería abrir todo lo demás. Alvin lo combina con la autenticación de dos factores, que deja inútil una contraseña robada, y con revisar tu reporte de crédito gratis una vez al año.',
+     },
+   ],
+ },
+
  {
  type: 'content',
  heading: 'El robo de identidad',
@@ -632,6 +766,73 @@ const lesson: Lesson = {
  '眼睛真尖！那条消息叠加了多个危险信号：带倒计时的虚假紧迫感、一个可疑链接，以及一个奇怪的.xyz 域名。真正的公司不会这样逼迫你。如果有疑问，就把它删掉，自己去官方网站查看。',
  },
  },
+ {
+   type: 'video',
+   heading: '观看：在被骗之前识破骗局',
+   body:
+     '看看这个 BFF 短视频，认识钓鱼诈骗、所有骗局共有的危险信号，以及谁在保护你。注意，视频中途会暂停提问，认真看哦！',
+   videoId: 't7tLcoyRBOc',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 43,
+       question:
+         '什么是钓鱼（phishing）？',
+       options: [
+         '通过邮件附件传播的病毒',
+         '有人冒充你信任的机构，从你这里骗取东西',
+         '公司把你的数据卖给广告商',
+         '购物网站上的虚假商品',
+       ],
+       answerIndex: 1,
+       explanation:
+         '他们通常想要你的密码，有时想要你的钱，常常两样都要。Alvin 强调，聪明人也天天中招，因为它考验的根本不是智力。',
+     },
+     {
+       at: 70,
+       question:
+         '以下哪一项是“银行”邮件里的危险信号？',
+       options: [
+         '邮件里叫得出你的名字',
+         '邮件带有公司的标志',
+         '给你四小时，否则账户就被冻结',
+         '在工作日发来',
+       ],
+       answerIndex: 2,
+       explanation:
+         '紧迫感就是破绽，真正的银行不会只给你四小时。威胁让你来不及核实，而 bank.co 这种和 bank.com 只差一点的地址，是故意做得几乎一样。',
+     },
+     {
+       at: 95,
+       question:
+         '哪个机构负责处理关于银行、放贷方和催收公司的投诉？',
+       options: [
+         '联邦贸易委员会（FTC）',
+         '消费者金融保护局（CFPB）',
+         '商业改进局（BBB）',
+         '美联储',
+       ],
+       answerIndex: 1,
+       explanation:
+         'CFPB 负责银行、放贷方和催收公司。FTC 更广泛地受理诈骗举报，BBB 记录投诉，方便你在交钱之前先查一查这家公司。',
+     },
+     {
+       at: 130,
+       question:
+         '为什么每个网站都要用不同的密码？',
+       options: [
+         '因为网站现在都强制要求',
+         '这样一处泄露不会打开你的全部生活',
+         '这样更容易记住密码',
+         '这样登录更快',
+       ],
+       answerIndex: 1,
+       explanation:
+         '一个地方被攻破，不该把其他所有账户一起打开。Alvin 还建议开启双重验证，让被偷的密码单独无用，并每年免费查一次信用报告。',
+     },
+   ],
+ },
+
  {
  type: 'content',
  heading: '身份盗窃',

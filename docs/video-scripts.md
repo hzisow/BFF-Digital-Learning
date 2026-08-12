@@ -1,16 +1,21 @@
 # Video scripts
 
-Scripts for the nine BFF Academy lessons that do not have a recording yet, four
-core and five electives. Written to match the four already recorded: about three
-minutes each, three or four checkpoint beats, and a title in the form
-"Watch: <the question the video answers>".
+Scripts for the nine BFF Academy lessons that were missing a recording. All nine
+have since been recorded and are live in the lessons, so this is the reference
+copy rather than a to-do list.
 
-Beats are marked `[CHECKPOINT]` rather than timed. Timings have to come off a
-real transcript, because a mark here says where a beat sits in the writing, not
-where it lands in a recording.
+Written to match the four that already existed: about three minutes each, three
+or four checkpoint beats, and a title in the form "Watch: <the question the
+video answers>".
 
-The recording and wiring steps are in STATUS.md, under "Adding the rest of the
-videos later".
+The `[CHECKPOINT]` marks below are where a beat sits in the writing. The `at:`
+values that shipped were read off the finished transcripts instead, and the two
+do not line up. The recordings also drifted from these scripts in places, so the
+questions in the lessons follow what is actually said. Earning Income is the
+clearest case: the script defines gross versus net pay, the recording goes
+straight to reading your paystub.
+
+Video IDs and checkpoint timings for all thirteen lessons are in STATUS.md.
 
 ---
 

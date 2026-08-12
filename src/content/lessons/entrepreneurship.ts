@@ -93,6 +93,73 @@ const lesson: Lesson = {
  },
  },
  {
+   type: 'video',
+   heading: 'Watch: Start Embarrassingly Small',
+   body:
+     'Watch this quick BFF video on finding a problem worth solving and the one formula you cannot skip. Heads up, it pauses to quiz you along the way, so pay attention!',
+   videoId: 'amnwyA9Mb6o',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 57,
+       question:
+         'Where does Alvin say a business should start?',
+       options: [
+         'With a clever idea nobody has had',
+         'With a problem people already deal with',
+         'With money to invest',
+         'With a name and a logo',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Parents who cannot find a babysitter on short notice, classmates who need a decent picture, neighbors with a yard nobody wants to touch. If you cannot name who is annoyed and what they do instead, you do not have a business yet.',
+     },
+     {
+       at: 88,
+       question:
+         'You charge $25 to mow a lawn and spend $6 on gas. What did you make?',
+       options: [
+         '$25',
+         '$19',
+         '$31',
+         '$6',
+       ],
+       answerIndex: 1,
+       explanation:
+         "Revenue minus costs equals profit, so $25 minus $6 is $19. Alvin's warning is that getting this wrong is how you end up busy every weekend and broke every month.",
+     },
+     {
+       at: 112,
+       question:
+         'What does he suggest for pricing when you are starting out?',
+       options: [
+         'Charge the highest price you can',
+         'Price slightly under competitors while you build reviews, then raise it',
+         'Work free until people trust you',
+         'Match the cheapest person exactly',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Too low and you are working for free and attracting customers who complain. Too high with no track record and nobody buys. Price a little under while you build a backing, then raise it.',
+     },
+     {
+       at: 140,
+       question:
+         'You are self-employed. What should you do about taxes?',
+       options: [
+         'Nothing, they come out automatically',
+         'Set aside roughly a quarter of what you make, since nothing is withheld for you',
+         'Only worry once you earn over $10,000',
+         'Your customers report it for you',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Self-employed income is not withheld the way a paycheck is, and it has to be self-reported. Putting aside about a quarter as you go is what keeps April from ambushing you.',
+     },
+   ],
+ },
+
+ {
  type: 'example',
  heading: "Example: Darius's Lawn Empire, Week One",
  body:
@@ -321,6 +388,73 @@ const lesson: Lesson = {
  'Esa es la fórmula en acción: $300 de ingresos - $110 de costos = $190 de ganancia. Los $300 se ven impresionantes, pero solo los $190 son de verdad suyos. Los emprendedores que confunden ingresos con ganancia se quedan sin dinero rápido.',
  },
  },
+ {
+   type: 'video',
+   heading: 'Míralo: Empieza tan pequeño que dé vergüenza',
+   body:
+     'Mira este video corto de BFF sobre cómo encontrar un problema que valga la pena resolver y la única fórmula que no puedes saltarte. Ojo, se detiene para hacerte preguntas, así que presta atención.',
+   videoId: 'amnwyA9Mb6o',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 57,
+       question:
+         '¿Por dónde dice Alvin que debe empezar un negocio?',
+       options: [
+         'Por una idea genial que nadie ha tenido',
+         'Por un problema que la gente ya sufre',
+         'Por tener dinero para invertir',
+         'Por un nombre y un logo',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Padres que no encuentran niñera de un día para otro, compañeros que necesitan una buena foto, vecinos con un jardín que nadie quiere tocar. Si no puedes decir quién está molesto y qué hace en su lugar, todavía no tienes un negocio.',
+     },
+     {
+       at: 88,
+       question:
+         'Cobras $25 por cortar un jardín y gastas $6 en gasolina. ¿Cuánto ganaste?',
+       options: [
+         '$25',
+         '$19',
+         '$31',
+         '$6',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Ingresos menos costos es igual a ganancia, así que $25 menos $6 son $19. La advertencia de Alvin es que equivocarse en esto es como acabas ocupado cada fin de semana y sin dinero cada mes.',
+     },
+     {
+       at: 112,
+       question:
+         '¿Qué sugiere sobre los precios cuando apenas empiezas?',
+       options: [
+         'Cobrar lo más alto posible',
+         'Cobrar un poco menos que la competencia mientras juntas reseñas, y luego subir',
+         'Trabajar gratis hasta que confíen en ti',
+         'Igualar exactamente al más barato',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Muy barato y trabajas gratis atrayendo clientes que se quejan. Muy caro sin historial y nadie te compra. Cobra un poco menos mientras construyes respaldo, y después sube.',
+     },
+     {
+       at: 140,
+       question:
+         'Trabajas por tu cuenta. ¿Qué debes hacer con los impuestos?',
+       options: [
+         'Nada, se descuentan solos',
+         'Apartar más o menos una cuarta parte de lo que ganas, porque nadie retiene nada por ti',
+         'Preocuparte solo si superas los $10,000',
+         'Tus clientes lo reportan por ti',
+       ],
+       answerIndex: 1,
+       explanation:
+         'El ingreso por cuenta propia no se retiene como en un cheque de nómina y hay que reportarlo uno mismo. Apartar cerca de una cuarta parte sobre la marcha es lo que evita que abril te tome por sorpresa.',
+     },
+   ],
+ },
+
  {
  type: 'example',
  heading: 'Ejemplo: El Imperio de Céspedes de Darius, Semana Uno',
@@ -551,6 +685,73 @@ const lesson: Lesson = {
  '这就是公式在起作用：300美元收入 - 110美元成本 = 190美元利润。300美元看起来很唬人，但只有那190美元才真正是他的。把收入和利润搞混的创业者很快就会没钱花。',
  },
  },
+ {
+   type: 'video',
+   heading: '观看：小到不好意思地开始',
+   body:
+     '看看这个 BFF 短视频，学会找到值得解决的问题，以及那条绝不能跳过的公式。注意，视频中途会暂停提问，认真看哦！',
+   videoId: 'amnwyA9Mb6o',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 57,
+       question:
+         'Alvin 说做生意应该从哪里开始？',
+       options: [
+         '从一个没人想过的绝妙点子开始',
+         '从人们已经在忍受的某个麻烦开始',
+         '从有钱可投开始',
+         '从起名字和做标志开始',
+       ],
+       answerIndex: 1,
+       explanation:
+         '临时找不到保姆的家长、需要一张像样照片的同学、院子没人愿意打理的邻居。如果你说不出谁在烦恼、他们现在拿它怎么办，那你还没有一门生意。',
+     },
+     {
+       at: 88,
+       question:
+         '你割一次草坪收 $25，油钱花了 $6。你赚了多少？',
+       options: [
+         '$25',
+         '$19',
+         '$31',
+         '$6',
+       ],
+       answerIndex: 1,
+       explanation:
+         '收入减成本等于利润，所以 $25 减 $6 是 $19。Alvin 提醒：这一步算错，就会变成每个周末都忙、每个月都没钱。',
+     },
+     {
+       at: 112,
+       question:
+         '刚起步时，他建议怎么定价？',
+       options: [
+         '能收多高收多高',
+         '先比同行略低一点，攒够口碑后再涨价',
+         '先免费干到别人信任你为止',
+         '和最便宜的人收一模一样的价',
+       ],
+       answerIndex: 1,
+       explanation:
+         '定得太低，等于白干，还会招来爱挑刺的客户；定得太高又没有口碑，就没人买。先略低一点把底子攒起来，然后再涨。',
+     },
+     {
+       at: 140,
+       question:
+         '你是自雇的。税该怎么办？',
+       options: [
+         '什么都不用管，会自动扣',
+         '大约留出收入的四分之一，因为没有人替你预扣',
+         '赚超过 $10,000 才需要操心',
+         '客户会替你申报',
+       ],
+       answerIndex: 1,
+       explanation:
+         '自雇收入不像工资那样被预扣，必须自己申报。边赚边留出约四分之一，才不会在四月被打个措手不及。',
+     },
+   ],
+ },
+
  {
  type: 'example',
  heading: '例子：Darius的割草帝国，第一周',

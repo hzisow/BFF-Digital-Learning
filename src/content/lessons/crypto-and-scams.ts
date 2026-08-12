@@ -93,6 +93,73 @@ const lesson: Lesson = {
  },
  },
  {
+   type: 'video',
+   heading: 'Watch: "Get Rich Quick" Is Always the Tell',
+   body:
+     'Watch this quick BFF video on what crypto actually is and how the traps around it work. Heads up, it pauses to quiz you along the way, so pay attention!',
+   videoId: 'q-IzijaDfZI',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 62,
+       question:
+         "What is most crypto's price actually based on?",
+       options: [
+         'Rent, profits or interest the asset earns',
+         'Whatever the next person is willing to pay for it',
+         'A government guarantee',
+         'The cost of the computers running it',
+       ],
+       answerIndex: 1,
+       explanation:
+         "The blockchain technology is genuinely clever, but Alvin's catch is that most crypto has no cash behind it. No rent, no profits, no interest, so the price is purely the next buyer.",
+     },
+     {
+       at: 100,
+       question:
+         'Where does money you actually need belong?',
+       options: [
+         'In crypto, for the higher returns',
+         'Somewhere that cannot lose half its value in a couple of weeks',
+         'Split evenly between savings and crypto',
+         'In whatever went up most last year',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Bitcoin has dropped more than 50% in a few months on multiple occasions, and plenty of smaller coins went to zero and stayed there. Saving and speculating are different things and should not follow the same rules.',
+     },
+     {
+       at: 130,
+       question:
+         'Someone online is urging you to get in early on a coin. What is probably happening?',
+       options: [
+         'You found a genuine opportunity',
+         'You are the exit, not the early buyer',
+         'The coin is about to be regulated',
+         'They want you to split the fees',
+       ],
+       answerIndex: 1,
+       explanation:
+         'In a pump and dump, insiders hype something to drive the price up, then sell their own holdings to the people who believed them. As Alvin puts it, if a stranger is urging you in early, you are probably their way out.',
+     },
+     {
+       at: 155,
+       question:
+         'What single rule covers almost all of this?',
+       options: [
+         'Only invest what you can explain',
+         'Anything promising guaranteed, fast or risk-free returns is selling you something',
+         'Never invest before you turn 18',
+         'Always take the highest advertised return',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Real investing is slow and boring, and slow and boring is usually what works. A betting app runs on the house edge, which means over enough plays the house wins mathematically, not just usually.',
+     },
+   ],
+ },
+
+ {
  type: 'content',
  heading: '"Get Rich Quick" Is Always a Red Flag',
  body:
@@ -324,6 +391,73 @@ const lesson: Lesson = {
  'La volatilidad es el problema decisivo: el dinero que NECESITA para una fecha límite no puede montarse en algo que puede desplomarse 20-50% en semanas, y no, las monedas no siempre regresan. Ahorrar y especular son deportes distintos, y su fondo para el auto pertenece a los ahorros.',
  },
  },
+ {
+   type: 'video',
+   heading: 'Míralo: "Hazte rico rápido" siempre es la señal',
+   body:
+     'Mira este video corto de BFF sobre qué es realmente el cripto y cómo funcionan las trampas a su alrededor. Ojo, se detiene para hacerte preguntas, así que presta atención.',
+   videoId: 'q-IzijaDfZI',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 62,
+       question:
+         '¿En qué se basa realmente el precio de la mayoría de las criptomonedas?',
+       options: [
+         'En rentas, ganancias o intereses que genera el activo',
+         'En lo que la siguiente persona esté dispuesta a pagar',
+         'En una garantía del gobierno',
+         'En el costo de las computadoras que la sostienen',
+       ],
+       answerIndex: 1,
+       explanation:
+         'La tecnología blockchain es genuinamente ingeniosa, pero la trampa que señala Alvin es que la mayoría del cripto no tiene efectivo detrás. Ni renta, ni ganancias, ni intereses, así que el precio es puramente el siguiente comprador.',
+     },
+     {
+       at: 100,
+       question:
+         '¿Dónde debe estar el dinero que de verdad necesitas?',
+       options: [
+         'En cripto, por los rendimientos más altos',
+         'En algo que no pueda perder la mitad de su valor en un par de semanas',
+         'Repartido por igual entre ahorros y cripto',
+         'En lo que más subió el año pasado',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Bitcoin ha caído más del 50% en pocos meses en varias ocasiones, y muchas monedas pequeñas llegaron a cero y ahí se quedaron. Ahorrar y especular son cosas distintas y no deben seguir las mismas reglas.',
+     },
+     {
+       at: 130,
+       question:
+         'Alguien en línea te insiste en entrar temprano a una moneda. ¿Qué está pasando probablemente?',
+       options: [
+         'Encontraste una oportunidad genuina',
+         'Tú eres su salida, no el comprador temprano',
+         'La moneda está por ser regulada',
+         'Quieren que compartas las comisiones',
+       ],
+       answerIndex: 1,
+       explanation:
+         'En un pump and dump, los de adentro inflan el precio y luego venden sus propias tenencias a quienes les creyeron. Como dice Alvin, si un desconocido te urge a entrar temprano, probablemente eres su salida.',
+     },
+     {
+       at: 155,
+       question:
+         '¿Qué regla cubre casi todo esto?',
+       options: [
+         'Invertir solo en lo que puedas explicar',
+         'Todo lo que prometa rendimientos garantizados, rápidos o sin riesgo te está vendiendo algo',
+         'No invertir antes de los 18',
+         'Elegir siempre el rendimiento más alto anunciado',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Invertir de verdad es lento y aburrido, y lento y aburrido suele ser lo que funciona. Una app de apuestas vive de la ventaja de la casa: con suficientes jugadas, la casa gana matemáticamente, no solo casi siempre.',
+     },
+   ],
+ },
+
  {
  type: 'content',
  heading: '"Hacerse Rico Rápido" Siempre Es una Señal de Alerta',
@@ -557,6 +691,73 @@ const lesson: Lesson = {
  '波动性就是那个致命伤：她有截止期限、必须要用的钱，不能押在一个几周内就可能暴跌20-50%的东西上，而且不，币并不总会回来。储蓄和投机是两项不同的运动，她的购车基金属于储蓄。',
  },
  },
+ {
+   type: 'video',
+   heading: '观看：“快速致富”永远是破绽',
+   body:
+     '看看这个 BFF 短视频，弄清加密货币到底是什么，以及围绕它的那些陷阱怎么运作。注意，视频中途会暂停提问，认真看哦！',
+   videoId: 'q-IzijaDfZI',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 62,
+       question:
+         '大多数加密货币的价格实际上靠什么支撑？',
+       options: [
+         '资产本身带来的租金、利润或利息',
+         '下一个人愿意出多少钱',
+         '政府的担保',
+         '运行它的电脑的成本',
+       ],
+       answerIndex: 1,
+       explanation:
+         '区块链技术本身确实巧妙，但 Alvin 指出的关键是：大多数加密货币背后没有现金流。没有租金、没有利润、没有利息，价格完全取决于下一个买家。',
+     },
+     {
+       at: 100,
+       question:
+         '你真正需要用的钱应该放在哪里？',
+       options: [
+         '放进加密货币，博更高回报',
+         '放在几周内不会腰斩的地方',
+         '在储蓄和加密货币之间对半分',
+         '放进去年涨得最多的那个',
+       ],
+       answerIndex: 1,
+       explanation:
+         '比特币曾多次在几个月内跌超 50%，还有很多小币归零后再也没回来。储蓄和投机是两回事，不该套用同一套规则。',
+     },
+     {
+       at: 130,
+       question:
+         '网上有人催你“趁早”买某个币。这多半是怎么回事？',
+       options: [
+         '你发现了真正的机会',
+         '你是他们的出货对象，而不是早期买家',
+         '这个币快要被监管了',
+         '他们想和你分摊手续费',
+       ],
+       answerIndex: 1,
+       explanation:
+         '在拉高出货（pump and dump）里，内部人先把价格炒上去，再把自己手里的货卖给相信他们的人。用 Alvin 的话说，如果陌生人催你“趁早进场”，你多半是他们的出口。',
+     },
+     {
+       at: 155,
+       question:
+         '哪一条规则几乎能覆盖以上所有情况？',
+       options: [
+         '只投你能讲明白的东西',
+         '凡是承诺保本、快速或无风险回报的，都是在向你推销东西',
+         '18 岁之前不要投资',
+         '永远选广告上回报最高的',
+       ],
+       answerIndex: 1,
+       explanation:
+         '真正的投资又慢又无聊，而又慢又无聊往往才是有效的。博彩 App 靠的是庄家优势：玩得够多，庄家赢是数学上的必然，而不只是通常如此。',
+     },
+   ],
+ },
+
  {
  type: 'content',
  heading: '"快速致富"永远是一面红旗',

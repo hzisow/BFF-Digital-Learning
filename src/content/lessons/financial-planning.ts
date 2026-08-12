@@ -108,6 +108,73 @@ const lesson: Lesson = {
  },
  },
  {
+   type: 'video',
+   heading: 'Watch: Turning a Picture Into a Plan',
+   body:
+     'Watch this quick BFF video on ranking your goals and making them specific enough to track. Heads up, it pauses to quiz you along the way, so pay attention!',
+   videoId: 'HdqDwHZQlqc',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 63,
+       question:
+         'What does Alvin say your money should go to first?',
+       options: [
+         'Paying off debt',
+         'An emergency fund of about $500',
+         'Long-term investing',
+         'Saving for a car',
+       ],
+       answerIndex: 1,
+       explanation:
+         "Without one, the first flat tire turns into credit card debt and undoes months of progress. He puts the starting number at $500, which covers most of what actually goes wrong in a teenager's life.",
+     },
+     {
+       at: 87,
+       question:
+         'Why is "I want to save money" not a goal?',
+       options: [
+         'It is not ambitious enough',
+         'It is a mood, with nothing specific or time-bound about it',
+         'Saving is the wrong priority',
+         'It does not name a dollar amount you can reach',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Alvin calls it a mood. Rewritten as "save $600 for a laptop by June 1st by putting away $50 a month", you know every month whether you are on track instead of finding out at the end.',
+     },
+     {
+       at: 105,
+       question:
+         'Why attack a credit card charging 24% before investing?',
+       options: [
+         'Credit card debt hurts your credit score more than anything',
+         'Paying it down is like a guaranteed 24% return',
+         'You cannot invest while you carry any debt',
+         'The card company will close your account',
+       ],
+       answerIndex: 1,
+       explanation:
+         'It is a hole you cannot save your way out of. Clearing 24% interest is a guaranteed 24%, which beats almost anything you can invest in.',
+     },
+     {
+       at: 145,
+       question:
+         'A $2,000 used car in three years works out to about what per month?',
+       options: [
+         '$56',
+         '$200',
+         '$667',
+         '$28',
+       ],
+       answerIndex: 0,
+       explanation:
+         "Roughly $56 a month. Alvin's point is that nobody panics about $56 a month, but everybody panics about $2,000 in a week. Writing down when a milestone arrives turns it from an emergency into a line item.",
+     },
+   ],
+ },
+
+ {
  type: 'content',
  heading: 'The Baby Steps: Dave Ramsey',
  body:
@@ -342,6 +409,73 @@ const lesson: Lesson = {
  '¡Exactamente! $1,200 divididos entre 6 meses son $200 al mes. Trabajar hacia atrás convierte un número grande y aterrador en una cantidad mensual que sí puedes incluir en tu presupuesto.',
  },
  },
+ {
+   type: 'video',
+   heading: 'Míralo: Convertir una imagen en un plan',
+   body:
+     'Mira este video corto de BFF sobre cómo ordenar tus metas y hacerlas lo bastante específicas para seguirlas. Ojo, se detiene para hacerte preguntas, así que presta atención.',
+   videoId: 'HdqDwHZQlqc',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 63,
+       question:
+         '¿A qué dice Alvin que debe ir tu dinero primero?',
+       options: [
+         'A pagar deudas',
+         'A un fondo de emergencia de unos $500',
+         'A invertir a largo plazo',
+         'A ahorrar para un auto',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Sin él, la primera llanta ponchada se convierte en deuda de tarjeta y borra meses de avance. Él pone la cifra inicial en $500, que cubre casi todo lo que de verdad sale mal en la vida de un adolescente.',
+     },
+     {
+       at: 87,
+       question:
+         '¿Por qué "quiero ahorrar dinero" no es una meta?',
+       options: [
+         'No es lo bastante ambiciosa',
+         'Es un estado de ánimo, sin nada específico ni con fecha',
+         'Ahorrar es la prioridad equivocada',
+         'No menciona una cantidad que puedas alcanzar',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Alvin la llama un estado de ánimo. Reescrita como "ahorrar $600 para una laptop antes del 1 de junio guardando $50 al mes", sabes cada mes si vas bien en lugar de enterarte al final.',
+     },
+     {
+       at: 105,
+       question:
+         '¿Por qué atacar una tarjeta que cobra 24% antes de invertir?',
+       options: [
+         'Porque la deuda de tarjeta daña tu puntaje más que nada',
+         'Porque pagarla es como un rendimiento garantizado del 24%',
+         'Porque no puedes invertir mientras tengas deudas',
+         'Porque el banco cerrará tu cuenta',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Es un hoyo del que no puedes salir ahorrando. Eliminar un interés del 24% equivale a un 24% garantizado, mejor que casi cualquier inversión.',
+     },
+     {
+       at: 145,
+       question:
+         'Un auto usado de $2,000 en tres años equivale a cuánto al mes, más o menos?',
+       options: [
+         '$56',
+         '$200',
+         '$667',
+         '$28',
+       ],
+       answerIndex: 0,
+       explanation:
+         'Unos $56 al mes. El punto de Alvin es que nadie entra en pánico por $56 al mes, pero todos entran en pánico por $2,000 en una semana. Anotar cuándo llega cada hito lo convierte de emergencia en una línea del presupuesto.',
+     },
+   ],
+ },
+
  {
  type: 'content',
  heading: 'Los Baby Steps: Dave Ramsey',
@@ -595,6 +729,73 @@ const lesson: Lesson = {
  '$1,200 除以 6 个月就是每月 $200。倒推计算把一个又大又吓人的数字，变成了一个你真的能纳入预算的月度金额。',
  },
  },
+ {
+   type: 'video',
+   heading: '观看：把想象变成计划',
+   body:
+     '看看这个 BFF 短视频，学会给目标排序，并让它具体到可以追踪。注意，视频中途会暂停提问，认真看哦！',
+   videoId: 'HdqDwHZQlqc',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 63,
+       question:
+         'Alvin 说你的钱应该先去哪里？',
+       options: [
+         '先还债',
+         '先存一笔大约 $500 的应急金',
+         '先做长期投资',
+         '先攒钱买车',
+       ],
+       answerIndex: 1,
+       explanation:
+         '没有应急金，第一次爆胎就会变成信用卡债，抹掉好几个月的努力。他把起步数字定在 $500，足以应付青少年生活中大部分真正会出的岔子。',
+     },
+     {
+       at: 87,
+       question:
+         '为什么“我想存钱”不算一个目标？',
+       options: [
+         '因为不够有野心',
+         '因为那是一种心情，既不具体也没有期限',
+         '因为存钱不该是重点',
+         '因为没说出一个能达到的金额',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Alvin 说那只是一种心情。改写成“6 月 1 日前每月存 $50，攒够 $600 买笔记本电脑”，你每个月都知道自己是超前还是落后，而不是到最后才发现。',
+     },
+     {
+       at: 105,
+       question:
+         '为什么要先解决年利率 24% 的信用卡，再去投资？',
+       options: [
+         '因为信用卡债对信用分伤害最大',
+         '因为还掉它相当于稳赚 24% 的回报',
+         '因为有债就不能投资',
+         '因为银行会关掉你的账户',
+       ],
+       answerIndex: 1,
+       explanation:
+         '这是靠攒钱爬不出来的坑。消掉 24% 的利息等于稳拿 24%，比你几乎能买到的任何投资都强。',
+     },
+     {
+       at: 145,
+       question:
+         '三年后要买一辆 $2,000 的二手车，大约相当于每月多少钱？',
+       options: [
+         '$56',
+         '$200',
+         '$667',
+         '$28',
+       ],
+       answerIndex: 0,
+       explanation:
+         '大约每月 $56。Alvin 的意思是：没人会为每月 $56 慌张，但所有人都会为一周内要拿出 $2,000 慌张。把里程碑的时间写下来，它就从急事变成了预算里的一行。',
+     },
+   ],
+ },
+
  {
  type: 'content',
  heading: 'Baby Steps（宝宝步骤）：Dave Ramsey',

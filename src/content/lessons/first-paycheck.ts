@@ -86,6 +86,73 @@ const lesson: Lesson = {
  },
  },
  {
+   type: 'video',
+   heading: 'Watch: Where Did My Paycheck Go?',
+   body:
+     'Watch this quick BFF video on the gap between what you earn and what lands in your account. Heads up, it pauses to quiz you along the way, so pay attention!',
+   videoId: 'xNkc1us-WlY',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 43,
+       question:
+         'You earned $600 but the deposit says $478. What are those two numbers called?',
+       options: [
+         'Net pay and gross pay, in that order',
+         'Gross pay and net pay, in that order',
+         'Base pay and bonus pay',
+         'Taxable pay and tax-free pay',
+       ],
+       answerIndex: 1,
+       explanation:
+         '$600 is gross pay, which is what you earned. $478 is net pay, which is what you keep. Everything between the two is itemized on your paystub, and most people never read it.',
+     },
+     {
+       at: 62,
+       question:
+         'Why does the government take tax out of every paycheck instead of billing you once a year?',
+       options: [
+         'You pay less tax overall that way',
+         'So the same tax is spread out instead of wrecking you all at once',
+         'It is a penalty for working hourly',
+         'Your employer keeps the difference',
+       ],
+       answerIndex: 1,
+       explanation:
+         'You are paying the same tax either way. Withholding just takes a slice as you go, rather than hitting you with one enormous bill every April.',
+     },
+     {
+       at: 88,
+       question:
+         'What does FICA pay for?',
+       options: [
+         'Unemployment benefits only',
+         'Social Security and Medicare',
+         "Your state's roads and schools",
+         "Your employer's health plan",
+       ],
+       answerIndex: 1,
+       explanation:
+         'It is 7.65% of your pay, split between Social Security and Medicare, and your employer quietly pays the same amount again on your behalf. It funds people who are retired right now, and one day it funds you.',
+     },
+     {
+       at: 135,
+       question:
+         'You had tax withheld but earned very little. What should you do?',
+       options: [
+         'Nothing, the money is gone',
+         'File a return anyway, since that is often how you get it back',
+         'Ask your employer for a refund directly',
+         'Wait until you earn more before filing',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Everything gets summarized on a W-2 at year end. If you earned little enough to owe nothing, filing is how you claim back what was already withheld.',
+     },
+   ],
+ },
+
+ {
  type: 'content',
  heading: 'FICA: Your Ticket to Social Security and Medicare',
  body:
@@ -306,6 +373,73 @@ const lesson: Lesson = {
  '¡Lo lograste! El ingreso neto es el único número que de verdad llega a su cuenta bancaria, así que es el único número que puede gastar. La diferencia de $68 se fue a impuestos y otras deducciones, presupuestar con el ingreso bruto es como la gente termina gastando de más sin querer.',
  },
  },
+ {
+   type: 'video',
+   heading: 'Míralo: ¿A dónde se fue mi cheque?',
+   body:
+     'Mira este video corto de BFF sobre la diferencia entre lo que ganas y lo que llega a tu cuenta. Ojo, se detiene para hacerte preguntas, así que presta atención.',
+   videoId: 'xNkc1us-WlY',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 43,
+       question:
+         'Ganaste $600 pero el depósito dice $478. ¿Cómo se llaman esos dos números?',
+       options: [
+         'Ingreso neto e ingreso bruto, en ese orden',
+         'Ingreso bruto e ingreso neto, en ese orden',
+         'Sueldo base y bono',
+         'Ingreso gravable e ingreso libre de impuestos',
+       ],
+       answerIndex: 1,
+       explanation:
+         '$600 es el ingreso bruto, lo que ganaste. $478 es el ingreso neto, lo que te quedas. Todo lo que hay entre ambos está detallado en tu recibo de pago, y casi nadie lo lee.',
+     },
+     {
+       at: 62,
+       question:
+         '¿Por qué el gobierno retiene impuestos de cada cheque en vez de cobrarte una vez al año?',
+       options: [
+         'Porque así pagas menos impuestos en total',
+         'Para repartir el mismo impuesto en lugar de golpearte de una sola vez',
+         'Porque es un castigo por trabajar por hora',
+         'Porque tu empleador se queda con la diferencia',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Pagas el mismo impuesto de cualquier forma. La retención solo toma una parte sobre la marcha, en vez de dejarte una factura enorme cada abril.',
+     },
+     {
+       at: 88,
+       question:
+         '¿Para qué sirve FICA?',
+       options: [
+         'Solo para el seguro de desempleo',
+         'Para el Seguro Social y Medicare',
+         'Para las carreteras y escuelas de tu estado',
+         'Para el plan de salud de tu empleador',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Es el 7.65% de tu paga, repartido entre el Seguro Social y Medicare, y tu empleador aporta esa misma cantidad por ti. Financia a quienes están jubilados ahora, y algún día te financiará a ti.',
+     },
+     {
+       at: 135,
+       question:
+         'Te retuvieron impuestos pero ganaste muy poco. ¿Qué deberías hacer?',
+       options: [
+         'Nada, ese dinero ya se perdió',
+         'Declarar de todos modos, porque así es como suelen devolvértelo',
+         'Pedirle el reembolso directamente a tu empleador',
+         'Esperar a ganar más antes de declarar',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Todo se resume en un W-2 al final del año. Si ganaste tan poco que no debías nada, declarar es la forma de recuperar lo que ya te retuvieron.',
+     },
+   ],
+ },
+
  {
  type: 'content',
  heading: 'FICA: tu boleto al Seguro Social y a Medicare',
@@ -528,6 +662,73 @@ const lesson: Lesson = {
  '税后工资是唯一真正进到她银行账户的数字，所以它是唯一她能花的数字。那 $68 的差额进了税款和其他扣款，用税前工资做预算，正是人们不小心超支的原因。',
  },
  },
+ {
+   type: 'video',
+   heading: '观看：我的工资去哪了？',
+   body:
+     '看看这个 BFF 短视频，弄清你赚到的钱和真正到账的钱之间差在哪里。注意，视频中途会暂停提问，认真看哦！',
+   videoId: 'xNkc1us-WlY',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 43,
+       question:
+         '你赚了 $600，但到账只有 $478。这两个数字分别叫什么？',
+       options: [
+         '先是净工资，后是税前工资',
+         '先是税前工资（gross），后是净工资（net）',
+         '底薪和奖金',
+         '应税收入和免税收入',
+       ],
+       answerIndex: 1,
+       explanation:
+         '$600 是税前工资，也就是你赚到的；$478 是净工资，也就是你留下的。两者之间的差额都逐项列在工资单上，而大多数人从来不看。',
+     },
+     {
+       at: 62,
+       question:
+         '政府为什么从每次工资里扣税，而不是一年收一次？',
+       options: [
+         '因为这样总共少交税',
+         '为了把同样的税分摊开，而不是一次把你压垮',
+         '因为这是对按小时计酬的惩罚',
+         '因为雇主可以留下差额',
+       ],
+       answerIndex: 1,
+       explanation:
+         '不管哪种方式，你交的税是一样的。预扣只是边赚边扣一点，免得每年四月被一张巨额账单砸中。',
+     },
+     {
+       at: 88,
+       question:
+         'FICA 是用来支付什么的？',
+       options: [
+         '只支付失业救济',
+         '支付社会保障金和医疗保险（Medicare）',
+         '支付本州的道路和学校',
+         '支付雇主的健康保险计划',
+       ],
+       answerIndex: 1,
+       explanation:
+         '它占你工资的 7.65%，分给社会保障金和 Medicare，而且你的雇主还会以你的名义再交一份同样的钱。它供养现在已经退休的人，将来也会供养你。',
+     },
+     {
+       at: 135,
+       question:
+         '你被扣了税，但赚得很少。应该怎么做？',
+       options: [
+         '什么都不用做，钱回不来了',
+         '还是去报税，这通常正是把钱要回来的方式',
+         '直接找雇主退钱',
+         '等赚得多一些再报税',
+       ],
+       answerIndex: 1,
+       explanation:
+         '年底所有信息都会汇总在 W-2 上。如果你赚得少到本来就不用交税，报税就是把已经被预扣的钱要回来的途径。',
+     },
+   ],
+ },
+
  {
  type: 'content',
  heading: 'FICA：你通往社会保障和医疗保险的门票',

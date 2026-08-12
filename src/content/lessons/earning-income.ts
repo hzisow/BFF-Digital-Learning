@@ -115,6 +115,73 @@ const lesson: Lesson = {
  },
  },
  {
+   type: 'video',
+   heading: 'Watch: Where Your Money Actually Comes From',
+   body:
+     'Watch this quick BFF video on the two kinds of income and what actually moves your pay. Heads up, it pauses to quiz you along the way, so pay attention!',
+   videoId: 'cq05mzpGdFk',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 47,
+       question:
+         'What is unearned income?',
+       options: [
+         'Money you are paid for showing up and doing work',
+         'Money your money makes for you, like interest or dividends',
+         'Money you get as a gift',
+         'Money you have not been paid yet',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Alvin describes it as what your money makes while you are asleep: interest in a savings account, dividends from a stock, rent from a property. Almost everyone starts with only earned income, and the long game is building the other kind.',
+     },
+     {
+       at: 84,
+       question:
+         'A car salesperson earns 3% commission on a $30,000 car. What do they make on that sale?',
+       options: [
+         '$300',
+         '$900',
+         '$3,000',
+         '$90',
+       ],
+       answerIndex: 1,
+       explanation:
+         '3% of $30,000 is $900, on that one sale. That is what commission means: a cut of what you sell, rather than an hourly rate or a fixed yearly amount.',
+     },
+     {
+       at: 117,
+       question:
+         'Of the four things that move your pay, which one do you have the most control over?',
+       options: [
+         'The economy',
+         'Seniority',
+         'Your skills and experience',
+         'The industry you pick',
+       ],
+       answerIndex: 2,
+       explanation:
+         'Alvin calls this the one you have the most complete control over. Education takes years, seniority takes time at a company, and nobody controls the economy. Skills you can start building today.',
+     },
+     {
+       at: 130,
+       question:
+         'Why does Alvin say to read your paystub every single time?',
+       options: [
+         'It is required by law',
+         'It shows where your money went and is the only place you will catch a mistake',
+         'It proves you showed up to work',
+         'Your employer will not pay you until you do',
+       ],
+       answerIndex: 1,
+       explanation:
+         'The paystub itemizes what came out for taxes and insurance. Payroll errors are common, and the person most likely to catch one is you.',
+     },
+   ],
+ },
+
+ {
  type: 'terms',
  heading: 'Paystubs and Deductions',
  terms: [
@@ -366,6 +433,73 @@ const lesson: Lesson = {
  '¡Lo lograste! La antigüedad suele traer mejor paga, más PTO y mejores oportunidades de ascenso, pero en realidad reduce la flexibilidad. Maria podría ganar más o encontrar mejores beneficios en otro lugar, e irse significa reiniciar su reloj de antigüedad desde cero.',
  },
  },
+ {
+   type: 'video',
+   heading: 'Míralo: De dónde viene realmente tu dinero',
+   body:
+     'Mira este video corto de BFF sobre los dos tipos de ingresos y qué mueve de verdad tu paga. Ojo, se detiene para hacerte preguntas, así que presta atención.',
+   videoId: 'cq05mzpGdFk',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 47,
+       question:
+         '¿Qué son los ingresos no ganados?',
+       options: [
+         'Dinero que te pagan por presentarte y trabajar',
+         'Dinero que tu dinero genera por ti, como intereses o dividendos',
+         'Dinero que recibes de regalo',
+         'Dinero que todavía no te han pagado',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Alvin lo describe como lo que tu dinero genera mientras duermes: intereses en una cuenta de ahorros, dividendos de una acción, renta de una propiedad. Casi todos empiezan solo con ingresos ganados, y la meta a largo plazo es construir los otros.',
+     },
+     {
+       at: 84,
+       question:
+         'Un vendedor de autos gana 3% de comisión sobre un auto de $30,000. ¿Cuánto gana en esa venta?',
+       options: [
+         '$300',
+         '$900',
+         '$3,000',
+         '$90',
+       ],
+       answerIndex: 1,
+       explanation:
+         'El 3% de $30,000 son $900, en esa sola venta. Eso es la comisión: una parte de lo que vendes, en lugar de una tarifa por hora o un monto fijo al año.',
+     },
+     {
+       at: 117,
+       question:
+         'De las cuatro cosas que mueven tu paga, ¿cuál controlas tú más?',
+       options: [
+         'La economía',
+         'La antigüedad',
+         'Tus habilidades y tu experiencia',
+         'La industria que elijas',
+       ],
+       answerIndex: 2,
+       explanation:
+         'Alvin dice que esta es la que controlas por completo. La educación toma años, la antigüedad toma tiempo en una empresa y nadie controla la economía. Las habilidades las puedes empezar a construir hoy.',
+     },
+     {
+       at: 130,
+       question:
+         '¿Por qué dice Alvin que revises tu recibo de pago siempre?',
+       options: [
+         'Porque la ley lo exige',
+         'Porque muestra a dónde se fue tu dinero y es el único lugar donde detectarás un error',
+         'Porque comprueba que fuiste a trabajar',
+         'Porque tu empleador no te paga hasta que lo hagas',
+       ],
+       answerIndex: 1,
+       explanation:
+         'El recibo detalla lo que salió para impuestos y seguros. Los errores de nómina son comunes, y la persona con más probabilidad de detectarlos eres tú.',
+     },
+   ],
+ },
+
  {
  type: 'terms',
  heading: 'Talones de pago y deducciones',
@@ -621,6 +755,73 @@ const lesson: Lesson = {
  '资历通常带来更高的薪酬、更多的 PTO 和更好的晋升机会，但它实际上会降低灵活度。Maria 在别处也许能赚更多或找到更好的福利，而一旦离开，她的资历时钟就得从头开始。',
  },
  },
+ {
+   type: 'video',
+   heading: '观看：你的钱到底从哪来',
+   body:
+     '看看这个 BFF 短视频，了解两种收入以及真正影响你薪水的因素。注意，视频中途会暂停提问，认真看哦！',
+   videoId: 'cq05mzpGdFk',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 47,
+       question:
+         '什么是非劳动收入（unearned income）？',
+       options: [
+         '你出勤工作换来的钱',
+         '你的钱替你赚来的钱，比如利息或股息',
+         '别人送你的钱',
+         '还没发给你的钱',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Alvin 把它形容为你睡觉时你的钱替你赚的钱：储蓄账户的利息、股票的股息、房产的租金。几乎所有人一开始都只有劳动收入，而长期目标是建立另一种。',
+     },
+     {
+       at: 84,
+       question:
+         '汽车销售员卖出一辆 $30,000 的车，抽成 3%。这一单他赚多少？',
+       options: [
+         '$300',
+         '$900',
+         '$3,000',
+         '$90',
+       ],
+       answerIndex: 1,
+       explanation:
+         '$30,000 的 3% 是 $900，就这一单。这就是佣金：拿你卖出金额的一部分，而不是按小时或按固定年薪。',
+     },
+     {
+       at: 117,
+       question:
+         '在影响薪水的四个因素中，你自己能掌控最多的是哪一个？',
+       options: [
+         '经济环境',
+         '工龄',
+         '你的技能和经验',
+         '你选择的行业',
+       ],
+       answerIndex: 2,
+       explanation:
+         'Alvin 说这是你能完全掌控的一项。学历要花好几年，工龄要在公司待够时间，经济谁也控制不了。技能你今天就可以开始积累。',
+     },
+     {
+       at: 130,
+       question:
+         'Alvin 为什么说每次都要看工资单？',
+       options: [
+         '因为法律要求',
+         '因为它显示钱去了哪里，也是你唯一能发现错误的地方',
+         '因为它证明你去上班了',
+         '因为不看雇主就不发工资',
+       ],
+       answerIndex: 1,
+       explanation:
+         '工资单会逐项列出被扣掉的税和保险。工资计算出错很常见，而最可能发现问题的人就是你。',
+     },
+   ],
+ },
+
  {
  type: 'terms',
  heading: '工资单与扣款',

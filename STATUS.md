@@ -641,64 +641,58 @@ Optional `GEMINI_MODEL` pins one model without a redeploy.
    playback, so they are accurate to the second the point is *made* — but only a
    real viewing confirms the pause lands where it feels right.
 
-### Lesson videos — done
-All four recordings are live and embedded, presented by Alvin Lee, BFF-original:
+### Lesson videos — all thirteen
+Every lesson has a recording, presented by Alvin Lee, BFF-original.
 
-| Lesson | Video ID | Length | Checkpoints pause at |
-|---|---|---|---|
-| `spending-budgeting` | `AbqJUXeviI0` | ~3:40 | 0:36, 2:32, 3:24 |
-| `saving-investing` | `StjQs88nDZE` | ~3:00 | 0:41, 1:29, 1:47, 2:21 |
-| `credit-debt` | `rNVIS8YsBbQ` | ~3:07 | 1:06, 2:07, 2:28, 3:02 |
-| `risk-insurance` | `64VPvCvBq3g` | ~2:11 | 1:16, 1:37, 2:06 |
+| Lesson | Video ID | Checkpoints pause at |
+|---|---|---|
+| `earning-income` | `cq05mzpGdFk` | 0:47, 1:24, 1:57, 2:10 |
+| `spending-budgeting` | `AbqJUXeviI0` | 0:36, 2:32, 3:24 |
+| `saving-investing` | `StjQs88nDZE` | 0:41, 1:29, 1:47, 2:21 |
+| `credit-debt` | `rNVIS8YsBbQ` | 1:06, 2:07, 2:28, 3:02 |
+| `risk-insurance` | `64VPvCvBq3g` | 1:16, 1:37, 2:06 |
+| `financial-decision-making` | `rZ2zfIRNmNk` | 0:50, 1:14, 1:42, 2:35 |
+| `financial-planning` | `HdqDwHZQlqc` | 1:03, 1:27, 1:45, 2:25 |
+| `consumer-protection` | `t7tLcoyRBOc` | 0:43, 1:10, 1:35, 2:10 |
+| `first-paycheck` | `xNkc1us-WlY` | 0:43, 1:02, 1:28, 2:15 |
+| `taxes-deep-dive` | `Uat5nnzQgP8` | 0:47, 1:10, 2:05, 2:30 |
+| `paying-for-college` | `jrg1XZYTpKM` | 0:44, 1:08, 1:40, 2:15 |
+| `entrepreneurship` | `amnwyA9Mb6o` | 0:57, 1:28, 1:52, 2:20 |
+| `crypto-and-scams` | `q-IzijaDfZI` | 1:02, 1:40, 2:10, 2:35 |
 
-One coverage gap is left: `spending-budgeting` runs 116 seconds between its
-first checkpoint and its second, the longest untested stretch in any of the
-four. Closing it needs the transcript for roughly 0:40 to 2:30, because a
-checkpoint written from the lesson text rather than the recording is how you
-end up asking about something the video never says.
+`videoId` and each `at:` are duplicated **three times per file** (en/es/zh). A
+change to one language and not the others is the easy mistake here, which is why
+the nine added in one batch were generated from a single definition per lesson
+rather than hand-edited 27 times. The generator lived in the session scratchpad;
+what matters is the invariant it enforced, and there is a check for it below.
 
-`videoId` and each `at:` are duplicated **three times per file** (en/es/zh) — a
-change to one language and not the others is the easy mistake here.
+Questions come from the transcripts, not from the scripts the recordings were
+made from. The two diverge. `earning-income` is the clearest case: the script
+defined gross versus net pay, the recording skips that and goes straight to
+reading your paystub, so the fourth checkpoint asks about the paystub. Writing
+questions from a script rather than a transcript is how you end up asking about
+something the video never says.
 
-The questions themselves were written against the recording scripts and all four
-recordings followed them, so no question needed rewriting. What did need fixing
-was timing: four of the eight checkpoints fired after the video had moved on, and
-one was set at 2:30 on a video that ends at 2:11 — it would have surfaced as an
-end-of-video pile-up via the catch-up path in `VideoCheckpoint` rather than a
-mid-video pause. `at:` means "pause once playback reaches this second"
-(`t >= q.at`), so each one now sits just past the moment its answer is stated.
+To check all thirteen agree across languages:
 
-#### Adding the rest of the videos later
-More recordings are expected over the coming weeks, so this is a **content edit,
-not a code change** — nothing in the player needs touching, and videos can land
-one at a time. Four core lessons are still without one: `earning-income`,
-`financial-decision-making`, `financial-planning`, `consumer-protection` (plus
-every elective).
-
-For each new video, in `src/content/lessons/<slug>.ts`:
-
-1. Upload to YouTube. The ID is the part after `watch?v=` — it works whether or
-   not the video sits in your own account, and unlisted is fine.
-2. Add a `video` section wherever it belongs in `sections`:
-   ```ts
-   { type: 'video', heading: '…', body: '…',
-     videoId: 'AbqJUXeviI0', source: 'BFF Classroom',
-     questions: [{ at: 38, question: '…', options: [...], answerIndex: 1,
-                   explanation: '…' }] }
-   ```
-3. **Repeat it in all three localizations in that file.** `videoId` and every
-   `at:` appear three times (en/es/zh); changing one and not the others is the
-   single easiest mistake to make here.
-4. `at:` is seconds, and means "pause once playback reaches this second"
-   (`t >= at`). Set each one a beat *after* the answer is said, not on it — a
-   checkpoint past the end of the video does not vanish, it piles up at the end
-   via the catch-up path in `VideoCheckpoint`.
-5. Paste the transcript into a session and the questions plus timings can be
-   drafted from it, which is how the existing eight were written.
-
-Lessons with no video simply have no `video` section — the player renders
-whatever sections exist, so a half-finished set of recordings is a valid state
-and ships fine.
+```
+python3 - <<'EOF'
+import re, glob
+for p in sorted(glob.glob('src/content/lessons/*.ts')):
+    if p.endswith('index.ts'): continue
+    s = open(p, encoding='utf-8').read()
+    ies, izh = s.find('\n es: {'), s.find('\n zh: {')
+    blocks = {'en': s[:ies], 'es': s[ies:izh], 'zh': s[izh:]}
+    vids, ats = {}, {}
+    for k, b in blocks.items():
+        vids[k] = re.findall(r"videoId: '([^']+)'", b)
+        i = b.find("type: 'video'")
+        ats[k] = re.findall(r'\bat: (\d+)', b[i:b.find("type: 'content'", i)] if i >= 0 else '')
+    if not vids['en']: continue
+    ok = vids['en'] == vids['es'] == vids['zh'] and ats['en'] == ats['es'] == ats['zh']
+    print(('OK  ' if ok else 'BAD '), p.split('/')[-1])
+EOF
+```
 
 ### Not started, discussed
 - **Self-hosted video** (`src` alongside `videoId`) — designed, not built. Would

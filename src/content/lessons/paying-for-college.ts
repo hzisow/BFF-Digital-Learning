@@ -93,6 +93,73 @@ const lesson: Lesson = {
  },
  },
  {
+   type: 'video',
+   heading: 'Watch: The Sticker Price Is Not the Price',
+   body:
+     'Watch this quick BFF video on net price, the FAFSA, and reading an award letter properly. Heads up, it pauses to quiz you along the way, so pay attention!',
+   videoId: 'jrg1XZYTpKM',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 44,
+       question:
+         'A college lists $90,000 a year. Why is that not what you will pay?',
+       options: [
+         'The list price always includes a discount',
+         'That is the sticker price, and net price is what is left after aid you do not repay',
+         'Nobody attends colleges that expensive',
+         'The price drops every year you attend',
+       ],
+       answerIndex: 1,
+       explanation:
+         "Two students at the same school can pay wildly different amounts. Alvin's point is that an expensive-looking private school is sometimes cheaper than the state school once aid arrives.",
+     },
+     {
+       at: 68,
+       question:
+         'What does the FAFSA unlock?',
+       options: [
+         'Private scholarships only',
+         'Federal grants, work-study and federal loans',
+         'A discount negotiated with the college',
+         'Nothing unless your family has low income',
+       ],
+       answerIndex: 1,
+       explanation:
+         'It is free, opens in the fall of your senior year, and many states and colleges use it for their own aid too. Alvin calls skipping it because you assume you will not qualify the most expensive assumption in the lesson.',
+     },
+     {
+       at: 100,
+       question:
+         'Which type of aid should you take last?',
+       options: [
+         'Grants',
+         'Scholarships',
+         'Work-study',
+         'Unsubsidized loans',
+       ],
+       answerIndex: 3,
+       explanation:
+         'Unsubsidized loans start building interest the moment you receive the money. Grants and scholarships are free, work-study is a job, and subsidized loans at least have the government covering interest while you are in school.',
+     },
+     {
+       at: 135,
+       question:
+         'School A leaves you $8,000 in debt, School B leaves you $12,000. What does that tell you?',
+       options: [
+         'School B is always the better deal',
+         'School B is cheaper up front but more expensive later',
+         'The two are equivalent',
+         'School A must have a worse program',
+       ],
+       answerIndex: 1,
+       explanation:
+         "School B costs $13,000 out of pocket against School A's $20,000, so it is cheaper today. It also graduates you with more debt. That is why Alvin says to do the math on paper for every offer.",
+     },
+   ],
+ },
+
+ {
  type: 'content',
  heading: 'The Golden Order: Free Money First',
  body:
@@ -327,6 +394,73 @@ const lesson: Lesson = {
  'Las subvenciones y las becas son dinero gratis, nunca se devuelven. Todo tipo de préstamo, por más amables que sean las condiciones, debe pagarse con intereses. Por eso el orden dorado es: primero el dinero gratis, los préstamos al final.',
  },
  },
+ {
+   type: 'video',
+   heading: 'Míralo: El precio de lista no es el precio',
+   body:
+     'Mira este video corto de BFF sobre el precio neto, la FAFSA y cómo leer bien una carta de ayuda financiera. Ojo, se detiene para hacerte preguntas, así que presta atención.',
+   videoId: 'jrg1XZYTpKM',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 44,
+       question:
+         'Una universidad anuncia $90,000 al año. ¿Por qué eso no es lo que vas a pagar?',
+       options: [
+         'Porque el precio de lista ya incluye un descuento',
+         'Porque ese es el precio de lista, y el precio neto es lo que queda tras la ayuda que no devuelves',
+         'Porque nadie estudia en universidades tan caras',
+         'Porque el precio baja cada año que asistes',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Dos estudiantes de la misma escuela pueden pagar cantidades muy distintas. El punto de Alvin es que la privada que parece cara a veces sale más barata que la estatal una vez que llega la ayuda.',
+     },
+     {
+       at: 68,
+       question:
+         '¿Qué desbloquea la FAFSA?',
+       options: [
+         'Solo becas privadas',
+         'Becas federales, trabajo-estudio y préstamos federales',
+         'Un descuento negociado con la universidad',
+         'Nada, salvo que tu familia tenga bajos ingresos',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Es gratis, abre en el otoño de tu último año, y muchos estados y universidades también la usan para su propia ayuda. Alvin llama a saltársela, suponiendo que no calificarás, la suposición más cara de toda la lección.',
+     },
+     {
+       at: 100,
+       question:
+         '¿Qué tipo de ayuda deberías tomar al final?',
+       options: [
+         'Becas por necesidad (grants)',
+         'Becas por mérito (scholarships)',
+         'Trabajo-estudio',
+         'Préstamos no subsidiados',
+       ],
+       answerIndex: 3,
+       explanation:
+         'Los préstamos no subsidiados empiezan a generar intereses en cuanto recibes el dinero. Las becas son gratis, el trabajo-estudio es un empleo, y en los subsidiados al menos el gobierno cubre el interés mientras estudias.',
+     },
+     {
+       at: 135,
+       question:
+         'La escuela A te deja $8,000 de deuda y la B te deja $12,000. ¿Qué te dice eso?',
+       options: [
+         'Que la B siempre es mejor negocio',
+         'Que la B es más barata al inicio pero más cara después',
+         'Que son equivalentes',
+         'Que la A debe tener peor programa',
+       ],
+       answerIndex: 1,
+       explanation:
+         'La escuela B cuesta $13,000 de tu bolsillo frente a los $20,000 de la A, así que hoy es más barata. También te gradúa con más deuda. Por eso Alvin dice que hagas la cuenta en papel para cada oferta.',
+     },
+   ],
+ },
+
  {
  type: 'content',
  heading: 'El orden dorado: primero el dinero gratis',
@@ -563,6 +697,73 @@ const lesson: Lesson = {
  '助学金和奖学金是免费的钱，永远不用偿还。任何种类的贷款，不管条件多友好，都必须连本带利偿还。这就是为什么黄金顺序是：先用免费的钱，贷款放最后。',
  },
  },
+ {
+   type: 'video',
+   heading: '观看：标价不等于你要付的价',
+   body:
+     '看看这个 BFF 短视频，了解净价、FAFSA，以及如何正确读懂助学金通知书。注意，视频中途会暂停提问，认真看哦！',
+   videoId: 'jrg1XZYTpKM',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 44,
+       question:
+         '一所大学标价每年 $90,000。为什么这不是你要付的钱？',
+       options: [
+         '因为标价里本来就含折扣',
+         '因为那是标价，净价是扣掉不用偿还的资助之后剩下的',
+         '因为没人上得起这么贵的学校',
+         '因为每读一年价格就会降',
+       ],
+       answerIndex: 1,
+       explanation:
+         '同一所学校的两个学生付的钱可能天差地别。Alvin 的意思是：等资助到位后，看起来很贵的私立学校有时反而比州立学校便宜。',
+     },
+     {
+       at: 68,
+       question:
+         'FAFSA 能打开哪些资助？',
+       options: [
+         '只有私人奖学金',
+         '联邦助学金、勤工俭学和联邦贷款',
+         '和学校谈下来的折扣',
+         '除非家庭收入低，否则什么都没有',
+       ],
+       answerIndex: 1,
+       explanation:
+         '它是免费的，在高三秋季开放，很多州和学校也用它来决定自己的资助。Alvin 说，因为觉得自己不符合条件就不填，是整节课里最昂贵的假设。',
+     },
+     {
+       at: 100,
+       question:
+         '哪一类资助应该放到最后才考虑？',
+       options: [
+         '助学金（grants）',
+         '奖学金（scholarships）',
+         '勤工俭学',
+         '无补贴贷款',
+       ],
+       answerIndex: 3,
+       explanation:
+         '无补贴贷款从你拿到钱那一刻就开始计息。助学金和奖学金是白给的，勤工俭学是一份工作，而有补贴贷款至少在你读书期间由政府替你付利息。',
+     },
+     {
+       at: 135,
+       question:
+         'A 校让你背 $8,000 的债，B 校让你背 $12,000。这说明什么？',
+       options: [
+         'B 校一定更划算',
+         'B 校当下更便宜，但以后更贵',
+         '两者其实一样',
+         'A 校的项目一定更差',
+       ],
+       answerIndex: 1,
+       explanation:
+         'B 校自己要掏 $13,000，A 校要掏 $20,000，所以眼下 B 校更便宜，但毕业时欠得更多。这就是 Alvin 说每一份录取都要在纸上算一遍的原因。',
+     },
+   ],
+ },
+
  {
  type: 'content',
  heading: '黄金顺序：先用免费的钱',

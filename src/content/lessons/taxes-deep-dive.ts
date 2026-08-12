@@ -93,6 +93,73 @@ const lesson: Lesson = {
  },
  },
  {
+   type: 'video',
+   heading: 'Watch: How Tax Brackets Really Work',
+   body:
+     'Watch this quick BFF video on where taxes go and why a raise never leaves you with less. Heads up, it pauses to quiz you along the way, so pay attention!',
+   videoId: 'Uat5nnzQgP8',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 47,
+       question:
+         'Which of these is paid for with taxes?',
+       options: [
+         'Only the military',
+         'Roads, public schools, firefighters and food safety inspections',
+         'Only programs for people who are retired',
+         'Nothing you use day to day',
+       ],
+       answerIndex: 1,
+       explanation:
+         "Alvin's list includes roads, public schools, firefighters, food safety inspections, the military, and the bridges you drive over without thinking about it. You can argue about the amount, but you cannot really opt out of the list.",
+     },
+     {
+       at: 70,
+       question:
+         'In a progressive tax system, what does a higher bracket actually tax?',
+       options: [
+         'All of your income, at the higher rate',
+         'Only the dollars that fall inside that bracket',
+         'Your income from the previous year',
+         'Everything above your savings',
+       ],
+       answerIndex: 1,
+       explanation:
+         'This is the part everyone misses. The higher rate applies only to the dollars inside that bracket, which is why earning one more dollar can never leave you with less money overall.',
+     },
+     {
+       at: 125,
+       question:
+         'You paid $5,180 on $45,000 of income. What is your effective rate?',
+       options: [
+         'About 12%, the same as your bracket',
+         'About 11.5%, lower than your bracket',
+         'About 10%, the lowest bracket',
+         'About 24%, double your bracket',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Your marginal rate is the rate on your next dollar, which is 12% here. Your effective rate is what you actually paid across all your income, about 11.5%, and it is always lower.',
+     },
+     {
+       at: 150,
+       question:
+         'Your summer job withheld tax but you owe nothing. What should you do?',
+       options: [
+         'Nothing, since you do not have to file',
+         'File anyway, because that is often free money waiting with the IRS',
+         'Ask your employer to reverse it',
+         'Carry it forward to next year',
+       ],
+       answerIndex: 1,
+       explanation:
+         'The standard deduction means a chunk of income is not taxed at all, so many students owe nothing. If your employer withheld some anyway, filing a return is how you get it back.',
+     },
+   ],
+ },
+
+ {
  type: 'content',
  heading: 'How Tax Brackets REALLY Work',
  body:
@@ -303,6 +370,73 @@ const lesson: Lesson = {
  'El impuesto sobre las ventas se suma en la caja cuando compras cosas. Aquí fue 7%: $80 x 0.07 = $5.60 extra. El impuesto sobre la nómina sale de los cheques, el impuesto predial es para los bienes raíces y el impuesto sobre la renta se cobra sobre el dinero que ganas.',
  },
  },
+ {
+   type: 'video',
+   heading: 'Míralo: Cómo funcionan de verdad los tramos fiscales',
+   body:
+     'Mira este video corto de BFF sobre a dónde van los impuestos y por qué un aumento nunca te deja con menos. Ojo, se detiene para hacerte preguntas, así que presta atención.',
+   videoId: 'Uat5nnzQgP8',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 47,
+       question:
+         '¿Cuál de estas cosas se paga con impuestos?',
+       options: [
+         'Solo el ejército',
+         'Carreteras, escuelas públicas, bomberos e inspecciones de seguridad alimentaria',
+         'Solo programas para personas jubiladas',
+         'Nada que uses en tu día a día',
+       ],
+       answerIndex: 1,
+       explanation:
+         'La lista de Alvin incluye carreteras, escuelas públicas, bomberos, inspecciones de seguridad alimentaria, el ejército y los puentes por los que pasas sin pensarlo. Puedes discutir el monto, pero no puedes salirte de la lista.',
+     },
+     {
+       at: 70,
+       question:
+         'En un sistema progresivo, ¿sobre qué aplica realmente un tramo más alto?',
+       options: [
+         'Sobre todo tu ingreso, a la tasa más alta',
+         'Solo sobre los dólares que caen dentro de ese tramo',
+         'Sobre el ingreso del año anterior',
+         'Sobre todo lo que supere tus ahorros',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Esta es la parte que casi todos pasan por alto. La tasa más alta aplica solo a los dólares dentro de ese tramo, por eso ganar un dólar más nunca puede dejarte con menos dinero en total.',
+     },
+     {
+       at: 125,
+       question:
+         'Pagaste $5,180 sobre $45,000 de ingreso. ¿Cuál es tu tasa efectiva?',
+       options: [
+         'Cerca del 12%, igual que tu tramo',
+         'Cerca del 11.5%, más baja que tu tramo',
+         'Cerca del 10%, el tramo más bajo',
+         'Cerca del 24%, el doble de tu tramo',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Tu tasa marginal es la del siguiente dólar, aquí 12%. Tu tasa efectiva es lo que realmente pagaste sobre todo tu ingreso, cerca del 11.5%, y siempre es más baja.',
+     },
+     {
+       at: 150,
+       question:
+         'Tu trabajo de verano retuvo impuestos pero no debes nada. ¿Qué deberías hacer?',
+       options: [
+         'Nada, porque no estás obligado a declarar',
+         'Declarar de todos modos, porque suele ser dinero gratis esperándote en el IRS',
+         'Pedirle a tu empleador que lo revierta',
+         'Guardarlo para el año siguiente',
+       ],
+       answerIndex: 1,
+       explanation:
+         'La deducción estándar deja una parte del ingreso sin gravar, así que muchos estudiantes no deben nada. Si aun así te retuvieron algo, declarar es la forma de recuperarlo.',
+     },
+   ],
+ },
+
  {
  type: 'content',
  heading: 'Cómo funcionan DE VERDAD los tramos de impuestos',
@@ -515,6 +649,73 @@ const lesson: Lesson = {
  '销售税在你买东西时于收银台加上。这里是7%：80美元 x 0.07 = 多出5.60美元。工资税从工资里扣，房产税针对房地产，而所得税是对你赚到的钱征收的。',
  },
  },
+ {
+   type: 'video',
+   heading: '观看：税率档次到底怎么算',
+   body:
+     '看看这个 BFF 短视频，了解税钱花在哪里，以及为什么加薪绝不会让你拿得更少。注意，视频中途会暂停提问，认真看哦！',
+   videoId: 'Uat5nnzQgP8',
+   source: 'BFF Classroom',
+   questions: [
+     {
+       at: 47,
+       question:
+         '下面哪一项是用税款支付的？',
+       options: [
+         '只有军队',
+         '道路、公立学校、消防员和食品安全检查',
+         '只有给退休人员的项目',
+         '你日常用不到的东西',
+       ],
+       answerIndex: 1,
+       explanation:
+         'Alvin 列举了道路、公立学校、消防员、食品安全检查、军队，以及你开车经过却从没想过的桥。你可以争论交多少，但很难真的退出这份清单。',
+     },
+     {
+       at: 70,
+       question:
+         '在累进税制下，更高的档次实际上对什么征税？',
+       options: [
+         '对你全部收入按高税率征税',
+         '只对落在那一档之内的那部分钱征税',
+         '对你去年的收入征税',
+         '对超出你存款的全部金额征税',
+       ],
+       answerIndex: 1,
+       explanation:
+         '这是几乎所有人都搞错的地方。高税率只适用于落在那一档内的钱，所以多赚一美元绝不可能让你总收入反而变少。',
+     },
+     {
+       at: 125,
+       question:
+         '你在 $45,000 的收入上交了 $5,180。你的实际税率是多少？',
+       options: [
+         '约 12%，和所在档次一样',
+         '约 11.5%，低于所在档次',
+         '约 10%，最低档次',
+         '约 24%，是档次的两倍',
+       ],
+       answerIndex: 1,
+       explanation:
+         '边际税率是你下一美元适用的税率，这里是 12%。实际税率是你在全部收入上真正付出的比例，约 11.5%，而且永远更低。',
+     },
+     {
+       at: 150,
+       question:
+         '暑期工被预扣了税，但你其实一分不欠。该怎么做？',
+       options: [
+         '什么都不做，反正不用报税',
+         '还是要报，因为那往往是国税局那边等你去领的钱',
+         '让雇主把钱退回来',
+         '留到明年再说',
+       ],
+       answerIndex: 1,
+       explanation:
+         '标准扣除额意味着一部分收入根本不用交税，所以很多学生本来就不欠。如果雇主还是预扣了，报税就是把钱拿回来的办法。',
+     },
+   ],
+ },
+
  {
  type: 'content',
  heading: '税级究竟是怎么运作的',
