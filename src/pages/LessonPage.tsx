@@ -407,6 +407,7 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
   function finishQuiz(answers: Record<number, AnswerState>) {
     const total = loc.quiz.length
     const correct = loc.quiz.filter((q, i) => answers[i]?.chosen === q.answerIndex).length
+    const missed = loc.quiz.map((_, i) => i).filter((i) => answers[i]?.chosen !== loc.quiz[i].answerIndex)
     const pct = total > 0 ? Math.round((correct / total) * 100) : 100
     setPhase('results')
     // Finished: there is nothing left to resume into, and leaving the position
@@ -419,7 +420,16 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
     void saveProgress(studentRef.current, lesson.slug, {
       status: 'completed',
       score: pct,
-      data: { correct, total, answers: loc.quiz.map((_, i) => answers[i]?.chosen ?? -1) },
+      data: {
+        correct,
+        total,
+        answers: loc.quiz.map((_, i) => answers[i]?.chosen ?? -1),
+        missed,
+        // A fresh attempt replaces the review deck for this lesson. Keeping the
+        // old list would mean a question missed again never came back, because
+        // it would still be marked as already reviewed.
+        reviewed: [],
+      },
     })
   }
 

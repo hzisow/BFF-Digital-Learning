@@ -1,6 +1,7 @@
-// Practice mode: resurfaces every quiz question the student missed (recorded
-// in progress.data.answers) so they can master it. Local-only, counts toward
-// the daily streak.
+// Practice mode: resurfaces every quiz question the student missed and has not
+// worked through yet, so they can master it. Reviewing a question here clears
+// it from the deck and from the chip on the course path; retaking the lesson
+// quiz is what brings a question back. Counts toward the daily streak.
 
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -11,6 +12,8 @@ import { AppIcon } from '../lib/icons'
 import type { IconName } from '../lib/icons'
 import { useLang, localizeLesson } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
+import { markReviewed, missedIndexes, reviewedIndexes } from '../lib/review'
+import { useStudent } from '../lib/session'
 import { recordActivity } from '../lib/streak'
 import { Loading, SkeletonQuestion } from '../components/Skeleton'
 
@@ -23,6 +26,7 @@ interface PracticeItem {
 
 export default function PracticePage() {
   const { lang } = useLang()
+  const { student } = useStudent()
   const es = lang === 'es'
   const zh = lang === 'zh'
 
@@ -40,7 +44,9 @@ export default function PracticePage() {
     let live = true
     const progress = loadLocalProgress()
     const slugs = Object.keys(progress).filter(
-      (slug) => isLessonSlug(slug) && Array.isArray(progress[slug]?.data?.answers),
+      (slug) =>
+        isLessonSlug(slug) &&
+        (missedIndexes(progress[slug]) != null || Array.isArray(progress[slug]?.data?.answers)),
     )
     void Promise.all(slugs.map((slug) => loadLesson(slug))).then((results) => {
       if (!live) return
@@ -49,20 +55,28 @@ export default function PracticePage() {
       for (const lesson of results) {
         if (!lesson) continue
         lessons[lesson.slug] = lesson
-        const answers = progress[lesson.slug]?.data?.answers
-        if (!Array.isArray(answers)) continue
+        const entry = progress[lesson.slug]
+        // Records written before `missed` existed still carry the raw answers,
+        // and the lesson is already loaded here, so recover the list from them.
+        const answers = entry?.data?.answers
+        const missed =
+          missedIndexes(entry) ??
+          (Array.isArray(answers)
+            ? answers
+                .map((chosen, i) => (lesson.quiz[i] && chosen !== lesson.quiz[i].answerIndex ? i : -1))
+                .filter((i) => i >= 0)
+            : [])
+        const reviewed = reviewedIndexes(entry)
         const loc = localizeLesson(lesson, lang)
-        answers.forEach((chosen, i) => {
-          const q = lesson.quiz[i]
-          if (q && chosen !== q.answerIndex) {
-            items.push({
-              lessonSlug: lesson.slug,
-              lessonIcon: lesson.icon,
-              lessonTitle: loc.title,
-              questionIndex: i,
-            })
-          }
-        })
+        for (const i of missed) {
+          if (reviewed.includes(i) || !lesson.quiz[i]) continue
+          items.push({
+            lessonSlug: lesson.slug,
+            lessonIcon: lesson.icon,
+            lessonTitle: loc.title,
+            questionIndex: i,
+          })
+        }
       }
       setLoaded({ deck: items, lessons })
     })
@@ -161,10 +175,10 @@ export default function PracticePage() {
         </div>
         <p className="mt-6 text-sm text-ink/60">
           {zh
-            ? '想把它们从复习里彻底清掉，就重做一遍课程测验、把它们答对吧。'
+            ? '这些题已从你的复习清单里清掉了。如果重做课程测验时又答错，它们会重新出现。'
             : es
-              ? 'Para quitarlas de tu repaso para siempre, repite el examen de la lección y contéstalas bien.'
-              : 'To clear them from your review for good, retake the lesson quiz and nail them.'}
+              ? 'Ya salieron de tu lista de repaso. Si vuelves a fallarlas al repetir el examen de la lección, reaparecerán aquí.'
+              : 'These are off your review list now. Miss any of them again on a lesson retake and they will come back.'}
         </p>
         <div className="mt-8 flex justify-center gap-3">
           <button
@@ -198,6 +212,10 @@ export default function PracticePage() {
     setChosen(i)
     if (i === q.answerIndex) setCorrectCount((c) => c + 1)
     recordActivity() // practicing counts toward the streak
+    // Answering reveals the correct answer and the explanation, so the question
+    // has been reviewed either way and drops out of the deck. Getting it wrong
+    // again is not a reason to nag: the retake is the path back to it.
+    void markReviewed(student, item.lessonSlug, item.questionIndex)
   }
 
   return (

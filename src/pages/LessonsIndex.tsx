@@ -28,6 +28,7 @@ import { prefetchRoute } from '../lib/routeChunks'
 import { useLang } from '../lib/i18n'
 import { loadLocalProgress } from '../lib/progress'
 import type { ActivityProgress } from '../lib/progress'
+import { outstandingMissedCount } from '../lib/review'
 import { getStreak } from '../lib/streak'
 import { totalXp, levelInfo, tierName } from '../lib/xp'
 import { dailyQuests } from '../lib/quests'
@@ -243,24 +244,11 @@ export default function LessonsIndex() {
   const level = useMemo(() => levelInfo(totalXp(progress)), [progress])
   const quests = useMemo(() => dailyQuests(progress), [progress])
   const questsDone = quests.filter((q) => q.done).length
-  // Missed quiz questions across all lessons — powers the Practice chip.
-  //
-  // This used to load every lesson just to compare each stored answer against
-  // its answer key, which meant the course path pulled the entire curriculum to
-  // render one number. `finishQuiz` already records `correct` and `total`, and
-  // missed is exactly the difference — so the count needs no lesson content at
-  // all. That is most of why this page no longer downloads 181KB.
-  const missedCount = useMemo(() => {
-    let count = 0
-    for (const p of Object.values(progress)) {
-      const data = p.data as { correct?: unknown; total?: unknown } | undefined
-      const correct = typeof data?.correct === 'number' ? data.correct : null
-      const total = typeof data?.total === 'number' ? data.total : null
-      if (correct == null || total == null) continue
-      count += Math.max(0, total - correct)
-    }
-    return count
-  }, [progress])
+  // Missed quiz questions still waiting to be reviewed — powers the Practice
+  // chip. Derived from what `finishQuiz` already saved, so the count needs no
+  // lesson content at all; that is most of why this page no longer downloads
+  // 181KB.
+  const missedCount = useMemo(() => outstandingMissedCount(progress), [progress])
   // Anyone looking at the course path is about to open a lesson. Warm the
   // lesson canvas now so tapping a node goes straight to content.
   useEffect(() => {
