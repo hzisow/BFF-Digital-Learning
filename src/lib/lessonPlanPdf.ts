@@ -33,12 +33,31 @@ type Block =
 
 /** Strip the inline syntax the built-in fonts cannot express as-is. */
 function inline(s: string): string {
-  return s
-    .replace(/\*\*(.+?)\*\*/g, '$1')
-    .replace(/(^|\W)\*(?!\s)(.+?)\*(?=\W|$)/g, '$1$2')
-    .replace(/`([^`]+)`/g, '$1')
-    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
-    .trim()
+  return (
+    s
+      .replace(/\*\*(.+?)\*\*/g, '$1')
+      .replace(/(^|\W)\*(?!\s)(.+?)\*(?=\W|$)/g, '$1$2')
+      .replace(/`([^`]+)`/g, '$1')
+      .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+      // Models reach for LaTeX when they hit arithmetic or an arrow, and
+      // "$ Profit / Premium Paid \times 100$" on a printed teacher handout is
+      // worse than no formatting at all. The built-in PDF fonts have no arrow
+      // glyph either, so these become their ASCII equivalents.
+      // Only unwrap math delimiters around an actual LaTeX macro. Matching any
+      // $...$ ate the money: "sneakers for $100 ... Pay $5 today" looks exactly
+      // like a math span, and stripping it turned every price on a personal
+      // finance handout into a bare number.
+      .replace(/\$([^$\n]*\\[a-zA-Z]+[^$\n]*)\$/g, '$1')
+      .replace(/\\(?:rightarrow|to|Rightarrow)/g, '->')
+      .replace(/\\(?:leftarrow|Leftarrow)/g, '<-')
+      .replace(/\\(?:times|cdot|ast)/g, 'x')
+      .replace(/\\div/g, '/')
+      .replace(/\\le(?:q)?\b/g, '<=')
+      .replace(/\\ge(?:q)?\b/g, '>=')
+      .replace(/\\[a-zA-Z]+/g, '')
+      .replace(/\s{2,}/g, ' ')
+      .trim()
+  )
 }
 
 function splitRow(line: string): string[] {
@@ -96,7 +115,10 @@ export function parseMarkdown(md: string): Block[] {
 
     if (/^\s*([-*_])\s*\1\s*\1[\s\-*_]*$/.test(line)) {
       flush()
-      blocks.push({ kind: 'rule' })
+      // A table already closes with a rule of its own, and the model puts a
+      // `---` after most sections, which drew the two a few points apart.
+      const prev = blocks[blocks.length - 1]
+      if (prev?.kind !== 'rule' && prev?.kind !== 'table') blocks.push({ kind: 'rule' })
       continue
     }
 
@@ -127,7 +149,12 @@ export function parseMarkdown(md: string): Block[] {
       continue
     }
 
-    para.push(line.trim())
+    // A blockquote is used for teacher scripts. Keep the words, drop the marker.
+    para.push(line.replace(/^\s*>\s?/, '').trim())
+    // Two trailing spaces is Markdown's hard line break, and it is exactly what
+    // the model uses for stacked facts ("Grade Band: ...", "Duration: ...").
+    // Joining those into one paragraph ran them together on one line.
+    if (/ {2,}$/.test(line)) flush()
   }
   flush()
   return blocks.filter((b) => b.kind !== 'p' || b.text.length > 0)
@@ -154,7 +181,11 @@ export function buildLessonPlanPdf(
   meta: { topic: string; gradeBand: string; minutes: number },
   logo: { data: string; ratio: number } | null = null,
 ): jsPDF {
-  const blocks = parseMarkdown(markdown)
+  const parsed = parseMarkdown(markdown)
+  // The model opens with its own H1 ("Lesson Plan: How Options Trading Works"),
+  // which is the title this page already sets in 18pt above. Printing both put
+  // the same sentence on the sheet twice.
+  const blocks = parsed[0]?.kind === 'h' && parsed[0].level === 1 ? parsed.slice(1) : parsed
   let y = MARGIN
 
   function page() {
@@ -185,7 +216,9 @@ export function buildLessonPlanPdf(
   doc.setFontSize(9)
   doc.setTextColor(...BLUE)
   doc.text('LESSON PLAN', MARGIN, y + 10)
-  y += 22
+  // Enough room for the title's ascenders. At 22 the 18pt title's cap height
+  // reached back up into this label and the two collided.
+  y += 34
 
   doc.setFont('helvetica', 'bold')
   doc.setFontSize(18)

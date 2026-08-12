@@ -206,7 +206,16 @@ Produce a LESSON PLAN that fits a ${mins}-minute class period. Include:
 - a timed agenda broken into warm-up, direct instruction, activity, check-for-understanding, and exit ticket, with minute allocations that add up to about ${mins} minutes,
 - differentiation tips for varied learners.
 
-Output well-structured GitHub-flavored Markdown. Use headings, lists, and tables where they help. Do not wrap the whole document in a code fence. Be practical and classroom-ready.`
+Every material you list must be either something a classroom already has (projector, whiteboard, paper, calculators) or something written out in full inside this document. If the plan uses a handout, worksheet, exit ticket, scenario card, or slide, write its complete content into an "Appendix: Printable Materials" section at the end, ready to photocopy as-is: every question, every scenario, every answer blank, plus an answer key for the teacher. Never name a document you have not written. A teacher must be able to run this lesson from this page alone.
+
+Output well-structured GitHub-flavored Markdown. Use headings, lists, and tables where they help. Be practical and classroom-ready.
+
+Formatting rules, because this is typeset into a printed PDF:
+- Do not wrap the document in a code fence.
+- Do not repeat the lesson title as a heading; the page already prints it. Start with the learning objectives.
+- Put a blank line between every block: headings, paragraphs, lists, and tables.
+- Put facts like grade level and duration in a bullet list, one per line, never as consecutive lines of a paragraph.
+- Never use LaTeX or math delimiters. Write formulas in plain words, for example "profit divided by premium paid, times 100".`
 
     const markdown = await writeUntilDone(
       system,

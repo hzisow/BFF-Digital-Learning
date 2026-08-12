@@ -136,12 +136,12 @@ export async function callAIDetailed(opts: CallAIOptions): Promise<AIResult> {
     return !/(^|[^\d])(1\.5|2\.0)([^\d]|$)/.test(model)
   }
 
-  function bodyFor(model: string): string {
+  function bodyFor(model: string, allowThinking = false): string {
     const generationConfig: Record<string, unknown> = {
       maxOutputTokens: opts.maxTokens ?? 1024,
       temperature: opts.outputSchema ? 0.2 : 0.7,
     }
-    if (thinks(model)) {
+    if (thinks(model) && !allowThinking) {
       generationConfig.thinkingConfig = { thinkingBudget: 0 }
     }
     if (opts.outputSchema) {
@@ -161,21 +161,49 @@ export async function callAIDetailed(opts: CallAIOptions): Promise<AIResult> {
 
   for (const model of MODELS) {
     tried.push(model)
-    let res: Response
-    try {
-      res = await fetch(endpoint(model), {
-        method: 'POST',
-        // Header auth rather than ?key= so the secret never lands in a URL,
-        // which is what proxies and error messages tend to echo back.
-        headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
-        body: bodyFor(model),
-      })
-    } catch (e) {
-      lastStatus = 0
-      lastDetail = `network error: ${e instanceof Error ? e.message : String(e)}`
-      console.error(`Gemini fetch failed for ${model}: ${lastDetail}`)
-      continue
+    // Two shots at each model: once with thinking switched off, and, if that
+    // is what it objected to, once with thinking left alone.
+    //
+    // Not every model accepts thinkingBudget: 0. The reasoning tiers require a
+    // nonzero budget and answer 400 INVALID_ARGUMENT, which took the whole
+    // feature down: the first four models were out of free-tier quota, so every
+    // request fell through to `gemini-flash-latest`, which refused the field.
+    // Mentors saw "Gemini 400: Request contains an invalid argument". Letting
+    // it think is fine now that budgets are large and long output continues
+    // until it is finished; the point of the flag was never thinking itself,
+    // only thinking inside a budget too small to answer in.
+    const modes = thinks(model) ? [false, true] : [false]
+    let res: Response | null = null
+    let failed = false
+
+    for (const allowThinking of modes) {
+      try {
+        res = await fetch(endpoint(model), {
+          method: 'POST',
+          // Header auth rather than ?key= so the secret never lands in a URL,
+          // which is what proxies and error messages tend to echo back.
+          headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
+          body: bodyFor(model, allowThinking),
+        })
+      } catch (e) {
+        lastStatus = 0
+        lastDetail = `network error: ${e instanceof Error ? e.message : String(e)}`
+        console.error(`Gemini fetch failed for ${model}: ${lastDetail}`)
+        failed = true
+        break
+      }
+      if (res.ok || res.status !== 400 || allowThinking) break
+      // A 400 on the no-thinking attempt: read it, then try again letting the
+      // model think. Anything else that 400s will 400 the same way twice and
+      // is reported normally.
+      lastDetail = await res.text().catch(() => '')
+      console.error(
+        `Gemini 400 for ${model} with thinkingBudget 0, retrying with thinking on: ` +
+          lastDetail.slice(0, 300),
+      )
     }
+
+    if (failed || !res) continue
 
     if (res.ok) {
       const data = await res.json()
