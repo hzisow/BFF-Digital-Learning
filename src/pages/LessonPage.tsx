@@ -11,8 +11,8 @@ import { LessonFallback } from '../components/RouteFallback'
 import { ACTIVITIES } from '../lib/activities'
 import { useLang, localizeLesson } from '../lib/i18n'
 import { LangPicker } from '../components/LangPicker'
-import { saveProgress } from '../lib/progress'
-import { PASS_SCORE } from '../lib/mastery'
+import { loadLocalProgress, saveProgress } from '../lib/progress'
+import { PASS_SCORE, bestScore } from '../lib/mastery'
 import {
   clearPosition,
   loadPosition,
@@ -294,6 +294,12 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
   const [checkpointAnswers, setCheckpointAnswers] = useState<Record<number, AnswerState>>({})
   const [quizAnswers, setQuizAnswers] = useState<Record<number, AnswerState>>({})
   const [videoDone, setVideoDone] = useState<Record<number, boolean>>({})
+  // The best score this lesson has ever been finished with, read just before
+  // this attempt overwrites it. The results screen needs it because progress
+  // keeps the best score while the path unlocks off that same number: without
+  // it, a student who aced the quiz and then retook it for fun was told the
+  // next lesson was locked while the path showed it open.
+  const [priorBest, setPriorBest] = useState<number | null>(null)
 
   // A position saved on a previous visit, waiting for the student to choose
   // between picking up and starting fresh. Read once, on mount — asking later
@@ -409,6 +415,7 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
     const correct = loc.quiz.filter((q, i) => answers[i]?.chosen === q.answerIndex).length
     const missed = loc.quiz.map((_, i) => i).filter((i) => answers[i]?.chosen !== loc.quiz[i].answerIndex)
     const pct = total > 0 ? Math.round((correct / total) * 100) : 100
+    setPriorBest(bestScore(loadLocalProgress()[lesson.slug]))
     setPhase('results')
     // Finished: there is nothing left to resume into, and leaving the position
     // behind would offer to drop them back into the middle of a lesson they
@@ -416,7 +423,10 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
     clearPosition(lesson.slug)
     // Only celebrate a pass. Confetti over a score that leaves the next lesson
     // locked reads as "well done" and contradicts the banner right below it.
-    if (pct >= PASS_SCORE) celebrate(pct === 100 ? 'perfect' : 'complete')
+    // Electives gate nothing, so finishing one is always worth celebrating.
+    // (`myIndex` is declared further down; it is assigned long before any of
+    // this runs, since this only fires from a click.)
+    if (pct >= PASS_SCORE || myIndex < 0) celebrate(pct === 100 ? 'perfect' : 'complete')
     void saveProgress(studentRef.current, lesson.slug, {
       status: 'completed',
       score: pct,
@@ -617,15 +627,34 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
     // Passing unlocks the next lesson; anything short of it does not. The
     // message has to say which of those just happened, because "Nice job!"
     // above a locked path is the most confusing thing this screen could do.
-    const passed = pct >= PASS_SCORE
-    const missedBy = total > 0 ? Math.ceil((PASS_SCORE / 100) * total) - correct : 0
-    const tier = passed
+    //
+    // The gate reads the best score, not this attempt, because that is the
+    // number the path unlocks off. Retaking a quiz you already aced used to
+    // print "you need 85% to unlock the next lesson" over a lesson that was
+    // already unlocked, which is the same contradiction pointing the other way.
+    const best = Math.max(pct, priorBest ?? 0)
+    const passed = best >= PASS_SCORE
+    // Electives are off the course path, so nothing about them is gated and
+    // finishing one is simply finishing it.
+    const isCore = myIndex >= 0
+    const cleared = passed || !isCore
+    // This attempt fell short but an earlier one did not, so nothing is lost.
+    const carried = passed && pct < PASS_SCORE
+    const bestCorrect = Math.round((best / 100) * total)
+    const missedBy = total > 0 ? Math.max(1, Math.ceil((PASS_SCORE / 100) * total) - bestCorrect) : 0
+    const tier = !isCore
       ? pct === 100
-        ? zh ? '满分，你正式成为理财高手了！' : es ? '¡Puntaje perfecto, eres un master del dinero!' : 'Perfect score, you are officially a money master.'
-        : zh ? '过关了：你是真的懂这些！' : es ? '¡Aprobada, de verdad sabes de esto!' : 'Passed, you really know your stuff.'
-      : pct >= 60
-        ? zh ? '很接近了！再复习一下，重做测验就能过关。' : es ? '¡Muy cerca! Repasa un poco y repite el examen.' : 'So close, a quick review and a retake will get you there.'
-        : zh ? '很努力了！再把这节课过一遍、重做测验。' : es ? '¡Buen esfuerzo! Repasa la lección y repite el examen.' : 'Good effort, skim the lesson again and retake the quiz.'
+        ? zh ? '满分，这门选修你彻底拿下了！' : es ? '¡Puntaje perfecto, dominaste esta electiva!' : 'Perfect score, you owned this elective.'
+        : zh ? '选修完成，这些内容你已经拿下了。' : es ? 'Electiva completada, te llevas estas ideas contigo.' : 'Elective done, these ideas are yours now.'
+      : carried
+      ? zh ? `不用担心：你之前 ${best}% 的最好成绩依然作数。` : es ? `Tranquilo: tu mejor puntaje de ${best}% sigue contando.` : `No harm done, your best score of ${best}% still stands.`
+      : passed
+        ? pct === 100
+          ? zh ? '满分，你正式成为理财高手了！' : es ? '¡Puntaje perfecto, eres un master del dinero!' : 'Perfect score, you are officially a money master.'
+          : zh ? '过关了：你是真的懂这些！' : es ? '¡Aprobada, de verdad sabes de esto!' : 'Passed, you really know your stuff.'
+        : pct >= 60
+          ? zh ? '很接近了！再复习一下，重做测验就能过关。' : es ? '¡Muy cerca! Repasa un poco y repite el examen.' : 'So close, a quick review and a retake will get you there.'
+          : zh ? '很努力了！再把这节课过一遍、重做测验。' : es ? '¡Buen esfuerzo! Repasa la lección y repite el examen.' : 'Good effort, skim the lesson again and retake the quiz.'
 
     return (
       <div className="lz">
@@ -634,8 +663,10 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
           <div className="lz-result-cover animate-pop-in">
             <div className="lz-hero-orbit one" aria-hidden="true" />
             <p className="lz-eyebrow" style={{ color: 'var(--lz-blue-bright)', justifyContent: 'center' }}>
-              {passed
-                ? tr({ en: 'Lesson complete', es: 'Lección completa', zh: '课程完成' })
+              {cleared
+                ? isCore
+                  ? tr({ en: 'Lesson complete', es: 'Lección completa', zh: '课程完成' })
+                  : tr({ en: 'Elective complete', es: 'Electiva completa', zh: '选修完成' })
                 : tr({ en: 'Not passed yet', es: 'Aún no aprobada', zh: '尚未通过' })}
             </p>
             <p className="lz-result-score">
@@ -644,10 +675,10 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
             <div role="status">
               <p style={{ marginTop: '10px', color: '#b6c2cf', fontSize: '15px' }}>
                 {zh
-                  ? `你在第一次尝试就答对了 ${total} 道题中的 ${correct} 道。`
+                  ? `这次你答对了 ${total} 道题中的 ${correct} 道。`
                   : es
-                    ? `Acertaste ${correct} de ${total} preguntas al primer intento.`
-                    : `You got ${correct} of ${total} questions right on the first try.`}
+                    ? `Acertaste ${correct} de ${total} preguntas en este intento.`
+                    : `You got ${correct} of ${total} questions right this time.`}
               </p>
               <p style={{ marginTop: '14px', fontFamily: 'var(--lz-display)', fontWeight: 700, fontSize: '17px' }}>
                 {tier}
@@ -690,21 +721,46 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
           </div>
 
           {/* The gate, stated plainly. A student who scored 71% should learn it
-              here rather than by finding a locked node on the path. */}
+              here rather than by finding a locked node on the path.
+
+              Only the core path is gated. Electives sit off it and their quizzes
+              are six questions, where 85% rounds up to a perfect score — this
+              screen used to hand an elective student a padlock and tell them the
+              next lesson was locked, when there is no next lesson and nothing
+              was ever locked. The last lesson on the path has no next lesson to
+              unlock either, so it says what actually happened instead. */}
           <div
             role="status"
-            className={`lz-gate ${passed ? 'ok' : ''}`}
+            className={`lz-gate ${cleared ? 'ok' : ''}`}
             style={{ marginTop: '28px' }}
           >
-            {passed ? (
+            {cleared ? (
               <>
                 <Check className="h-4 w-4 shrink-0" aria-hidden="true" />
                 <span>
-                  {zh
-                    ? `达到 ${PASS_SCORE}% 的过关线，下一课已解锁。`
-                    : es
-                      ? `Superaste el ${PASS_SCORE}%, la siguiente lección está desbloqueada.`
-                      : `You cleared the ${PASS_SCORE}% bar. The next lesson is unlocked.`}
+                  {!isCore
+                    ? zh
+                      ? '选修课已完成。选修不影响学习路径的解锁，随时可以重做测验。'
+                      : es
+                        ? 'Electiva completada. Las electivas no bloquean nada en tu ruta, y puedes repetir el examen cuando quieras.'
+                        : 'Elective complete. Electives do not gate anything on your path, and you can retake the quiz whenever you like.'
+                    : carried
+                      ? zh
+                        ? `我们只保留你的最高分，也就是 ${best}%，所以下一课仍然是解锁的。`
+                        : es
+                          ? `Solo guardamos tu mejor puntaje, ${best}%, así que la siguiente lección sigue desbloqueada.`
+                          : `We only ever keep your best score, ${best}%, so the next lesson stays unlocked.`
+                      : !nextLesson
+                        ? zh
+                          ? `达到 ${PASS_SCORE}% 的过关线，而这是学习路径上的最后一课。去领你的证书吧。`
+                          : es
+                            ? `Superaste el ${PASS_SCORE}% y esta era la última lección de la ruta. Ve por tu certificado.`
+                            : `You cleared the ${PASS_SCORE}% bar, and that was the last lesson on the path. Go claim your certificate.`
+                        : zh
+                          ? `达到 ${PASS_SCORE}% 的过关线，下一课已解锁。`
+                          : es
+                            ? `Superaste el ${PASS_SCORE}%, la siguiente lección está desbloqueada.`
+                            : `You cleared the ${PASS_SCORE}% bar. The next lesson is unlocked.`}
                 </span>
               </>
             ) : (
@@ -725,7 +781,7 @@ function LessonPlayer({ lesson }: { lesson: Lesson }) {
             <button
               type="button"
               onClick={retakeQuiz}
-              className={`lz-btn ${passed ? 'lz-btn--ghost-dark' : 'lz-btn--primary'}`}
+              className={`lz-btn ${cleared ? 'lz-btn--ghost-dark' : 'lz-btn--primary'}`}
             >
               <RotateCcw className="h-4 w-4" aria-hidden="true" /> {t('lesson.retake')}
             </button>
