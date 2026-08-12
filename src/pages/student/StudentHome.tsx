@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
-import { ArrowRight, BookOpen, Check, Clock, Flame, Lock, MessageSquare, PartyPopper, School, Umbrella } from 'lucide-react'
+import { ArrowRight, BookOpen, Check, Clock, Flame, Lock, MessageSquare, PartyPopper, RotateCcw, School, Umbrella } from 'lucide-react'
 import { ACTIVITIES, getActivity, kindLabel, localizeActivity } from '../../lib/activities'
+import type { ActivityKind } from '../../lib/activities'
 import { AppIcon } from '../../lib/icons'
 import { BACKEND_ENABLED } from '../../lib/config'
+import { needsRetake } from '../../lib/mastery'
 import type { ActivityProgress } from '../../lib/progress'
 import { loadLocalProgress } from '../../lib/progress'
 import { levelInfo, totalXp } from '../../lib/xp'
@@ -23,13 +25,28 @@ interface AssignmentRow {
 
 function ProgressChip({
   progress,
+  kind,
   es,
   zh,
 }: {
   progress: ActivityProgress | undefined
+  /** Core lessons are gated on a passing score; nothing else is. */
+  kind: ActivityKind
   es: boolean
   zh: boolean
 }) {
+  // A core lesson finished below the bar is not done: the path keeps the
+  // student parked on it and will not unlock the next stop. A green
+  // "Completed · 50%" chip here told them the opposite.
+  if (kind === 'lesson' && needsRetake(progress)) {
+    return (
+      <span className="chip bg-amber-100 text-amber-800">
+        <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />{' '}
+        {zh ? '需要重做' : es ? 'Repetir' : 'Needs a retake'}
+        {progress?.score != null ? ` · ${Math.round(progress.score)}%` : ''}
+      </span>
+    )
+  }
   if (progress?.status === 'completed') {
     return (
       <span className="chip bg-green-100 text-green-700">
@@ -46,6 +63,12 @@ function ProgressChip({
   return (
     <span className="chip bg-slate-100 text-slate-600">{zh ? '未开始' : es ? 'Sin empezar' : 'Not started'}</span>
   )
+}
+
+/** Finished for good. For a core lesson that means passed, same as the path. */
+function isDone(kind: ActivityKind, progress: ActivityProgress | undefined): boolean {
+  if (progress?.status !== 'completed') return false
+  return kind === 'lesson' ? !needsRetake(progress) : true
 }
 
 function formatDue(dueAt: string, es: boolean, zh: boolean): string {
@@ -123,9 +146,7 @@ export default function StudentHome() {
   }, [classroomId, studentId])
 
   const allActivities = useMemo(() => [...ACTIVITIES].sort((a, b) => a.sortKey - b.sortKey), [])
-  const completedCount = allActivities.filter(
-    (a) => progress[a.slug]?.status === 'completed',
-  ).length
+  const completedCount = allActivities.filter((a) => isDone(a.kind, progress[a.slug])).length
   const xp = useMemo(() => totalXp(progress), [progress])
   const level = useMemo(() => levelInfo(xp).level, [xp])
   const resume = useMemo(() => resumeLesson(), [])
@@ -403,8 +424,9 @@ export default function StudentHome() {
               const p = progress[activity.slug]
               const local = localizeActivity(activity, lang)
               const due = dueInfo(asg.due_at)
-              // A deadline only matters if the work is not already done.
-              const pressing = due != null && isUrgent(due) && p?.status !== 'completed'
+              // A deadline only matters if the work is not already done, and a
+              // lesson finished below the pass bar is not done.
+              const pressing = due != null && isUrgent(due) && !isDone(activity.kind, p)
               return (
                 <div
                   key={asg.activity_slug}
@@ -428,7 +450,7 @@ export default function StudentHome() {
                         </p>
                       </div>
                     </div>
-                    <ProgressChip progress={p} es={es} zh={zh} />
+                    <ProgressChip progress={p} kind={activity.kind} es={es} zh={zh} />
                   </div>
                   {asg.note && (
                     <p className="mt-3 flex items-start gap-2 rounded-xl bg-bff-50 px-4 py-3 text-sm text-bff-900">
@@ -534,7 +556,7 @@ export default function StudentHome() {
                   <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500">
                     <Clock className="h-3.5 w-3.5" aria-hidden="true" /> ~{a.durationMin} {zh ? '分钟' : 'min'}
                   </span>
-                  <ProgressChip progress={p} es={es} zh={zh} />
+                  <ProgressChip progress={p} kind={a.kind} es={es} zh={zh} />
                 </div>
               </Link>
             )
