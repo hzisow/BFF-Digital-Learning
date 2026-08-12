@@ -1,4 +1,4 @@
-// Live multiplayer plumbing for Wolf of Wall Street (Supabase Realtime).
+// Live multiplayer plumbing for Market Movers (Supabase Realtime).
 
 import type { RealtimeChannel } from '@supabase/supabase-js'
 import { requireSupabase } from '../../lib/supabase'

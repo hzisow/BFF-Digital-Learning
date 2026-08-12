@@ -50,7 +50,7 @@ export default function WolfSolo() {
       setStage(5)
       const gain = finalValue - STARTING_CASH
       const score = Math.max(0, Math.min(100, Math.round(50 + gain)))
-      void saveProgress(student, 'wolf-of-wall-street', {
+      void saveProgress(student, 'market-movers', {
         status: 'completed',
         score,
         data: { mode: 'solo', finalValue, gain },
@@ -65,7 +65,7 @@ export default function WolfSolo() {
           <h1 className="flex items-center gap-2 font-display text-2xl font-bold text-ink">
             <LineChart className="h-6 w-6 shrink-0 text-bff-700" aria-hidden="true" />
             <span>
-              Wolf of Wall <em>Street</em>
+              Market <em>Movers</em>
             </span>
           </h1>
           <p className="flex items-center gap-1.5 text-sm text-ink/60">

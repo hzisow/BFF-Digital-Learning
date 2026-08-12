@@ -220,7 +220,7 @@ const lesson: Lesson = {
  },
  {
  type: 'example',
- heading: 'Wolf of Wall Street! (Class Game)',
+ heading: 'Market Movers! (Class Game)',
  body:
  "In class, this lesson comes with a game. You get a $1,000 budget to \"invest\" in 3 stocks of your choice, deciding how many shares of each to buy based on their past performance. At the end of the presentation, everyone checks how their picks did and tallies up their winnings (or losses). It's a fun, zero-risk way to feel what real investing decisions are like: analyzing performance, diversifying, and living with the results.",
  },
@@ -541,7 +541,7 @@ const lesson: Lesson = {
  },
  {
  type: 'example',
- heading: '¡El lobo de Wall Street! (Juego de clase)',
+ heading: '¡Mueve el Mercado! (Juego de clase)',
  body:
  'En clase, esta lección viene con un juego. Recibes un presupuesto de $1,000 para "invertir" en 3 acciones de tu elección, decidiendo cuántas participaciones de cada una comprar según su desempeño pasado. Al final de la presentación, todos revisan cómo les fue a sus elecciones y suman sus ganancias (o pérdidas). Es una forma divertida y sin riesgo de sentir cómo son las decisiones de inversión reales: analizar el desempeño, diversificar y vivir con los resultados.',
  },
@@ -863,7 +863,7 @@ const lesson: Lesson = {
  },
  {
  type: 'example',
- heading: '华尔街之狼！（课堂游戏）',
+ heading: '市场风云！（课堂游戏）',
  body:
  '在课堂上，这节课配有一个游戏。你会得到 $1,000 的预算，去「投资」你自选的 3 只股票，根据它们过去的表现决定每只各买多少股。在演示的最后，大家一起看看自己的选择表现如何，并结算各自的收益（或亏损）。这是一种有趣、零风险的方式，让你体会真实投资决策的感觉：分析表现、分散配置，并承担结果。',
  },

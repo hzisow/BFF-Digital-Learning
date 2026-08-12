@@ -1,7 +1,7 @@
 // Lesson Plan & Worksheet Generator — a mentor/admin tool (Team tab). Mentors
 // pick a kind (lesson plan or worksheet), a topic, a grade band, and (for
-// lesson plans) a class length, then Claude drafts classroom-ready materials as
-// Markdown. Mentors can copy, print, or download the result as a .md file.
+// lesson plans) a class length, then the model drafts classroom-ready materials.
+// Mentors can copy the Markdown, print, or download a laid-out PDF.
 //
 // Access is gated to signed-in BFF team members; the edge function additionally
 // best-effort checks the caller is an approved mentor.
@@ -13,6 +13,7 @@ import { invokeAI, AI_ENABLED, AINotConfiguredError, AIOfflineError } from '../.
 import { offlineAICopy } from '../../lib/offlineCopy'
 import { buildWorksheetPdf, worksheetFilename, loadLogo } from '../../lib/worksheetPdf'
 import type { Worksheet } from '../../lib/worksheetPdf'
+import { buildLessonPlanPdf, lessonPlanFilename, hasCjk } from '../../lib/lessonPlanPdf'
 import { useLang } from '../../lib/i18n'
 import { useAdmin } from '../../lib/session'
 import { Skeleton, SkeletonPage, SkeletonText } from '../../components/Skeleton'
@@ -275,20 +276,10 @@ export default function LessonPlanGenerator() {
     })
   }
 
-  function saveFile(blob: Blob, name: string) {
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = name
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
-  }
-
   async function handleDownload() {
-    // Worksheets download as a print-ready PDF; lesson plans stay Markdown so
-    // mentors can paste them into their own docs.
+    // Both come down as print-ready PDFs. A .md file asked a teacher to find
+    // something on a school laptop that opens Markdown, which is usually
+    // nothing; the Copy button is still there for pasting into their own docs.
     if (isWorksheet && worksheet) {
       const [{ jsPDF }, logo] = await Promise.all([import('jspdf'), loadLogo()])
       const doc = new jsPDF({ unit: 'pt', format: 'letter' })
@@ -302,12 +293,23 @@ export default function LessonPlanGenerator() {
       doc.save(worksheetFilename(topic.trim()))
       return
     }
-    const base = (topic.trim() || 'lesson-plan')
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '')
-      .slice(0, 60)
-    saveFile(new Blob([markdown], { type: 'text/markdown;charset=utf-8' }), `lesson-plan-${base || 'bff'}.md`)
+    if (!markdown) return
+    // The built-in PDF fonts carry no CJK glyphs, so a Chinese plan would print
+    // as empty boxes. Hand those to the browser's own print dialog instead,
+    // which has real fonts, rather than producing an unreadable file.
+    if (hasCjk(markdown)) {
+      window.print()
+      return
+    }
+    const [{ jsPDF }, logo] = await Promise.all([import('jspdf'), loadLogo()])
+    const doc = new jsPDF({ unit: 'pt', format: 'letter' })
+    buildLessonPlanPdf(
+      doc,
+      markdown,
+      { topic: topic.trim(), gradeBand: gradeBand.trim(), minutes: Number(minutes) || 0 },
+      logo,
+    )
+    doc.save(lessonPlanFilename(topic.trim()))
   }
 
   const resultName = zh ? '生成的材料' : es ? 'Materiales generados' : 'Generated materials'
@@ -620,7 +622,7 @@ export default function LessonPlanGenerator() {
                 </button>
                 <button type="button" className="btn-ghost" onClick={() => void handleDownload()}>
                   <Download className="h-4 w-4" aria-hidden="true" />
-                  {zh ? '下载 .md' : es ? 'Descargar .md' : 'Download .md'}
+                  {zh ? '下载 PDF' : es ? 'Descargar PDF' : 'Download PDF'}
                 </button>
               </div>
             </div>

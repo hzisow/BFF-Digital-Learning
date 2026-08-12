@@ -789,10 +789,10 @@ export default function LessonsIndex() {
             </p>
             <p className="mt-1 text-sm text-slate-600">
               {zh
-                ? 'Wolf of Wall Street 和 Ben 的挑战自成一体，随时都能玩，不需要跟着路径走。'
+                ? 'Market Movers 和 Ben 的挑战自成一体，随时都能玩，不需要跟着路径走。'
                 : es
-                  ? 'Wolf of Wall Street y los desafíos de Ben van por su cuenta, juégalos cuando quieras, sin necesidad de la ruta.'
-                  : "Wolf of Wall Street and Ben's challenges are their own thing, play them anytime, no path required."}
+                  ? 'Market Movers y los desafíos de Ben van por su cuenta, juégalos cuando quieras, sin necesidad de la ruta.'
+                  : "Market Movers and Ben's challenges are their own thing, play them anytime, no path required."}
             </p>
           </div>
           <Link to="/activities" className="btn-secondary shrink-0">

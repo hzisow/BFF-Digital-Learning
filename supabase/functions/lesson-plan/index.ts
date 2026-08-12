@@ -10,7 +10,8 @@
 // ../_shared/ai.ts for how it's read from secrets.
 
 import { corsHeaders, json } from '../_shared/cors.ts'
-import { callAI, languageName } from '../_shared/ai.ts'
+import { callAI, callAIDetailed, languageName } from '../_shared/ai.ts'
+import type { AIMessage } from '../_shared/ai.ts'
 import { createClient } from 'jsr:@supabase/supabase-js@2'
 
 // Forced shape for worksheets so the client can lay out a printable PDF and
@@ -50,6 +51,52 @@ const DEFAULT_GRADE_BAND = 'middle/high school'
 const DEFAULT_MINUTES = 45
 const MIN_MINUTES = 10
 const MAX_MINUTES = 180
+
+/** Most a single Gemini call will return; the rest arrives as continuations. */
+const CHUNK_TOKENS = 8000
+/** Continuations after the first call. Three covers a 180-minute plan twice over. */
+const MAX_CONTINUATIONS = 3
+
+/**
+ * Generate long-form Markdown that is actually finished.
+ *
+ * A lesson plan is objectives, a standards note, materials, a timed agenda
+ * table and differentiation tips, and it grows with the length of the class.
+ * The old 2000-token budget cut a 45-minute plan off partway through the
+ * agenda, and the partial text came back looking like a finished document, so
+ * a mentor could print a plan that stopped mid-row.
+ *
+ * Rather than guess a budget large enough for every topic and language, this
+ * asks the model to carry on from where it stopped until it reaches the end.
+ * Each continuation gets the text so far, so it picks up mid-sentence without
+ * repeating itself or reintroducing the document.
+ */
+async function writeUntilDone(system: string, first: string): Promise<string> {
+  const messages: AIMessage[] = [{ role: 'user', content: first }]
+  let full = ''
+
+  for (let attempt = 0; attempt <= MAX_CONTINUATIONS; attempt++) {
+    const { text, truncated } = await callAIDetailed({
+      system,
+      messages,
+      maxTokens: CHUNK_TOKENS,
+    })
+    full = full ? `${full}${text}` : text
+    if (!truncated) break
+
+    messages.push({ role: 'assistant', content: text })
+    messages.push({
+      role: 'user',
+      content:
+        'You were cut off. Continue the document from exactly where it stopped, ' +
+        'mid-sentence if that is where it ended. Do not repeat anything you have ' +
+        'already written, do not reintroduce the document, and do not add a preamble ' +
+        'like "continuing". Just carry on, and finish every remaining section.',
+    })
+  }
+
+  return full.trim()
+}
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -112,19 +159,41 @@ Rules:
 - "answer" is the full correct answer (for multiple-choice, the exact text of the correct option) plus a brief reason, for the teacher's answer key.
 - Keep prompts self-contained and age-appropriate, and never reference outside media.`
 
-      const raw = await callAI({
-        system,
-        messages: [
-          {
-            role: 'user',
-            content: `Create a student worksheet on the topic: "${cleanTopic}". Grade band: ${band}.`,
-          },
-        ],
-        maxTokens: 2500,
-        outputSchema: worksheetSchema,
-      })
+      // A schema-forced response cannot be continued the way prose can: half a
+      // JSON object is not parseable, so the budget has to be big enough the
+      // first time. Ten questions with four options each, plus an answer and a
+      // reason for every one, in Spanish or Chinese, never fit in the 2500 it
+      // used to get, and the mentor saw the raw parse error
+      // ("Unterminated string in JSON at position 3737") instead of a worksheet.
+      //
+      // If the larger budget still is not enough, ask for the short version
+      // rather than failing: six questions is a usable worksheet, and an error
+      // message is not.
+      const ask = async (count: string) =>
+        await callAI({
+          system: system.replace('6 to 10 varied questions', `${count} varied questions`),
+          messages: [
+            {
+              role: 'user',
+              content: `Create a student worksheet on the topic: "${cleanTopic}". Grade band: ${band}.`,
+            },
+          ],
+          maxTokens: CHUNK_TOKENS,
+          outputSchema: worksheetSchema,
+        })
 
-      const worksheet = JSON.parse(raw)
+      let worksheet: unknown
+      try {
+        worksheet = JSON.parse(await ask('6 to 10'))
+      } catch {
+        try {
+          worksheet = JSON.parse(await ask('exactly 6'))
+        } catch {
+          // Still truncated. Say so plainly rather than surfacing a parse
+          // error, which reads like a bug rather than something to retry.
+          return json({ error: 'AI_FAILED', reason: 'WORKSHEET_INCOMPLETE' })
+        }
+      }
       return json({ worksheet })
     }
 
@@ -139,16 +208,10 @@ Produce a LESSON PLAN that fits a ${mins}-minute class period. Include:
 
 Output well-structured GitHub-flavored Markdown. Use headings, lists, and tables where they help. Do not wrap the whole document in a code fence. Be practical and classroom-ready.`
 
-    const markdown = await callAI({
+    const markdown = await writeUntilDone(
       system,
-      messages: [
-        {
-          role: 'user',
-          content: `Create a ${mins}-minute lesson plan on the topic: "${cleanTopic}". Grade band: ${band}.`,
-        },
-      ],
-      maxTokens: 2000,
-    })
+      `Create a ${mins}-minute lesson plan on the topic: "${cleanTopic}". Grade band: ${band}.`,
+    )
 
     return json({ markdown })
   } catch (err) {

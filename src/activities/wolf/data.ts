@@ -1,4 +1,4 @@
-// Wolf of Wall Street — game data, digitized from the original BFF of America
+// Market Movers — game data, digitized from the original BFF of America
 // classroom game. Starting prices, market hints, final prices, and performance
 // summaries all come from the paper version; the two mid-game news rounds were
 // added for the digital version and interpolate toward the official results.

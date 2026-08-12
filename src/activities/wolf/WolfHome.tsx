@@ -66,7 +66,7 @@ export default function WolfHome() {
           {zh ? '市场游戏' : es ? 'JUEGO DE MERCADO' : 'MARKET GAME'}
         </p>
         <h1 className="mt-3 font-display text-4xl font-extrabold text-ink sm:text-5xl">
-          Wolf of Wall <em>Street</em>
+          Market <em>Movers</em>
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-ink/70">
           {zh ? (
@@ -108,7 +108,7 @@ export default function WolfHome() {
                 ? 'Practica a tu propio ritmo, negocia en cada ronda y descubre qué tan buenos son tus instintos.'
                 : 'Practice at your own pace, trade through every round and see how your instincts stack up.'}
           </p>
-          <Link to="/wolf/solo" className="btn-primary w-full">
+          <Link to="/market-movers/solo" className="btn-primary w-full">
             {zh ? '开始单人游戏' : es ? 'Iniciar un juego individual' : 'Start a solo game'}
           </Link>
         </div>

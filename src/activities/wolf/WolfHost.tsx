@@ -198,8 +198,8 @@ export default function WolfHost() {
           </span>
           <h1 className="font-display text-xl font-bold text-ink">{zh ? '无法加载游戏' : es ? 'No se pudo cargar el juego' : 'Could not load the game'}</h1>
           <p className="text-sm text-ink/70">{error}</p>
-          <Link to="/wolf" className="btn-primary">
-            {zh ? '返回 Wolf of Wall Street' : es ? 'Volver a Wolf of Wall Street' : 'Back to Wolf of Wall Street'}
+          <Link to="/market-movers" className="btn-primary">
+            {zh ? '返回 Market Movers' : es ? 'Volver a Market Movers' : 'Back to Market Movers'}
           </Link>
         </div>
       </HostShell>
@@ -233,7 +233,7 @@ export default function WolfHost() {
           </p>
           <h1 className="flex items-center justify-center gap-3 font-display text-4xl font-bold sm:text-5xl">
             <LineChart className="h-9 w-9 shrink-0 text-bff-300 sm:h-11 sm:w-11" aria-hidden="true" />
-            Wolf of Wall Street
+            Market Movers
           </h1>
           <p className="text-xl text-bff-200">{zh ? '拿起一台设备，用游戏代码加入' : es ? 'Toma un dispositivo y únete con el código del juego' : 'Grab a device and join with the game code'}</p>
           <p className="font-display text-7xl font-bold tracking-widest sm:text-8xl md:text-9xl">

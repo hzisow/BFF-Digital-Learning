@@ -1,5 +1,5 @@
-// Lets an approved mentor host ANY activity live for the class: Wolf of Wall
-// Street, a live quiz on any lesson, or a co-play challenge. Creates the right
+// Lets an approved mentor host ANY activity live for the class: Market
+// Movers, any challenge, any minigame.
 // kind of session and jumps to that game's host (projector) screen.
 
 import { useMemo, useState } from 'react'
@@ -88,7 +88,7 @@ export default function HostLauncher({ classroomId }: { classroomId: string | nu
           onChange={(e) => setChoice(e.target.value)}
           disabled={busy}
         >
-          <option value="wolf">{zh ? 'Wolf of Wall Street（实时市场）' : es ? 'Wolf of Wall Street (mercado en vivo)' : 'Wolf of Wall Street (live market)'}</option>
+          <option value="wolf">{zh ? 'Market Movers（实时市场）' : es ? 'Market Movers (mercado en vivo)' : 'Market Movers (live market)'}</option>
           <optgroup label={zh ? '实时测验 ， 选择一节课' : es ? 'Quiz en vivo, elige una lección' : 'Live quiz, pick a lesson'}>
             {lessons.map((l) => (
               <option key={l.slug} value={`quiz:${l.slug}`}>

@@ -54,14 +54,14 @@ export const ACTIVITIES: ActivityMeta[] = [
     sortKey: week * 10 + day,
   })),
   {
-    slug: 'wolf-of-wall-street',
+    slug: 'market-movers',
     kind: 'game',
-    title: 'Wolf of Wall Street',
+    title: 'Market Movers',
     icon: 'market',
     description:
       'Invest $1,000 across 12 companies, react to breaking news, and survive the market. Play solo or live with your class.',
     durationMin: 25,
-    path: '/wolf',
+    path: '/market-movers',
     sortKey: 101,
   },
   {
@@ -196,7 +196,7 @@ export function kindLabel(kind: ActivityKind, lang: ActLang): string {
 }
 
 // Spanish titles/descriptions for every activity, keyed by slug. Titles that are
-// proper nouns (e.g. "Wolf of Wall Street") intentionally stay in English.
+// proper nouns (e.g. "Market Movers") intentionally stay in English.
 const ACTIVITY_ES: Record<string, { title?: string; description: string }> = {
   'earning-income': {
     title: 'Ganar Ingresos',
@@ -230,8 +230,8 @@ const ACTIVITY_ES: Record<string, { title?: string; description: string }> = {
     title: 'Protección al Consumidor',
     description: 'Detectar estafas, fraudes y conocer tus derechos.',
   },
-  'wolf-of-wall-street': {
-    title: 'El Lobo de Wall Street',
+  'market-movers': {
+    title: 'Mueve el Mercado',
     description:
       'Invierte $1,000 en 12 empresas, reacciona a las noticias de última hora y sobrevive al mercado. Juega solo o en vivo con tu clase.',
   },
@@ -293,7 +293,7 @@ const ACTIVITY_ES: Record<string, { title?: string; description: string }> = {
 }
 
 // Simplified Chinese titles/descriptions, keyed by slug. Proper-noun titles
-// (e.g. "Wolf of Wall Street") intentionally stay in English.
+// (e.g. "Market Movers") intentionally stay in English.
 const ACTIVITY_ZH: Record<string, { title?: string; description: string }> = {
   'earning-income': {
     title: '赚取收入',
@@ -327,8 +327,8 @@ const ACTIVITY_ZH: Record<string, { title?: string; description: string }> = {
     title: '消费者保护',
     description: '识别骗局、欺诈，并了解你的权利。',
   },
-  'wolf-of-wall-street': {
-    title: '华尔街之狼',
+  'market-movers': {
+    title: '市场风云',
     description: '用 $1,000 投资 12 家公司，应对突发新闻，在市场中生存。可单人游玩或与全班实时对战。',
   },
   'bens-budget': {

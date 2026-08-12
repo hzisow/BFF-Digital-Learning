@@ -1,8 +1,8 @@
 // Backend configuration.
 //
 // BFF Classroom works in two modes:
-//  - "Solo mode" (no backend): lessons, challenges, and the solo Wolf of Wall
-//    Street game all work entirely in the browser. Progress saves locally.
+//  - "Solo mode" (no backend): lessons, challenges, and the solo Market
+//    Movers game all work entirely in the browser. Progress saves locally.
 //  - "Connected mode" (Supabase): class codes, assignments, mentor dashboard,
 //    and live multiplayer games light up.
 //

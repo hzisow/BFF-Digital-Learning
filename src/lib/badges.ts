@@ -73,10 +73,10 @@ export const BADGES: BadgeDef[] = [
     icon: 'market',
     title: 'Market Survivor',
     titleEs: 'Sobreviviente del mercado',
-    description: 'Finish Wolf of Wall Street with a profit.',
-    descriptionEs: 'Termina Wolf of Wall Street con ganancia.',
+    description: 'Finish Market Movers with a profit.',
+    descriptionEs: 'Termina Market Movers con ganancia.',
     earned: (p) => {
-      const wolf = p['wolf-of-wall-street']
+      const wolf = p['market-movers']
       return wolf?.status === 'completed' && Number(wolf.data?.gain ?? -1) > 0
     },
   },

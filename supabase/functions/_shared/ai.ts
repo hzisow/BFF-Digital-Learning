@@ -76,12 +76,30 @@ const HOUSE_STYLE = `
 
 When writing English or Spanish, never use an em dash (—). Use a comma, a full stop, or a rewrite. Chinese is exempt: there the dash is ordinary punctuation.`
 
+export interface AIResult {
+  text: string
+  /** The model ran out of room and the text stops mid-thought. */
+  truncated: boolean
+}
+
 /**
  * Call Gemini and return the model's text. Throws 'AI_NOT_CONFIGURED' if the
  * key is missing, 'AI_REFUSED' if the model declined / was safety-blocked, or an
  * error whose message carries the upstream detail so the UI can show it.
  */
 export async function callAI(opts: CallAIOptions): Promise<string> {
+  return (await callAIDetailed(opts)).text
+}
+
+/**
+ * Same call, but says whether the answer was cut short.
+ *
+ * Long-form output (a lesson plan, a worksheet) is where this matters: a
+ * mentor handed a plan that stops halfway through the agenda has no way to
+ * tell it from a finished one, and might print it. Short chat replies can keep
+ * using `callAI` and ignore the flag.
+ */
+export async function callAIDetailed(opts: CallAIOptions): Promise<AIResult> {
   // Trim: a key pasted into the dashboard often carries a trailing newline or
   // stray space, which Google rejects with a fast 400 API_KEY_INVALID.
   const key = (Deno.env.get('GEMINI_API_KEY') ?? '').trim()
@@ -105,15 +123,25 @@ export async function callAI(opts: CallAIOptions): Promise<string> {
    * thinkingBudget to 0 turns it off: this is short tutoring copy and a
    * structured worksheet, neither of which needs a scratchpad.
    *
-   * Only sent to 2.5 models. The 2.0 models do not have the field and there is
-   * no reason to find out how they handle being given it.
+   * Sent to everything EXCEPT the 1.5 and 2.0 generations, which do not have
+   * the field. Matching on the string "2.5" instead was the bug that brought
+   * this back: `gemini-flash-latest` is in the fallback list and does not
+   * contain "2.5", so once the earlier models hit their free-tier quota and the
+   * chain fell through to it, thinking was on again. A worksheet then spent its
+   * budget reasoning and came back as JSON cut off mid-string, which surfaced
+   * to the mentor as "Unterminated string in JSON at position 3737". Anything
+   * new Google ships is far likelier to think than not, so the default is off.
    */
+  function thinks(model: string): boolean {
+    return !/(^|[^\d])(1\.5|2\.0)([^\d]|$)/.test(model)
+  }
+
   function bodyFor(model: string): string {
     const generationConfig: Record<string, unknown> = {
       maxOutputTokens: opts.maxTokens ?? 1024,
       temperature: opts.outputSchema ? 0.2 : 0.7,
     }
-    if (model.includes('2.5')) {
+    if (thinks(model)) {
       generationConfig.thinkingConfig = { thinkingBudget: 0 }
     }
     if (opts.outputSchema) {
@@ -163,7 +191,8 @@ export async function callAI(opts: CallAIOptions): Promise<string> {
       // the partial text came back, and a student read half a sentence. Say so
       // in the logs, with the token accounting that explains it, so the next
       // person does not have to infer this from response latency.
-      if (candidate.finishReason === 'MAX_TOKENS') {
+      const truncated = candidate.finishReason === 'MAX_TOKENS'
+      if (truncated) {
         const u = data.usageMetadata ?? {}
         console.error(
           `Gemini hit MAX_TOKENS on ${model}: budget=${opts.maxTokens ?? 1024} ` +
@@ -171,7 +200,7 @@ export async function callAI(opts: CallAIOptions): Promise<string> {
             `text=${text.length} chars`,
         )
       }
-      if (text) return text
+      if (text) return { text, truncated }
       throw new Error('AI_REFUSED')
     }
 

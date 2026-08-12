@@ -156,7 +156,7 @@ export default function WolfPlayer() {
     const rank = idx >= 0 ? idx + 1 : standings.length
     const value = portfolioValue(cash, holdings, 5)
     const score = Math.max(0, Math.min(100, Math.round(50 + (value - STARTING_CASH))))
-    void saveProgress(student, 'wolf-of-wall-street', {
+    void saveProgress(student, 'market-movers', {
       status: 'completed',
       score,
       data: { mode: 'live', finalValue: value, rank },
@@ -222,8 +222,8 @@ export default function WolfPlayer() {
                 ? 'Los juegos en vivo se activan cuando el backend de la clase está conectado, ¡el modo individual ya está listo!'
                 : 'Live games unlock when the class backend is connected. Solo mode is ready now!'}
           </p>
-          <Link to="/wolf" className="btn-primary">
-            {zh ? '返回 Wolf of Wall Street' : es ? 'Volver a Wolf of Wall Street' : 'Back to Wolf of Wall Street'}
+          <Link to="/market-movers" className="btn-primary">
+            {zh ? '返回 Market Movers' : es ? 'Volver a Market Movers' : 'Back to Market Movers'}
           </Link>
         </div>
       </Shell>
@@ -239,8 +239,8 @@ export default function WolfPlayer() {
           </span>
           <h1 className="font-display text-xl font-bold text-ink">{zh ? '嗯，这没能成功' : es ? 'Mmm, eso no funcionó' : 'Hmm, that did not work'}</h1>
           <p className="text-sm text-ink/70">{loadError}</p>
-          <Link to="/wolf" className="btn-primary">
-            {zh ? '返回 Wolf of Wall Street' : es ? 'Volver a Wolf of Wall Street' : 'Back to Wolf of Wall Street'}
+          <Link to="/market-movers" className="btn-primary">
+            {zh ? '返回 Market Movers' : es ? 'Volver a Market Movers' : 'Back to Market Movers'}
           </Link>
         </div>
       </Shell>
@@ -347,7 +347,7 @@ export default function WolfPlayer() {
       {stage >= 1 && stage <= 3 && (
         <div className="space-y-4">
           <div>
-            <h1 className="font-display text-xl font-bold text-ink">Wolf of Wall Street</h1>
+            <h1 className="font-display text-xl font-bold text-ink">Market Movers</h1>
             <p className="flex items-center gap-1.5 text-sm text-ink/60">
               {(() => {
                 const StageIcon = STAGE_TITLES[stage].Icon

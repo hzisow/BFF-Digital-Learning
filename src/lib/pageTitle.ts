@@ -17,7 +17,7 @@ const STATIC: Record<string, string> = {
   '/team': 'Team Sign-In',
   '/admin': 'Mentor Dashboard',
   '/account': 'Account',
-  '/wolf': 'Wolf of Wall Street',
+  '/market-movers': 'Market Movers',
 }
 
 /** Best-effort human title for a pathname. */

@@ -17,10 +17,30 @@ export interface ActivityProgress {
 
 const LOCAL_KEY = 'bff_progress_v1'
 
+/**
+ * Slugs that have been renamed, old to new. Progress is keyed by slug, so
+ * without this a student who played the trading game before it stopped being
+ * named after the film would find their score gone: the record is still on the
+ * device, filed under a name nothing looks up any more.
+ */
+const RENAMED: Record<string, string> = {
+  'wolf-of-wall-street': 'market-movers',
+}
+
 export function loadLocalProgress(): Record<string, ActivityProgress> {
   try {
     const raw = localStorage.getItem(LOCAL_KEY)
-    return raw ? JSON.parse(raw) : {}
+    const all: Record<string, ActivityProgress> = raw ? JSON.parse(raw) : {}
+    let moved = false
+    for (const [from, to] of Object.entries(RENAMED)) {
+      if (!(from in all)) continue
+      // Whatever is already under the new name wins; it is the more recent play.
+      if (!(to in all)) all[to] = all[from]
+      delete all[from]
+      moved = true
+    }
+    if (moved) saveLocalProgress(all)
+    return all
   } catch {
     return {}
   }

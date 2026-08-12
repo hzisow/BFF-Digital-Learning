@@ -84,8 +84,12 @@ export default function App() {
         <Route path="/challenge/scam-spotter" element={<ScamSpotter />} />
         <Route path="/challenge/smart-shopper" element={<SmartShopper />} />
         <Route path="/challenge/goal-getter" element={<GoalGetter />} />
-        <Route path="/wolf" element={<WolfHome />} />
-        <Route path="/wolf/solo" element={<WolfSolo />} />
+        <Route path="/market-movers" element={<WolfHome />} />
+        <Route path="/market-movers/solo" element={<WolfSolo />} />
+        {/* The trading game used to live at /wolf. Anyone holding a link or a
+            bookmark from before the rename still lands on the game. */}
+        <Route path="/wolf" element={<Navigate to="/market-movers" replace />} />
+        <Route path="/wolf/solo" element={<Navigate to="/market-movers/solo" replace />} />
         <Route path="/team" element={<TeamAuth />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/class/:id" element={<ClassroomDetail />} />
