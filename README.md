@@ -12,7 +12,7 @@ storing anything that identifies a child outside their own classroom. Mentors
 sign in with Google to assign work, track progress, host live games, and
 generate classroom materials.
 
-**Live site:** https://hzisow.github.io/BFF-Digital-Learning/
+**Live site:** classroom.bffofamerica.org
 
 ## What's inside
 
