@@ -4,8 +4,8 @@
 
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Printer, ArrowRight, Trophy, Download, Loader2 } from 'lucide-react'
-import { Logo } from '../components/Logo'
+import { Printer, ArrowRight, Trophy, Download, Loader2, Lock } from 'lucide-react'
+import { CertificateSheet, CertificatePreview } from '../components/CertificateSheet'
 import { lessonPassed } from '../lib/mastery'
 import { ACTIVITIES } from '../lib/activities'
 import { useLang } from '../lib/i18n'
@@ -65,34 +65,93 @@ export default function CertificatePage() {
     day: 'numeric',
   })
 
+  // Not earned yet. Show the actual document rather than describing it: a
+  // student who can see the thing they are working toward, with their own
+  // progress against it, has a reason to open lesson four. A paragraph saying
+  // "a certificate unlocks at the end" does not do that.
   if (!allDone) {
+    const pct = Math.round((doneCount / lessons.length) * 100)
+    const remaining = lessons.length - doneCount
     return (
-      <div className="mx-auto max-w-xl px-4 py-20 text-center">
-        <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-[10px] bg-ink text-gold-400">
-          <Trophy className="h-8 w-8" aria-hidden="true" />
-        </span>
-        <p className="eyebrow mt-6 justify-center">
-          {zh ? '成就证书' : es ? 'Certificado de logro' : 'Certificate of Achievement'}
-        </p>
-        <h1 className="mt-3 font-display text-4xl font-extrabold text-ink">
-          {zh ? (
-            <>就快<em>是你的</em>了……</>
-          ) : es ? (
-            <>Casi <em>tuyo</em>…</>
-          ) : (
-            <>Almost <em>yours</em>…</>
-          )}
-        </h1>
-        <p className="mt-4 leading-relaxed text-ink/60">
-          {zh
-            ? `完成 BFF Academy 全部 8 节课后就能解锁证书。你已经完成了 ${doneCount} / ${lessons.length} 节，继续加油！`
-            : es
-            ? `El certificado se desbloquea al completar las 8 lecciones de BFF Academy. Llevas ${doneCount} de ${lessons.length}, ¡sigue así!`
-            : `The certificate unlocks when you complete all 8 BFF Academy lessons. You're at ${doneCount} of ${lessons.length}. Keep going!`}
-        </p>
-        <Link to="/lessons" className="btn-primary mt-8 inline-flex">
-          {zh ? '返回我的学习路径' : es ? 'Volver a mi ruta' : 'Back to my path'} <ArrowRight className="nudge h-4 w-4" aria-hidden="true" />
-        </Link>
+      <div className="mx-auto max-w-5xl px-4 py-14">
+        <div className="grid items-center gap-10 lg:grid-cols-2">
+          <div>
+            <p className="eyebrow">
+              <Trophy className="h-3.5 w-3.5" aria-hidden="true" />
+              {zh ? '成就证书' : es ? 'Certificado de logro' : 'Certificate of Achievement'}
+              <span className="eyebrow-line" aria-hidden="true" />
+            </p>
+            <h1 className="mt-4 font-display text-4xl font-extrabold leading-[1.05] text-ink sm:text-5xl">
+              {zh ? (
+                <>这张证书<em>还差一点</em></>
+              ) : es ? (
+                <>Este certificado es <em>casi tuyo</em></>
+              ) : (
+                <>This certificate is <em>almost yours</em></>
+              )}
+            </h1>
+            <p className="mt-4 leading-relaxed text-ink/65">
+              {zh
+                ? `全部 8 节核心课程过关后，它就带着你的名字解锁了。你已经完成 ${doneCount} 节，还剩 ${remaining} 节。`
+                : es
+                  ? `Se desbloquea con tu nombre cuando apruebas las 8 lecciones del núcleo. Llevas ${doneCount} y te ${remaining === 1 ? 'queda' : 'quedan'} ${remaining}.`
+                  : `It unlocks with your name on it once you pass all 8 core lessons. You have ${doneCount} down and ${remaining} to go.`}
+            </p>
+
+            <div className="mt-7 max-w-sm">
+              <div className="flex items-center justify-between text-sm font-semibold text-ink/70">
+                <span>
+                  {zh
+                    ? `${doneCount} / ${lessons.length} 节已过关`
+                    : es
+                      ? `${doneCount} de ${lessons.length} aprobadas`
+                      : `${doneCount} of ${lessons.length} passed`}
+                </span>
+                <span>{pct}%</span>
+              </div>
+              <div
+                role="progressbar"
+                aria-label={zh ? '证书进度' : es ? 'Progreso del certificado' : 'Certificate progress'}
+                aria-valuenow={pct}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                className="mt-2 h-3 overflow-hidden rounded-full bg-paper-deep"
+              >
+                <div className="h-full rounded-full bg-bff-500" style={{ width: `${pct}%` }} />
+              </div>
+            </div>
+
+            <Link to="/lessons" className="btn-primary mt-8 inline-flex">
+              {doneCount === 0
+                ? zh
+                  ? '开始第一节课'
+                  : es
+                    ? 'Empezar la primera lección'
+                    : 'Start the first lesson'
+                : zh
+                  ? '继续我的学习路径'
+                  : es
+                    ? 'Seguir con mi ruta'
+                    : 'Keep going on my path'}
+              <ArrowRight className="nudge h-4 w-4" aria-hidden="true" />
+            </Link>
+          </div>
+
+          <div className="relative">
+            <CertificatePreview
+              name=""
+              dateStr={dateStr}
+              avgScore={null}
+              lang={lang}
+              className="rounded-[10px] opacity-45 grayscale"
+            />
+            <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
+              <span className="flex h-14 w-14 items-center justify-center rounded-full bg-ink text-gold-400 shadow-card">
+                <Lock className="h-6 w-6" aria-hidden="true" />
+              </span>
+            </span>
+          </div>
+        </div>
       </div>
     )
   }
@@ -167,54 +226,7 @@ export default function CertificatePage() {
       </div>
 
       {/* The certificate itself — an editorial framed credential */}
-      <div className="certificate-sheet border-[3px] border-ink bg-white p-1.5 shadow-card">
-        <div className="relative border border-ink/20 px-8 py-10 text-center sm:px-14 sm:py-14">
-          <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1.5 bg-gold-400" />
-          <Logo className="mx-auto h-12" />
-          <p className="eyebrow mt-6 justify-center">
-            {zh ? '成就证书' : es ? 'Certificado de logro' : 'Certificate of Achievement'}
-          </p>
-          <p className="mt-8 text-sm text-ink/60">
-            {zh ? '荣誉授予' : es ? 'Se otorga con orgullo a' : 'Proudly presented to'}
-          </p>
-          <p className="mx-auto mt-3 max-w-xl border-b-2 border-ink/20 pb-3 font-display text-4xl font-extrabold text-ink sm:text-5xl">
-            {name.trim() || (zh ? '在此填写你的名字' : es ? 'Tu nombre aquí' : 'Your name here')}
-          </p>
-          <p className="mx-auto mt-8 max-w-lg leading-relaxed text-ink/70">
-            {zh
-              ? '因成功完成 BFF Academy 金融素养课程，涵盖赚钱、预算、储蓄与投资、信用、保险、财务决策、规划和消费者保护的全部 8 节课。'
-              : es
-              ? 'por completar con éxito el plan de estudios de educación financiera BFF Academy, las 8 lecciones: ingresos, presupuesto, ahorro e inversión, crédito, seguros, decisiones financieras, planificación y protección al consumidor.'
-              : 'for successfully completing the BFF Academy financial literacy curriculum, all 8 lessons spanning earning, budgeting, saving & investing, credit, insurance, financial decision-making, planning, and consumer protection.'}
-          </p>
-          {avgScore != null && (
-            <p className="mt-5 inline-flex items-center gap-2 font-display font-bold text-bff-700">
-              <Trophy className="h-4 w-4" aria-hidden="true" />
-              {zh ? `测验平均分：${avgScore}%` : es ? `Promedio de exámenes: ${avgScore}%` : `Quiz average: ${avgScore}%`}
-            </p>
-          )}
-          {/* Values above their rules and labels below, matching the downloaded
-              PDF. A student who prints this and a student who saves the file
-              should end up holding the same document. */}
-          <div className="mt-14 grid grid-cols-3 items-end gap-6">
-            <div>
-              <p className="pb-1.5 text-sm text-ink">{dateStr}</p>
-              <p className="border-t border-ink/50 pt-2 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-ink/60">
-                {zh ? '日期' : es ? 'Fecha' : 'Date'}
-              </p>
-            </div>
-            <p className="self-end text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-ink/60">
-              Building Financial Futures of America
-            </p>
-            <div>
-              <p className="pb-1 font-display text-xl italic text-ink">BFF of America</p>
-              <p className="border-t border-ink/50 pt-2 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-ink/60">
-                {zh ? 'BFF Academy 导师' : es ? 'Mentor de BFF Academy' : 'BFF Academy Mentor'}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <CertificateSheet name={name} dateStr={dateStr} avgScore={avgScore} lang={lang} />
 
       <p className="no-print mt-6 text-center text-sm text-ink/50">
         {zh
