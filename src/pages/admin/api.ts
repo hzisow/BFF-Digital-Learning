@@ -325,3 +325,39 @@ export async function mergeStudents(fromId: string, intoId: string): Promise<voi
   const { error } = await db.rpc('merge_students', { p_from: fromId, p_into: intoId })
   if (error) throw rosterError(error.message)
 }
+
+// ---------- Platform statistics ----------
+
+export interface PlatformStats {
+  generated_at: string
+  students_total: number
+  students_active_7d: number
+  students_active_30d: number
+  mentors_approved: number
+  mentors_pending: number
+  classrooms_total: number
+  classrooms_active: number
+  schools: number
+  activities_completed: number
+  lessons_completed: number
+  lessons_passed: number
+  avg_quiz_score: number | null
+  graduates: number
+  live_sessions: number
+  signups_by_week: Array<{ week: string; count: number }>
+  top_activities: Array<{ slug: string; count: number }>
+}
+
+/**
+ * Org-wide counts for the platform dashboard.
+ *
+ * RLS scopes every other query to one mentor's own classes, which cannot answer
+ * "how many students are on the platform". This goes through a security-definer
+ * function that returns counts only and is gated to approved team members.
+ */
+export async function fetchPlatformStats(): Promise<PlatformStats> {
+  const db = await requireSupabase()
+  const { data, error } = await db.rpc('platform_stats')
+  if (error) throw new Error(error.message)
+  return data as PlatformStats
+}

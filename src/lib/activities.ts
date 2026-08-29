@@ -187,7 +187,7 @@ const KIND_LABEL_ZH: Record<ActivityKind, string> = {
   game: '游戏',
 }
 
-type ActLang = 'en' | 'es' | 'zh'
+export type ActLang = 'en' | 'es' | 'zh'
 
 /** Localized label for an activity kind. */
 export function kindLabel(kind: ActivityKind, lang: ActLang): string {

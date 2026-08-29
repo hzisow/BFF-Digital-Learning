@@ -24,6 +24,7 @@ import { getSupabase } from '../../lib/supabase'
 import { useAdmin } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
 import HostLauncher from '../../components/HostLauncher'
+import PlatformStats from '../../components/admin/PlatformStats'
 import { SkeletonCard, SkeletonPage } from '../../components/Skeleton'
 import { BackendOffCard } from './TeamAuth'
 import {
@@ -326,6 +327,12 @@ export default function AdminDashboard() {
       </section>
 
       <div className="mx-auto max-w-6xl px-4 py-10">
+
+      {/* ---------- Platform-wide numbers ----------
+          Above the mentor's own classes on purpose: the first question a
+          director asks is how the whole program is doing, not how one class is.
+          Renders nothing for a member whose approval has not come through. */}
+      <PlatformStats />
 
       {/* ---------- Pending team approvals ---------- */}
       {pending.length > 0 && (
