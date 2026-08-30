@@ -8,6 +8,7 @@ import { Printer, ArrowRight, Trophy, Download, Loader2, Lock, Share2, Copy, Che
 import { CertificateSheet, CertificatePreview } from '../components/CertificateSheet'
 import { BACKEND_ENABLED } from '../lib/config'
 import { issueCertificate, linkedInAddUrl, verifyUrl } from '../lib/certificate'
+import { LinkedInIcon } from '../components/LinkedInIcon'
 import { lessonPassed } from '../lib/mastery'
 import { ACTIVITIES } from '../lib/activities'
 import { useLang } from '../lib/i18n'
@@ -377,7 +378,7 @@ function ShareSection({
               target="_blank"
               rel="noreferrer"
             >
-              <Share2 className="h-4 w-4" aria-hidden="true" />
+              <LinkedInIcon className="h-4 w-4" />
               {zh ? '添加到 LinkedIn' : es ? 'Añadir a LinkedIn' : 'Add to LinkedIn'}
             </a>
             <button
