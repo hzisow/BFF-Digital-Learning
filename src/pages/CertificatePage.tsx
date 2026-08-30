@@ -316,20 +316,6 @@ function ShareSection({
 
       {!id ? (
         <>
-          <p className="mt-3 max-w-xl leading-relaxed text-ink/65">
-            {zh
-              ? 'LinkedIn 需要一个别人能打开、用来核实这张证书的网址。点下面的按钮，我们会生成一个公开页面，上面显示你的名字、发放日期和测验平均分，凭链接即可查看。'
-              : es
-                ? 'LinkedIn necesita una dirección que otra persona pueda abrir para comprobar el certificado. Al pulsar el botón creamos una página pública con tu nombre, la fecha y tu promedio, visible para cualquiera que tenga el enlace.'
-                : 'LinkedIn needs a web address someone else can open to check the certificate is real. Pressing the button creates a public page showing your name, the date, and your quiz average, readable by anyone who has the link.'}
-          </p>
-          <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink/55">
-            {zh
-              ? '页面上不会出现你的班级、学校、邮箱或逐课成绩。如果你还不满 18 岁，先和家长或老师商量一下。'
-              : es
-                ? 'La página no muestra tu clase, tu escuela, tu correo ni tus notas por lección. Si eres menor de edad, coméntalo antes con tu familia o tu profesor.'
-                : 'The page never shows your class, your school, your email, or your per-lesson scores. If you are under 18, talk it over with a parent or teacher first.'}
-          </p>
           {err && (
             <p role="alert" className="mt-4 text-sm font-semibold text-red-700">
               {err}
