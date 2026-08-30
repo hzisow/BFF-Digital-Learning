@@ -67,15 +67,19 @@
     font-weight: inherit;
     letter-spacing: inherit;
     color: inherit;
-    background-image: linear-gradient(theme('colors.gold.400'), theme('colors.gold.400'));
-    background-repeat: no-repeat;
-    /* Padding pushes the rule clear of the descenders — an underline drawn
-       through the tail of a "y" reads as an underlined link, not as a mark
-       somebody made. Padding on an inline box does not change the line height,
-       so this costs no vertical rhythm. */
-    padding-bottom: 0.26em;
-    background-size: 100% 0.1em;
-    background-position: 0 100%;
+    /* A real underline rather than a drawn background bar.
+       `skip-ink` is what makes this work: the browser breaks the rule around
+       descenders on its own, so the mark can sit close to the baseline instead
+       of being pushed clear of the "y" by padding. The padded version needed
+       0.26em of clearance, which at a 60px hero headline is a 16px gap — far
+       enough that it stopped reading as a mark on the words and started
+       reading as a divider between the headline and the paragraph under it.
+       It also breaks correctly per line when an emphasised phrase wraps. */
+    text-decoration-line: underline;
+    text-decoration-color: theme('colors.gold.400');
+    text-decoration-thickness: 0.07em;
+    text-underline-offset: 0.11em;
+    text-decoration-skip-ink: auto;
   }
 
   /* Visible keyboard-focus ring on every interactive element. */
