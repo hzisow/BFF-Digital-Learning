@@ -17,6 +17,7 @@ export const routeChunks = {
   activities: () => import('../pages/ActivitiesIndex'),
   glossary: () => import('../pages/GlossaryPage'),
   certificate: () => import('../pages/CertificatePage'),
+  verify: () => import('../pages/VerifyCertificate'),
   practice: () => import('../pages/PracticePage'),
   aiPractice: () => import('../pages/AIPractice'),
   coach: () => import('../pages/MoneyCoach'),

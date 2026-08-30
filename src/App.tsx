@@ -20,6 +20,7 @@ const LessonPage = lazy(routeChunks.lesson)
 const ActivitiesIndex = lazy(routeChunks.activities)
 const GlossaryPage = lazy(routeChunks.glossary)
 const CertificatePage = lazy(routeChunks.certificate)
+const VerifyCertificate = lazy(routeChunks.verify)
 const PracticePage = lazy(routeChunks.practice)
 const AIPractice = lazy(routeChunks.aiPractice)
 const MoneyCoach = lazy(routeChunks.coach)
@@ -64,6 +65,9 @@ export default function App() {
         <Route path="/activities" element={<ActivitiesIndex />} />
         <Route path="/glossary" element={<GlossaryPage />} />
         <Route path="/certificate" element={<CertificatePage />} />
+        {/* Public, and deliberately outside any auth: this is the link a
+            LinkedIn viewer or an admissions officer opens. */}
+        <Route path="/verify/:id" element={<VerifyCertificate />} />
         <Route path="/practice" element={<PracticePage />} />
         <Route path="/practice/ai" element={<AIPractice />} />
         <Route path="/coach" element={<MoneyCoach />} />

@@ -175,13 +175,6 @@ export default function Landing() {
                   ? 'Pasa el examen de cada lección y se desbloquea con tu nombre y tu promedio. Descárgalo en PDF o imprímelo.'
                   : 'Pass the quiz on every lesson and it unlocks with your name and your quiz average on it. Download it as a PDF or print it.'}
             </p>
-            <p className="mt-3 max-w-md text-sm leading-relaxed text-ink/50">
-              {zh
-                ? '你的名字只留在这台设备上，不会被保存或上传。'
-                : es
-                  ? 'Tu nombre solo vive en tu dispositivo: no se guarda ni se envía a ningún lado.'
-                  : 'Your name only ever lives on your own device. It is never saved or sent anywhere.'}
-            </p>
             <Link to="/certificate" className="btn-secondary mt-8 inline-flex">
               {zh ? '看看这张证书' : es ? 'Ver el certificado' : 'See the certificate'}
             </Link>
