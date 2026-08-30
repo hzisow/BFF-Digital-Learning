@@ -14,15 +14,17 @@ export const CERTIFICATE_NAME = 'BFF Academy Financial Literacy'
 export const ISSUER_NAME = 'BFF of America'
 
 /**
- * BFF of America's LinkedIn company page id, if it has one.
+ * BFF of America's LinkedIn company page id.
  *
- * LinkedIn matches the issuer to a real company page by numeric id. With only a
- * name it still fills the field in, but the entry does not link through to the
- * page and does not carry the logo. Find the id by opening the company page and
- * reading the number out of the "admin" URL, or from the page source, then put
- * it here. Until then the name is used and everything else works.
+ * LinkedIn matches the issuer to a real company page by numeric id, which is
+ * what makes the entry on a student's profile link through to the page and
+ * carry its logo rather than sitting there as plain text. Read out of the
+ * page's admin URL: linkedin.com/company/107831328/admin/.
+ *
+ * If this is ever wrong, LinkedIn drops the issuer rather than guessing, so
+ * `organizationName` below is the fallback and the flow still works.
  */
-export const ISSUER_LINKEDIN_ID: string | null = null
+export const ISSUER_LINKEDIN_ID: string | null = '107831328'
 
 export interface VerifiedCertificate {
   displayName: string
