@@ -11,7 +11,7 @@
 // still exists one click away on /activities and /lessons.
 
 import { Link } from 'react-router-dom'
-import { ArrowRight, Award } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { Logo } from '../components/Logo'
 import PhotoPanel from '../components/PhotoPanel'
 import { CertificatePreview } from '../components/CertificateSheet'
@@ -118,7 +118,6 @@ export default function Landing() {
             motif="rings"
             className="lg:col-span-3"
             frameClass="aspect-[16/10]"
-            eyebrow={zh ? '课程' : es ? 'El curso' : 'The course'}
             title="BFF Academy"
             body={
               zh
@@ -138,7 +137,6 @@ export default function Landing() {
             // Narrower column, so its frame absorbs whatever height the Academy
             // card sets rather than leaving a pocket of dead space under the copy.
             frameClass="aspect-[4/3] lg:aspect-auto lg:min-h-[240px] lg:flex-1"
-            eyebrow={zh ? '边玩边学' : es ? 'Juega' : 'Play'}
             title={zh ? '游戏与挑战' : es ? 'Juegos y desafíos' : 'Games & Challenges'}
             body={
               zh
@@ -161,18 +159,13 @@ export default function Landing() {
       <section className="border-t border-ink/10 bg-white">
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-14 lg:grid-cols-2 lg:gap-16 lg:py-20">
           <div>
-            <p className="eyebrow">
-              <Award className="h-3.5 w-3.5" aria-hidden="true" />
-              {zh ? '结课证书' : es ? 'El certificado' : 'The certificate'}
-              <span className="eyebrow-line" aria-hidden="true" />
-            </p>
-            <h2 className="mt-4 font-display text-3xl font-extrabold leading-[1.05] text-ink sm:text-4xl">
+            <h2 className="font-display text-3xl font-extrabold leading-[1.05] text-ink sm:text-4xl">
               {zh ? (
-                <>把这 8 节课上完，<em>带走一张证书</em></>
+                <>把这 8 节课上完，带走一张证书</>
               ) : es ? (
-                <>Termina las 8 lecciones y <em>llévate el certificado</em></>
+                <>Termina las 8 lecciones y llévate el certificado</>
               ) : (
-                <>Finish the {LESSON_COUNT} lessons, <em>leave with a certificate</em></>
+                <>Finish the {LESSON_COUNT} lessons, leave with a certificate</>
               )}
             </h2>
             <p className="mt-4 max-w-md leading-relaxed text-ink/65">
@@ -191,7 +184,6 @@ export default function Landing() {
             </p>
             <Link to="/certificate" className="btn-secondary mt-8 inline-flex">
               {zh ? '看看这张证书' : es ? 'Ver el certificado' : 'See the certificate'}
-              <ArrowRight className="nudge h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
 
@@ -210,62 +202,76 @@ export default function Landing() {
       </section>
 
       {/* ---------- Who made this ----------
-          One band, not three. The credibility claims that were spread across a
-          stat strip and a paragraph now sit on a single line. */}
+          A register, not another split. This was a headline and a paragraph in
+          the left 40% with an empty right half waiting on a photograph that
+          does not exist, which reads as a broken image rather than as
+          whitespace. Facts in a ruled list fill the width honestly and give
+          the page a fourth shape: the four sections above it are a dark band,
+          a card board, and a split, so this one is none of those.
+
+          Every number here is derived from the catalogue at build time. There
+          are no invented metrics on this page. */}
       <section className="border-t border-ink/10 bg-white">
-        {/* Two columns only when there is a photo to fill the second one.
-            Without it the copy was stranded in the left half against a large
-            empty right half, which reads as a failed image rather than as
-            deliberate whitespace. */}
-        <div
-          className={`mx-auto flex max-w-6xl flex-col gap-8 px-4 py-14 lg:py-16 ${
-            hasPhoto('schools') ? 'lg:flex-row lg:items-center lg:gap-16' : ''
-          }`}
-        >
-          <div className={hasPhoto('schools') ? 'lg:flex-1' : 'max-w-3xl'}>
-            <p className="eyebrow">
-              <span className="eyebrow-line" aria-hidden="true" />
-              {zh ? '关于我们' : es ? 'Quiénes somos' : 'Who we are'}
-            </p>
-            <h2 className="mt-3 max-w-lg font-display text-2xl font-bold text-ink sm:text-3xl">
-              {zh ? (
-                <>
-                  高中生教高中生<em>理财</em>。
-                </>
-              ) : es ? (
-                <>
-                  Estudiantes de secundaria enseñando <em>dinero</em> a estudiantes de secundaria.
-                </>
-              ) : (
-                <>
-                  High schoolers teaching high schoolers about <em>money</em>.
-                </>
-              )}
-            </h2>
-            <p className="mt-4 max-w-xl leading-relaxed text-ink/65">
-              {zh
-                ? 'BFF of America 是一家由学生创办的 501(c)(3) 非营利组织。我们的导师走进初高中课堂免费授课，BFF Classroom 把同一套课程搬到了网上，永久免费。'
-                : es
-                  ? 'BFF of America es una organización 501(c)(3) fundada por estudiantes. Nuestros mentores dan clases gratis en escuelas medias y secundarias, y BFF Classroom lleva ese mismo programa a internet, gratis, para siempre.'
-                  : 'BFF of America is a student-founded 501(c)(3) nonprofit. Our mentors teach for free in middle and high school classrooms, and BFF Classroom puts that same program online, free, forever.'}
-            </p>
-            <a
-              href="https://www.bffofamerica.org/join-the-cause"
-              target="_blank"
-              rel="noreferrer"
-              className="btn-secondary mt-7"
-            >
-              {zh ? '把 BFF 带进你的学校' : es ? 'Lleva BFF a tu escuela' : 'Bring BFF to your school'}
-              <ArrowRight className="nudge h-4 w-4" aria-hidden="true" />
-            </a>
-          </div>
-          {hasPhoto('schools') && (
-            <div className="lz-frame w-full overflow-hidden lg:w-[42%]">
-              <div className="aspect-[3/2]">
-                <PhotoPanel slot="schools" motif="grid" />
+        <div className="mx-auto max-w-6xl px-4 py-14 lg:py-20">
+          <h2 className="max-w-2xl font-display text-2xl font-bold leading-tight text-ink sm:text-3xl">
+            {zh
+              ? '高中生教高中生理财。'
+              : es
+                ? 'Estudiantes de secundaria enseñando dinero a estudiantes de secundaria.'
+                : 'High schoolers teaching high schoolers about money.'}
+          </h2>
+
+          <dl className="mt-10 border-t border-ink/10">
+            {[
+              {
+                k: zh ? '我们是谁' : es ? 'Quiénes somos' : 'Who runs it',
+                v: zh
+                  ? '由学生创办的 501(c)(3) 非营利组织。'
+                  : es
+                    ? 'Una organización 501(c)(3) fundada por estudiantes.'
+                    : 'A student-founded 501(c)(3) nonprofit.',
+              },
+              {
+                k: zh ? '在哪里上课' : es ? 'Dónde' : 'Where it happens',
+                v: zh
+                  ? '导师走进初高中课堂免费授课，同一套课程也在网上。'
+                  : es
+                    ? 'Mentores dando clases gratis en escuelas medias y secundarias, y el mismo programa en internet.'
+                    : 'Mentors teaching free in middle and high school classrooms, and the same program online.',
+              },
+              {
+                k: zh ? '包含什么' : es ? 'Qué incluye' : "What's in it",
+                v: zh
+                  ? `${LESSON_COUNT} 节课，${ACTIVITY_COUNT} 个游戏与挑战，中文、英文、西班牙文三种语言。`
+                  : es
+                    ? `${LESSON_COUNT} lecciones y ${ACTIVITY_COUNT} juegos, en inglés, español y chino.`
+                    : `${LESSON_COUNT} lessons and ${ACTIVITY_COUNT} games, in English, Spanish and Chinese.`,
+              },
+              {
+                k: zh ? '费用' : es ? 'Cuánto cuesta' : 'What it costs',
+                v: zh ? '免费，永久免费。' : es ? 'Nada. Para siempre.' : 'Nothing. Forever.',
+              },
+            ].map((row) => (
+              <div
+                key={row.k}
+                className="grid gap-1 border-b border-ink/10 py-5 sm:grid-cols-[minmax(0,11rem)_minmax(0,1fr)] sm:gap-8"
+              >
+                <dt className="font-display text-sm font-bold uppercase tracking-[0.12em] text-ink/50">
+                  {row.k}
+                </dt>
+                <dd className="max-w-2xl leading-relaxed text-ink">{row.v}</dd>
               </div>
-            </div>
-          )}
+            ))}
+          </dl>
+
+          <a
+            href="https://www.bffofamerica.org/join-the-cause"
+            target="_blank"
+            rel="noreferrer"
+            className="btn-secondary mt-10"
+          >
+            {zh ? '把 BFF 带进你的学校' : es ? 'Lleva BFF a tu escuela' : 'Bring BFF to your school'}
+          </a>
         </div>
       </section>
     </div>
@@ -278,7 +284,6 @@ function DoorCard({
   to,
   slot,
   motif,
-  eyebrow,
   title,
   body,
   cta,
@@ -289,7 +294,6 @@ function DoorCard({
   to: string
   slot: 'academy' | 'activities'
   motif: 'rings' | 'bars'
-  eyebrow: string
   title: string
   body: string
   cta: string
@@ -316,21 +320,22 @@ function DoorCard({
       {/* Not flex-1: the image frame is what absorbs spare height, so a short
           caption does not leave a pocket of dead white under the link. */}
       <div className="flex flex-col p-6 sm:p-7">
-        <p className="eyebrow">
-          <span className="eyebrow-line" aria-hidden="true" />
-          {eyebrow}
-        </p>
+        {/* No eyebrow. "THE COURSE" above a card titled "BFF Academy" is a
+            label restating its own heading, and four of them on one page was
+            most of what made this read as a template. */}
         <h2
-          className={`mt-3 font-display font-extrabold leading-tight text-ink ${
+          className={`font-display font-extrabold leading-tight text-ink ${
             primary ? 'text-3xl sm:text-4xl' : 'text-2xl sm:text-3xl'
           }`}
         >
           {title}
         </h2>
         <p className="mt-3 leading-relaxed text-ink/65">{body}</p>
-        <span className="mt-6 inline-flex items-center gap-2 font-display text-sm font-bold text-bff-700">
+        {/* Arrows are rationed to one per view and the hero has it. Here the
+            whole card is the link, so the arrow was decorating a target the
+            user is already inside. */}
+        <span className="link-underline mt-6 inline-flex font-display text-sm font-bold text-bff-700">
           {cta}
-          <ArrowRight className="nudge h-4 w-4" aria-hidden="true" />
         </span>
       </div>
     </Link>

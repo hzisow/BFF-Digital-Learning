@@ -47,14 +47,35 @@
   h1, h2, h3, h4 {
     @apply font-display tracking-tightish;
   }
-  /* Italic emphasis word inside display headings — an editorial signature. Now
-     the display face's own italic rather than a Georgia substitute, so the
-     emphasis reads as the same voice leaning in instead of a different font. */
+  /* Emphasis inside a display heading.
+
+     This used to be an italic blue word, set here as a base rule, so every
+     heading in the app carried one: "Money skills that actually matter",
+     "leave with a certificate", "This certificate is almost yours". Three on
+     the home page alone. An italicised word inside an otherwise-upright
+     heading is the single most recognisable machine-written-page tell there
+     is, and having it in a base rule meant the app did it everywhere without
+     anyone choosing to.
+
+     The emphasis stays, because the copy is written around it and it carries
+     real meaning. The device changes: roman, in the same face, marked with a
+     gold rule drawn under the phrase. The rule is a drawn object rather than
+     `text-decoration`, so it clears the descenders and reads as a mark made on
+     the page rather than a link. See design.md § 1.1. */
   h1 em, h2 em, h3 em, .display em {
-    font-style: italic;
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    color: #0077b5;
+    font-style: normal;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    background-image: linear-gradient(theme('colors.gold.400'), theme('colors.gold.400'));
+    background-repeat: no-repeat;
+    /* Padding pushes the rule clear of the descenders — an underline drawn
+       through the tail of a "y" reads as an underlined link, not as a mark
+       somebody made. Padding on an inline box does not change the line height,
+       so this costs no vertical rhythm. */
+    padding-bottom: 0.26em;
+    background-size: 100% 0.1em;
+    background-position: 0 100%;
   }
 
   /* Visible keyboard-focus ring on every interactive element. */
@@ -150,12 +171,20 @@
   .link-quiet {
     @apply font-semibold text-bff-700 underline-offset-2 hover:text-bff-800 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-bff-400 focus-visible:ring-offset-2;
   }
-  /* Eyebrow: small tracked uppercase label above a heading. */
+  /* Eyebrow: small tracked label above a heading.
+     Budget is one per page (design.md § 1.2). Four of these on one screen,
+     each with a rule-line hanging off it, is the templated-editorial
+     signature; the label itself is fine, the decoration around it was not.
+     Quieter now: muted ink rather than brand blue, so it sits under the
+     heading instead of competing with it, and the accent budget is spent on
+     the one action the student should take. */
   .eyebrow {
-    @apply inline-flex items-center gap-2 font-display text-[11px] font-extrabold uppercase tracking-[0.18em] text-bff-600;
+    @apply inline-flex items-center gap-2 font-display text-[11px] font-bold uppercase tracking-[0.16em] text-ink/55;
   }
+  /* Kept so existing markup does not break, but drawn as nothing. The rule
+     hanging off an eyebrow was decoration standing in for hierarchy. */
   .eyebrow-line {
-    @apply inline-block h-px w-6 bg-current opacity-50;
+    @apply hidden;
   }
 }
 

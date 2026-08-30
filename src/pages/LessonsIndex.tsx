@@ -366,7 +366,7 @@ export default function LessonsIndex() {
             <BookOpen className="h-3.5 w-3.5" aria-hidden="true" /> {zh ? '课程大纲' : es ? 'El plan de estudios' : 'The curriculum'}
           </p>
           <h1 className="mt-3 font-display text-5xl font-extrabold leading-[1.02] text-white sm:text-6xl">
-            BFF <em className="text-bff-300">Academy</em>
+            BFF <em>Academy</em>
           </h1>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/80">
             {zh

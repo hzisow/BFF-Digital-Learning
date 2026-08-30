@@ -35,21 +35,28 @@ These three rules do most of the work.
 
 ### 1.1 No italic emphasis words in headings
 
-`h1 em, h2 em, h3 em { font-style: italic; color: var(--accent) }` is currently a
-global base rule, so every heading in the app carries a blue italic word:
-*"Money skills that actually matter"*, *"leave with a certificate"*, *"This
-certificate is almost yours"*, *"Nothing to review!"*. Three on the home page
-alone. It is the single most recognisable AI-written-page tell there is, and here
-it is systematised.
+`h1 em, h2 em, h3 em { font-style: italic; color: #0077b5 }` was a global base
+rule, so every heading in the app carried a blue italic word: *"Money skills that
+actually matter"*, *"leave with a certificate"*, *"This certificate is almost
+yours"*. Three on the home page alone, and nobody chose any of them — the base
+rule did. An italicised word inside an otherwise-upright heading is the single
+most recognisable machine-written-page tell there is.
 
-**Headings are roman. Always.** Carry emphasis one of three ways instead, and use
-at most one per view:
+**Headings are roman. Always.** The `<em>` stays in the markup, because the copy
+is written around it in all three languages and it carries real meaning. The
+device changed: it is now drawn as a gold rule under the phrase, in the same
+face, upright.
 
-| Device | When | How |
-| --- | --- | --- |
-| **Weight break** | Default | Same face, `--weight-display` on the phrase, `--weight-display-light` on the rest |
-| **Drawn underline** | The one phrase that is the page's point | 3px `--color-gold` rule under the phrase, offset 0.12em |
-| **Colour** | Rare, and never at body size | `--color-accent-text`, never `--color-accent` (see §2.4) |
+The rule is a background gradient rather than `text-decoration`, with
+`padding-bottom: 0.26em` pushing it clear of the descenders. An underline drawn
+through the tail of a "y" reads as a link, not as a mark somebody made. Padding
+on an inline box does not change line height, so it costs no vertical rhythm.
+
+Two rules on top of that:
+
+- **One emphasis per view.** The home page had three; it has one.
+- **One device per emphasis.** `/lessons` had the mark *and* a colour override on
+  the same word. The mark carries it; drop the colour.
 
 Italic survives only as emphasis inside running body copy, where it is ordinary
 typography rather than a signature.
@@ -58,7 +65,13 @@ typography rather than a signature.
 
 `— THE COURSE`, `PLAY`, `— THE CERTIFICATE —`, `— WHO WE ARE`: four uppercase
 tracked kickers with rule-lines on one page. One is a design choice; four is a
-template.
+template. The home page now has none — every heading there says what its section
+is without a label above it repeating the word.
+
+`.eyebrow-line`, the little rule hanging off each one, is drawn as nothing now.
+It was decoration standing in for hierarchy. `.eyebrow` itself dropped from brand
+blue to muted ink so it sits under its heading rather than competing with it, and
+the accent budget goes to the action instead.
 
 **Budget: one eyebrow per page**, and only when the section genuinely needs a
 label the heading cannot carry. The lesson player's `Week 2 · Day 1` is a real
@@ -68,9 +81,15 @@ Never place the eyebrow left with the heading right. Stacked only.
 
 ### 1.3 Consecutive sections must differ structurally
 
-The home page runs the same shape four times: eyebrow, serif heading with an
+The home page ran the same shape four times: eyebrow, serif heading with an
 italic word, grey paragraph, outlined button with an arrow. Only the background
-colour alternates. That is one section repeated, not four sections.
+colour alternated. That is one section repeated, not four sections.
+
+It now runs **Band → Board → Split → Register**: a full-bleed ink hero, a pair of
+uneven cards, copy against the real certificate, and a ruled list of facts. The
+"who we are" section was a headline in the left 40% with an empty right half
+waiting on a photograph that does not exist, which reads as a broken image rather
+than as whitespace; as a register it fills the width honestly and needs no asset.
 
 **No two adjacent sections may share a shape.** Pick from the archetypes in §8,
 and never repeat one back to back.
@@ -79,9 +98,10 @@ and never repeat one back to back.
 
 ## 2. Colour
 
-OKLCH throughout. The hex values the app shipped with are preserved exactly;
-they have only been restated in a perceptual space so that lightness steps mean
-something.
+OKLCH throughout. The hex values the app shipped with are preserved, restated in
+a perceptual space so that a lightness step means the same thing at every hue.
+One exception, documented in §2.4: the brand blue moved 0.7% darker to clear
+contrast.
 
 ### 2.1 Base
 
@@ -103,7 +123,7 @@ The eleven-step `bff` ramp is unchanged. The steps that matter:
 
 | Token | Value | Contrast on paper |
 | --- | --- | --- |
-| `--color-accent` | `oklch(54.6% 0.130 242.3)` (`#0077b5`) | **4.39:1** |
+| `--color-accent` | `oklch(53.9% 0.130 242.3)` (`#0075b3`) | **4.52:1** |
 | `--color-accent-text` | `oklch(46.8% 0.110 241.9)` (`#036092`) | **6.13:1** |
 | `--color-accent-deep` | `oklch(41.5% 0.092 239.9)` (`#075178`) | 7.70:1 |
 | `--color-accent-wash` | `oklch(96.6% 0.016 233.0)` (`#eaf6fd`) | tint only |
@@ -115,19 +135,26 @@ paper.** It is a dark-band colour and a rule colour. It is never text on paper.
 
 ### 2.4 The accent contrast rule
 
-`--color-accent` at 4.39:1 **fails WCAG AA for normal-size text.** The app
-currently uses it for links and for the italic emphasis word. Large display text
-only needs 3:1, so headings were fine by luck; body-size links were not.
+The brand blue shipped as `#0077b5` and measured **4.39:1** on the warm paper,
+under the 4.5 AA wants for normal-size text. Large display text only needs 3:1,
+so headings passed by luck; the 94 places that use it at body size did not.
 
-- Text below 24px (or below 19px bold): `--color-accent-text`
-- Large display text, icons, borders, fills: `--color-accent`
+It is now `#0075b3` — 0.7% darker in lightness, two hex digits, **4.52:1**.
+Imperceptible beside the logo, and white on it as a button fill is 5.01:1. If the
+brand guide is literal about `#0077b5`, revert `bff.600` in `tailwind.config.js`
+and switch body-size uses to `accent-text` instead.
+
+- Long-form body copy and dense text: `accent-text` (6.13:1)
+- Everything else, including body-size UI labels: `bff-600`
 - Never: `--color-gold` as text on paper
 
 ### 2.5 Status
 
-The app currently reaches for raw Tailwind (`bg-green-100 text-green-700`,
-`bg-amber-100`, `bg-red-50`). Those are tuned for a white-and-zinc page and go
-slightly sour on warm paper. These are hue-matched to the base and verified:
+The app reached for raw Tailwind (`bg-green-100 text-green-700`, `bg-amber-100`,
+`bg-red-50`) in ~250 places. Those are tuned for a white-and-zinc page and go
+slightly sour on warm cream. The `green` / `red` / `amber` scales are now
+overridden in `tailwind.config.js` with hue-matched ramps, which fixed all 250
+call sites at once (see §10). Anchors, verified:
 
 | Role | Text | Tint | On paper | On own tint |
 | --- | --- | --- | --- | --- |
@@ -302,12 +329,28 @@ Pick per section; never repeat back to back (§1.3).
 ## 10. Exports
 
 `tokens.css` at the project root carries every token above as a CSS custom
-property. `tailwind.config.js` maps them into utility classes. The two must not
-drift: `tailwind.config.js` reads from the custom properties, it does not restate
-the values.
+property. It is the portable export: the file to hand to another project.
+
+`tailwind.config.js` restates the colour values rather than reading
+`var(--color-*)` from `tokens.css`. That is deliberate, not drift. Tailwind can
+only apply an opacity modifier (`text-ink/60`, `bg-red-500/15`) to a colour it
+can parse, and a `var()` reference defeats that — the app uses those modifiers in
+hundreds of places and they would silently compile to nothing. Colours that need
+an alpha modifier carry the `<alpha-value>` placeholder so Tailwind can
+substitute into them.
+
+The two files must be changed together. When a colour moves, move it in both.
+
+**Status ramps are overridden, not replaced at the call site.** Tailwind's stock
+`green` / `red` / `amber` are remapped in `tailwind.config.js` to the hue-matched
+values in §2.5. That fixes every one of the ~250 existing `text-red-700` /
+`bg-green-100` call sites at once and means a future `bg-amber-50` is on-system
+by default. Shades 50–900 are all defined; adding a call site at an undefined
+shade silently drops the utility, so extend the ramp rather than reaching outside
+it.
 
 Nothing in the app should contain a raw hex, a raw `oklch()`, or a bare
-`font-family`. If a value is needed that is not a token, add it here first.
+`font-family` outside these two files.
 
 ---
 
