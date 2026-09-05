@@ -220,7 +220,9 @@ export default function WolfHost() {
   const standings = [...players]
     .map((p) => ({ ...p, value: portfolioValue(p.cash, p.holdings, stage) }))
     .sort((a, b) => b.value - a.value)
-  const joinUrl = `${window.location.origin}${window.location.pathname}#/play/${session.code}`
+  // BrowserRouter, not hash routing: the join screen lives at /play/<code>.
+  const joinBase = import.meta.env.BASE_URL.replace(/\/$/, '')
+  const joinUrl = `${window.location.origin}${joinBase}/play/${session.code}`
 
   return (
     <HostShell code={session.code}>

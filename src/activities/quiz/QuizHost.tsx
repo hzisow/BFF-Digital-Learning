@@ -332,7 +332,9 @@ export default function QuizHost() {
   const answeredCount = players.filter((p) => (p.answers ?? {})[qKey] !== undefined).length
   const lastQuestion = qIndex >= total - 1
   const standings = [...players].sort((a, b) => b.score - a.score)
-  const joinUrl = `${window.location.origin}${window.location.pathname}#/quiz/${session.code}`
+  // BrowserRouter, not hash routing: the join screen lives at /quiz/<code>.
+  const joinBase = import.meta.env.BASE_URL.replace(/\/$/, '')
+  const joinUrl = `${window.location.origin}${joinBase}/quiz/${session.code}`
 
   return (
     <HostShell code={session.code}>

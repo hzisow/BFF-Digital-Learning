@@ -6,6 +6,13 @@
 
 import { corsHeaders, json } from '../_shared/cors.ts'
 import { callAI, languageName } from '../_shared/ai.ts'
+import { requireUser, enforceDailyLimit, cappedString, RateLimited, Unauthorized } from '../_shared/auth.ts'
+
+// Caps on the caller-supplied strings, and the daily per-user AI budget.
+const MAX_PROMPT_CHARS = 4000
+const MAX_ANSWER_CHARS = 4000
+const MAX_RUBRIC_CHARS = 4000
+const DAILY_LIMIT = 150
 
 interface GradeRequest {
   prompt: string
@@ -34,7 +41,14 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { prompt, answer, rubric, lang } = (await req.json()) as GradeRequest
+    const caller = await requireUser(req)
+    await enforceDailyLimit(caller, DAILY_LIMIT)
+
+    const body = (await req.json()) as GradeRequest
+    const lang = body.lang
+    const prompt = cappedString(body.prompt ?? '', MAX_PROMPT_CHARS)
+    const answer = cappedString(body.answer ?? '', MAX_ANSWER_CHARS)
+    const rubric = body.rubric ? cappedString(body.rubric, MAX_RUBRIC_CHARS) : undefined
     const feedbackLang = languageName(lang)
 
     // Empty answer: don't spend a model call — nudge them to write something,
@@ -109,11 +123,16 @@ Deno.serve(async (req) => {
     return json(parsed)
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
+    if (err instanceof Unauthorized) return json({ error: 'UNAUTHORIZED' }, 401)
+    if (err instanceof RateLimited) {
+      return json({ error: 'RATE_LIMITED', score: null, summary: 'You have graded a lot today. Try again tomorrow.', strengths: [], improve: [] })
+    }
     if (msg === 'AI_NOT_CONFIGURED') {
       return json({ error: 'AI_NOT_CONFIGURED' }, 503)
     }
-    if (msg === 'AI_REFUSED') {
-      // Model declined — hand back a graceful, gradeless card instead of an error.
+    if (msg === 'AI_REFUSED' || msg === 'BAD_INPUT') {
+      // Model declined, or the input was malformed — hand back a graceful,
+      // gradeless card instead of an error.
       return json({
         score: null,
         summary: 'I could not grade that one. Try rephrasing your answer about the money topic.',
@@ -121,8 +140,9 @@ Deno.serve(async (req) => {
         improve: [],
       })
     }
-    // 200 on purpose: supabase-js discards the body on non-2xx, which hides
-    // the reason from the UI. Report the failure in the payload instead.
-    return json({ error: 'AI_FAILED', reason: msg })
+    // Detail is logged in _shared/ai.ts; the student sees only the gradeless
+    // card, never the upstream error text.
+    console.error(`grade-response failed: ${msg}`)
+    return json({ error: 'AI_FAILED', score: null, summary: 'Something went wrong. Please try again.', strengths: [], improve: [] })
   }
 })

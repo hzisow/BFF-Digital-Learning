@@ -93,7 +93,8 @@ revoke all on function public.approve_admin(text) from public;
 revoke all on function public.approve_admin(text) from anon;
 revoke all on function public.approve_admin(text) from authenticated;
 
--- 6. seed the initial approved admin (the project owner)
-insert into public.admin_allowlist (email, note)
-values ('hzisow@gmail.com', 'Initial BFF admin')
-on conflict (email) do nothing;
+-- 6. Seed the first approved admin OUT OF BAND, not in this public file.
+--    Run once from the Supabase SQL editor after the first deploy:
+--        select public.approve_admin('founder@example.org');
+--    Keeping the founder's address out of the repo avoids handing anyone the
+--    exact account whose compromise would grant org-wide admin.

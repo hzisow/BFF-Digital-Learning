@@ -12,7 +12,12 @@
 import { corsHeaders, json } from '../_shared/cors.ts'
 import { callAI, callAIDetailed, languageName } from '../_shared/ai.ts'
 import type { AIMessage } from '../_shared/ai.ts'
-import { createClient } from 'jsr:@supabase/supabase-js@2'
+import { requireUser, enforceDailyLimit, RateLimited, Unauthorized } from '../_shared/auth.ts'
+
+// This is a mentor tool, so its budget is smaller and its inputs are bounded.
+const MAX_TOPIC_CHARS = 200
+const MAX_BAND_CHARS = 60
+const DAILY_LIMIT = 60
 
 // Forced shape for worksheets so the client can lay out a printable PDF and
 // size each answer area to the question type.
@@ -104,30 +109,19 @@ Deno.serve(async (req) => {
   }
 
   try {
-    // Best-effort admin gate: confirm the JWT belongs to an approved mentor.
-    // Client-side gating already hides this page from non-admins, so if the
-    // check itself errors we let the core feature proceed rather than block it.
-    try {
-      const authHeader = req.headers.get('Authorization')
-      if (authHeader) {
-        const supabase = createClient(
-          Deno.env.get('SUPABASE_URL')!,
-          Deno.env.get('SUPABASE_ANON_KEY')!,
-          { global: { headers: { Authorization: authHeader } } },
-        )
-        const { data: userData } = await supabase.auth.getUser()
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('approved')
-          .eq('id', userData.user?.id)
-          .single()
-        if (profile && !profile.approved) {
-          return json({ error: 'NOT_APPROVED' }, 403)
-        }
-      }
-    } catch {
-      // Approval check unavailable — fall through to the generator.
-    }
+    // Fail-closed admin gate. This is the most expensive function, so it must
+    // belong to a vetted mentor: a real (non-anonymous) session whose profile
+    // is approved. An anonymous visitor has no profile row and is rejected,
+    // where the old best-effort check let a null profile through.
+    const caller = await requireUser(req)
+    if (caller.isAnonymous) return json({ error: 'NOT_APPROVED' }, 403)
+    const { data: profile, error: profileErr } = await caller.supabase
+      .from('profiles')
+      .select('approved')
+      .eq('id', caller.userId)
+      .single()
+    if (profileErr || !profile?.approved) return json({ error: 'NOT_APPROVED' }, 403)
+    await enforceDailyLimit(caller, DAILY_LIMIT)
 
     const { kind, topic, gradeBand, minutes, lang } = (await req.json()) as {
       kind: 'lesson-plan' | 'worksheet'
@@ -137,8 +131,14 @@ Deno.serve(async (req) => {
       lang: string
     }
 
-    const cleanTopic = String(topic ?? '').trim()
-    const band = String(gradeBand ?? '').trim() || DEFAULT_GRADE_BAND
+    const cleanTopic = String(topic ?? '').trim().slice(0, MAX_TOPIC_CHARS)
+    if (!cleanTopic) return json({ error: 'AI_FAILED', reason: 'TOPIC_REQUIRED' }, 400)
+    // Grade band is a free-text field the mentor types, and it is interpolated
+    // into the system prompt, so strip newlines (which could start a new
+    // instruction block) and cap the length rather than passing it raw.
+    const band =
+      String(gradeBand ?? '').replace(/[\r\n]+/g, ' ').trim().slice(0, MAX_BAND_CHARS) ||
+      DEFAULT_GRADE_BAND
     const mins = Math.max(
       MIN_MINUTES,
       Math.min(MAX_MINUTES, Math.round(Number(minutes) || DEFAULT_MINUTES)),
@@ -225,14 +225,17 @@ Formatting rules, because this is typeset into a printed PDF:
     return json({ markdown })
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err)
+    if (err instanceof Unauthorized) return json({ error: 'UNAUTHORIZED' }, 401)
+    if (err instanceof RateLimited)
+      return json({ error: 'AI_FAILED', reason: "You have reached today's generation limit. Please try again tomorrow." })
     if (message === 'AI_NOT_CONFIGURED') {
       return json({ error: 'AI_NOT_CONFIGURED' }, 503)
     }
     if (message === 'AI_REFUSED') {
       return json({ markdown: '' })
     }
-    // 200 on purpose: supabase-js discards the body on non-2xx, which hides
-    // the reason from the UI. Report the failure in the payload instead.
-    return json({ error: 'AI_FAILED', reason: message })
+    // Upstream detail is logged in _shared/ai.ts; the mentor sees a fixed code.
+    console.error(`lesson-plan failed: ${message}`)
+    return json({ error: 'AI_FAILED', reason: 'GENERATION_FAILED' })
   }
 })

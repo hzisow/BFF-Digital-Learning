@@ -394,6 +394,8 @@ export default function MoneyCoach() {
             id="coach-input"
             ref={inputRef}
             rows={1}
+            // Matches the server-side cap; a real question is a sentence or two.
+            maxLength={4000}
             // The global a11y rule puts a focus ring on every textarea, which
             // here drew a second ring *inside* the container's own. Suppressed
             // on the field and carried by the container instead: focus is still

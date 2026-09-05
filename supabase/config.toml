@@ -1,0 +1,19 @@
+# Supabase project configuration, version-controlled so function auth settings
+# survive redeploys instead of living only in the dashboard.
+project_id = "bff-classroom"
+
+# All four AI functions require a valid project JWT at the edge. This is the
+# outer gate; each function additionally validates the user with getUser() and
+# rate-limits per user (see supabase/functions/_shared/auth.ts). Anonymous
+# students carry a real JWT from signInAnonymously(), so they still pass.
+[functions.money-coach]
+verify_jwt = true
+
+[functions.ai-practice]
+verify_jwt = true
+
+[functions.grade-response]
+verify_jwt = true
+
+[functions.lesson-plan]
+verify_jwt = true

@@ -74,14 +74,21 @@ export async function getQuizSession(id: string): Promise<QuizSession> {
 
 export async function getQuizSessionByCode(code: string): Promise<QuizSession> {
   const sb = await requireSupabase()
-  const { data, error } = await sb
-    .from('quiz_sessions')
-    .select()
-    .eq('code', code.trim().toUpperCase())
-    .maybeSingle()
+  // Anonymous players need a session before the RPC (granted to authenticated),
+  // and the by-code lookup is a SECURITY DEFINER function so the session table
+  // itself is no longer readable by code — that would let anyone enumerate it.
+  const { data: auth } = await sb.auth.getSession()
+  if (!auth.session) {
+    const { error } = await sb.auth.signInAnonymously()
+    if (error) throw new Error(error.message)
+  }
+  const { data, error } = await sb.rpc('get_quiz_session_by_code', {
+    p_code: code.trim().toUpperCase(),
+  })
   if (error) throw new Error(error.message)
-  if (!data) throw new Error('Quiz not found. Double-check the code with your host!')
-  return data as QuizSession
+  const row = Array.isArray(data) ? data[0] : data
+  if (!row) throw new Error('Quiz not found. Double-check the code with your host!')
+  return row as QuizSession
 }
 
 export async function joinQuizSession(sessionId: string, nickname: string): Promise<QuizPlayer> {

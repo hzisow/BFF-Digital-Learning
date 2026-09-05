@@ -11,7 +11,18 @@ node_modules
 dist
 dist-ssr
 *.local
+
+# Secrets and local env (never commit any .env variant)
 .env
+.env.*
+!.env.example
+
+# Supabase CLI local state
+supabase/.temp/
+supabase/.branches/
+
+# Stray scratch scripts
+*.v.mjs
 
 # Editor directories and files
 .vscode/*

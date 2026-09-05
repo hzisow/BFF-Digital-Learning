@@ -9,11 +9,16 @@
 
 import { corsHeaders, json } from '../_shared/cors.ts'
 import { callAI, languageName } from '../_shared/ai.ts'
+import { requireUser, enforceDailyLimit, RateLimited, Unauthorized } from '../_shared/auth.ts'
 
 // Keep sets short so a practice round stays quick and the request stays cheap.
 const DEFAULT_COUNT = 4
 const MIN_COUNT = 1
 const MAX_COUNT = 6
+// Bounds on the caller-supplied topic list, and the daily per-user AI budget.
+const MAX_TOPICS = 12
+const MAX_TOPIC_CHARS = 80
+const DAILY_LIMIT = 150
 
 // JSON Schema forcing a well-formed quiz: an array of questions, each with
 // exactly the fields the client renders. additionalProperties:false everywhere
@@ -46,6 +51,9 @@ Deno.serve(async (req) => {
   }
 
   try {
+    const caller = await requireUser(req)
+    await enforceDailyLimit(caller, DAILY_LIMIT)
+
     const { topics, count, lang } = (await req.json()) as {
       topics: string[]
       count?: number
@@ -53,10 +61,18 @@ Deno.serve(async (req) => {
     }
 
     const topicList = Array.isArray(topics)
-      ? topics.map((t) => String(t).trim()).filter(Boolean)
+      ? topics
+          .slice(0, MAX_TOPICS)
+          .map((t) => String(t).trim().slice(0, MAX_TOPIC_CHARS))
+          .filter(Boolean)
       : []
-    // Clamp the requested count into a sane, cheap range.
-    const n = Math.max(MIN_COUNT, Math.min(MAX_COUNT, Math.round(count ?? DEFAULT_COUNT)))
+    // Clamp the requested count into a sane, cheap range. Number.isFinite
+    // guards against a non-numeric count (which used to yield "Write NaN ...").
+    const requested = Number(count)
+    const n = Math.max(
+      MIN_COUNT,
+      Math.min(MAX_COUNT, Math.round(Number.isFinite(requested) ? requested : DEFAULT_COUNT)),
+    )
 
     const system = `You are an expert financial-literacy item writer for United States middle-school and high-school students. Write clear multiple-choice practice questions on the given topics. Each question must have exactly 4 options, exactly one of which is correct, plus a one-sentence explanation of why the correct answer is right. Keep everything age-appropriate and unambiguous, with a single defensible correct answer. Write every question, option, and explanation in ${languageName(lang)}.`
 
@@ -91,14 +107,17 @@ Deno.serve(async (req) => {
     return json(parsed)
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err)
+    if (err instanceof Unauthorized) return json({ error: 'UNAUTHORIZED' }, 401)
+    if (err instanceof RateLimited) return json({ error: 'RATE_LIMITED', questions: [] })
     if (message === 'AI_NOT_CONFIGURED') {
       return json({ error: 'AI_NOT_CONFIGURED' }, 503)
     }
     if (message === 'AI_REFUSED') {
       return json({ questions: [] })
     }
-    // 200 on purpose: supabase-js discards the body on non-2xx, which hides
-    // the reason from the UI. Report the failure in the payload instead.
-    return json({ error: 'AI_FAILED', reason: message })
+    // Detail is logged in _shared/ai.ts; the client gets an empty set and its
+    // friendly "no practice available" state, never the upstream error text.
+    console.error(`ai-practice failed: ${message}`)
+    return json({ error: 'AI_FAILED', questions: [] })
   }
 })

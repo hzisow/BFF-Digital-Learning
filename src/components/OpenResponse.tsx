@@ -97,6 +97,7 @@ export default function OpenResponse({ prompt, rubric, id }: OpenResponseProps) 
         onChange={(e) => setAnswer(e.target.value)}
         disabled={submitting || showFeedback}
         rows={4}
+        maxLength={4000}
         className="input mt-3 resize-y leading-relaxed disabled:cursor-not-allowed disabled:bg-ink/5 disabled:text-ink/50"
         placeholder={
           zh

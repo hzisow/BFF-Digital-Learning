@@ -51,14 +51,20 @@ export async function getSession(id: string): Promise<GameSession> {
 
 export async function getSessionByCode(code: string): Promise<GameSession> {
   const sb = await requireSupabase()
-  const { data, error } = await sb
-    .from('game_sessions')
-    .select()
-    .eq('code', code.trim().toUpperCase())
-    .maybeSingle()
+  // See getQuizSessionByCode: ensure a session, then resolve the code through a
+  // SECURITY DEFINER function rather than reading the member-scoped table.
+  const { data: auth } = await sb.auth.getSession()
+  if (!auth.session) {
+    const { error } = await sb.auth.signInAnonymously()
+    if (error) throw new Error(error.message)
+  }
+  const { data, error } = await sb.rpc('get_game_session_by_code', {
+    p_code: code.trim().toUpperCase(),
+  })
   if (error) throw new Error(error.message)
-  if (!data) throw new Error('Game not found. Double-check the code with your host!')
-  return data as GameSession
+  const row = Array.isArray(data) ? data[0] : data
+  if (!row) throw new Error('Game not found. Double-check the code with your host!')
+  return row as GameSession
 }
 
 export async function joinSession(sessionId: string, nickname: string): Promise<GamePlayer> {

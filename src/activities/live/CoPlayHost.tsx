@@ -10,9 +10,11 @@ import {
 } from './coplay'
 import { getActivity } from '../../lib/activities'
 import { Logo } from '../../components/Logo'
+import { BACKEND_ENABLED } from '../../lib/config'
+import { useAdmin } from '../../lib/session'
 import { useLang } from '../../lib/i18n'
 import { AppIcon } from '../../lib/icons'
-import { Award, Crown, Flag, HelpCircle, Medal, Play, Puzzle, Trophy } from 'lucide-react'
+import { Award, Crown, Flag, HelpCircle, Medal, Monitor, Play, Puzzle, Trophy } from 'lucide-react'
 
 const BIG_BUTTON =
   'rounded-2xl bg-white px-8 py-4 font-display text-2xl font-bold text-bff-900 shadow-lg transition hover:bg-bff-50 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50'
@@ -81,6 +83,11 @@ export default function CoPlayHost() {
   const { lang } = useLang()
   const es = lang === 'es'
   const zh = lang === 'zh'
+  // Host controls (Start / End) drive every player's screen, so the host view
+  // is for signed-in mentors only. The server also enforces this — live_sessions
+  // UPDATE is host-only — but without this gate a stranger with the session id
+  // could open the board and see the roster.
+  const { adminUser, adminReady } = useAdmin()
 
   const [session, setSession] = useState<LiveSession | null>(null)
   const [players, setPlayers] = useState<LivePlayer[]>([])
@@ -137,6 +144,35 @@ export default function CoPlayHost() {
     )
   }
 
+  if (!BACKEND_ENABLED || (adminReady && !adminUser)) {
+    return (
+      <HostShell>
+        <div className="card mx-auto mt-24 max-w-md space-y-3 text-center">
+          <Monitor className="mx-auto block h-11 w-11 text-bff-600" aria-hidden="true" />
+          <h1 className="font-display text-xl font-bold text-ink">
+            {zh ? '游戏主持人屏幕' : es ? 'Pantalla del anfitrión' : 'Game host screen'}
+          </h1>
+          <p className="text-sm text-ink/70">
+            {!BACKEND_ENABLED
+              ? zh
+                ? '实时游戏会在班级后台连接后开启。'
+                : es
+                  ? 'Los juegos en vivo se activan cuando se conecta el servidor de la clase.'
+                  : 'Live games unlock when the class backend is connected.'
+              : zh
+                ? '主持实时游戏仅限已登录的 BFF 导师使用。请前往团队页面登录。'
+                : es
+                  ? 'Presentar juegos en vivo es solo para mentores de BFF con sesión iniciada. Ve a la página del equipo para iniciar sesión.'
+                  : 'Hosting live games is for signed-in BFF mentors. Head over to the team page to sign in.'}
+          </p>
+          <Link to="/team" className="btn-primary">
+            {zh ? '前往团队页面' : es ? 'Ir a la página del equipo' : 'Go to the team page'}
+          </Link>
+        </div>
+      </HostShell>
+    )
+  }
+
   if (error && !session) {
     return (
       <HostShell>
@@ -152,7 +188,7 @@ export default function CoPlayHost() {
     )
   }
 
-  if (!session) {
+  if (!adminReady || !session) {
     return (
       <HostShell>
         <p className="mt-32 text-center font-display text-2xl font-semibold text-bff-200">

@@ -2,6 +2,20 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- Content Security Policy. GitHub Pages cannot set response headers, so
+         this is delivered as a meta tag. It is the compensating control for the
+         one dangerouslySetInnerHTML sink (which already escapes model output)
+         and for any future injection: script and connections are pinned to this
+         origin plus the three services the app genuinely talks to (Supabase,
+         Google Sign-In, YouTube embeds). 'unsafe-inline' stays on script/style
+         because the bundler emits inline module bootstrap and the UI uses inline
+         style attributes, and Pages offers no nonce; the host allowlist is what
+         blocks loading code from an attacker's domain. -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com https://www.youtube.com https://s.ytimg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.googleusercontent.com https://i.ytimg.com; font-src 'self' data:; connect-src 'self' https://xrlmxpmaykldvbjnoapk.supabase.co wss://xrlmxpmaykldvbjnoapk.supabase.co https://accounts.google.com; frame-src https://accounts.google.com https://www.youtube.com https://www.youtube-nocookie.com; media-src 'self' https://*.googlevideo.com; object-src 'none'; base-uri 'self'; form-action 'self'"
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <!-- Absolute, not "./". Deep links are served the 404.html fallback from a
          nested path, so a relative icon href resolves against /lessons/ and
          404s. Vite rewrites a leading "/" to the configured base at build

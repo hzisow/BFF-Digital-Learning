@@ -76,6 +76,15 @@ const HOUSE_STYLE = `
 
 When writing English or Spanish, never use an em dash (—). Use a comma, a full stop, or a rewrite. Chinese is exempt: there the dash is ordinary punctuation.`
 
+// Applied to every call. Gemini's defaults only block high-confidence harm;
+// for a product used by children we tighten every category to block at medium.
+const SAFETY_SETTINGS = [
+  { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+  { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+  { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+  { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+]
+
 export interface AIResult {
   text: string
   /** The model ran out of room and the text stops mid-thought. */
@@ -152,6 +161,9 @@ export async function callAIDetailed(opts: CallAIOptions): Promise<AIResult> {
       systemInstruction: { parts: [{ text: opts.system + HOUSE_STYLE }] },
       contents,
       generationConfig,
+      // The audience is minors, so do not lean on Gemini's permissive defaults.
+      // Block anything medium-or-worse across all four harm categories.
+      safetySettings: SAFETY_SETTINGS,
     })
   }
 
